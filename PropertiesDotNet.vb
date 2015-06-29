@@ -40,38 +40,30 @@ Public Class PropertiesDotNet
         End If
         
         'Changeable attributes:
+        chkReadOnly.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.ReadOnly)
         chkHidden.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Hidden)
+        chkCompressed.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed)
+        chkEncrypted.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Encrypted)'FileProperties.Decrypt
         chkSystem.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.System)
-'        GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Archive)
-'        GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed)
-'        GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Encrypted)
-'        GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Hidden)
-'        GetAttributes(lblLocation.Text).HasFlag(FileAttributes.IntegrityStream)
-'        GetAttributes(lblLocation.Text).HasFlag(FileAttributes.NoScrubData)
-'        GetAttributes(lblLocation.Text).HasFlag(FileAttributes.NotContentIndexed)
-'        GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Offline)
-'        GetAttributes(lblLocation.Text).HasFlag(FileAttributes.ReadOnly)
-'        GetAttributes(lblLocation.Text).HasFlag(FileAttributes.ReparsePoint)
-'        GetAttributes(lblLocation.Text).HasFlag(FileAttributes.SparseFile)
-'        GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Temporary)
-        'FileProperties.Decrypt
+        chkArchive.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Archive)
+        chkTemporary.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Temporary)
+        chkIntegrity.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.IntegrityStream)
+        chkNoScrub.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.NoScrubData)
+        chkNotIndexed.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.NotContentIndexed)
+        chkOffline.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Offline)
+        chkReparse.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.ReparsePoint)
+        chkSparse.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.SparseFile)
     End Sub
     
     Sub chkHidden_Click() Handles chkHidden.Click
-        If chkHidden.Checked Then
-            SetAttributes(lblLocation.Text, FileAttribute.Hidden)
-        Else
-            SetAttributes(lblLocation.Text, FileAttributes.Normal)
-        End If
+        If chkHidden.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Hidden) _
+          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Hidden)
         CheckData()
     End Sub
     
     Sub chkSystem_Click() Handles chkSystem.Click
-        If chkSystem.Checked Then
-            SetAttributes(lblLocation.Text, FileAttribute.System)
-        Else
-            SetAttributes(lblLocation.Text, FileAttribute.Normal)
-        End If
+        If chkSystem.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.System) _
+          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.System)
         CheckData()
     End Sub
 End Class

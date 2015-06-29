@@ -45,6 +45,17 @@ Partial Class PropertiesDotNet
         Me.lblFullPathLbl = New System.Windows.Forms.Label()
         Me.lblPathLbl = New System.Windows.Forms.Label()
         Me.grpChangeable = New System.Windows.Forms.GroupBox()
+        Me.chkSparse = New System.Windows.Forms.CheckBox()
+        Me.chkReparse = New System.Windows.Forms.CheckBox()
+        Me.chkOffline = New System.Windows.Forms.CheckBox()
+        Me.chkNotIndexed = New System.Windows.Forms.CheckBox()
+        Me.chkNoScrub = New System.Windows.Forms.CheckBox()
+        Me.chkIntegrity = New System.Windows.Forms.CheckBox()
+        Me.chkTemporary = New System.Windows.Forms.CheckBox()
+        Me.chkArchive = New System.Windows.Forms.CheckBox()
+        Me.chkEncrypted = New System.Windows.Forms.CheckBox()
+        Me.chkCompressed = New System.Windows.Forms.CheckBox()
+        Me.chkReadOnly = New System.Windows.Forms.CheckBox()
         Me.grpEditID = New System.Windows.Forms.GroupBox()
         Me.grpReadOnly.SuspendLayout
         Me.grpChangeable.SuspendLayout
@@ -61,7 +72,7 @@ Partial Class PropertiesDotNet
         'chkHidden
         '
         Me.chkHidden.AutoSize = true
-        Me.chkHidden.Location = New System.Drawing.Point(28, 19)
+        Me.chkHidden.Location = New System.Drawing.Point(6, 34)
         Me.chkHidden.Name = "chkHidden"
         Me.chkHidden.Size = New System.Drawing.Size(60, 17)
         Me.chkHidden.TabIndex = 1
@@ -71,7 +82,7 @@ Partial Class PropertiesDotNet
         'chkSystem
         '
         Me.chkSystem.AutoSize = true
-        Me.chkSystem.Location = New System.Drawing.Point(55, 57)
+        Me.chkSystem.Location = New System.Drawing.Point(6, 79)
         Me.chkSystem.Name = "chkSystem"
         Me.chkSystem.Size = New System.Drawing.Size(60, 17)
         Me.chkSystem.TabIndex = 2
@@ -276,21 +287,142 @@ Partial Class PropertiesDotNet
         '
         Me.grpChangeable.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.grpChangeable.Controls.Add(Me.chkHidden)
+        Me.grpChangeable.Controls.Add(Me.chkSparse)
+        Me.grpChangeable.Controls.Add(Me.chkReparse)
+        Me.grpChangeable.Controls.Add(Me.chkOffline)
+        Me.grpChangeable.Controls.Add(Me.chkNotIndexed)
+        Me.grpChangeable.Controls.Add(Me.chkNoScrub)
+        Me.grpChangeable.Controls.Add(Me.chkIntegrity)
+        Me.grpChangeable.Controls.Add(Me.chkTemporary)
+        Me.grpChangeable.Controls.Add(Me.chkArchive)
         Me.grpChangeable.Controls.Add(Me.chkSystem)
+        Me.grpChangeable.Controls.Add(Me.chkEncrypted)
+        Me.grpChangeable.Controls.Add(Me.chkCompressed)
+        Me.grpChangeable.Controls.Add(Me.chkHidden)
+        Me.grpChangeable.Controls.Add(Me.chkReadOnly)
         Me.grpChangeable.Location = New System.Drawing.Point(2, 152)
         Me.grpChangeable.Name = "grpChangeable"
-        Me.grpChangeable.Size = New System.Drawing.Size(363, 92)
+        Me.grpChangeable.Size = New System.Drawing.Size(363, 221)
         Me.grpChangeable.TabIndex = 4
         Me.grpChangeable.TabStop = false
         Me.grpChangeable.Text = "Changeable attributes:"
+        '
+        'chkSparse
+        '
+        Me.chkSparse.AutoSize = true
+        Me.chkSparse.Location = New System.Drawing.Point(6, 199)
+        Me.chkSparse.Name = "chkSparse"
+        Me.chkSparse.Size = New System.Drawing.Size(234, 17)
+        Me.chkSparse.TabIndex = 13
+        Me.chkSparse.Text = "Sparse - large files consisting of mostly zeros"
+        Me.chkSparse.UseVisualStyleBackColor = true
+        '
+        'chkReparse
+        '
+        Me.chkReparse.AutoSize = true
+        Me.chkReparse.Location = New System.Drawing.Point(6, 184)
+        Me.chkReparse.Name = "chkReparse"
+        Me.chkReparse.Size = New System.Drawing.Size(279, 17)
+        Me.chkReparse.TabIndex = 12
+        Me.chkReparse.Text = "Contains Reparse Point - A block of user-defined data"
+        Me.chkReparse.UseVisualStyleBackColor = true
+        '
+        'chkOffline
+        '
+        Me.chkOffline.AutoSize = true
+        Me.chkOffline.Location = New System.Drawing.Point(6, 169)
+        Me.chkOffline.Name = "chkOffline"
+        Me.chkOffline.Size = New System.Drawing.Size(211, 17)
+        Me.chkOffline.TabIndex = 11
+        Me.chkOffline.Text = "Offline - File is not immediately available"
+        Me.chkOffline.UseVisualStyleBackColor = true
+        '
+        'chkNotIndexed
+        '
+        Me.chkNotIndexed.AutoSize = true
+        Me.chkNotIndexed.Location = New System.Drawing.Point(6, 154)
+        Me.chkNotIndexed.Name = "chkNotIndexed"
+        Me.chkNotIndexed.Size = New System.Drawing.Size(292, 17)
+        Me.chkNotIndexed.TabIndex = 10
+        Me.chkNotIndexed.Text = "Not Indexed - File will not be indexed by indexing service"
+        Me.chkNotIndexed.UseVisualStyleBackColor = true
+        '
+        'chkNoScrub
+        '
+        Me.chkNoScrub.AutoSize = true
+        Me.chkNoScrub.Location = New System.Drawing.Point(6, 139)
+        Me.chkNoScrub.Name = "chkNoScrub"
+        Me.chkNoScrub.Size = New System.Drawing.Size(314, 17)
+        Me.chkNoScrub.TabIndex = 9
+        Me.chkNoScrub.Text = "No Scrub Data - Path is excluded from the data integrity scan"
+        Me.chkNoScrub.UseVisualStyleBackColor = true
+        '
+        'chkIntegrity
+        '
+        Me.chkIntegrity.AutoSize = true
+        Me.chkIntegrity.Location = New System.Drawing.Point(6, 124)
+        Me.chkIntegrity.Name = "chkIntegrity"
+        Me.chkIntegrity.Size = New System.Drawing.Size(331, 17)
+        Me.chkIntegrity.TabIndex = 8
+        Me.chkIntegrity.Text = "Data Integrity - The file or directory includes data integrity support"
+        Me.chkIntegrity.UseVisualStyleBackColor = true
+        '
+        'chkTemporary
+        '
+        Me.chkTemporary.AutoSize = true
+        Me.chkTemporary.Location = New System.Drawing.Point(6, 109)
+        Me.chkTemporary.Name = "chkTemporary"
+        Me.chkTemporary.Size = New System.Drawing.Size(76, 17)
+        Me.chkTemporary.TabIndex = 7
+        Me.chkTemporary.Text = "Temporary"
+        Me.chkTemporary.UseVisualStyleBackColor = true
+        '
+        'chkArchive
+        '
+        Me.chkArchive.AutoSize = true
+        Me.chkArchive.Location = New System.Drawing.Point(6, 94)
+        Me.chkArchive.Name = "chkArchive"
+        Me.chkArchive.Size = New System.Drawing.Size(259, 17)
+        Me.chkArchive.TabIndex = 6
+        Me.chkArchive.Text = "Archive - file is a candidate for backup or removal"
+        Me.chkArchive.UseVisualStyleBackColor = true
+        '
+        'chkEncrypted
+        '
+        Me.chkEncrypted.AutoSize = true
+        Me.chkEncrypted.Location = New System.Drawing.Point(6, 64)
+        Me.chkEncrypted.Name = "chkEncrypted"
+        Me.chkEncrypted.Size = New System.Drawing.Size(74, 17)
+        Me.chkEncrypted.TabIndex = 5
+        Me.chkEncrypted.Text = "Encrypted"
+        Me.chkEncrypted.UseVisualStyleBackColor = true
+        '
+        'chkCompressed
+        '
+        Me.chkCompressed.AutoSize = true
+        Me.chkCompressed.Location = New System.Drawing.Point(6, 49)
+        Me.chkCompressed.Name = "chkCompressed"
+        Me.chkCompressed.Size = New System.Drawing.Size(84, 17)
+        Me.chkCompressed.TabIndex = 4
+        Me.chkCompressed.Text = "Compressed"
+        Me.chkCompressed.UseVisualStyleBackColor = true
+        '
+        'chkReadOnly
+        '
+        Me.chkReadOnly.AutoSize = true
+        Me.chkReadOnly.Location = New System.Drawing.Point(6, 19)
+        Me.chkReadOnly.Name = "chkReadOnly"
+        Me.chkReadOnly.Size = New System.Drawing.Size(76, 17)
+        Me.chkReadOnly.TabIndex = 3
+        Me.chkReadOnly.Text = "Read-Only"
+        Me.chkReadOnly.UseVisualStyleBackColor = true
         '
         'grpEditID
         '
         Me.grpEditID.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
                         Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.grpEditID.Location = New System.Drawing.Point(2, 250)
+        Me.grpEditID.Location = New System.Drawing.Point(2, 379)
         Me.grpEditID.Name = "grpEditID"
         Me.grpEditID.Size = New System.Drawing.Size(363, 220)
         Me.grpEditID.TabIndex = 5
@@ -301,7 +433,7 @@ Partial Class PropertiesDotNet
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(368, 472)
+        Me.ClientSize = New System.Drawing.Size(368, 601)
         Me.Controls.Add(Me.grpEditID)
         Me.Controls.Add(Me.grpChangeable)
         Me.Controls.Add(Me.grpReadOnly)
@@ -316,6 +448,17 @@ Partial Class PropertiesDotNet
         Me.grpChangeable.PerformLayout
         Me.ResumeLayout(false)
     End Sub
+    Private chkReadOnly As System.Windows.Forms.CheckBox
+    Private chkCompressed As System.Windows.Forms.CheckBox
+    Private chkEncrypted As System.Windows.Forms.CheckBox
+    Private chkArchive As System.Windows.Forms.CheckBox
+    Private chkTemporary As System.Windows.Forms.CheckBox
+    Private chkIntegrity As System.Windows.Forms.CheckBox
+    Private chkNoScrub As System.Windows.Forms.CheckBox
+    Private chkNotIndexed As System.Windows.Forms.CheckBox
+    Private chkOffline As System.Windows.Forms.CheckBox
+    Private chkReparse As System.Windows.Forms.CheckBox
+    Private chkSparse As System.Windows.Forms.CheckBox
     Private lblSizeLbl As System.Windows.Forms.Label
     Private lblSize As System.Windows.Forms.Label
     Private grpEditID As System.Windows.Forms.GroupBox
