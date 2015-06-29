@@ -65,22 +65,35 @@ Public Class PropertiesDotNet
     nInBufferSize As Integer,lpOutBuffer As IntPtr,nOutBufferSize As Integer,ByRef lpBytesReturned As Integer,lpOverlapped As IntPtr)As Integer
     End Function
     Sub Compress(Optional CompressB As Boolean = True)
+        CompressReport.Show
         ''' <summary>
         ''' Credits to http://www.thescarms.com/dotnet/NTFSCompress.aspx
         ''' Converted to VB.Net with SharpDevelop (which I believe uses MSBuild anyway to convert)
         ''' </summary>
+        CompressReport.lblStatus.Text = "Getting FileInfo..."
         Dim FilePropertiesInfo As New FileInfo(lblLocation.Text)
+        CompressReport.lblStatus.Text = "Opening File stream..."
         Dim FilePropertiesStream As FileStream = File.Open(FilePropertiesInfo.FullName, FileMode.Open, FileAccess.ReadWrite, FileShare.None)
         If CompressB Then
+            CompressReport.Text = "Compressing..."
+            CompressReport.lblStatus.Text = "Running compress function..."
             DeviceIoControl(FilePropertiesStream.Handle, &H9c040, 1, 2, 0, 0, 0, 0)
         Else
             ' https://msdn.microsoft.com/en-us/library/windows/desktop/aa364592(v=vs.85).aspx
             ' COMPRESSION_FORMAT_NONE is equal to 0 (i assume)
+            CompressReport.Text = "Decompressing..."
+            CompressReport.lblStatus.Text = "Running decompress function..."
             DeviceIoControl(FilePropertiesStream.Handle, &H9c040, 0, 2, 0, 0, 0, 0)
         End If
+        CompressReport.lblStatus.Text = "Flushing buffer to disc..."
         FilePropertiesStream.Flush(True)
+        CompressReport.lblStatus.Text = "Closing File stream..."
         FilePropertiesStream.Close
+        CompressReport.lblStatus.Text = "Disposing File stream..."
         FilePropertiesStream.Dispose
+        CompressReport.lblStatus.Text = "Compression Done!"
+        System.Threading.Thread.Sleep(100)
+        CompressReport.Hide
     End Sub
     
     Sub chkReadOnly_Click() Handles chkReadOnly.Click
