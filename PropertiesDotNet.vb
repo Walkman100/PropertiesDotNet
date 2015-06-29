@@ -60,6 +60,29 @@ Public Class PropertiesDotNet
         chkSparse.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.SparseFile)
     End Sub
     
+    <DllImport("Kernel32.dll")> _
+    Public Shared Function DeviceIoControl(hDevice As IntPtr,dwIoControlCode As Integer,ByRef lpInBuffer As Short, _
+    nInBufferSize As Integer,lpOutBuffer As IntPtr,nOutBufferSize As Integer,ByRef lpBytesReturned As Integer,lpOverlapped As IntPtr)As Integer
+    End Function
+    Sub Compress(Optional CompressB As Boolean = True)
+        ''' <summary>
+        ''' Credits to http://www.thescarms.com/dotnet/NTFSCompress.aspx
+        ''' Converted to VB.Net with SharpDevelop (which I believe uses MSBuild anyway to convert)
+        ''' </summary>
+        Dim FilePropertiesInfo As New FileInfo(lblLocation.Text)
+        Dim FilePropertiesStream As FileStream = File.Open(FilePropertiesInfo.FullName, FileMode.Open, FileAccess.ReadWrite, FileShare.None)
+        If CompressB Then
+            DeviceIoControl(FilePropertiesStream.Handle, &H9c040, 1, 2, 0, 0, 0, 0)
+        Else
+            ' https://msdn.microsoft.com/en-us/library/windows/desktop/aa364592(v=vs.85).aspx
+            ' COMPRESSION_FORMAT_NONE is equal to 0 (i assume)
+            DeviceIoControl(FilePropertiesStream.Handle, &H9c040, 0, 2, 0, 0, 0, 0)
+        End If
+        FilePropertiesStream.Flush(True)
+        FilePropertiesStream.Close
+        FilePropertiesStream.Dispose
+    End Sub
+    
     Sub chkReadOnly_Click() Handles chkReadOnly.Click
         If chkReadOnly.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.ReadOnly) _
           Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.ReadOnly)
@@ -70,38 +93,16 @@ Public Class PropertiesDotNet
           Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Hidden)
         CheckData
     End Sub
-    <DllImport("Kernel32.dll")> _
-    Public Shared Function DeviceIoControl(hDevice As IntPtr,dwIoControlCode As Integer,ByRef lpInBuffer As Short, _
-    nInBufferSize As Integer,lpOutBuffer As IntPtr,nOutBufferSize As Integer,ByRef lpBytesReturned As Integer,lpOverlapped As IntPtr)As Integer
-    End Function
     Sub chkCompressed_Click() Handles chkCompressed.Click
-        ''' <summary>
-        ''' Credits to http://www.thescarms.com/dotnet/NTFSCompress.aspx
-        ''' Converted to VB.Net with SharpDevelop (which I believe uses MSBuild anyway to convert)
-        ''' </summary>
         If chkCompressed.Checked Then
             SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Compressed)
             If Not GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed) Then
-                Dim FileProperties As New FileInfo(lblLocation.Text)
-                Try
-                    Dim lpBytesReturned As Integer = 0
-                    Dim FSCTL_SET_COMPRESSION As Integer = &H9c040
-                    Dim COMPRESSION_FORMAT_DEFAULT As Short = 1
-                    Dim f As FileStream = File.Open(FileProperties.FullName, System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite, System.IO.FileShare.None)
-                    Dim result As Integer = DeviceIoControl(f.Handle, FSCTL_SET_COMPRESSION, COMPRESSION_FORMAT_DEFAULT, 2, IntPtr.Zero, 0, lpBytesReturned, IntPtr.Zero)
-                Catch ex As IOException
-                    MsgBox("Could not compress!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
-                End Try
+                Compress()
             End If
         Else
             SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Compressed)
             If GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed) Then
-                Dim FileProperties As New FileInfo(lblLocation.Text)
-                Try
-                    
-                Catch ex As IOException
-                    MsgBox("Could not decompress!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
-                End Try
+                Compress(False)
             End If
         End If
         CheckData
@@ -193,7 +194,6 @@ Public Class PropertiesDotNet
         End If
         CheckData
     End Sub
-    
     Sub btnDelete_Click() Handles btnDelete.Click
         Dim FileProperties As New FileInfo(lblLocation.Text)
         If MsgBox("Are you sure you want to delete """ & FileProperties.Name & """?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
@@ -202,7 +202,6 @@ Public Class PropertiesDotNet
         End If
         CheckData
     End Sub
-    
     Sub btnCopy_Click() Handles btnCopy.Click
         Dim FileProperties As New FileInfo(lblLocation.Text)
         SaveFileDialog.InitialDirectory = FileProperties.DirectoryName
@@ -214,7 +213,6 @@ Public Class PropertiesDotNet
         End If
         CheckData
     End Sub
-    
     Sub btnMove_Click() Handles btnMove.Click
         Dim FileProperties As New FileInfo(lblLocation.Text)
         SaveFileDialog.InitialDirectory = FileProperties.DirectoryName
