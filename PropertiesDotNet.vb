@@ -92,7 +92,11 @@ Public Class PropertiesDotNet
         CompressReport.lblStatus.Text = "Disposing File stream..."
         FilePropertiesStream.Dispose
         CompressReport.lblStatus.Text = "Compression Done!"
-        System.Threading.Thread.Sleep(100)
+        timerCloseCompressForm.Start
+    End Sub
+    
+    Sub timerCloseCompressForm_Tick() Handles timerCloseCompressForm.Tick
+        timerCloseCompressForm.Stop
         CompressReport.Hide
     End Sub
     

@@ -22,6 +22,7 @@ Partial Class PropertiesDotNet
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.lblLocation = New System.Windows.Forms.Label()
         Me.chkHidden = New System.Windows.Forms.CheckBox()
         Me.chkSystem = New System.Windows.Forms.CheckBox()
@@ -63,6 +64,7 @@ Partial Class PropertiesDotNet
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnRename = New System.Windows.Forms.Button()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
+        Me.timerCloseCompressForm = New System.Windows.Forms.Timer(Me.components)
         Me.grpReadOnly.SuspendLayout
         Me.grpChangeable.SuspendLayout
         Me.grpEditID.SuspendLayout
@@ -495,6 +497,10 @@ Partial Class PropertiesDotNet
         '
         Me.SaveFileDialog.AddExtension = false
         '
+        'timerCloseCompressForm
+        '
+        Me.timerCloseCompressForm.Interval = 500
+        '
         'PropertiesDotNet
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -503,7 +509,6 @@ Partial Class PropertiesDotNet
         Me.Controls.Add(Me.grpEditID)
         Me.Controls.Add(Me.grpChangeable)
         Me.Controls.Add(Me.grpReadOnly)
-        Me.HelpButton = true
         Me.MaximizeBox = false
         Me.Name = "PropertiesDotNet"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
@@ -515,6 +520,7 @@ Partial Class PropertiesDotNet
         Me.grpEditID.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
+    Private WithEvents timerCloseCompressForm As System.Windows.Forms.Timer
     Private SaveFileDialog As System.Windows.Forms.SaveFileDialog
     Private WithEvents btnRename As System.Windows.Forms.Button
     Private WithEvents btnDelete As System.Windows.Forms.Button
