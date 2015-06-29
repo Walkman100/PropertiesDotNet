@@ -1,11 +1,14 @@
 ﻿Imports System.IO
 Imports System.IO.File
+Imports System.Runtime.InteropServices 'For NTFS compression
 
 Public Class PropertiesDotNet
-    'File Name, rename button, copy file name
-    'file path, copy file path, copy full file path
+    ' TODO:
     'icon: picturebox
-    'sizes
+    'copy file name, copy file dir, copy full file path
+    'sizes (only have bytes)
+    'compute hashes
+    
     'default open with?
     'set default open with
     'launch
@@ -67,8 +70,40 @@ Public Class PropertiesDotNet
           Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Hidden)
         CheckData
     End Sub
+    <DllImport("Kernel32.dll")> _
+    Public Shared Function DeviceIoControl(hDevice As IntPtr,dwIoControlCode As Integer,ByRef lpInBuffer As Short, _
+    nInBufferSize As Integer,lpOutBuffer As IntPtr,nOutBufferSize As Integer,ByRef lpBytesReturned As Integer,lpOverlapped As IntPtr)As Integer
+    End Function
     Sub chkCompressed_Click() Handles chkCompressed.Click
-        MsgBox("Compressing/decompressing files at the NTFS level isn't supported by .Net", MsgBoxStyle.Information)
+        ''' <summary>
+        ''' Credits to http://www.thescarms.com/dotnet/NTFSCompress.aspx
+        ''' Converted to VB.Net with SharpDevelop (which I believe uses MSBuild anyway to convert)
+        ''' </summary>
+        If chkCompressed.Checked Then
+            SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Compressed)
+            If Not GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed) Then
+                Dim FileProperties As New FileInfo(lblLocation.Text)
+                Try
+                    Dim lpBytesReturned As Integer = 0
+                    Dim FSCTL_SET_COMPRESSION As Integer = &H9c040
+                    Dim COMPRESSION_FORMAT_DEFAULT As Short = 1
+                    Dim f As FileStream = File.Open(FileProperties.FullName, System.IO.FileMode.Open, System.IO.FileAccess.ReadWrite, System.IO.FileShare.None)
+                    Dim result As Integer = DeviceIoControl(f.Handle, FSCTL_SET_COMPRESSION, COMPRESSION_FORMAT_DEFAULT, 2, IntPtr.Zero, 0, lpBytesReturned, IntPtr.Zero)
+                Catch ex As IOException
+                    MsgBox("Could not compress!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
+                End Try
+            End If
+        Else
+            SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Compressed)
+            If GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed) Then
+                Dim FileProperties As New FileInfo(lblLocation.Text)
+                Try
+                    
+                Catch ex As IOException
+                    MsgBox("Could not decompress!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
+                End Try
+            End If
+        End If
         CheckData
     End Sub
     Sub chkEncrypted_Click() Handles chkEncrypted.Click
