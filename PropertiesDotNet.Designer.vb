@@ -69,6 +69,7 @@ Partial Class PropertiesDotNet
         Me.btnRename = New System.Windows.Forms.Button()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.timerCloseCompressForm = New System.Windows.Forms.Timer(Me.components)
+        Me.btnHashes = New System.Windows.Forms.Button()
         Me.grpReadOnly.SuspendLayout
         Me.grpChangeable.SuspendLayout
         Me.grpEditID.SuspendLayout
@@ -107,6 +108,7 @@ Partial Class PropertiesDotNet
         '
         Me.grpReadOnly.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpReadOnly.Controls.Add(Me.btnHashes)
         Me.grpReadOnly.Controls.Add(Me.btnCopyFullPath)
         Me.grpReadOnly.Controls.Add(Me.btnCopyDirectory)
         Me.grpReadOnly.Controls.Add(Me.btnCopyName)
@@ -548,6 +550,16 @@ Partial Class PropertiesDotNet
         '
         Me.timerCloseCompressForm.Interval = 500
         '
+        'btnHashes
+        '
+        Me.btnHashes.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnHashes.Location = New System.Drawing.Point(259, 170)
+        Me.btnHashes.Name = "btnHashes"
+        Me.btnHashes.Size = New System.Drawing.Size(98, 23)
+        Me.btnHashes.TabIndex = 23
+        Me.btnHashes.Text = "Compute Hashes"
+        Me.btnHashes.UseVisualStyleBackColor = true
+        '
         'PropertiesDotNet
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -567,6 +579,7 @@ Partial Class PropertiesDotNet
         Me.grpEditID.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
+    Private WithEvents btnHashes As System.Windows.Forms.Button
     Private WithEvents btnCopyExtension As System.Windows.Forms.Button
     Private WithEvents btnCopyName As System.Windows.Forms.Button
     Private WithEvents btnCopyDirectory As System.Windows.Forms.Button

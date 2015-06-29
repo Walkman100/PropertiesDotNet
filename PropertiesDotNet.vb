@@ -32,6 +32,7 @@ Public Class PropertiesDotNet
         lblFullPath.Text = FileProperties.FullName
         lblDirectory.Text = FileProperties.DirectoryName
         lblName.Text = FileProperties.Name
+        Me.Width = lblName.Width + 370
         lblExtension.Text = FileProperties.Extension
         lblSize.Text = FileProperties.Length
         If chkUTC.Checked Then
@@ -90,6 +91,9 @@ Public Class PropertiesDotNet
         Catch ex As Exception
             MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
         End Try
+    End Sub
+    Sub btnHashes_Click() Handles btnHashes.Click
+        Hashes.Show
     End Sub
     
     <DllImport("Kernel32.dll")> _

@@ -62,6 +62,9 @@
     <Compile Include="CompressReport.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Hashes.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PropertiesDotNet.vb">
       <SubType>Form</SubType>
     </Compile>
