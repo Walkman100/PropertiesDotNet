@@ -27,6 +27,10 @@ Partial Class PropertiesDotNet
         Me.chkHidden = New System.Windows.Forms.CheckBox()
         Me.chkSystem = New System.Windows.Forms.CheckBox()
         Me.grpReadOnly = New System.Windows.Forms.GroupBox()
+        Me.btnCopyFullPath = New System.Windows.Forms.Button()
+        Me.btnCopyDirectory = New System.Windows.Forms.Button()
+        Me.btnCopyName = New System.Windows.Forms.Button()
+        Me.btnCopyExtension = New System.Windows.Forms.Button()
         Me.lblSize = New System.Windows.Forms.Label()
         Me.lblSizeLbl = New System.Windows.Forms.Label()
         Me.chkUTC = New System.Windows.Forms.CheckBox()
@@ -103,6 +107,10 @@ Partial Class PropertiesDotNet
         '
         Me.grpReadOnly.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpReadOnly.Controls.Add(Me.btnCopyFullPath)
+        Me.grpReadOnly.Controls.Add(Me.btnCopyDirectory)
+        Me.grpReadOnly.Controls.Add(Me.btnCopyName)
+        Me.grpReadOnly.Controls.Add(Me.btnCopyExtension)
         Me.grpReadOnly.Controls.Add(Me.lblSize)
         Me.grpReadOnly.Controls.Add(Me.lblSizeLbl)
         Me.grpReadOnly.Controls.Add(Me.chkUTC)
@@ -124,15 +132,55 @@ Partial Class PropertiesDotNet
         Me.grpReadOnly.Controls.Add(Me.lblLocation)
         Me.grpReadOnly.Location = New System.Drawing.Point(2, 4)
         Me.grpReadOnly.Name = "grpReadOnly"
-        Me.grpReadOnly.Size = New System.Drawing.Size(363, 142)
+        Me.grpReadOnly.Size = New System.Drawing.Size(363, 199)
         Me.grpReadOnly.TabIndex = 3
         Me.grpReadOnly.TabStop = false
         Me.grpReadOnly.Text = "Read-only Attributes:"
         '
+        'btnCopyFullPath
+        '
+        Me.btnCopyFullPath.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnCopyFullPath.Location = New System.Drawing.Point(313, 24)
+        Me.btnCopyFullPath.Name = "btnCopyFullPath"
+        Me.btnCopyFullPath.Size = New System.Drawing.Size(44, 23)
+        Me.btnCopyFullPath.TabIndex = 22
+        Me.btnCopyFullPath.Text = "Copy"
+        Me.btnCopyFullPath.UseVisualStyleBackColor = true
+        '
+        'btnCopyDirectory
+        '
+        Me.btnCopyDirectory.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnCopyDirectory.Location = New System.Drawing.Point(313, 48)
+        Me.btnCopyDirectory.Name = "btnCopyDirectory"
+        Me.btnCopyDirectory.Size = New System.Drawing.Size(44, 23)
+        Me.btnCopyDirectory.TabIndex = 21
+        Me.btnCopyDirectory.Text = "Copy"
+        Me.btnCopyDirectory.UseVisualStyleBackColor = true
+        '
+        'btnCopyName
+        '
+        Me.btnCopyName.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnCopyName.Location = New System.Drawing.Point(313, 72)
+        Me.btnCopyName.Name = "btnCopyName"
+        Me.btnCopyName.Size = New System.Drawing.Size(44, 23)
+        Me.btnCopyName.TabIndex = 20
+        Me.btnCopyName.Text = "Copy"
+        Me.btnCopyName.UseVisualStyleBackColor = true
+        '
+        'btnCopyExtension
+        '
+        Me.btnCopyExtension.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnCopyExtension.Location = New System.Drawing.Point(313, 96)
+        Me.btnCopyExtension.Name = "btnCopyExtension"
+        Me.btnCopyExtension.Size = New System.Drawing.Size(44, 23)
+        Me.btnCopyExtension.TabIndex = 19
+        Me.btnCopyExtension.Text = "Copy"
+        Me.btnCopyExtension.UseVisualStyleBackColor = true
+        '
         'lblSize
         '
         Me.lblSize.AutoSize = true
-        Me.lblSize.Location = New System.Drawing.Point(101, 81)
+        Me.lblSize.Location = New System.Drawing.Point(101, 114)
         Me.lblSize.Name = "lblSize"
         Me.lblSize.Size = New System.Drawing.Size(61, 13)
         Me.lblSize.TabIndex = 18
@@ -141,7 +189,7 @@ Partial Class PropertiesDotNet
         'lblSizeLbl
         '
         Me.lblSizeLbl.AutoSize = true
-        Me.lblSizeLbl.Location = New System.Drawing.Point(6, 81)
+        Me.lblSizeLbl.Location = New System.Drawing.Point(6, 114)
         Me.lblSizeLbl.Name = "lblSizeLbl"
         Me.lblSizeLbl.Size = New System.Drawing.Size(64, 13)
         Me.lblSizeLbl.TabIndex = 17
@@ -149,9 +197,8 @@ Partial Class PropertiesDotNet
         '
         'chkUTC
         '
-        Me.chkUTC.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.chkUTC.AutoSize = true
-        Me.chkUTC.Location = New System.Drawing.Point(234, 67)
+        Me.chkUTC.Location = New System.Drawing.Point(10, 130)
         Me.chkUTC.Name = "chkUTC"
         Me.chkUTC.Size = New System.Drawing.Size(120, 17)
         Me.chkUTC.TabIndex = 16
@@ -161,7 +208,7 @@ Partial Class PropertiesDotNet
         'lblLastWriteTime
         '
         Me.lblLastWriteTime.AutoSize = true
-        Me.lblLastWriteTime.Location = New System.Drawing.Point(101, 120)
+        Me.lblLastWriteTime.Location = New System.Drawing.Point(101, 176)
         Me.lblLastWriteTime.Name = "lblLastWriteTime"
         Me.lblLastWriteTime.Size = New System.Drawing.Size(61, 13)
         Me.lblLastWriteTime.TabIndex = 15
@@ -170,7 +217,7 @@ Partial Class PropertiesDotNet
         'lblLastWriteTimeLbl
         '
         Me.lblLastWriteTimeLbl.AutoSize = true
-        Me.lblLastWriteTimeLbl.Location = New System.Drawing.Point(6, 120)
+        Me.lblLastWriteTimeLbl.Location = New System.Drawing.Point(6, 176)
         Me.lblLastWriteTimeLbl.Name = "lblLastWriteTimeLbl"
         Me.lblLastWriteTimeLbl.Size = New System.Drawing.Size(77, 13)
         Me.lblLastWriteTimeLbl.TabIndex = 14
@@ -179,7 +226,7 @@ Partial Class PropertiesDotNet
         'lblLastAccessTime
         '
         Me.lblLastAccessTime.AutoSize = true
-        Me.lblLastAccessTime.Location = New System.Drawing.Point(101, 107)
+        Me.lblLastAccessTime.Location = New System.Drawing.Point(101, 163)
         Me.lblLastAccessTime.Name = "lblLastAccessTime"
         Me.lblLastAccessTime.Size = New System.Drawing.Size(61, 13)
         Me.lblLastAccessTime.TabIndex = 13
@@ -188,7 +235,7 @@ Partial Class PropertiesDotNet
         'lblLastAccessTimeLbl
         '
         Me.lblLastAccessTimeLbl.AutoSize = true
-        Me.lblLastAccessTimeLbl.Location = New System.Drawing.Point(6, 107)
+        Me.lblLastAccessTimeLbl.Location = New System.Drawing.Point(6, 163)
         Me.lblLastAccessTimeLbl.Name = "lblLastAccessTimeLbl"
         Me.lblLastAccessTimeLbl.Size = New System.Drawing.Size(89, 13)
         Me.lblLastAccessTimeLbl.TabIndex = 12
@@ -197,7 +244,7 @@ Partial Class PropertiesDotNet
         'lblCreationTime
         '
         Me.lblCreationTime.AutoSize = true
-        Me.lblCreationTime.Location = New System.Drawing.Point(101, 94)
+        Me.lblCreationTime.Location = New System.Drawing.Point(101, 150)
         Me.lblCreationTime.Name = "lblCreationTime"
         Me.lblCreationTime.Size = New System.Drawing.Size(61, 13)
         Me.lblCreationTime.TabIndex = 11
@@ -206,7 +253,7 @@ Partial Class PropertiesDotNet
         'lblCreationTimeLbl
         '
         Me.lblCreationTimeLbl.AutoSize = true
-        Me.lblCreationTimeLbl.Location = New System.Drawing.Point(6, 94)
+        Me.lblCreationTimeLbl.Location = New System.Drawing.Point(6, 150)
         Me.lblCreationTimeLbl.Name = "lblCreationTimeLbl"
         Me.lblCreationTimeLbl.Size = New System.Drawing.Size(71, 13)
         Me.lblCreationTimeLbl.TabIndex = 10
@@ -224,7 +271,7 @@ Partial Class PropertiesDotNet
         'lblDirectory
         '
         Me.lblDirectory.AutoSize = true
-        Me.lblDirectory.Location = New System.Drawing.Point(101, 42)
+        Me.lblDirectory.Location = New System.Drawing.Point(101, 53)
         Me.lblDirectory.Name = "lblDirectory"
         Me.lblDirectory.Size = New System.Drawing.Size(61, 13)
         Me.lblDirectory.TabIndex = 8
@@ -233,7 +280,7 @@ Partial Class PropertiesDotNet
         'lblExtension
         '
         Me.lblExtension.AutoSize = true
-        Me.lblExtension.Location = New System.Drawing.Point(101, 68)
+        Me.lblExtension.Location = New System.Drawing.Point(101, 101)
         Me.lblExtension.Name = "lblExtension"
         Me.lblExtension.Size = New System.Drawing.Size(61, 13)
         Me.lblExtension.TabIndex = 7
@@ -242,7 +289,7 @@ Partial Class PropertiesDotNet
         'lblName
         '
         Me.lblName.AutoSize = true
-        Me.lblName.Location = New System.Drawing.Point(101, 55)
+        Me.lblName.Location = New System.Drawing.Point(101, 77)
         Me.lblName.Name = "lblName"
         Me.lblName.Size = New System.Drawing.Size(61, 13)
         Me.lblName.TabIndex = 6
@@ -251,7 +298,7 @@ Partial Class PropertiesDotNet
         'lblDirectoryLbl
         '
         Me.lblDirectoryLbl.AutoSize = true
-        Me.lblDirectoryLbl.Location = New System.Drawing.Point(6, 42)
+        Me.lblDirectoryLbl.Location = New System.Drawing.Point(6, 53)
         Me.lblDirectoryLbl.Name = "lblDirectoryLbl"
         Me.lblDirectoryLbl.Size = New System.Drawing.Size(77, 13)
         Me.lblDirectoryLbl.TabIndex = 5
@@ -260,7 +307,7 @@ Partial Class PropertiesDotNet
         'lblExtensionLbl
         '
         Me.lblExtensionLbl.AutoSize = true
-        Me.lblExtensionLbl.Location = New System.Drawing.Point(6, 68)
+        Me.lblExtensionLbl.Location = New System.Drawing.Point(6, 101)
         Me.lblExtensionLbl.Name = "lblExtensionLbl"
         Me.lblExtensionLbl.Size = New System.Drawing.Size(56, 13)
         Me.lblExtensionLbl.TabIndex = 4
@@ -269,7 +316,7 @@ Partial Class PropertiesDotNet
         'lblNameLbl
         '
         Me.lblNameLbl.AutoSize = true
-        Me.lblNameLbl.Location = New System.Drawing.Point(6, 55)
+        Me.lblNameLbl.Location = New System.Drawing.Point(6, 77)
         Me.lblNameLbl.Name = "lblNameLbl"
         Me.lblNameLbl.Size = New System.Drawing.Size(38, 13)
         Me.lblNameLbl.TabIndex = 3
@@ -311,7 +358,7 @@ Partial Class PropertiesDotNet
         Me.grpChangeable.Controls.Add(Me.chkCompressed)
         Me.grpChangeable.Controls.Add(Me.chkHidden)
         Me.grpChangeable.Controls.Add(Me.chkReadOnly)
-        Me.grpChangeable.Location = New System.Drawing.Point(2, 152)
+        Me.grpChangeable.Location = New System.Drawing.Point(2, 209)
         Me.grpChangeable.Name = "grpChangeable"
         Me.grpChangeable.Size = New System.Drawing.Size(363, 221)
         Me.grpChangeable.TabIndex = 4
@@ -450,7 +497,7 @@ Partial Class PropertiesDotNet
         Me.grpEditID.Controls.Add(Me.btnCopy)
         Me.grpEditID.Controls.Add(Me.btnDelete)
         Me.grpEditID.Controls.Add(Me.btnRename)
-        Me.grpEditID.Location = New System.Drawing.Point(2, 379)
+        Me.grpEditID.Location = New System.Drawing.Point(2, 436)
         Me.grpEditID.Name = "grpEditID"
         Me.grpEditID.Size = New System.Drawing.Size(363, 50)
         Me.grpEditID.TabIndex = 5
@@ -505,14 +552,14 @@ Partial Class PropertiesDotNet
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(368, 431)
+        Me.ClientSize = New System.Drawing.Size(368, 488)
         Me.Controls.Add(Me.grpEditID)
         Me.Controls.Add(Me.grpChangeable)
         Me.Controls.Add(Me.grpReadOnly)
         Me.MaximizeBox = false
         Me.Name = "PropertiesDotNet"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "PropertiesDotNet"
+        Me.Text = "Properties: "
         Me.grpReadOnly.ResumeLayout(false)
         Me.grpReadOnly.PerformLayout
         Me.grpChangeable.ResumeLayout(false)
@@ -520,6 +567,10 @@ Partial Class PropertiesDotNet
         Me.grpEditID.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
+    Private WithEvents btnCopyExtension As System.Windows.Forms.Button
+    Private WithEvents btnCopyName As System.Windows.Forms.Button
+    Private WithEvents btnCopyDirectory As System.Windows.Forms.Button
+    Private WithEvents btnCopyFullPath As System.Windows.Forms.Button
     Private WithEvents timerCloseCompressForm As System.Windows.Forms.Timer
     Private SaveFileDialog As System.Windows.Forms.SaveFileDialog
     Private WithEvents btnRename As System.Windows.Forms.Button

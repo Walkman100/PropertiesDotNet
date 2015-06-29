@@ -5,7 +5,6 @@ Imports System.Runtime.InteropServices 'For NTFS compression
 Public Class PropertiesDotNet
     ' TODO:
     'icon: picturebox
-    'copy file name, copy file dir, copy full file path
     'sizes (only have bytes)
     'compute hashes
     
@@ -23,16 +22,17 @@ Public Class PropertiesDotNet
                 lblLocation.Text = lblLocation.Text & " " & s 
             End If
         Next
-        CheckData
+        If lblLocation.Text <> "Checking..." Then CheckData
     End Sub
     
     Sub CheckData Handles chkUTC.CheckedChanged
         'Read-Only attributes:
         Dim FileProperties As New FileInfo(lblLocation.Text)
+        Me.Text = "Properties: " & FileProperties.Name
+        lblFullPath.Text = FileProperties.FullName
+        lblDirectory.Text = FileProperties.DirectoryName
         lblName.Text = FileProperties.Name
         lblExtension.Text = FileProperties.Extension
-        lblDirectory.Text = FileProperties.DirectoryName
-        lblFullPath.Text = FileProperties.FullName
         lblSize.Text = FileProperties.Length
         If chkUTC.Checked Then
             lblCreationTime.Text = GetCreationTime(lblLocation.Text)
@@ -58,6 +58,38 @@ Public Class PropertiesDotNet
         chkOffline.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Offline)
         chkReparse.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.ReparsePoint)
         chkSparse.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.SparseFile)
+    End Sub
+    Sub btnCopyFullPath_Click() Handles btnCopyFullPath.Click
+        Try
+            Clipboard.SetText(lblFullPath.Text, TextDataFormat.UnicodeText)
+            MsgBox(lblFullPath.Text & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
+        Catch ex As Exception
+            MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
+        End Try
+    End Sub
+    Sub btnCopyDirectory_Click() Handles btnCopyDirectory.Click
+        Try
+            Clipboard.SetText(lblDirectory.Text, TextDataFormat.UnicodeText)
+            MsgBox(lblDirectory.Text & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
+        Catch ex As Exception
+            MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
+        End Try
+    End Sub
+    Sub btnCopyName_Click() Handles btnCopyName.Click
+        Try
+            Clipboard.SetText(lblName.Text, TextDataFormat.UnicodeText)
+            MsgBox(lblName.Text & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
+        Catch ex As Exception
+            MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
+        End Try
+    End Sub
+    Sub btnCopyExtension_Click() Handles btnCopyExtension.Click
+        Try
+            Clipboard.SetText(lblExtension.Text, TextDataFormat.UnicodeText)
+            MsgBox(lblExtension.Text & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
+        Catch ex As Exception
+            MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
+        End Try
     End Sub
     
     <DllImport("Kernel32.dll")> _
@@ -91,10 +123,9 @@ Public Class PropertiesDotNet
         FilePropertiesStream.Close
         CompressReport.lblStatus.Text = "Disposing File stream..."
         FilePropertiesStream.Dispose
-        CompressReport.lblStatus.Text = "Compression Done!"
+        CompressReport.lblStatus.Text = "(De)compression Done!"
         timerCloseCompressForm.Start
     End Sub
-    
     Sub timerCloseCompressForm_Tick() Handles timerCloseCompressForm.Tick
         timerCloseCompressForm.Stop
         CompressReport.Hide
