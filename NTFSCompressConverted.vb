@@ -9,7 +9,7 @@ Namespace NTFSCompress
         <DllImport("Kernel32.dll")> _
         Public Shared Function DeviceIoControl(hDevice As IntPtr, dwIoControlCode As Integer, _
           lpInBuffer As Short, nInBufferSize As Integer, lpOutBuffer As IntPtr, nOutBufferSize As Integer, _
-        ByRef lpBytesReturned As Integer, lpOverlapped As IntPtr) As Integer
+          ByRef lpBytesReturned As Integer, lpOverlapped As IntPtr) As Integer
         End Function
         Public Shared Sub Main(args As String())
             Dim fileName As String = "C:\Temp\test.mdb"

@@ -6,7 +6,6 @@ Public Class PropertiesDotNet
     ' TODO:
     'icon: picturebox
     'sizes (only have bytes)
-    'compute hashes
     
     'default open with?
     'set default open with
@@ -106,28 +105,28 @@ Public Class PropertiesDotNet
         ''' Credits to http://www.thescarms.com/dotnet/NTFSCompress.aspx
         ''' Converted to VB.Net with SharpDevelop (which I believe uses MSBuild anyway to convert)
         ''' </summary>
-        CompressReport.lblStatus.Text = "Getting FileInfo..."
+        CompressReport.lblStatus.Text = "Getting FileInfo... (1/7)"
         Dim FilePropertiesInfo As New FileInfo(lblLocation.Text)
-        CompressReport.lblStatus.Text = "Opening File stream..."
+        CompressReport.lblStatus.Text = "Opening File stream... (2/7)"
         Dim FilePropertiesStream As FileStream = File.Open(FilePropertiesInfo.FullName, FileMode.Open, FileAccess.ReadWrite, FileShare.None)
         If CompressB Then
             CompressReport.Text = "Compressing..."
-            CompressReport.lblStatus.Text = "Running compress function..."
+            CompressReport.lblStatus.Text = "Running compress function... (3/7)"
             DeviceIoControl(FilePropertiesStream.Handle, &H9c040, 1, 2, 0, 0, 0, 0)
         Else
             ' https://msdn.microsoft.com/en-us/library/windows/desktop/aa364592(v=vs.85).aspx
             ' COMPRESSION_FORMAT_NONE is equal to 0 (i assume)
             CompressReport.Text = "Decompressing..."
-            CompressReport.lblStatus.Text = "Running decompress function..."
+            CompressReport.lblStatus.Text = "Running decompress function... (3/7)"
             DeviceIoControl(FilePropertiesStream.Handle, &H9c040, 0, 2, 0, 0, 0, 0)
         End If
-        CompressReport.lblStatus.Text = "Flushing buffer to disc..."
+        CompressReport.lblStatus.Text = "Flushing buffer to disc... (4/7)"
         FilePropertiesStream.Flush(True)
-        CompressReport.lblStatus.Text = "Closing File stream..."
+        CompressReport.lblStatus.Text = "Closing File stream... (5/7)"
         FilePropertiesStream.Close
-        CompressReport.lblStatus.Text = "Disposing File stream..."
+        CompressReport.lblStatus.Text = "Disposing File stream... (6/7)"
         FilePropertiesStream.Dispose
-        CompressReport.lblStatus.Text = "(De)compression Done!"
+        CompressReport.lblStatus.Text = "(De)compression Done! (7/7)"
         timerCloseCompressForm.Start
     End Sub
     Sub timerCloseCompressForm_Tick() Handles timerCloseCompressForm.Tick
@@ -275,5 +274,8 @@ Public Class PropertiesDotNet
             lblLocation.Text = SaveFileDialog.FileName
         End If
         CheckData
+    End Sub
+    Sub btnClose_Click() Handles btnClose.Click
+        Application.Exit
     End Sub
 End Class

@@ -1,4 +1,8 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿Imports System.IO
+Imports System.Security
+Imports System.Security.Cryptography
+
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Public Class Hashes
     Inherits System.Windows.Forms.Form
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -24,8 +28,7 @@ Public Class Hashes
         Me.lblSHA256 = New System.Windows.Forms.Label()
         Me.btnSHA256Calculate = New System.Windows.Forms.Button()
         Me.btnAllCopy = New System.Windows.Forms.Button()
-        Me.grpAllCalculate = New System.Windows.Forms.Button()
-        Me.pbCalculateProgress = New System.Windows.Forms.ProgressBar()
+        Me.btnAllCalculate = New System.Windows.Forms.Button()
         Me.btnClose = New System.Windows.Forms.Button()
         Me.grpMD5.SuspendLayout
         Me.grpSHA1.SuspendLayout
@@ -38,13 +41,13 @@ Public Class Hashes
         Me.grpMD5.Controls.Add(Me.btnMD5Calculate)
         Me.grpMD5.Location = New System.Drawing.Point(3, 4)
         Me.grpMD5.Name = "grpMD5"
-        Me.grpMD5.Size = New System.Drawing.Size(474, 50)
+        Me.grpMD5.Size = New System.Drawing.Size(510, 50)
         Me.grpMD5.TabIndex = 0
         Me.grpMD5.TabStop = false
         Me.grpMD5.Text = "MD5"
         'btnMD5Copy
         Me.btnMD5Copy.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnMD5Copy.Location = New System.Drawing.Point(424, 19)
+        Me.btnMD5Copy.Location = New System.Drawing.Point(460, 19)
         Me.btnMD5Copy.Name = "btnMD5Copy"
         Me.btnMD5Copy.Size = New System.Drawing.Size(44, 23)
         Me.btnMD5Copy.TabIndex = 2
@@ -73,13 +76,13 @@ Public Class Hashes
         Me.grpSHA1.Controls.Add(Me.btnSHA1Calculate)
         Me.grpSHA1.Location = New System.Drawing.Point(3, 60)
         Me.grpSHA1.Name = "grpSHA1"
-        Me.grpSHA1.Size = New System.Drawing.Size(474, 50)
+        Me.grpSHA1.Size = New System.Drawing.Size(510, 50)
         Me.grpSHA1.TabIndex = 1
         Me.grpSHA1.TabStop = false
         Me.grpSHA1.Text = "SHA-1"
         'btnSHA1Copy
         Me.btnSHA1Copy.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnSHA1Copy.Location = New System.Drawing.Point(424, 19)
+        Me.btnSHA1Copy.Location = New System.Drawing.Point(460, 19)
         Me.btnSHA1Copy.Name = "btnSHA1Copy"
         Me.btnSHA1Copy.Size = New System.Drawing.Size(44, 23)
         Me.btnSHA1Copy.TabIndex = 2
@@ -108,13 +111,13 @@ Public Class Hashes
         Me.grpSHA256.Controls.Add(Me.btnSHA256Calculate)
         Me.grpSHA256.Location = New System.Drawing.Point(3, 116)
         Me.grpSHA256.Name = "grpSHA256"
-        Me.grpSHA256.Size = New System.Drawing.Size(474, 50)
+        Me.grpSHA256.Size = New System.Drawing.Size(510, 50)
         Me.grpSHA256.TabIndex = 2
         Me.grpSHA256.TabStop = false
         Me.grpSHA256.Text = "SHA-256"
         'btnSHA256Copy
         Me.btnSHA256Copy.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnSHA256Copy.Location = New System.Drawing.Point(424, 19)
+        Me.btnSHA256Copy.Location = New System.Drawing.Point(460, 19)
         Me.btnSHA256Copy.Name = "btnSHA256Copy"
         Me.btnSHA256Copy.Size = New System.Drawing.Size(44, 23)
         Me.btnSHA256Copy.TabIndex = 2
@@ -128,9 +131,7 @@ Public Class Hashes
         Me.lblSHA256.Size = New System.Drawing.Size(87, 13)
         Me.lblSHA256.TabIndex = 1
         Me.lblSHA256.Text = "Click ""Calculate"""
-        '
         'btnSHA256Calculate
-        '
         Me.btnSHA256Calculate.Location = New System.Drawing.Point(9, 19)
         Me.btnSHA256Calculate.Name = "btnSHA256Calculate"
         Me.btnSHA256Calculate.Size = New System.Drawing.Size(75, 23)
@@ -140,28 +141,24 @@ Public Class Hashes
         AddHandler Me.btnSHA256Calculate.Click, AddressOf Me.btnSHA256Calculate_Click
         'btnAllCopy
         Me.btnAllCopy.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnAllCopy.Location = New System.Drawing.Point(329, 172)
+        Me.btnAllCopy.Location = New System.Drawing.Point(365, 172)
         Me.btnAllCopy.Name = "btnAllCopy"
         Me.btnAllCopy.Size = New System.Drawing.Size(57, 23)
         Me.btnAllCopy.TabIndex = 2
         Me.btnAllCopy.Text = "Copy All"
         Me.btnAllCopy.UseVisualStyleBackColor = true
         AddHandler Me.btnAllCopy.Click, AddressOf Me.btnAllCopy_Click
-        'grpAllCalculate
-        Me.grpAllCalculate.Location = New System.Drawing.Point(12, 172)
-        Me.grpAllCalculate.Name = "grpAllCalculate"
-        Me.grpAllCalculate.Size = New System.Drawing.Size(84, 23)
-        Me.grpAllCalculate.TabIndex = 0
-        Me.grpAllCalculate.Text = "Calculate All..."
-        Me.grpAllCalculate.UseVisualStyleBackColor = true
-        'pbCalculateProgress
-        Me.pbCalculateProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.pbCalculateProgress.Location = New System.Drawing.Point(102, 172)
-        Me.pbCalculateProgress.Name = "pbCalculateProgress"
-        Me.pbCalculateProgress.Size = New System.Drawing.Size(221, 23)
-        Me.pbCalculateProgress.TabIndex = 3
+        'btnAllCalculate
+        Me.btnAllCalculate.Location = New System.Drawing.Point(12, 172)
+        Me.btnAllCalculate.Name = "btnAllCalculate"
+        Me.btnAllCalculate.Size = New System.Drawing.Size(84, 23)
+        Me.btnAllCalculate.TabIndex = 0
+        Me.btnAllCalculate.Text = "Calculate All..."
+        Me.btnAllCalculate.UseVisualStyleBackColor = true
+        AddHandler Me.btnAllCalculate.Click, AddressOf Me.btnAllCalculate_Click
         'btnClose
-        Me.btnClose.Location = New System.Drawing.Point(392, 172)
+        Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnClose.Location = New System.Drawing.Point(428, 172)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(75, 23)
         Me.btnClose.TabIndex = 4
@@ -171,18 +168,18 @@ Public Class Hashes
         'Hashes
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(479, 208)
+        Me.ClientSize = New System.Drawing.Size(515, 208)
         Me.Controls.Add(Me.btnClose)
-        Me.Controls.Add(Me.pbCalculateProgress)
         Me.Controls.Add(Me.btnAllCopy)
         Me.Controls.Add(Me.grpSHA256)
-        Me.Controls.Add(Me.grpAllCalculate)
+        Me.Controls.Add(Me.btnAllCalculate)
         Me.Controls.Add(Me.grpSHA1)
         Me.Controls.Add(Me.grpMD5)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = false
         Me.Name = "Hashes"
         Me.ShowInTaskbar = false
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Generate Hashes"
         Me.grpMD5.ResumeLayout(false)
         Me.grpMD5.PerformLayout
@@ -193,8 +190,7 @@ Public Class Hashes
         Me.ResumeLayout(false)
     End Sub
     Private btnClose As System.Windows.Forms.Button
-    Private pbCalculateProgress As System.Windows.Forms.ProgressBar
-    Private grpAllCalculate As System.Windows.Forms.Button
+    Private btnAllCalculate As System.Windows.Forms.Button
     Private btnAllCopy As System.Windows.Forms.Button
     Private btnSHA256Calculate As System.Windows.Forms.Button
     Private lblSHA256 As System.Windows.Forms.Label
@@ -209,39 +205,93 @@ Public Class Hashes
     Private btnMD5Copy As System.Windows.Forms.Button
     Private grpMD5 As System.Windows.Forms.GroupBox
     
-    Sub BtnMD5Calculate_Click(sender As Object, e As EventArgs)
-        
+    ''' <summary>
+    ''' Thanks to http://us.informatiweb.net/programmation/36--generate-hashes-md5-sha-1-and-sha-256-of-a-file.html
+    ''' </summary>
+    
+    Dim hashValue() As Byte
+    Sub btnMD5Calculate_Click()
+        Dim hashObject = MD5.Create
+        Dim FilePropertiesStream As FileStream = File.OpenRead(PropertiesDotNet.lblLocation.Text)
+        FilePropertiesStream.Position = 0
+        hashValue = hashObject.ComputeHash(FilePropertiesStream)
+        Dim hashHex = PrintByteArray(hashValue)
+        FilePropertiesStream.Close()
+        lblMD5.Text = hashHex
     End Sub
     
-    Sub BtnMD5Copy_Click(sender As Object, e As EventArgs)
-        
+    Sub btnMD5Copy_Click()
+        Try
+            Clipboard.SetText(lblMD5.Text, TextDataFormat.UnicodeText)
+            MsgBox(lblMD5.Text & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
+        Catch ex As Exception
+            MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
+        End Try
     End Sub
     
-    Sub BtnSHA1Calculate_Click(sender As Object, e As EventArgs)
-        
+    Sub btnSHA1Calculate_Click()
+        Dim hashObject = SHA1.Create()
+        Dim FilePropertiesStream As FileStream = File.OpenRead(PropertiesDotNet.lblLocation.Text)
+        FilePropertiesStream.Position = 0
+        hashValue = hashObject.ComputeHash(FilePropertiesStream)
+        Dim hashHex = PrintByteArray(hashValue)
+        FilePropertiesStream.Close()
+        lblSHA1.Text = hashHex
     End Sub
     
-    Sub BtnSHA1Copy_Click(sender As Object, e As EventArgs)
-        
+    Sub btnSHA1Copy_Click()
+        Try
+            Clipboard.SetText(lblSHA1.Text, TextDataFormat.UnicodeText)
+            MsgBox(lblSHA1.Text & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
+        Catch ex As Exception
+            MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
+        End Try
     End Sub
     
-    Sub BtnSHA256Calculate_Click(sender As Object, e As EventArgs)
-        
+    Sub btnSHA256Calculate_Click()
+        Dim hashObject = SHA256.Create()
+        Dim FilePropertiesStream As FileStream = File.OpenRead(PropertiesDotNet.lblLocation.Text)
+        FilePropertiesStream.Position = 0
+        hashValue = hashObject.ComputeHash(FilePropertiesStream)
+        Dim hashHex = PrintByteArray(hashValue)
+        FilePropertiesStream.Close()
+        lblSHA256.Text = hashHex
     End Sub
     
-    Sub BtnSHA256Copy_Click(sender As Object, e As EventArgs)
-        
+    Sub btnSHA256Copy_Click()
+        Try
+            Clipboard.SetText(lblSHA256.Text, TextDataFormat.UnicodeText)
+            MsgBox(lblSHA256.Text & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
+        Catch ex As Exception
+            MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
+        End Try
     End Sub
     
-    Sub GrpAllCalculate_Click(sender As Object, e As EventArgs)
-        
+    Sub btnAllCalculate_Click()
+        btnMD5Calculate_Click
+        btnSHA1Calculate_Click
+        btnSHA256Calculate_Click
     End Sub
     
-    Sub BtnAllCopy_Click(sender As Object, e As EventArgs)
-        
+    Sub btnAllCopy_Click()
+        Try
+            Clipboard.SetText(lblMD5.Text & vbNewLine & lblSHA1.Text & vbNewLine & lblSHA256.Text, TextDataFormat.UnicodeText)
+            MsgBox(lblMD5.Text & vbNewLine & lblSHA1.Text & vbNewLine & lblSHA256.Text & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
+        Catch ex As Exception
+            MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
+        End Try
     End Sub
     
-    Sub BtnClose_Click(sender As Object, e As EventArgs)
-        
+    Sub btnClose_Click()
+        Me.Close
     End Sub
+    
+    Public Function PrintByteArray(ByVal array() As Byte)
+        Dim hex_value As String = ""
+        Dim i As Integer
+        For i = 0 To array.Length - 1
+            hex_value += array(i).ToString("X2")
+        Next i
+        Return hex_value.ToLower
+    End Function
 End Class

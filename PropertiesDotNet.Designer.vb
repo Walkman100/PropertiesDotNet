@@ -27,6 +27,7 @@ Partial Class PropertiesDotNet
         Me.chkHidden = New System.Windows.Forms.CheckBox()
         Me.chkSystem = New System.Windows.Forms.CheckBox()
         Me.grpReadOnly = New System.Windows.Forms.GroupBox()
+        Me.btnHashes = New System.Windows.Forms.Button()
         Me.btnCopyFullPath = New System.Windows.Forms.Button()
         Me.btnCopyDirectory = New System.Windows.Forms.Button()
         Me.btnCopyName = New System.Windows.Forms.Button()
@@ -69,7 +70,7 @@ Partial Class PropertiesDotNet
         Me.btnRename = New System.Windows.Forms.Button()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.timerCloseCompressForm = New System.Windows.Forms.Timer(Me.components)
-        Me.btnHashes = New System.Windows.Forms.Button()
+        Me.btnClose = New System.Windows.Forms.Button()
         Me.grpReadOnly.SuspendLayout
         Me.grpChangeable.SuspendLayout
         Me.grpEditID.SuspendLayout
@@ -134,15 +135,25 @@ Partial Class PropertiesDotNet
         Me.grpReadOnly.Controls.Add(Me.lblLocation)
         Me.grpReadOnly.Location = New System.Drawing.Point(2, 4)
         Me.grpReadOnly.Name = "grpReadOnly"
-        Me.grpReadOnly.Size = New System.Drawing.Size(363, 199)
+        Me.grpReadOnly.Size = New System.Drawing.Size(411, 199)
         Me.grpReadOnly.TabIndex = 3
         Me.grpReadOnly.TabStop = false
         Me.grpReadOnly.Text = "Read-only Attributes:"
         '
+        'btnHashes
+        '
+        Me.btnHashes.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnHashes.Location = New System.Drawing.Point(307, 170)
+        Me.btnHashes.Name = "btnHashes"
+        Me.btnHashes.Size = New System.Drawing.Size(98, 23)
+        Me.btnHashes.TabIndex = 23
+        Me.btnHashes.Text = "Compute Hashes"
+        Me.btnHashes.UseVisualStyleBackColor = true
+        '
         'btnCopyFullPath
         '
         Me.btnCopyFullPath.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnCopyFullPath.Location = New System.Drawing.Point(313, 24)
+        Me.btnCopyFullPath.Location = New System.Drawing.Point(361, 24)
         Me.btnCopyFullPath.Name = "btnCopyFullPath"
         Me.btnCopyFullPath.Size = New System.Drawing.Size(44, 23)
         Me.btnCopyFullPath.TabIndex = 22
@@ -152,7 +163,7 @@ Partial Class PropertiesDotNet
         'btnCopyDirectory
         '
         Me.btnCopyDirectory.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnCopyDirectory.Location = New System.Drawing.Point(313, 48)
+        Me.btnCopyDirectory.Location = New System.Drawing.Point(361, 48)
         Me.btnCopyDirectory.Name = "btnCopyDirectory"
         Me.btnCopyDirectory.Size = New System.Drawing.Size(44, 23)
         Me.btnCopyDirectory.TabIndex = 21
@@ -162,7 +173,7 @@ Partial Class PropertiesDotNet
         'btnCopyName
         '
         Me.btnCopyName.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnCopyName.Location = New System.Drawing.Point(313, 72)
+        Me.btnCopyName.Location = New System.Drawing.Point(361, 72)
         Me.btnCopyName.Name = "btnCopyName"
         Me.btnCopyName.Size = New System.Drawing.Size(44, 23)
         Me.btnCopyName.TabIndex = 20
@@ -172,7 +183,7 @@ Partial Class PropertiesDotNet
         'btnCopyExtension
         '
         Me.btnCopyExtension.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnCopyExtension.Location = New System.Drawing.Point(313, 96)
+        Me.btnCopyExtension.Location = New System.Drawing.Point(361, 96)
         Me.btnCopyExtension.Name = "btnCopyExtension"
         Me.btnCopyExtension.Size = New System.Drawing.Size(44, 23)
         Me.btnCopyExtension.TabIndex = 19
@@ -362,7 +373,7 @@ Partial Class PropertiesDotNet
         Me.grpChangeable.Controls.Add(Me.chkReadOnly)
         Me.grpChangeable.Location = New System.Drawing.Point(2, 209)
         Me.grpChangeable.Name = "grpChangeable"
-        Me.grpChangeable.Size = New System.Drawing.Size(363, 221)
+        Me.grpChangeable.Size = New System.Drawing.Size(411, 221)
         Me.grpChangeable.TabIndex = 4
         Me.grpChangeable.TabStop = false
         Me.grpChangeable.Text = "Changeable attributes:"
@@ -373,7 +384,7 @@ Partial Class PropertiesDotNet
         Me.lnkAttributes.AutoSize = true
         Me.lnkAttributes.LinkArea = New System.Windows.Forms.LinkArea(21, 4)
         Me.lnkAttributes.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline
-        Me.lnkAttributes.Location = New System.Drawing.Point(231, 16)
+        Me.lnkAttributes.Location = New System.Drawing.Point(279, 16)
         Me.lnkAttributes.Name = "lnkAttributes"
         Me.lnkAttributes.Size = New System.Drawing.Size(126, 17)
         Me.lnkAttributes.TabIndex = 14
@@ -495,13 +506,14 @@ Partial Class PropertiesDotNet
         '
         Me.grpEditID.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpEditID.Controls.Add(Me.btnClose)
         Me.grpEditID.Controls.Add(Me.btnMove)
         Me.grpEditID.Controls.Add(Me.btnCopy)
         Me.grpEditID.Controls.Add(Me.btnDelete)
         Me.grpEditID.Controls.Add(Me.btnRename)
         Me.grpEditID.Location = New System.Drawing.Point(2, 436)
         Me.grpEditID.Name = "grpEditID"
-        Me.grpEditID.Size = New System.Drawing.Size(363, 50)
+        Me.grpEditID.Size = New System.Drawing.Size(411, 50)
         Me.grpEditID.TabIndex = 5
         Me.grpEditID.TabStop = false
         Me.grpEditID.Text = "File location:"
@@ -550,21 +562,21 @@ Partial Class PropertiesDotNet
         '
         Me.timerCloseCompressForm.Interval = 500
         '
-        'btnHashes
+        'btnClose
         '
-        Me.btnHashes.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnHashes.Location = New System.Drawing.Point(259, 170)
-        Me.btnHashes.Name = "btnHashes"
-        Me.btnHashes.Size = New System.Drawing.Size(98, 23)
-        Me.btnHashes.TabIndex = 23
-        Me.btnHashes.Text = "Compute Hashes"
-        Me.btnHashes.UseVisualStyleBackColor = true
+        Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnClose.Location = New System.Drawing.Point(330, 19)
+        Me.btnClose.Name = "btnClose"
+        Me.btnClose.Size = New System.Drawing.Size(75, 23)
+        Me.btnClose.TabIndex = 4
+        Me.btnClose.Text = "Close"
+        Me.btnClose.UseVisualStyleBackColor = true
         '
         'PropertiesDotNet
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(368, 488)
+        Me.ClientSize = New System.Drawing.Size(416, 488)
         Me.Controls.Add(Me.grpEditID)
         Me.Controls.Add(Me.grpChangeable)
         Me.Controls.Add(Me.grpReadOnly)
@@ -579,6 +591,7 @@ Partial Class PropertiesDotNet
         Me.grpEditID.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
+    Private WithEvents btnClose As System.Windows.Forms.Button
     Private WithEvents btnHashes As System.Windows.Forms.Button
     Private WithEvents btnCopyExtension As System.Windows.Forms.Button
     Private WithEvents btnCopyName As System.Windows.Forms.Button
