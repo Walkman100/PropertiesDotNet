@@ -45,6 +45,7 @@ Partial Class PropertiesDotNet
         Me.lblFullPathLbl = New System.Windows.Forms.Label()
         Me.lblPathLbl = New System.Windows.Forms.Label()
         Me.grpChangeable = New System.Windows.Forms.GroupBox()
+        Me.lnkAttributes = New System.Windows.Forms.LinkLabel()
         Me.chkSparse = New System.Windows.Forms.CheckBox()
         Me.chkReparse = New System.Windows.Forms.CheckBox()
         Me.chkOffline = New System.Windows.Forms.CheckBox()
@@ -66,8 +67,9 @@ Partial Class PropertiesDotNet
         Me.lblLocation.AutoSize = true
         Me.lblLocation.Location = New System.Drawing.Point(101, 16)
         Me.lblLocation.Name = "lblLocation"
-        Me.lblLocation.Size = New System.Drawing.Size(0, 13)
+        Me.lblLocation.Size = New System.Drawing.Size(61, 13)
         Me.lblLocation.TabIndex = 0
+        Me.lblLocation.Text = "Checking..."
         '
         'chkHidden
         '
@@ -287,6 +289,7 @@ Partial Class PropertiesDotNet
         '
         Me.grpChangeable.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpChangeable.Controls.Add(Me.lnkAttributes)
         Me.grpChangeable.Controls.Add(Me.chkSparse)
         Me.grpChangeable.Controls.Add(Me.chkReparse)
         Me.grpChangeable.Controls.Add(Me.chkOffline)
@@ -306,6 +309,21 @@ Partial Class PropertiesDotNet
         Me.grpChangeable.TabIndex = 4
         Me.grpChangeable.TabStop = false
         Me.grpChangeable.Text = "Changeable attributes:"
+        '
+        'lnkAttributes
+        '
+        Me.lnkAttributes.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lnkAttributes.AutoSize = true
+        Me.lnkAttributes.LinkArea = New System.Windows.Forms.LinkArea(21, 4)
+        Me.lnkAttributes.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline
+        Me.lnkAttributes.Location = New System.Drawing.Point(231, 16)
+        Me.lnkAttributes.Name = "lnkAttributes"
+        Me.lnkAttributes.Size = New System.Drawing.Size(126, 17)
+        Me.lnkAttributes.TabIndex = 14
+        Me.lnkAttributes.TabStop = true
+        Me.lnkAttributes.Text = "See full description here"
+        Me.lnkAttributes.UseCompatibleTextRendering = true
+        AddHandler Me.lnkAttributes.LinkClicked, AddressOf Me.LnkAttributes_LinkClicked
         '
         'chkSparse
         '
@@ -448,22 +466,23 @@ Partial Class PropertiesDotNet
         Me.grpChangeable.PerformLayout
         Me.ResumeLayout(false)
     End Sub
-    Private chkReadOnly As System.Windows.Forms.CheckBox
-    Private chkCompressed As System.Windows.Forms.CheckBox
-    Private chkEncrypted As System.Windows.Forms.CheckBox
-    Private chkArchive As System.Windows.Forms.CheckBox
-    Private chkTemporary As System.Windows.Forms.CheckBox
-    Private chkIntegrity As System.Windows.Forms.CheckBox
-    Private chkNoScrub As System.Windows.Forms.CheckBox
-    Private chkNotIndexed As System.Windows.Forms.CheckBox
-    Private chkOffline As System.Windows.Forms.CheckBox
-    Private chkReparse As System.Windows.Forms.CheckBox
-    Private chkSparse As System.Windows.Forms.CheckBox
+    Private lnkAttributes As System.Windows.Forms.LinkLabel
+    Private WithEvents chkReadOnly As System.Windows.Forms.CheckBox
+    Private WithEvents chkCompressed As System.Windows.Forms.CheckBox
+    Private WithEvents chkEncrypted As System.Windows.Forms.CheckBox
+    Private WithEvents chkArchive As System.Windows.Forms.CheckBox
+    Private WithEvents chkTemporary As System.Windows.Forms.CheckBox
+    Private WithEvents chkIntegrity As System.Windows.Forms.CheckBox
+    Private WithEvents chkNoScrub As System.Windows.Forms.CheckBox
+    Private WithEvents chkNotIndexed As System.Windows.Forms.CheckBox
+    Private WithEvents chkOffline As System.Windows.Forms.CheckBox
+    Private WithEvents chkReparse As System.Windows.Forms.CheckBox
+    Private WithEvents chkSparse As System.Windows.Forms.CheckBox
     Private lblSizeLbl As System.Windows.Forms.Label
     Private lblSize As System.Windows.Forms.Label
     Private grpEditID As System.Windows.Forms.GroupBox
     Private lblLastWriteTime As System.Windows.Forms.Label
-    Private withevents chkUTC As System.Windows.Forms.CheckBox
+    Private WithEvents chkUTC As System.Windows.Forms.CheckBox
     Private lblName As System.Windows.Forms.Label
     Private lblExtension As System.Windows.Forms.Label
     Private lblDirectory As System.Windows.Forms.Label
@@ -480,8 +499,7 @@ Partial Class PropertiesDotNet
     Private grpChangeable As System.Windows.Forms.GroupBox
     Private lblPathLbl As System.Windows.Forms.Label
     Private grpReadOnly As System.Windows.Forms.GroupBox
-    Private withevents chkSystem As System.Windows.Forms.CheckBox
-    Private withevents chkHidden As System.Windows.Forms.CheckBox
+    Private WithEvents chkSystem As System.Windows.Forms.CheckBox
+    Private WithEvents chkHidden As System.Windows.Forms.CheckBox
     Private lblLocation As System.Windows.Forms.Label
-
 End Class

@@ -5,18 +5,20 @@ Public Class PropertiesDotNet
     'File Name, rename button, copy file name
     'file path, copy file path, copy full file path
     'icon: picturebox
-    'date whatevered
     'sizes
-    'attributes
     'default open with?
     'set default open with
     'launch
     'launch with [..]
-    'ok, cancel, apply
+    'ok, cancel, apply - no, stuff applies immediatly
     
     Sub PropertiesDotNet_Load(sender As Object, e As EventArgs) Handles Me.Load
         For Each s As String In My.Application.CommandLineArgs
-            lblLocation.Text &= s
+            If lblLocation.Text = "Checking..." Then
+                lblLocation.Text = s
+            Else
+                lblLocation.Text = lblLocation.Text & " " & s 
+            End If
         Next
         CheckData()
     End Sub
@@ -43,7 +45,7 @@ Public Class PropertiesDotNet
         chkReadOnly.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.ReadOnly)
         chkHidden.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Hidden)
         chkCompressed.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed)
-        chkEncrypted.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Encrypted)'FileProperties.Decrypt
+        chkEncrypted.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Encrypted)
         chkSystem.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.System)
         chkArchive.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Archive)
         chkTemporary.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Temporary)
@@ -55,15 +57,103 @@ Public Class PropertiesDotNet
         chkSparse.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.SparseFile)
     End Sub
     
+    Sub chkReadOnly_Click() Handles chkReadOnly.Click
+        If chkReadOnly.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.ReadOnly) _
+          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.ReadOnly)
+        CheckData()
+    End Sub
     Sub chkHidden_Click() Handles chkHidden.Click
         If chkHidden.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Hidden) _
           Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Hidden)
         CheckData()
     End Sub
-    
+    Sub chkCompressed_Click() Handles chkCompressed.Click
+        If chkCompressed.Checked Then 
+            
+        Else
+            
+        End If
+        CheckData()
+    End Sub
+    Sub chkEncrypted_Click() Handles chkEncrypted.Click
+        If chkEncrypted.Checked Then
+            SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Encrypted)
+            If Not GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Encrypted) Then
+                Dim FileProperties As New FileInfo(lblLocation.Text)
+                Try
+                    FileProperties.Encrypt
+                Catch ex As IOException
+                    MsgBox("Could not encrypt!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
+                End Try
+            End If
+        Else
+            SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Encrypted)
+            If GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Encrypted) Then
+                Dim FileProperties As New FileInfo(lblLocation.Text)
+                Try
+                    FileProperties.Decrypt
+                Catch ex As IOException
+                    MsgBox("Could not decrypt!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
+                End Try
+            End If
+        End If 
+        CheckData()
+    End Sub
     Sub chkSystem_Click() Handles chkSystem.Click
         If chkSystem.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.System) _
           Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.System)
         CheckData()
+    End Sub
+    Sub chkArchive_Click() Handles chkArchive.Click
+        If chkArchive.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Archive) _
+          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Archive)
+        CheckData()
+    End Sub
+    Sub chkTemporary_Click() Handles chkTemporary.Click
+        If chkTemporary.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Temporary) _
+          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Temporary)
+        CheckData()
+    End Sub
+    Sub chkIntegrity_Click() Handles chkIntegrity.Click
+        If chkIntegrity.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.IntegrityStream) _
+          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.IntegrityStream)
+        CheckData()
+    End Sub
+    Sub chkNoScrub_Click() Handles chkNoScrub.Click
+        If chkNoScrub.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.NoScrubData) _
+          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.NoScrubData)
+        CheckData()
+    End Sub
+    Sub chkNotIndexed_Click() Handles chkNotIndexed.Click
+        If chkNotIndexed.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.NotContentIndexed) _
+          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.NotContentIndexed)
+        CheckData()
+    End Sub
+    Sub chkOffline_Click() Handles chkOffline.Click
+        If chkOffline.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Offline) _
+          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Offline)
+        CheckData()
+    End Sub
+    Sub chkReparse_Click() Handles chkReparse.Click
+        If chkReparse.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.ReparsePoint) _
+          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.ReparsePoint)
+        CheckData()
+    End Sub
+    Sub chkSparse_Click() Handles chkSparse.Click
+        If chkSparse.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.SparseFile) _
+          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.SparseFile)
+        CheckData()
+    End Sub
+    
+        'FileProperties.CopyTo
+        'FileProperties.Delete
+        'FileProperties.MoveTo
+    
+    Sub LnkAttributes_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs)
+        Try
+            Process.Start("https://msdn.microsoft.com/en-us/library/system.io.fileattributes(v=vs.110).aspx#memberList")
+        Catch ex As Exception
+            If MsgBox("Unable to launch URL, copy to clipboard instead?", MsgBoxStyle.YesNo + MsgBoxStyle.Information) = MsgBoxResult.Yes Then Clipboard.SetText("https://msdn.microsoft.com/en-us/library/system.io.fileattributes(v=vs.110).aspx#memberList")
+        End Try
     End Sub
 End Class
