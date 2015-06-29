@@ -68,11 +68,7 @@ Public Class PropertiesDotNet
         CheckData()
     End Sub
     Sub chkCompressed_Click() Handles chkCompressed.Click
-        If chkCompressed.Checked Then 
-            
-        Else
-            
-        End If
+        MsgBox("Compressing/decompressing files at the NTFS level isn't supported by .Net", MsgBoxStyle.Information)
         CheckData()
     End Sub
     Sub chkEncrypted_Click() Handles chkEncrypted.Click
