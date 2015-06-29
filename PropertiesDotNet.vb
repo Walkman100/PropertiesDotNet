@@ -20,7 +20,7 @@ Public Class PropertiesDotNet
                 lblLocation.Text = lblLocation.Text & " " & s 
             End If
         Next
-        CheckData()
+        CheckData
     End Sub
     
     Sub CheckData Handles chkUTC.CheckedChanged
@@ -60,16 +60,16 @@ Public Class PropertiesDotNet
     Sub chkReadOnly_Click() Handles chkReadOnly.Click
         If chkReadOnly.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.ReadOnly) _
           Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.ReadOnly)
-        CheckData()
+        CheckData
     End Sub
     Sub chkHidden_Click() Handles chkHidden.Click
         If chkHidden.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Hidden) _
           Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Hidden)
-        CheckData()
+        CheckData
     End Sub
     Sub chkCompressed_Click() Handles chkCompressed.Click
         MsgBox("Compressing/decompressing files at the NTFS level isn't supported by .Net", MsgBoxStyle.Information)
-        CheckData()
+        CheckData
     End Sub
     Sub chkEncrypted_Click() Handles chkEncrypted.Click
         If chkEncrypted.Checked Then
@@ -93,63 +93,102 @@ Public Class PropertiesDotNet
                 End Try
             End If
         End If 
-        CheckData()
+        CheckData
     End Sub
     Sub chkSystem_Click() Handles chkSystem.Click
         If chkSystem.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.System) _
           Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.System)
-        CheckData()
+        CheckData
     End Sub
     Sub chkArchive_Click() Handles chkArchive.Click
         If chkArchive.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Archive) _
           Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Archive)
-        CheckData()
+        CheckData
     End Sub
     Sub chkTemporary_Click() Handles chkTemporary.Click
         If chkTemporary.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Temporary) _
           Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Temporary)
-        CheckData()
+        CheckData
     End Sub
     Sub chkIntegrity_Click() Handles chkIntegrity.Click
         If chkIntegrity.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.IntegrityStream) _
           Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.IntegrityStream)
-        CheckData()
+        CheckData
     End Sub
     Sub chkNoScrub_Click() Handles chkNoScrub.Click
         If chkNoScrub.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.NoScrubData) _
           Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.NoScrubData)
-        CheckData()
+        CheckData
     End Sub
     Sub chkNotIndexed_Click() Handles chkNotIndexed.Click
         If chkNotIndexed.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.NotContentIndexed) _
           Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.NotContentIndexed)
-        CheckData()
+        CheckData
     End Sub
     Sub chkOffline_Click() Handles chkOffline.Click
         If chkOffline.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Offline) _
           Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Offline)
-        CheckData()
+        CheckData
     End Sub
     Sub chkReparse_Click() Handles chkReparse.Click
         If chkReparse.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.ReparsePoint) _
           Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.ReparsePoint)
-        CheckData()
+        CheckData
     End Sub
     Sub chkSparse_Click() Handles chkSparse.Click
         If chkSparse.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.SparseFile) _
           Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.SparseFile)
-        CheckData()
+        CheckData
     End Sub
     
-        'FileProperties.CopyTo
-        'FileProperties.Delete
-        'FileProperties.MoveTo
-    
-    Sub LnkAttributes_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs)
+    Sub lnkAttributes_LinkClicked() Handles lnkAttributes.LinkClicked
         Try
             Process.Start("https://msdn.microsoft.com/en-us/library/system.io.fileattributes(v=vs.110).aspx#memberList")
         Catch ex As Exception
             If MsgBox("Unable to launch URL, copy to clipboard instead?", MsgBoxStyle.YesNo + MsgBoxStyle.Information) = MsgBoxResult.Yes Then Clipboard.SetText("https://msdn.microsoft.com/en-us/library/system.io.fileattributes(v=vs.110).aspx#memberList")
         End Try
+    End Sub
+    
+    Sub btnRename_Click() Handles btnRename.Click
+        Dim FileProperties As New FileInfo(lblLocation.Text)
+        Dim newName = InputBox("Rename to:", "New name", FileProperties.Name)
+        If newName <> "" Then
+            FileProperties.MoveTo(FileProperties.DirectoryName & "\" & newName)
+            lblLocation.Text = FileProperties.DirectoryName & "\" & newName
+        End If
+        CheckData
+    End Sub
+    
+    Sub btnDelete_Click() Handles btnDelete.Click
+        Dim FileProperties As New FileInfo(lblLocation.Text)
+        If MsgBox("Are you sure you want to delete """ & FileProperties.Name & """?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            FileProperties.Delete
+            Application.Exit
+        End If
+        CheckData
+    End Sub
+    
+    Sub btnCopy_Click() Handles btnCopy.Click
+        Dim FileProperties As New FileInfo(lblLocation.Text)
+        SaveFileDialog.InitialDirectory = FileProperties.DirectoryName
+        SaveFileDialog.FileName = FileProperties.Name
+        SaveFileDialog.Title = "Choose where to copy """ & FileProperties.Name & """ to:"
+        If (SaveFileDialog.ShowDialog() = DialogResult.OK) Then
+            FileProperties.CopyTo(SaveFileDialog.FileName)
+            If MsgBox("Read new file?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then lblLocation.Text = SaveFileDialog.FileName
+        End If
+        CheckData
+    End Sub
+    
+    Sub btnMove_Click() Handles btnMove.Click
+        Dim FileProperties As New FileInfo(lblLocation.Text)
+        SaveFileDialog.InitialDirectory = FileProperties.DirectoryName
+        SaveFileDialog.FileName = FileProperties.Name
+        SaveFileDialog.Title = "Choose where to move """ & FileProperties.Name & """ to:"
+        If (SaveFileDialog.ShowDialog() = DialogResult.OK) Then
+            FileProperties.MoveTo(SaveFileDialog.FileName)
+            lblLocation.Text = SaveFileDialog.FileName
+        End If
+        CheckData
     End Sub
 End Class

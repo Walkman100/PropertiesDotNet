@@ -58,8 +58,14 @@ Partial Class PropertiesDotNet
         Me.chkCompressed = New System.Windows.Forms.CheckBox()
         Me.chkReadOnly = New System.Windows.Forms.CheckBox()
         Me.grpEditID = New System.Windows.Forms.GroupBox()
+        Me.btnMove = New System.Windows.Forms.Button()
+        Me.btnCopy = New System.Windows.Forms.Button()
+        Me.btnDelete = New System.Windows.Forms.Button()
+        Me.btnRename = New System.Windows.Forms.Button()
+        Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.grpReadOnly.SuspendLayout
         Me.grpChangeable.SuspendLayout
+        Me.grpEditID.SuspendLayout
         Me.SuspendLayout
         '
         'lblLocation
@@ -323,7 +329,6 @@ Partial Class PropertiesDotNet
         Me.lnkAttributes.TabStop = true
         Me.lnkAttributes.Text = "See full description here"
         Me.lnkAttributes.UseCompatibleTextRendering = true
-        AddHandler Me.lnkAttributes.LinkClicked, AddressOf Me.LnkAttributes_LinkClicked
         '
         'chkSparse
         '
@@ -437,21 +442,64 @@ Partial Class PropertiesDotNet
         '
         'grpEditID
         '
-        Me.grpEditID.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-                        Or System.Windows.Forms.AnchorStyles.Left)  _
+        Me.grpEditID.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpEditID.Controls.Add(Me.btnMove)
+        Me.grpEditID.Controls.Add(Me.btnCopy)
+        Me.grpEditID.Controls.Add(Me.btnDelete)
+        Me.grpEditID.Controls.Add(Me.btnRename)
         Me.grpEditID.Location = New System.Drawing.Point(2, 379)
         Me.grpEditID.Name = "grpEditID"
-        Me.grpEditID.Size = New System.Drawing.Size(363, 220)
+        Me.grpEditID.Size = New System.Drawing.Size(363, 50)
         Me.grpEditID.TabIndex = 5
         Me.grpEditID.TabStop = false
         Me.grpEditID.Text = "File location:"
+        '
+        'btnMove
+        '
+        Me.btnMove.Location = New System.Drawing.Point(249, 19)
+        Me.btnMove.Name = "btnMove"
+        Me.btnMove.Size = New System.Drawing.Size(75, 23)
+        Me.btnMove.TabIndex = 3
+        Me.btnMove.Text = "Move To..."
+        Me.btnMove.UseVisualStyleBackColor = true
+        '
+        'btnCopy
+        '
+        Me.btnCopy.Location = New System.Drawing.Point(168, 19)
+        Me.btnCopy.Name = "btnCopy"
+        Me.btnCopy.Size = New System.Drawing.Size(75, 23)
+        Me.btnCopy.TabIndex = 2
+        Me.btnCopy.Text = "Copy To..."
+        Me.btnCopy.UseVisualStyleBackColor = true
+        '
+        'btnDelete
+        '
+        Me.btnDelete.Location = New System.Drawing.Point(87, 19)
+        Me.btnDelete.Name = "btnDelete"
+        Me.btnDelete.Size = New System.Drawing.Size(75, 23)
+        Me.btnDelete.TabIndex = 1
+        Me.btnDelete.Text = "Delete"
+        Me.btnDelete.UseVisualStyleBackColor = true
+        '
+        'btnRename
+        '
+        Me.btnRename.Location = New System.Drawing.Point(6, 19)
+        Me.btnRename.Name = "btnRename"
+        Me.btnRename.Size = New System.Drawing.Size(75, 23)
+        Me.btnRename.TabIndex = 0
+        Me.btnRename.Text = "Rename..."
+        Me.btnRename.UseVisualStyleBackColor = true
+        '
+        'SaveFileDialog
+        '
+        Me.SaveFileDialog.AddExtension = false
         '
         'PropertiesDotNet
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(368, 601)
+        Me.ClientSize = New System.Drawing.Size(368, 431)
         Me.Controls.Add(Me.grpEditID)
         Me.Controls.Add(Me.grpChangeable)
         Me.Controls.Add(Me.grpReadOnly)
@@ -464,9 +512,15 @@ Partial Class PropertiesDotNet
         Me.grpReadOnly.PerformLayout
         Me.grpChangeable.ResumeLayout(false)
         Me.grpChangeable.PerformLayout
+        Me.grpEditID.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
-    Private lnkAttributes As System.Windows.Forms.LinkLabel
+    Private SaveFileDialog As System.Windows.Forms.SaveFileDialog
+    Private WithEvents btnRename As System.Windows.Forms.Button
+    Private WithEvents btnDelete As System.Windows.Forms.Button
+    Private WithEvents btnCopy As System.Windows.Forms.Button
+    Private WithEvents btnMove As System.Windows.Forms.Button
+    Private WithEvents lnkAttributes As System.Windows.Forms.LinkLabel
     Private WithEvents chkReadOnly As System.Windows.Forms.CheckBox
     Private WithEvents chkCompressed As System.Windows.Forms.CheckBox
     Private WithEvents chkEncrypted As System.Windows.Forms.CheckBox
