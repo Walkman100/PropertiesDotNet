@@ -144,96 +144,100 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub chkReadOnly_Click() Handles chkReadOnly.Click
-        If chkReadOnly.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.ReadOnly) _
-          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.ReadOnly)
+        If chkReadOnly.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.ReadOnly) _
+          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.ReadOnly)
         CheckData
     End Sub
     Sub chkHidden_Click() Handles chkHidden.Click
-        If chkHidden.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Hidden) _
-          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Hidden)
+        If chkHidden.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Hidden) _
+          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Hidden)
         CheckData
     End Sub
     Sub chkCompressed_Click() Handles chkCompressed.Click
         If chkCompressed.Checked Then
-            SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Compressed)
-            If Not GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed) Then
-                Compress()
+            If SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Compressed) Then
+                If Not GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed) Then
+                    Compress()
+                End If
             End If
         Else
-            SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Compressed)
-            If GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed) Then
-                Compress(False)
+            If SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Compressed) Then
+                If GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed) Then
+                    Compress(False)
+                End If
             End If
         End If
         CheckData
     End Sub
     Sub chkEncrypted_Click() Handles chkEncrypted.Click
         If chkEncrypted.Checked Then
-            SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Encrypted)
-            If Not GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Encrypted) Then
-                Dim FileProperties As New FileInfo(lblLocation.Text)
-                Try
-                    FileProperties.Encrypt
-                Catch ex As IOException
-                    MsgBox("Could not encrypt!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
-                End Try
+            If SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Encrypted) Then
+                If Not GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Encrypted) Then
+                    Dim FileProperties As New FileInfo(lblLocation.Text)
+                    Try
+                        FileProperties.Encrypt
+                    Catch ex As IOException
+                        MsgBox("Could not encrypt!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
+                    End Try
+                End If
             End If
         Else
-            SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Encrypted)
-            If GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Encrypted) Then
-                Dim FileProperties As New FileInfo(lblLocation.Text)
-                Try
-                    FileProperties.Decrypt
-                Catch ex As IOException
-                    MsgBox("Could not decrypt!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
-                End Try
+            If SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Encrypted) Then
+                If GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Encrypted) Then
+                    Dim FileProperties As New FileInfo(lblLocation.Text)
+                    Try
+                        FileProperties.Decrypt
+                    Catch ex As IOException
+                        MsgBox("Could not decrypt!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
+                    End Try
+                End If
             End If
         End If 
         CheckData
     End Sub
     Sub chkSystem_Click() Handles chkSystem.Click
-        If chkSystem.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.System) _
-          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.System)
+        If chkSystem.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.System) _
+          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.System)
         CheckData
     End Sub
     Sub chkArchive_Click() Handles chkArchive.Click
-        If chkArchive.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Archive) _
-          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Archive)
+        If chkArchive.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Archive) _
+          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Archive)
         CheckData
     End Sub
     Sub chkTemporary_Click() Handles chkTemporary.Click
-        If chkTemporary.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Temporary) _
-          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Temporary)
+        If chkTemporary.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Temporary) _
+          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Temporary)
         CheckData
     End Sub
     Sub chkIntegrity_Click() Handles chkIntegrity.Click
-        If chkIntegrity.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.IntegrityStream) _
-          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.IntegrityStream)
+        If chkIntegrity.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.IntegrityStream) _
+          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.IntegrityStream)
         CheckData
     End Sub
     Sub chkNoScrub_Click() Handles chkNoScrub.Click
-        If chkNoScrub.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.NoScrubData) _
-          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.NoScrubData)
+        If chkNoScrub.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.NoScrubData) _
+          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.NoScrubData)
         CheckData
     End Sub
     Sub chkNotIndexed_Click() Handles chkNotIndexed.Click
-        If chkNotIndexed.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.NotContentIndexed) _
-          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.NotContentIndexed)
+        If chkNotIndexed.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.NotContentIndexed) _
+          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.NotContentIndexed)
         CheckData
     End Sub
     Sub chkOffline_Click() Handles chkOffline.Click
-        If chkOffline.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Offline) _
-          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Offline)
+        If chkOffline.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Offline) _
+          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Offline)
         CheckData
     End Sub
     Sub chkReparse_Click() Handles chkReparse.Click
-        If chkReparse.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.ReparsePoint) _
-          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.ReparsePoint)
+        If chkReparse.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.ReparsePoint) _
+          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.ReparsePoint)
         CheckData
     End Sub
     Sub chkSparse_Click() Handles chkSparse.Click
-        If chkSparse.Checked Then SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.SparseFile) _
-          Else SetAttributes(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.SparseFile)
+        If chkSparse.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.SparseFile) _
+          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.SparseFile)
         CheckData
     End Sub
     
@@ -241,7 +245,8 @@ Public Class PropertiesDotNet
         Try
             Process.Start("https://msdn.microsoft.com/en-us/library/system.io.fileattributes(v=vs.110).aspx#memberList")
         Catch ex As Exception
-            If MsgBox("Unable to launch URL, copy to clipboard instead?", MsgBoxStyle.YesNo + MsgBoxStyle.Information) = MsgBoxResult.Yes Then Clipboard.SetText("https://msdn.microsoft.com/en-us/library/system.io.fileattributes(v=vs.110).aspx#memberList")
+            If MsgBox("Unable to launch URL, copy to clipboard instead?", MsgBoxStyle.YesNo + MsgBoxStyle.Information) = MsgBoxResult.Yes Then _
+              Clipboard.SetText("https://msdn.microsoft.com/en-us/library/system.io.fileattributes(v=vs.110).aspx#memberList")
         End Try
     End Sub
     
@@ -249,16 +254,44 @@ Public Class PropertiesDotNet
         Dim FileProperties As New FileInfo(lblLocation.Text)
         Dim newName = InputBox("Rename to:", "New name", FileProperties.Name)
         If newName <> "" Then
-            FileProperties.MoveTo(FileProperties.DirectoryName & "\" & newName)
-            lblLocation.Text = FileProperties.DirectoryName & "\" & newName
+            Try
+                FileProperties.MoveTo(FileProperties.DirectoryName & "\" & newName)
+                lblLocation.Text = FileProperties.DirectoryName & "\" & newName
+            Catch ex As exception
+                If ex.GetType.ToString = "System.UnauthorizedAccessException" Then
+                    If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+                      MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                        CreateObject("Shell.Application").ShellExecute("cmd", "/k ren """ & lblFullPath.Text & _
+                          """ """ & newName & """", "", "runas")
+                        If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then lblLocation.Text = FileProperties.DirectoryName & "\" & newName
+                    Else
+                        ErrorParser(ex)
+                    End If
+                Else
+                    ErrorParser(ex)
+                End If
+            End Try
         End If
         CheckData
     End Sub
     Sub btnDelete_Click() Handles btnDelete.Click
         Dim FileProperties As New FileInfo(lblLocation.Text)
         If MsgBox("Are you sure you want to delete """ & FileProperties.Name & """?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-            FileProperties.Delete
-            Application.Exit
+            Try
+                FileProperties.Delete
+                Application.Exit
+            Catch ex As exception
+                If ex.GetType.ToString = "System.UnauthorizedAccessException" Then
+                    If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+                      MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                        CreateObject("Shell.Application").ShellExecute("cmd", "/k del """ & lblFullPath.Text & """", "", "runas")
+                    Else
+                        ErrorParser(ex)
+                    End If
+                Else
+                    ErrorParser(ex)
+                End If
+            End Try
         End If
         CheckData
     End Sub
@@ -268,6 +301,7 @@ Public Class PropertiesDotNet
         SaveFileDialog.FileName = FileProperties.Name
         SaveFileDialog.Title = "Choose where to copy """ & FileProperties.Name & """ to:"
         If (SaveFileDialog.ShowDialog() = DialogResult.OK) Then
+            ' No point in adding an access denied check here, since the SaveFileDialog doesn't allow you to select a location that needs admin access
             FileProperties.CopyTo(SaveFileDialog.FileName)
             If MsgBox("Read new file?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then lblLocation.Text = SaveFileDialog.FileName
         End If
@@ -286,5 +320,57 @@ Public Class PropertiesDotNet
     End Sub
     Sub btnClose_Click() Handles btnClose.Click
         Application.Exit
+    End Sub
+    
+    Function SetAttribWCheck(path As String, fileAttributes As FileAttributes)
+        Try
+            SetAttributes(path, fileAttributes)
+            Return True
+        Catch ex As exception
+            ErrorParser(ex)
+            Return False
+        End Try
+    End Function
+    
+    Sub ErrorParser(ex As Exception)
+        ''' <summary>
+        ''' Copied from DirectoryImage (see the end of the file)
+        ''' </summary>
+        If ex.GetType.ToString = "System.UnauthorizedAccessException" Then
+            If MsgBox(ex.message & vbnewline & vbnewline & "Try launching PropertiesDotNet As Administrator?", _
+              MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                CreateObject("Shell.Application").ShellExecute(Application.StartupPath & "\" & _
+                  Process.GetCurrentProcess.ProcessName & ".exe", """" & lblFullPath.Text & """", "", "runas")
+                Application.Exit
+            End If
+        Else
+            If MsgBox("There was an error! Error message: " & ex.Message & vbNewLine & "Show full stacktrace? (For sending to developer/making bugreport)", _
+              MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Error!") = MsgBoxresult.Yes Then
+                Dim frmBugReport As New Form()
+                frmBugReport.Width = 600
+                frmBugReport.Height = 525
+                frmBugReport.StartPosition = FormStartPosition.CenterParent
+                frmBugReport.WindowState = Me.WindowState
+                frmBugReport.ShowIcon = False
+                frmBugReport.ShowInTaskbar = True
+                frmBugReport.Text = "Full error trace"
+                Dim txtBugReport As New TextBox()
+                txtBugReport.Multiline = True
+                txtBugReport.ScrollBars = ScrollBars.Vertical
+                frmBugReport.Controls.Add(txtBugReport)
+                txtBugReport.Dock = DockStyle.Fill
+                txtBugReport.Text = "ToString:" & vbNewLine & ex.ToString & vbNewLine & vbNewLine & _
+                                    "Data:" & vbNewLine & ex.Data.ToString & vbNewLine & vbNewLine & _
+                                    "BaseException:" & vbNewLine & ex.GetBaseException.ToString & vbNewLine & vbNewLine & _
+                                    "HashCode:" & vbNewLine & ex.GetHashCode.ToString & vbNewLine & vbNewLine & _
+                                    "Type:" & vbNewLine & ex.GetType.ToString & vbNewLine & vbNewLine & _
+                                    "HResult:" & vbNewLine & ex.HResult.ToString & vbNewLine & vbNewLine & _
+                                    "Message:" & vbNewLine & ex.Message.ToString & vbNewLine & vbNewLine & _
+                                    "Source:" & vbNewLine & ex.Source.ToString & vbNewLine & vbNewLine & _
+                                    "StackTrace:" & vbNewLine & ex.StackTrace.ToString & vbNewLine & vbNewLine & _
+                                    "TargetSite:" & vbNewLine & ex.TargetSite.ToString
+                frmBugReport.Show()
+            End If
+        End If
     End Sub
 End Class

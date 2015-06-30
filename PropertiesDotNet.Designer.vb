@@ -23,6 +23,7 @@ Partial Class PropertiesDotNet
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.lblLocation = New System.Windows.Forms.Label()
         Me.chkHidden = New System.Windows.Forms.CheckBox()
         Me.chkSystem = New System.Windows.Forms.CheckBox()
@@ -75,13 +76,16 @@ Partial Class PropertiesDotNet
         Me.btnCopy = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnRename = New System.Windows.Forms.Button()
-        Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.timerCloseCompressForm = New System.Windows.Forms.Timer(Me.components)
         Me.grpReadOnly.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpChangeable.SuspendLayout
         Me.grpEditID.SuspendLayout
         Me.SuspendLayout
+        '
+        'SaveFileDialog
+        '
+        Me.SaveFileDialog.AddExtension = false
         '
         'lblLocation
         '
@@ -636,10 +640,6 @@ Partial Class PropertiesDotNet
         Me.btnRename.Text = "Rename..."
         Me.btnRename.UseVisualStyleBackColor = true
         '
-        'SaveFileDialog
-        '
-        Me.SaveFileDialog.AddExtension = false
-        '
         'timerCloseCompressForm
         '
         Me.timerCloseCompressForm.Interval = 500
@@ -664,6 +664,7 @@ Partial Class PropertiesDotNet
         Me.grpEditID.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
+    Private SaveFileDialog As System.Windows.Forms.SaveFileDialog
     Private WithEvents btnLaunch As System.Windows.Forms.Button
     Private WithEvents btnOpenDir As System.Windows.Forms.Button
     Private imgFile As System.Windows.Forms.PictureBox
@@ -677,7 +678,6 @@ Partial Class PropertiesDotNet
     Private WithEvents btnCopyDirectory As System.Windows.Forms.Button
     Private WithEvents btnCopyFullPath As System.Windows.Forms.Button
     Private WithEvents timerCloseCompressForm As System.Windows.Forms.Timer
-    Private SaveFileDialog As System.Windows.Forms.SaveFileDialog
     Private WithEvents btnRename As System.Windows.Forms.Button
     Private WithEvents btnDelete As System.Windows.Forms.Button
     Private WithEvents btnCopy As System.Windows.Forms.Button
