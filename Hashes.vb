@@ -177,6 +177,7 @@ Public Class Hashes
         Me.bwCalcHashes.WorkerSupportsCancellation = true
         AddHandler Me.bwCalcHashes.DoWork, AddressOf Me.bwCalcHashes_DoWork
         AddHandler Me.bwCalcHashes.ProgressChanged, AddressOf Me.bwCalcHashes_ProgressChanged
+        AddHandler Me.bwCalcHashes.RunWorkerCompleted, AddressOf Me.bwCalcHashes_RunWorkerCompleted
         'Hashes
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -228,20 +229,20 @@ Public Class Hashes
     
     Sub btnSHA1Calculate_Click()
         hashType = "SHA1"
-        bwCalcHashes.RunWorkerAsync
         hashHex = PropertiesDotNet.lblLocation.Text
+        bwCalcHashes.RunWorkerAsync
     End Sub
     
     Sub btnSHA256Calculate_Click()
         hashType = "SHA256"
-        bwCalcHashes.RunWorkerAsync
         hashHex = PropertiesDotNet.lblLocation.Text
+        bwCalcHashes.RunWorkerAsync
     End Sub
     
     Sub btnAllCalculate_Click()
-        hashType = "All"
-        bwCalcHashes.RunWorkerAsync
+        hashType = "MD5,SHA1,SHA256,SHA512"
         hashHex = PropertiesDotNet.lblLocation.Text
+        bwCalcHashes.RunWorkerAsync
     End Sub
     
     Sub btnMD5Copy_Click()
@@ -306,18 +307,15 @@ Public Class Hashes
             bwCalcHashes.ReportProgress(0)
             
             HashGeneratorOutput("Creating hash object...")
-            Select Case hashType
-                Case "MD5"
-                    hashObject = MD5.Create
-                Case "SHA1"
-                    hashObject = SHA1.Create
-                Case "SHA256"
-                    hashObject = SHA256.Create
-                'Case "SHA512"
-                '    hashObject = SHA512.Create
-                Case "All"
-                    
-            End Select
+            If hashType.StartsWith("MD5") Then
+                hashObject = MD5.Create
+            ElseIf hashType.StartsWith("SHA1")
+                hashObject = SHA1.Create
+            ElseIf hashType.StartsWith("SHA256")
+                hashObject = SHA256.Create
+            ElseIf hashType.StartsWith("SHA512")
+                hashObject = SHA512.Create
+            End If
             
             HashGeneratorOutput("Opening file...")
             Dim FilePropertiesStream As FileStream = File.OpenRead(hashHex)
@@ -370,19 +368,33 @@ Public Class Hashes
     
     Sub bwCalcHashes_ProgressChanged(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs)
         pbCalculateProgress.Value = e.ProgressPercentage
-        
+    End Sub
+    
+    Sub bwCalcHashes_RunWorkerCompleted()
+        If hashType.StartsWith("MD5") AndAlso hashType.Length>3 Then
+            hashType = hashType.Substring(4)
+        ElseIf hashType.StartsWith("SHA1") AndAlso hashType.Length>4
+            hashType = hashType.Substring(5)
+        ElseIf hashType.StartsWith("SHA256") AndAlso hashType.Length>6
+            hashType = hashType.Substring(7)
+        ElseIf hashType.StartsWith("SHA512") AndAlso hashType.Length>6
+            hashType = hashType.Substring(7)
+        Else
+            Exit Sub
+        End If
+        hashHex = PropertiesDotNet.lblLocation.Text
+        bwCalcHashes.RunWorkerAsync
     End Sub
     
     Sub HashGeneratorOutput(status As String)
-        Select Case hashType
-            Case "MD5"
-                lblMD5.Text = status
-            Case "SHA1"
-                lblSHA1.Text = status
-            Case "SHA256"
-                lblSHA256.Text = status
-            Case "SHA512"
-                'lblSHA512.Text = status
-            End Select
+        If hashType.StartsWith("MD5") Then
+            lblMD5.Text = status
+        ElseIf hashType.StartsWith("SHA1")
+            lblSHA1.Text = status
+        ElseIf hashType.StartsWith("SHA256")
+            lblSHA256.Text = status
+        ElseIf hashType.StartsWith("SHA512")
+            'lblSHA512.Text = status
+        End If
     End Sub
 End Class
