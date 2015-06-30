@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports System.Security
 Imports System.Security.Cryptography
+Imports System.Threading.Thread
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Public Class Hashes
@@ -422,17 +423,21 @@ Public Class Hashes
             ElseIf hashType.StartsWith("SHA512")
                 hashObject = SHA512.Create
             End If
+            Sleep(100)
             
             HashGeneratorOutput("Opening file...")
             Dim FilePropertiesStream As FileStream = File.OpenRead(hashHex)
+            Sleep(100)
             
             HashGeneratorOutput("Setting file position...")
             FilePropertiesStream.Position = 0
+            Sleep(100)
             
             HashGeneratorOutput("Setting up variables...")
             buffer = New Byte(4095) {}
             bytesRead = FilePropertiesStream.Read(buffer, 0, buffer.Length)
             totalBytesRead = bytesRead
+            Sleep(100)
             
             HashGeneratorOutput("Generating hash byte array...")
             Do While bytesRead <> 0
@@ -450,10 +455,12 @@ Public Class Hashes
             For i = 0 To buffer.Length - 1
                 hashHex += buffer(i).ToString("X2")
             Next i
+            Sleep(100)
             
             HashGeneratorOutput("Closing streams...")
             FilePropertiesStream.Close()
             hashObject.Clear
+            Sleep(100)
             
             HashGeneratorOutput(hashHex.ToLower)
             bwCalcHashes.ReportProgress(100)
