@@ -220,10 +220,6 @@ Public Class Hashes
     Private btnMD5Copy As System.Windows.Forms.Button
     Private grpMD5 As System.Windows.Forms.GroupBox
     
-    ''' <summary>
-    ''' Thanks to http://us.informatiweb.net/programmation/36--generate-hashes-md5-sha-1-and-sha-256-of-a-file.html
-    ''' </summary>
-    
     Sub btnMD5Calculate_Click()
         hashType = "MD5"
         hashHex = PropertiesDotNet.lblLocation.Text
@@ -288,17 +284,32 @@ Public Class Hashes
         Me.Close
     End Sub
     
-    Dim hashValue() As Byte
+    ''' <summary>
+    ''' Original code, thanks to http://us.informatiweb.net/programmation/36--generate-hashes-md5-sha-1-and-sha-256-of-a-file.html
+    ''' Code that reports progress, thanks to http://www.infinitec.de/post/2007/06/09/Displaying-progress-updates-when-hashing-large-files.aspx
+    ''' </summary>
+
     Dim hashType As String
     Dim hashHex As String
     Dim hashObject
     
+    Dim buffer As Byte()
+    Dim oldBuffer As Byte()
+    Dim bytesRead As Integer
+    Dim oldBytesRead As Integer
+    Dim size As Long
+    Dim totalBytesRead As Long = 0
+    
     Sub bwCalcHashes_DoWork()
         Try
+            ' Set up GUI
             btnMD5Calculate.Enabled = False
             btnSHA1Calculate.Enabled = False
             btnSHA256Calculate.Enabled = False
             btnAllCalculate.Enabled = False
+            bwCalcHashes.ReportProgress(0)
+            
+            HashGeneratorOutput("Creating hash object...")
             Select Case hashType
                 Case "MD5"
                     hashObject = MD5.Create
@@ -311,32 +322,52 @@ Public Class Hashes
                 Case "All"
                     
             End Select
-            bwCalcHashes.ReportProgress(3)
-             Dim FilePropertiesStream As FileStream = File.OpenRead(hashHex)
-            bwCalcHashes.ReportProgress(7)
-             FilePropertiesStream.Position = 0
-            bwCalcHashes.ReportProgress(10)
-             hashValue = hashObject.ComputeHash(FilePropertiesStream)
-            bwCalcHashes.ReportProgress(93)
-             hashHex = ""
-             For i = 0 To hashValue.Length - 1
-                 hashHex += hashValue(i).ToString("X2")
-             Next i
-            bwCalcHashes.ReportProgress(96)
-             FilePropertiesStream.Close()
-             hashObject.Clear
-            Select Case hashType
-                Case "MD5"
-                    lblMD5.Text = hashHex.ToLower
-                Case "SHA1"
-                    lblSHA1.Text = hashHex.ToLower
-                Case "SHA256"
-                    lblSHA256.Text = hashHex.ToLower
-                'Case "SHA512"
-                '    lblSHA512.Text = hashHex.ToLower
-                Case "All"
-                    
-            End Select
+            
+            HashGeneratorOutput("Opening file...")
+            Dim FilePropertiesStream As FileStream = File.OpenRead(hashHex)
+            
+            HashGeneratorOutput("Setting file position...")
+            FilePropertiesStream.Position = 0
+            
+            HashGeneratorOutput("Setting up variables...")
+            size = FilePropertiesStream.Length
+            
+            buffer = New Byte(4095) {}
+            
+            bytesRead = FilePropertiesStream.Read(buffer, 0, buffer.Length)
+            totalBytesRead = bytesRead
+            
+            HashGeneratorOutput("Generating hash byte array...")
+            Do
+                oldBytesRead = bytesRead
+                oldBuffer = buffer
+                
+                buffer = New Byte(4095) {}
+                bytesRead = FilePropertiesStream.Read(buffer, 0, buffer.Length)
+                
+                totalBytesRead += bytesRead
+                
+                If bytesRead = 0 Then
+                    hashObject.TransformFinalBlock(oldBuffer, 0, oldBytesRead)
+                Else
+                    hashObject.TransformBlock(oldBuffer, 0, oldBytesRead, oldBuffer, 0)
+                End If
+                
+                bwCalcHashes.ReportProgress(CInt(Math.Truncate(CDbl(totalBytesRead) * 100 / size)))
+            Loop While bytesRead <> 0
+            
+            HashGeneratorOutput("Converting hash byte array to hexadecimal...")
+            buffer = hashObject.Hash
+            hashHex = ""
+            For i = 0 To buffer.Length - 1
+                hashHex += buffer(i).ToString("X2")
+            Next i
+            
+            HashGeneratorOutput("Closing streams...")
+            FilePropertiesStream.Close()
+            hashObject.Clear
+            
+            HashGeneratorOutput(hashHex.ToLower)
             btnMD5Calculate.Enabled = True
             btnSHA1Calculate.Enabled = True
             btnSHA256Calculate.Enabled = True
@@ -344,6 +375,7 @@ Public Class Hashes
             bwCalcHashes.ReportProgress(100)
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
+            HashGeneratorOutput("Click ""Calculate""")
             btnMD5Calculate.Enabled = True
             btnSHA1Calculate.Enabled = True
             btnSHA256Calculate.Enabled = True
@@ -355,5 +387,18 @@ Public Class Hashes
     Sub bwCalcHashes_ProgressChanged(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs)
         pbCalculateProgress.Value = e.ProgressPercentage
         
+    End Sub
+    
+    Sub HashGeneratorOutput(status As String)
+        Select Case hashType
+            Case "MD5"
+                lblMD5.Text = status
+            Case "SHA1"
+                lblSHA1.Text = status
+            Case "SHA256"
+                lblSHA256.Text = status
+            Case "SHA512"
+                'lblSHA512.Text = status
+            End Select
     End Sub
 End Class
