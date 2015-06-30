@@ -4,13 +4,10 @@ Imports System.Runtime.InteropServices 'For NTFS compression
 
 Public Class PropertiesDotNet
     ' TODO:
-    'icon: picturebox
+    '''fix icon/picturebox
     'sizes (only have bytes)
     
-    'default open with?
-    'set default open with
-    'launch
-    'launch with [..]
+    '''get default open with
     'ok, cancel, apply - no, stuff applies immediatly
     
     Sub PropertiesDotNet_Load(sender As Object, e As EventArgs) Handles Me.Load
@@ -31,9 +28,11 @@ Public Class PropertiesDotNet
         lblFullPath.Text = FileProperties.FullName
         lblDirectory.Text = FileProperties.DirectoryName
         lblName.Text = FileProperties.Name
-        Me.Width = lblName.Width + 370
+        If lblName.Width>62 Then Me.Width = lblName.Width + 370
         lblExtension.Text = FileProperties.Extension
         lblSize.Text = FileProperties.Length
+        imgFile.ImageLocation = FileProperties.Name
+        lblOpenWith.Text = ""
         If chkUTC.Checked Then
             lblCreationTime.Text = GetCreationTime(lblLocation.Text)
             lblLastAccessTime.Text = GetLastAccessTime(lblLocation.Text)
@@ -90,6 +89,16 @@ Public Class PropertiesDotNet
         Catch ex As Exception
             MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
         End Try
+    End Sub
+    Sub btnOpenDir_Click() Handles btnOpenDir.Click
+        Process.Start(lblDirectory.Text)
+    End Sub
+    Sub btnLaunch_Click() Handles btnLaunch.Click
+        Process.Start(lblFullPath.Text)
+    End Sub
+    Sub btnOpenWith_Click() Handles btnOpenWith.Click
+        Shell("rundll32 shell32.dll,OpenAs_RunDLL " & lblFullPath.Text, AppWinStyle.NormalFocus, True, 500)
+        'Process.Start("rundll32", "shell32.dll,OpenAs_RunDLL " & lblFullPath.Text)
     End Sub
     Sub btnHashes_Click() Handles btnHashes.Click
         Hashes.Show
