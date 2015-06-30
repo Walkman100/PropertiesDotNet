@@ -32,9 +32,15 @@ Public Class Hashes
         Me.btnClose = New System.Windows.Forms.Button()
         Me.pbCalculateProgress = New System.Windows.Forms.ProgressBar()
         Me.bwCalcHashes = New System.ComponentModel.BackgroundWorker()
+        Me.grpSHA512 = New System.Windows.Forms.GroupBox()
+        Me.btnSHA512Copy = New System.Windows.Forms.Button()
+        Me.lblSHA512 = New System.Windows.Forms.Label()
+        Me.btnSHA512Calculate = New System.Windows.Forms.Button()
+        Me.btnCancel = New System.Windows.Forms.Button()
         Me.grpMD5.SuspendLayout
         Me.grpSHA1.SuspendLayout
         Me.grpSHA256.SuspendLayout
+        Me.grpSHA512.SuspendLayout
         Me.SuspendLayout
         'grpMD5
         Me.grpMD5.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
@@ -58,13 +64,13 @@ Public Class Hashes
         AddHandler Me.btnMD5Copy.Click, AddressOf Me.btnMD5Copy_Click
         'lblMD5
         Me.lblMD5.AutoSize = true
-        Me.lblMD5.Location = New System.Drawing.Point(90, 24)
+        Me.lblMD5.Location = New System.Drawing.Point(87, 24)
         Me.lblMD5.Name = "lblMD5"
         Me.lblMD5.Size = New System.Drawing.Size(87, 13)
         Me.lblMD5.TabIndex = 1
         Me.lblMD5.Text = "Click ""Calculate"""
         'btnMD5Calculate
-        Me.btnMD5Calculate.Location = New System.Drawing.Point(9, 19)
+        Me.btnMD5Calculate.Location = New System.Drawing.Point(6, 19)
         Me.btnMD5Calculate.Name = "btnMD5Calculate"
         Me.btnMD5Calculate.Size = New System.Drawing.Size(75, 23)
         Me.btnMD5Calculate.TabIndex = 0
@@ -93,13 +99,13 @@ Public Class Hashes
         AddHandler Me.btnSHA1Copy.Click, AddressOf Me.btnSHA1Copy_Click
         'lblSHA1
         Me.lblSHA1.AutoSize = true
-        Me.lblSHA1.Location = New System.Drawing.Point(90, 24)
+        Me.lblSHA1.Location = New System.Drawing.Point(87, 24)
         Me.lblSHA1.Name = "lblSHA1"
         Me.lblSHA1.Size = New System.Drawing.Size(87, 13)
         Me.lblSHA1.TabIndex = 1
         Me.lblSHA1.Text = "Click ""Calculate"""
         'btnSHA1Calculate
-        Me.btnSHA1Calculate.Location = New System.Drawing.Point(9, 19)
+        Me.btnSHA1Calculate.Location = New System.Drawing.Point(6, 19)
         Me.btnSHA1Calculate.Name = "btnSHA1Calculate"
         Me.btnSHA1Calculate.Size = New System.Drawing.Size(75, 23)
         Me.btnSHA1Calculate.TabIndex = 0
@@ -128,13 +134,13 @@ Public Class Hashes
         AddHandler Me.btnSHA256Copy.Click, AddressOf Me.btnSHA256Copy_Click
         'lblSHA256
         Me.lblSHA256.AutoSize = true
-        Me.lblSHA256.Location = New System.Drawing.Point(90, 24)
+        Me.lblSHA256.Location = New System.Drawing.Point(87, 24)
         Me.lblSHA256.Name = "lblSHA256"
         Me.lblSHA256.Size = New System.Drawing.Size(87, 13)
         Me.lblSHA256.TabIndex = 1
         Me.lblSHA256.Text = "Click ""Calculate"""
         'btnSHA256Calculate
-        Me.btnSHA256Calculate.Location = New System.Drawing.Point(9, 19)
+        Me.btnSHA256Calculate.Location = New System.Drawing.Point(6, 19)
         Me.btnSHA256Calculate.Name = "btnSHA256Calculate"
         Me.btnSHA256Calculate.Size = New System.Drawing.Size(75, 23)
         Me.btnSHA256Calculate.TabIndex = 0
@@ -143,34 +149,35 @@ Public Class Hashes
         AddHandler Me.btnSHA256Calculate.Click, AddressOf Me.btnSHA256Calculate_Click
         'btnAllCopy
         Me.btnAllCopy.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnAllCopy.Location = New System.Drawing.Point(365, 172)
+        Me.btnAllCopy.Location = New System.Drawing.Point(261, 257)
         Me.btnAllCopy.Name = "btnAllCopy"
-        Me.btnAllCopy.Size = New System.Drawing.Size(57, 23)
+        Me.btnAllCopy.Size = New System.Drawing.Size(118, 23)
         Me.btnAllCopy.TabIndex = 2
         Me.btnAllCopy.Text = "Copy All"
         Me.btnAllCopy.UseVisualStyleBackColor = true
         AddHandler Me.btnAllCopy.Click, AddressOf Me.btnAllCopy_Click
         'btnAllCalculate
-        Me.btnAllCalculate.Location = New System.Drawing.Point(12, 172)
+        Me.btnAllCalculate.Location = New System.Drawing.Point(12, 257)
         Me.btnAllCalculate.Name = "btnAllCalculate"
-        Me.btnAllCalculate.Size = New System.Drawing.Size(84, 23)
+        Me.btnAllCalculate.Size = New System.Drawing.Size(118, 23)
         Me.btnAllCalculate.TabIndex = 0
         Me.btnAllCalculate.Text = "Calculate All..."
         Me.btnAllCalculate.UseVisualStyleBackColor = true
         AddHandler Me.btnAllCalculate.Click, AddressOf Me.btnAllCalculate_Click
         'btnClose
         Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnClose.Location = New System.Drawing.Point(428, 172)
+        Me.btnClose.Location = New System.Drawing.Point(385, 257)
         Me.btnClose.Name = "btnClose"
-        Me.btnClose.Size = New System.Drawing.Size(75, 23)
+        Me.btnClose.Size = New System.Drawing.Size(118, 23)
         Me.btnClose.TabIndex = 4
         Me.btnClose.Text = "Close"
         Me.btnClose.UseVisualStyleBackColor = true
         AddHandler Me.btnClose.Click, AddressOf Me.btnClose_Click
         'pbCalculateProgress
-        Me.pbCalculateProgress.Location = New System.Drawing.Point(102, 172)
+        Me.pbCalculateProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.pbCalculateProgress.Location = New System.Drawing.Point(9, 228)
         Me.pbCalculateProgress.Name = "pbCalculateProgress"
-        Me.pbCalculateProgress.Size = New System.Drawing.Size(257, 23)
+        Me.pbCalculateProgress.Size = New System.Drawing.Size(498, 23)
         Me.pbCalculateProgress.TabIndex = 5
         'bwCalcHashes
         Me.bwCalcHashes.WorkerReportsProgress = true
@@ -178,10 +185,57 @@ Public Class Hashes
         AddHandler Me.bwCalcHashes.DoWork, AddressOf Me.bwCalcHashes_DoWork
         AddHandler Me.bwCalcHashes.ProgressChanged, AddressOf Me.bwCalcHashes_ProgressChanged
         AddHandler Me.bwCalcHashes.RunWorkerCompleted, AddressOf Me.bwCalcHashes_RunWorkerCompleted
+        'grpSHA512
+        Me.grpSHA512.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpSHA512.Controls.Add(Me.btnSHA512Copy)
+        Me.grpSHA512.Controls.Add(Me.lblSHA512)
+        Me.grpSHA512.Controls.Add(Me.btnSHA512Calculate)
+        Me.grpSHA512.Location = New System.Drawing.Point(3, 172)
+        Me.grpSHA512.Name = "grpSHA512"
+        Me.grpSHA512.Size = New System.Drawing.Size(510, 50)
+        Me.grpSHA512.TabIndex = 6
+        Me.grpSHA512.TabStop = false
+        Me.grpSHA512.Text = "SHA-512"
+        'btnSHA512Copy
+        Me.btnSHA512Copy.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnSHA512Copy.Location = New System.Drawing.Point(460, 19)
+        Me.btnSHA512Copy.Name = "btnSHA512Copy"
+        Me.btnSHA512Copy.Size = New System.Drawing.Size(44, 23)
+        Me.btnSHA512Copy.TabIndex = 2
+        Me.btnSHA512Copy.Text = "Copy"
+        Me.btnSHA512Copy.UseVisualStyleBackColor = true
+        AddHandler Me.btnSHA512Copy.Click, AddressOf Me.btnSHA512Copy_Click
+        'lblSHA512
+        Me.lblSHA512.AutoSize = true
+        Me.lblSHA512.Location = New System.Drawing.Point(87, 24)
+        Me.lblSHA512.Name = "lblSHA512"
+        Me.lblSHA512.Size = New System.Drawing.Size(87, 13)
+        Me.lblSHA512.TabIndex = 1
+        Me.lblSHA512.Text = "Click ""Calculate"""
+        'btnSHA512Calculate
+        Me.btnSHA512Calculate.Location = New System.Drawing.Point(6, 19)
+        Me.btnSHA512Calculate.Name = "btnSHA512Calculate"
+        Me.btnSHA512Calculate.Size = New System.Drawing.Size(75, 23)
+        Me.btnSHA512Calculate.TabIndex = 0
+        Me.btnSHA512Calculate.Text = "Calculate..."
+        Me.btnSHA512Calculate.UseVisualStyleBackColor = true
+        AddHandler Me.btnSHA512Calculate.Click, AddressOf Me.btnSHA512Calculate_Click
+        'btnCancel
+        Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnCancel.Enabled = false
+        Me.btnCancel.Location = New System.Drawing.Point(136, 257)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(118, 23)
+        Me.btnCancel.TabIndex = 7
+        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.UseVisualStyleBackColor = true
+        AddHandler Me.btnCancel.Click, AddressOf Me.BtnCancel_Click
         'Hashes
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(515, 208)
+        Me.ClientSize = New System.Drawing.Size(515, 293)
+        Me.Controls.Add(Me.btnCancel)
+        Me.Controls.Add(Me.grpSHA512)
         Me.Controls.Add(Me.pbCalculateProgress)
         Me.Controls.Add(Me.btnClose)
         Me.Controls.Add(Me.btnAllCopy)
@@ -201,8 +255,15 @@ Public Class Hashes
         Me.grpSHA1.PerformLayout
         Me.grpSHA256.ResumeLayout(false)
         Me.grpSHA256.PerformLayout
+        Me.grpSHA512.ResumeLayout(false)
+        Me.grpSHA512.PerformLayout
         Me.ResumeLayout(false)
     End Sub
+    Private btnCancel As System.Windows.Forms.Button
+    Private btnSHA512Calculate As System.Windows.Forms.Button
+    Private lblSHA512 As System.Windows.Forms.Label
+    Private btnSHA512Copy As System.Windows.Forms.Button
+    Private grpSHA512 As System.Windows.Forms.GroupBox
     Private bwCalcHashes As System.ComponentModel.BackgroundWorker
     Private pbCalculateProgress As System.Windows.Forms.ProgressBar
     Private btnClose As System.Windows.Forms.Button
@@ -239,10 +300,43 @@ Public Class Hashes
         bwCalcHashes.RunWorkerAsync
     End Sub
     
+    Sub btnSHA512Calculate_Click()
+        hashType = "SHA512"
+        hashHex = PropertiesDotNet.lblLocation.Text
+        bwCalcHashes.RunWorkerAsync
+    End Sub
+    
     Sub btnAllCalculate_Click()
         hashType = "MD5,SHA1,SHA256,SHA512"
         hashHex = PropertiesDotNet.lblLocation.Text
         bwCalcHashes.RunWorkerAsync
+    End Sub
+    
+    Sub btnCancel_Click()
+        If hashType.StartsWith("MD5") Then
+            hashType = "MD5"
+        ElseIf hashType.StartsWith("SHA1")
+            hashType = "SHA1"
+        ElseIf hashType.StartsWith("SHA256")
+            hashType = "SHA256"
+        ElseIf hashType.StartsWith("SHA512")
+            hashType = "SHA512"
+        Else
+            Exit Sub
+        End If
+        Do Until bwCalcHashes.CancellationPending
+            bwCalcHashes.CancelAsync
+        Loop
+        btnMD5Calculate.Enabled = True
+        btnSHA1Calculate.Enabled = True
+        btnSHA256Calculate.Enabled = True
+        btnSHA512Calculate.Enabled = True
+        btnAllCalculate.Enabled = True
+        btnCancel.Enabled = False
+        If bwCalcHashes.IsBusy Then
+            If MsgBox("Couldn't cancel current operation!" & vbNewLine & vbNewLine & "Restart PropertiesDotNet?", _
+              MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation) = MsgBoxResult.Yes Then Application.Restart()
+        End If
     End Sub
     
     Sub btnMD5Copy_Click()
@@ -272,10 +366,20 @@ Public Class Hashes
         End Try
     End Sub
     
+    Sub btnSHA512Copy_Click()
+        Try
+            Clipboard.SetText(lblSHA512.Text, TextDataFormat.UnicodeText)
+            MsgBox(lblSHA512.Text & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
+        Catch ex As Exception
+            MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
+        End Try
+    End Sub
+    
     Sub btnAllCopy_Click()
         Try
-            Clipboard.SetText(lblMD5.Text & vbNewLine & lblSHA1.Text & vbNewLine & lblSHA256.Text, TextDataFormat.UnicodeText)
-            MsgBox(lblMD5.Text & vbNewLine & lblSHA1.Text & vbNewLine & lblSHA256.Text & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
+            Clipboard.SetText(lblMD5.Text & vbNewLine & lblSHA1.Text & vbNewLine & lblSHA256.Text & vbNewLine & lblSHA512.Text, TextDataFormat.UnicodeText)
+            MsgBox(lblMD5.Text & vbNewLine & lblSHA1.Text & vbNewLine & lblSHA256.Text & vbNewLine & lblSHA512.Text _
+                & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
         Catch ex As Exception
             MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
         End Try
@@ -303,7 +407,9 @@ Public Class Hashes
             btnMD5Calculate.Enabled = False
             btnSHA1Calculate.Enabled = False
             btnSHA256Calculate.Enabled = False
+            btnSHA512Calculate.Enabled = False
             btnAllCalculate.Enabled = False
+            btnCancel.Enabled = True
             bwCalcHashes.ReportProgress(0)
             
             HashGeneratorOutput("Creating hash object...")
@@ -350,20 +456,18 @@ Public Class Hashes
             hashObject.Clear
             
             HashGeneratorOutput(hashHex.ToLower)
-            btnMD5Calculate.Enabled = True
-            btnSHA1Calculate.Enabled = True
-            btnSHA256Calculate.Enabled = True
-            btnAllCalculate.Enabled = True
             bwCalcHashes.ReportProgress(100)
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
             HashGeneratorOutput("Click ""Calculate""")
+            bwCalcHashes.ReportProgress(0)
+        End Try
             btnMD5Calculate.Enabled = True
             btnSHA1Calculate.Enabled = True
             btnSHA256Calculate.Enabled = True
+            btnSHA512Calculate.Enabled = True
             btnAllCalculate.Enabled = True
-            bwCalcHashes.ReportProgress(0)
-        End Try
+            btnCancel.Enabled = False
     End Sub
     
     Sub bwCalcHashes_ProgressChanged(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs)
@@ -394,7 +498,7 @@ Public Class Hashes
         ElseIf hashType.StartsWith("SHA256")
             lblSHA256.Text = status
         ElseIf hashType.StartsWith("SHA512")
-            'lblSHA512.Text = status
+            lblSHA512.Text = status
         End If
     End Sub
 End Class
