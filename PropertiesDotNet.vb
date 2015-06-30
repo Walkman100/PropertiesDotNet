@@ -263,7 +263,8 @@ Public Class PropertiesDotNet
                       MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                         CreateObject("Shell.Application").ShellExecute("cmd", "/k ren """ & lblFullPath.Text & _
                           """ """ & newName & """", "", "runas")
-                        If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then lblLocation.Text = FileProperties.DirectoryName & "\" & newName
+                        If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+                          lblLocation.Text = FileProperties.DirectoryName & "\" & newName
                     Else
                         ErrorParser(ex)
                     End If
@@ -303,7 +304,8 @@ Public Class PropertiesDotNet
         If (SaveFileDialog.ShowDialog() = DialogResult.OK) Then
             ' No point in adding an access denied check here, since the SaveFileDialog doesn't allow you to select a location that needs admin access
             FileProperties.CopyTo(SaveFileDialog.FileName)
-            If MsgBox("Read new file?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then lblLocation.Text = SaveFileDialog.FileName
+            If MsgBox("Read new file?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+              lblLocation.Text = SaveFileDialog.FileName
         End If
         CheckData
     End Sub
@@ -313,8 +315,24 @@ Public Class PropertiesDotNet
         SaveFileDialog.FileName = FileProperties.Name
         SaveFileDialog.Title = "Choose where to move """ & FileProperties.Name & """ to:"
         If (SaveFileDialog.ShowDialog() = DialogResult.OK) Then
-            FileProperties.MoveTo(SaveFileDialog.FileName)
-            lblLocation.Text = SaveFileDialog.FileName
+            Try
+                FileProperties.MoveTo(SaveFileDialog.FileName)
+                lblLocation.Text = SaveFileDialog.FileName
+            Catch ex As exception
+                If ex.GetType.ToString = "System.UnauthorizedAccessException" Then
+                    If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+                      MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                        CreateObject("Shell.Application").ShellExecute("cmd", "/k move """ & lblFullPath.Text & _
+                          """ """ & SaveFileDialog.FileName & """", "", "runas")
+                        If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+                          lblLocation.Text = SaveFileDialog.FileName
+                    Else
+                        ErrorParser(ex)
+                    End If
+                Else
+                    ErrorParser(ex)
+                End If
+            End Try
         End If
         CheckData
     End Sub
