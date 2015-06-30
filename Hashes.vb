@@ -292,12 +292,8 @@ Public Class Hashes
     Dim hashType As String
     Dim hashHex As String
     Dim hashObject
-    
     Dim buffer As Byte()
-    Dim oldBuffer As Byte()
     Dim bytesRead As Integer
-    Dim oldBytesRead As Integer
-    Dim size As Long
     Dim totalBytesRead As Long = 0
     
     Sub bwCalcHashes_DoWork()
@@ -330,31 +326,19 @@ Public Class Hashes
             FilePropertiesStream.Position = 0
             
             HashGeneratorOutput("Setting up variables...")
-            size = FilePropertiesStream.Length
-            
             buffer = New Byte(4095) {}
-            
             bytesRead = FilePropertiesStream.Read(buffer, 0, buffer.Length)
             totalBytesRead = bytesRead
             
             HashGeneratorOutput("Generating hash byte array...")
-            Do
-                oldBytesRead = bytesRead
-                oldBuffer = buffer
-                
+            Do While bytesRead <> 0
+                hashObject.TransformBlock(Buffer, 0, BytesRead, Buffer, 0)
                 buffer = New Byte(4095) {}
                 bytesRead = FilePropertiesStream.Read(buffer, 0, buffer.Length)
-                
                 totalBytesRead += bytesRead
-                
-                If bytesRead = 0 Then
-                    hashObject.TransformFinalBlock(oldBuffer, 0, oldBytesRead)
-                Else
-                    hashObject.TransformBlock(oldBuffer, 0, oldBytesRead, oldBuffer, 0)
-                End If
-                
-                bwCalcHashes.ReportProgress(CInt(Math.Truncate(CDbl(totalBytesRead) * 100 / size)))
-            Loop While bytesRead <> 0
+                bwCalcHashes.ReportProgress(CInt(Math.Truncate(CDbl(totalBytesRead) * 100 / FilePropertiesStream.Length)))
+            Loop
+            hashObject.TransformFinalBlock(Buffer, 0, BytesRead)
             
             HashGeneratorOutput("Converting hash byte array to hexadecimal...")
             buffer = hashObject.Hash
