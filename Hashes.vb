@@ -30,6 +30,8 @@ Public Class Hashes
         Me.btnAllCopy = New System.Windows.Forms.Button()
         Me.btnAllCalculate = New System.Windows.Forms.Button()
         Me.btnClose = New System.Windows.Forms.Button()
+        Me.pbCalculateProgress = New System.Windows.Forms.ProgressBar()
+        Me.bwCalcHashes = New System.ComponentModel.BackgroundWorker()
         Me.grpMD5.SuspendLayout
         Me.grpSHA1.SuspendLayout
         Me.grpSHA256.SuspendLayout
@@ -165,10 +167,21 @@ Public Class Hashes
         Me.btnClose.Text = "Close"
         Me.btnClose.UseVisualStyleBackColor = true
         AddHandler Me.btnClose.Click, AddressOf Me.btnClose_Click
+        'pbCalculateProgress
+        Me.pbCalculateProgress.Location = New System.Drawing.Point(102, 172)
+        Me.pbCalculateProgress.Name = "pbCalculateProgress"
+        Me.pbCalculateProgress.Size = New System.Drawing.Size(257, 23)
+        Me.pbCalculateProgress.TabIndex = 5
+        'bwCalcHashes
+        Me.bwCalcHashes.WorkerReportsProgress = true
+        Me.bwCalcHashes.WorkerSupportsCancellation = true
+        AddHandler Me.bwCalcHashes.DoWork, AddressOf Me.bwCalcHashes_DoWork
+        AddHandler Me.bwCalcHashes.ProgressChanged, AddressOf Me.bwCalcHashes_ProgressChanged
         'Hashes
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(515, 208)
+        Me.Controls.Add(Me.pbCalculateProgress)
         Me.Controls.Add(Me.btnClose)
         Me.Controls.Add(Me.btnAllCopy)
         Me.Controls.Add(Me.grpSHA256)
@@ -189,6 +202,8 @@ Public Class Hashes
         Me.grpSHA256.PerformLayout
         Me.ResumeLayout(false)
     End Sub
+    Private bwCalcHashes As System.ComponentModel.BackgroundWorker
+    Private pbCalculateProgress As System.Windows.Forms.ProgressBar
     Private btnClose As System.Windows.Forms.Button
     Private btnAllCalculate As System.Windows.Forms.Button
     Private btnAllCopy As System.Windows.Forms.Button
@@ -209,15 +224,28 @@ Public Class Hashes
     ''' Thanks to http://us.informatiweb.net/programmation/36--generate-hashes-md5-sha-1-and-sha-256-of-a-file.html
     ''' </summary>
     
-    Dim hashValue() As Byte
     Sub btnMD5Calculate_Click()
-        Dim hashObject = MD5.Create
-        Dim FilePropertiesStream As FileStream = File.OpenRead(PropertiesDotNet.lblLocation.Text)
-        FilePropertiesStream.Position = 0
-        hashValue = hashObject.ComputeHash(FilePropertiesStream)
-        Dim hashHex = PrintByteArray(hashValue)
-        FilePropertiesStream.Close()
-        lblMD5.Text = hashHex
+        hashType = "MD5"
+        hashHex = PropertiesDotNet.lblLocation.Text
+        bwCalcHashes.RunWorkerAsync
+    End Sub
+    
+    Sub btnSHA1Calculate_Click()
+        hashType = "SHA1"
+        bwCalcHashes.RunWorkerAsync
+        hashHex = PropertiesDotNet.lblLocation.Text
+    End Sub
+    
+    Sub btnSHA256Calculate_Click()
+        hashType = "SHA256"
+        bwCalcHashes.RunWorkerAsync
+        hashHex = PropertiesDotNet.lblLocation.Text
+    End Sub
+    
+    Sub btnAllCalculate_Click()
+        hashType = "All"
+        bwCalcHashes.RunWorkerAsync
+        hashHex = PropertiesDotNet.lblLocation.Text
     End Sub
     
     Sub btnMD5Copy_Click()
@@ -229,16 +257,6 @@ Public Class Hashes
         End Try
     End Sub
     
-    Sub btnSHA1Calculate_Click()
-        Dim hashObject = SHA1.Create()
-        Dim FilePropertiesStream As FileStream = File.OpenRead(PropertiesDotNet.lblLocation.Text)
-        FilePropertiesStream.Position = 0
-        hashValue = hashObject.ComputeHash(FilePropertiesStream)
-        Dim hashHex = PrintByteArray(hashValue)
-        FilePropertiesStream.Close()
-        lblSHA1.Text = hashHex
-    End Sub
-    
     Sub btnSHA1Copy_Click()
         Try
             Clipboard.SetText(lblSHA1.Text, TextDataFormat.UnicodeText)
@@ -248,16 +266,6 @@ Public Class Hashes
         End Try
     End Sub
     
-    Sub btnSHA256Calculate_Click()
-        Dim hashObject = SHA256.Create()
-        Dim FilePropertiesStream As FileStream = File.OpenRead(PropertiesDotNet.lblLocation.Text)
-        FilePropertiesStream.Position = 0
-        hashValue = hashObject.ComputeHash(FilePropertiesStream)
-        Dim hashHex = PrintByteArray(hashValue)
-        FilePropertiesStream.Close()
-        lblSHA256.Text = hashHex
-    End Sub
-    
     Sub btnSHA256Copy_Click()
         Try
             Clipboard.SetText(lblSHA256.Text, TextDataFormat.UnicodeText)
@@ -265,12 +273,6 @@ Public Class Hashes
         Catch ex As Exception
             MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
         End Try
-    End Sub
-    
-    Sub btnAllCalculate_Click()
-        btnMD5Calculate_Click
-        btnSHA1Calculate_Click
-        btnSHA256Calculate_Click
     End Sub
     
     Sub btnAllCopy_Click()
@@ -286,12 +288,72 @@ Public Class Hashes
         Me.Close
     End Sub
     
-    Public Function PrintByteArray(ByVal array() As Byte)
-        Dim hex_value As String = ""
-        Dim i As Integer
-        For i = 0 To array.Length - 1
-            hex_value += array(i).ToString("X2")
-        Next i
-        Return hex_value.ToLower
-    End Function
+    Dim hashValue() As Byte
+    Dim hashType As String
+    Dim hashHex As String
+    Dim hashObject
+    
+    Sub bwCalcHashes_DoWork()
+        Try
+            btnMD5Calculate.Enabled = False
+            btnSHA1Calculate.Enabled = False
+            btnSHA256Calculate.Enabled = False
+            btnAllCalculate.Enabled = False
+            Select Case hashType
+                Case "MD5"
+                    hashObject = MD5.Create
+                Case "SHA1"
+                    hashObject = SHA1.Create
+                Case "SHA256"
+                    hashObject = SHA256.Create
+                'Case "SHA512"
+                '    hashObject = SHA512.Create
+                Case "All"
+                    
+            End Select
+            bwCalcHashes.ReportProgress(3)
+             Dim FilePropertiesStream As FileStream = File.OpenRead(hashHex)
+            bwCalcHashes.ReportProgress(7)
+             FilePropertiesStream.Position = 0
+            bwCalcHashes.ReportProgress(10)
+             hashValue = hashObject.ComputeHash(FilePropertiesStream)
+            bwCalcHashes.ReportProgress(93)
+             hashHex = ""
+             For i = 0 To hashValue.Length - 1
+                 hashHex += hashValue(i).ToString("X2")
+             Next i
+            bwCalcHashes.ReportProgress(96)
+             FilePropertiesStream.Close()
+             hashObject.Clear
+            Select Case hashType
+                Case "MD5"
+                    lblMD5.Text = hashHex.ToLower
+                Case "SHA1"
+                    lblSHA1.Text = hashHex.ToLower
+                Case "SHA256"
+                    lblSHA256.Text = hashHex.ToLower
+                'Case "SHA512"
+                '    lblSHA512.Text = hashHex.ToLower
+                Case "All"
+                    
+            End Select
+            btnMD5Calculate.Enabled = True
+            btnSHA1Calculate.Enabled = True
+            btnSHA256Calculate.Enabled = True
+            btnAllCalculate.Enabled = True
+            bwCalcHashes.ReportProgress(100)
+        Catch ex As Exception
+            PropertiesDotNet.ErrorParser(ex)
+            btnMD5Calculate.Enabled = True
+            btnSHA1Calculate.Enabled = True
+            btnSHA256Calculate.Enabled = True
+            btnAllCalculate.Enabled = True
+            bwCalcHashes.ReportProgress(0)
+        End Try
+    End Sub
+    
+    Sub bwCalcHashes_ProgressChanged(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs)
+        pbCalculateProgress.Value = e.ProgressPercentage
+        
+    End Sub
 End Class
