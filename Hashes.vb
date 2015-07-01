@@ -1,7 +1,6 @@
 ﻿Imports System.IO
 Imports System.Security
 Imports System.Security.Cryptography
-Imports System.Threading.Thread
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Public Class Hashes
