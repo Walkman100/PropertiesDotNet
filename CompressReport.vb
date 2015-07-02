@@ -1,4 +1,7 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿Imports System.IO
+Imports System.Runtime.InteropServices 'For NTFS compression
+
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Public Class CompressReport
     Inherits System.Windows.Forms.Form
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -13,6 +16,7 @@ Public Class CompressReport
     Private Sub InitializeComponent()
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.imgLoading = New System.Windows.Forms.PictureBox()
+        Me.bwCompress = New System.ComponentModel.BackgroundWorker()
         CType(Me.imgLoading,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         'lblStatus
@@ -26,6 +30,8 @@ Public Class CompressReport
         Me.imgLoading.Location = New System.Drawing.Point(12, 12)
         Me.imgLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.imgLoading.TabStop = false
+        'bwCompress
+        AddHandler Me.bwCompress.DoWork, AddressOf Me.bwCompress_DoWork
         'CompressReport
         Me.Name = "CompressReport"
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -37,12 +43,78 @@ Public Class CompressReport
         Me.Icon = Global.PropertiesDotNet.My.Resources.Resources.compress
         Me.MaximizeBox = false
         Me.MinimizeBox = false
+        Me.ShowInTaskbar = false
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Compressing..."
         CType(Me.imgLoading,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
         Me.PerformLayout
     End Sub
+    Private bwCompress As System.ComponentModel.BackgroundWorker
     Friend lblStatus As System.Windows.Forms.Label
     Private imgLoading As System.Windows.Forms.PictureBox
+    
+    ''' <summary>
+    ''' Imported Functions: DeviceIoControl:
+    '''  Used for (De)Compressing files
+    '''   http://www.thescarms.com/dotnet/NTFSCompress.aspx
+    ''' </summary>
+    <DllImport("Kernel32.dll")> _
+    Public Shared Function DeviceIoControl(hDevice As IntPtr,dwIoControlCode As Integer,ByRef lpInBuffer As Short, _
+    nInBufferSize As Integer,lpOutBuffer As IntPtr,nOutBufferSize As Integer,ByRef lpBytesReturned As Integer,lpOverlapped As IntPtr)As Integer
+    End Function
+    
+    Dim fileToCompressPath As String
+    Dim CompressB As Boolean
+    
+    Sub Compress(fileToCompressPathParam As String, Optional CompressBParam As Boolean = True)
+        fileToCompressPath = fileToCompressPathParam
+        CompressB = CompressBParam
+        bwCompress.RunWorkerAsync
+    End Sub
+    
+    Sub bwCompress_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs)
+        Try
+            ''' <summary>
+            ''' Credits to http://www.thescarms.com/dotnet/NTFSCompress.aspx
+            ''' Converted to VB.Net with SharpDevelop (which I believe uses MSBuild anyway to convert)
+            ''' </summary>
+            If CompressB Then Me.Text = "Compressing..." Else Me.Text = "Decompressing..."
+            lblStatus.Text = "[1/5] Opening File stream..."
+            Dim FilePropertiesStream As FileStream = File.Open(fileToCompressPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None)
+            
+            If CompressB Then
+                lblStatus.Text = "[2/5] Running compress function..."
+                DeviceIoControl(FilePropertiesStream.Handle, &H9c040, 1, 2, 0, 0, 0, 0)
+            Else
+                ' https://msdn.microsoft.com/en-us/library/windows/desktop/aa364592(v=vs.85).aspx
+                ' COMPRESSION_FORMAT_NONE is equal to 0 (i assume)
+                lblStatus.Text = "[2/5] Running decompress function..."
+                DeviceIoControl(FilePropertiesStream.Handle, &H9c040, 0, 2, 0, 0, 0, 0)
+            End If
+            
+            lblStatus.Text = "[3/5] Flushing buffer to disc..."
+            FilePropertiesStream.Flush(True)
+            
+            lblStatus.Text = "[4/5] Closing File stream..."
+            FilePropertiesStream.Close
+            FilePropertiesStream.Dispose
+            
+            If CompressB Then lblStatus.Text = "[5/5] Compression Done!" Else lblStatus.Text = "[5/5] Decompression Done!"
+            Sleep(100)
+            Me.Close
+            
+        Catch ex As UnauthorizedAccessException
+            lblStatus.Text = "Failed! Access denied!"
+            Sleep(4000)
+            Me.Close
+        Catch ex As IOException
+            lblStatus.Text = "Failed! File in use!"
+            Sleep(2000)
+            Me.Close
+        Catch ex As exception
+            MsgBox(ex.tostring, MsgBoxStyle.Exclamation)
+            Me.close
+        End Try
+    End Sub
 End Class

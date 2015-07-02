@@ -22,13 +22,11 @@ Partial Class PropertiesDotNet
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.lblLocation = New System.Windows.Forms.Label()
         Me.chkHidden = New System.Windows.Forms.CheckBox()
         Me.chkSystem = New System.Windows.Forms.CheckBox()
         Me.grpReadOnly = New System.Windows.Forms.GroupBox()
-        Me.lblOpenWith = New System.Windows.Forms.Label()
         Me.btnOpenWith = New System.Windows.Forms.Button()
         Me.lblOpenWithLbl = New System.Windows.Forms.Label()
         Me.imgFile = New System.Windows.Forms.PictureBox()
@@ -57,6 +55,7 @@ Partial Class PropertiesDotNet
         Me.lblNameLbl = New System.Windows.Forms.Label()
         Me.lblFullPathLbl = New System.Windows.Forms.Label()
         Me.lblPathLbl = New System.Windows.Forms.Label()
+        Me.lblOpenWith = New System.Windows.Forms.Label()
         Me.grpChangeable = New System.Windows.Forms.GroupBox()
         Me.lnkAttributes = New System.Windows.Forms.LinkLabel()
         Me.chkSparse = New System.Windows.Forms.CheckBox()
@@ -76,7 +75,6 @@ Partial Class PropertiesDotNet
         Me.btnCopy = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnRename = New System.Windows.Forms.Button()
-        Me.timerCloseCompressForm = New System.Windows.Forms.Timer(Me.components)
         Me.grpReadOnly.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpChangeable.SuspendLayout
@@ -156,15 +154,6 @@ Partial Class PropertiesDotNet
         Me.grpReadOnly.TabIndex = 3
         Me.grpReadOnly.TabStop = false
         Me.grpReadOnly.Text = "Properties:"
-        '
-        'lblOpenWith
-        '
-        Me.lblOpenWith.AutoSize = true
-        Me.lblOpenWith.Location = New System.Drawing.Point(117, 130)
-        Me.lblOpenWith.Name = "lblOpenWith"
-        Me.lblOpenWith.Size = New System.Drawing.Size(61, 13)
-        Me.lblOpenWith.TabIndex = 29
-        Me.lblOpenWith.Text = "Checking..."
         '
         'btnOpenWith
         '
@@ -431,6 +420,15 @@ Partial Class PropertiesDotNet
         Me.lblPathLbl.TabIndex = 1
         Me.lblPathLbl.Text = "Read from path:"
         '
+        'lblOpenWith
+        '
+        Me.lblOpenWith.AutoSize = true
+        Me.lblOpenWith.Location = New System.Drawing.Point(117, 130)
+        Me.lblOpenWith.Name = "lblOpenWith"
+        Me.lblOpenWith.Size = New System.Drawing.Size(61, 13)
+        Me.lblOpenWith.TabIndex = 29
+        Me.lblOpenWith.Text = "Checking..."
+        '
         'grpChangeable
         '
         Me.grpChangeable.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
@@ -642,10 +640,6 @@ Partial Class PropertiesDotNet
         Me.btnRename.Text = "Rename..."
         Me.btnRename.UseVisualStyleBackColor = true
         '
-        'timerCloseCompressForm
-        '
-        Me.timerCloseCompressForm.Interval = 500
-        '
         'PropertiesDotNet
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -680,7 +674,6 @@ Partial Class PropertiesDotNet
     Private WithEvents btnCopyName As System.Windows.Forms.Button
     Private WithEvents btnCopyDirectory As System.Windows.Forms.Button
     Private WithEvents btnCopyFullPath As System.Windows.Forms.Button
-    Private WithEvents timerCloseCompressForm As System.Windows.Forms.Timer
     Private WithEvents btnRename As System.Windows.Forms.Button
     Private WithEvents btnDelete As System.Windows.Forms.Button
     Private WithEvents btnCopy As System.Windows.Forms.Button

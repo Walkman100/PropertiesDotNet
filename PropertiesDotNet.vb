@@ -1,22 +1,13 @@
 ﻿Imports System.IO
 Imports System.IO.File
-Imports System.Runtime.InteropServices 'For NTFS compression
 
 Public Class PropertiesDotNet
     ''' <summary>
-    ''' Imported Functions:
-    '''   FindExecutable:
-    '''     Used for finding the program that a file opens with
-    '''       http://www.vb-helper.com/howto_get_associated_program.html
-    '''   DeviceIoControl:
-    '''     Used for (De)Compressing files
-    '''       http://www.thescarms.com/dotnet/NTFSCompress.aspx
+    ''' Imported Functions: FindExecutable:
+    '''  Used for finding the program that a file opens with
+    '''   http://www.vb-helper.com/howto_get_associated_program.html
     ''' </summary>
     Private Declare Function FindExecutable Lib "shell32.dll" Alias "FindExecutableA"(lpFile As String, lpDirectory As String, lpResult As String) As Long
-    <DllImport("Kernel32.dll")> _
-    Public Shared Function DeviceIoControl(hDevice As IntPtr,dwIoControlCode As Integer,ByRef lpInBuffer As Short, _
-    nInBufferSize As Integer,lpOutBuffer As IntPtr,nOutBufferSize As Integer,ByRef lpBytesReturned As Integer,lpOverlapped As IntPtr)As Integer
-    End Function
     
     Sub PropertiesDotNet_Load(sender As Object, e As EventArgs) Handles Me.Load
         For Each s As String In My.Application.CommandLineArgs
@@ -117,41 +108,6 @@ Public Class PropertiesDotNet
         Hashes.Show
     End Sub
     
-    Sub Compress(Optional CompressB As Boolean = True)
-        CompressReport.Show
-        ''' <summary>
-        ''' Credits to http://www.thescarms.com/dotnet/NTFSCompress.aspx
-        ''' Converted to VB.Net with SharpDevelop (which I believe uses MSBuild anyway to convert)
-        ''' </summary>
-        CompressReport.lblStatus.Text = "Getting FileInfo... (1/7)"
-        Dim FilePropertiesInfo As New FileInfo(lblLocation.Text)
-        CompressReport.lblStatus.Text = "Opening File stream... (2/7)"
-        Dim FilePropertiesStream As FileStream = File.Open(FilePropertiesInfo.FullName, FileMode.Open, FileAccess.ReadWrite, FileShare.None)
-        If CompressB Then
-            CompressReport.Text = "Compressing..."
-            CompressReport.lblStatus.Text = "Running compress function... (3/7)"
-            DeviceIoControl(FilePropertiesStream.Handle, &H9c040, 1, 2, 0, 0, 0, 0)
-        Else
-            ' https://msdn.microsoft.com/en-us/library/windows/desktop/aa364592(v=vs.85).aspx
-            ' COMPRESSION_FORMAT_NONE is equal to 0 (i assume)
-            CompressReport.Text = "Decompressing..."
-            CompressReport.lblStatus.Text = "Running decompress function... (3/7)"
-            DeviceIoControl(FilePropertiesStream.Handle, &H9c040, 0, 2, 0, 0, 0, 0)
-        End If
-        CompressReport.lblStatus.Text = "Flushing buffer to disc... (4/7)"
-        FilePropertiesStream.Flush(True)
-        CompressReport.lblStatus.Text = "Closing File stream... (5/7)"
-        FilePropertiesStream.Close
-        CompressReport.lblStatus.Text = "Disposing File stream... (6/7)"
-        FilePropertiesStream.Dispose
-        If CompressB Then CompressReport.lblStatus.Text = "Compression Done! (7/7)" Else CompressReport.lblStatus.Text = "Decompression Done! (7/7)"
-        timerCloseCompressForm.Start
-    End Sub
-    Sub timerCloseCompressForm_Tick() Handles timerCloseCompressForm.Tick
-        timerCloseCompressForm.Stop
-        CompressReport.Hide
-    End Sub
-    
     Sub chkReadOnly_Click() Handles chkReadOnly.Click
         If chkReadOnly.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.ReadOnly) _
           Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.ReadOnly)
@@ -166,13 +122,15 @@ Public Class PropertiesDotNet
         If chkCompressed.Checked Then
             If SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Compressed) Then
                 If Not GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed) Then
-                    Compress()
+                    CompressReport.Compress(lblFullPath.Text)
+                    CompressReport.ShowDialog
                 End If
             End If
         Else
             If SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Compressed) Then
                 If GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed) Then
-                    Compress(False)
+                    CompressReport.Compress(lblFullPath.Text, False)
+                    CompressReport.ShowDialog
                 End If
             End If
         End If

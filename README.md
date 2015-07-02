@@ -19,14 +19,14 @@ A properties window made in VB.Net
   - License: [Attribution-Non-Commercial 3.0 Netherlands](http://creativecommons.org/licenses/by-nc/3.0/nl/deed.en_GB)
 
 ### Getting open with program
-- Find at: [PropertiesDotNet.vb#L6](PropertiesDotNet.vb#L6)
-- And: [PropertiesDotNet.vb#L44](PropertiesDotNet.vb#L44)
+- Find at: [PropertiesDotNet.vb#L5](PropertiesDotNet.vb#L5)
+- And: [PropertiesDotNet.vb#L35](PropertiesDotNet.vb#L35)
 - http://www.vb-helper.com/howto_get_associated_program.html
-- The page above is in VB6 however, so I needed to convert it (manually) to VB.Net. Also, the most importand line, the `Function FindExecutable Lib "shell32.dll"`, is chopped off the sample you see on the page, so you have to download the `zip` to get that.
+- The page above is in VB6 however, so I needed to convert it (manually) to VB.Net. Also, the most important line, the `Function FindExecutable Lib "shell32.dll"`, is chopped off the sample you see on the page, so you have to download the `zip` to get that.
 
 ### NTFS Compression
-- Find at: [PropertiesDotNet.vb#L6](PropertiesDotNet.vb#L6)
-- And: [PropertiesDotNet.vb#L122](PropertiesDotNet.vb#L122)
+- Find at: [CompressReport.vb#L56](CompressReport.vb#L56)
+- And: [CompressReport.vb#L77](CompressReport.vb#L77)
 - http://www.thescarms.com/dotnet/NTFSCompress.aspx
 - Original code from above link has been copied, un-modified, to [here](NTFSCompressOriginalCode.cs)
 - I have edited it so it can be compiled [here](NTFSCompressConvertable.cs)
