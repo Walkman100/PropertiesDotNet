@@ -3,12 +3,20 @@ Imports System.IO.File
 Imports System.Runtime.InteropServices 'For NTFS compression
 
 Public Class PropertiesDotNet
-    ' TODO:
-    '''fix icon/picturebox
-    'sizes (only have bytes)
-    
-    '''get default open with
-    'ok, cancel, apply - no, stuff applies immediatly
+    ''' <summary>
+    ''' Imported Functions:
+    '''   FindExecutable:
+    '''     Used for finding the program that a file opens with
+    '''       http://www.vb-helper.com/howto_get_associated_program.html
+    '''   DeviceIoControl:
+    '''     Used for (De)Compressing files
+    '''       http://www.thescarms.com/dotnet/NTFSCompress.aspx
+    ''' </summary>
+    Private Declare Function FindExecutable Lib "shell32.dll" Alias "FindExecutableA"(lpFile As String, lpDirectory As String, lpResult As String) As Long
+    <DllImport("Kernel32.dll")> _
+    Public Shared Function DeviceIoControl(hDevice As IntPtr,dwIoControlCode As Integer,ByRef lpInBuffer As Short, _
+    nInBufferSize As Integer,lpOutBuffer As IntPtr,nOutBufferSize As Integer,ByRef lpBytesReturned As Integer,lpOverlapped As IntPtr)As Integer
+    End Function
     
     Sub PropertiesDotNet_Load(sender As Object, e As EventArgs) Handles Me.Load
         For Each s As String In My.Application.CommandLineArgs
@@ -22,7 +30,7 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub CheckData Handles chkUTC.CheckedChanged
-        'Read-Only attributes:
+        'Properties:
         Dim FileProperties As New FileInfo(lblLocation.Text)
         Me.Text = "Properties: " & FileProperties.Name
         lblFullPath.Text = FileProperties.FullName
@@ -31,8 +39,13 @@ Public Class PropertiesDotNet
         If lblName.Width>62 Then Me.Width = lblName.Width + 370
         lblExtension.Text = FileProperties.Extension
         lblSize.Text = FileProperties.Length
-        imgFile.ImageLocation = FileProperties.Name
-        lblOpenWith.Text = ""
+        imgFile.ImageLocation = FileProperties.FullName
+        
+        Dim result As String = Space$(1024)
+        FindExecutable(lblName.Text, lblDirectory.Text & "\", result)
+        lblOpenWith.Text = Strings.Left$(result, InStr(result, Chr(0)) - 1)
+        If lblOpenWith.Text = "" Then lblOpenWith.Text = "Filetype not associated!"
+        
         If chkUTC.Checked Then
             lblCreationTime.Text = GetCreationTime(lblLocation.Text)
             lblLastAccessTime.Text = GetLastAccessTime(lblLocation.Text)
@@ -43,7 +56,7 @@ Public Class PropertiesDotNet
             lblLastWriteTime.Text = GetLastWriteTimeUtc(lblLocation.Text)
         End If
         
-        'Changeable attributes:
+        'Attributes:
         chkReadOnly.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.ReadOnly)
         chkHidden.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Hidden)
         chkCompressed.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed)
@@ -104,10 +117,6 @@ Public Class PropertiesDotNet
         Hashes.Show
     End Sub
     
-    <DllImport("Kernel32.dll")> _
-    Public Shared Function DeviceIoControl(hDevice As IntPtr,dwIoControlCode As Integer,ByRef lpInBuffer As Short, _
-    nInBufferSize As Integer,lpOutBuffer As IntPtr,nOutBufferSize As Integer,ByRef lpBytesReturned As Integer,lpOverlapped As IntPtr)As Integer
-    End Function
     Sub Compress(Optional CompressB As Boolean = True)
         CompressReport.Show
         ''' <summary>
@@ -135,7 +144,7 @@ Public Class PropertiesDotNet
         FilePropertiesStream.Close
         CompressReport.lblStatus.Text = "Disposing File stream... (6/7)"
         FilePropertiesStream.Dispose
-        CompressReport.lblStatus.Text = "(De)compression Done! (7/7)"
+        If CompressB Then CompressReport.lblStatus.Text = "Compression Done! (7/7)" Else CompressReport.lblStatus.Text = "Decompression Done! (7/7)"
         timerCloseCompressForm.Start
     End Sub
     Sub timerCloseCompressForm_Tick() Handles timerCloseCompressForm.Tick

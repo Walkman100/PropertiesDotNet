@@ -192,7 +192,7 @@ Partial Class PropertiesDotNet
         Me.imgFile.Location = New System.Drawing.Point(10, 130)
         Me.imgFile.Name = "imgFile"
         Me.imgFile.Size = New System.Drawing.Size(32, 32)
-        Me.imgFile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.imgFile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.imgFile.TabIndex = 26
         Me.imgFile.TabStop = false
         '
