@@ -50,10 +50,10 @@ Section "Quick Launch Shortcut"
   CreateShortCut "$QUICKLAUNCH\PropertiesDotNet.lnk" "$INSTDIR\PropertiesDotNet.exe" "" "$INSTDIR\PropertiesDotNet.exe" "" "" "" "PropertiesDotNet"
 SectionEnd
 
-Section "Add DirectoryImage to context menu"
+Section "Add PropertiesDotNet to context menu"
   WriteRegStr HKCR "*\shell\PropertiesDotNet" "" "Properties..."
   WriteRegStr HKCR "*\shell\PropertiesDotNet" "Icon" "$INSTDIR\PropertiesDotNet.exe"
-  WriteRegStr HKCR "*\shell\PropertiesDotNet\command" "" "$INSTDIR\PropertiesDotNet.exe$\" $\"%1$\""
+  WriteRegStr HKCR "*\shell\PropertiesDotNet\command" "" "$\"$INSTDIR\PropertiesDotNet.exe$\" $\"%1$\""
 SectionEnd
 
 ; Functions
