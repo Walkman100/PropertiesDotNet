@@ -37,6 +37,57 @@ A properties window made in VB.Net
 - Find at: [Hashes.vb#L392](Hashes.vb#L392)
 - Basic Hashing: http://us.informatiweb.net/programmation/36--generate-hashes-md5-sha-1-and-sha-256-of-a-file.html
 - Hashing with progress reporting: http://www.infinitec.de/post/2007/06/09/Displaying-progress-updates-when-hashing-large-files.aspx
+- Since the code on the page above is in C#, I converted it to VB.Net:
+```vb
+Imports System
+Imports System.Collections.Generic
+Imports System.Drawing
+Imports System.Windows.Forms
+Imports System.IO
+Imports System.Runtime.InteropServices
+Imports System.ComponentModel
+Imports System.Security
+Imports System.Security.Cryptography
+
+Namespace NTFSCompress
+    Public Partial Class MainForm
+        Inherits Form
+        Public Sub New()
+            InitializeComponent()
+        End Sub
+        Private Sub BackgroundWorker_DoWork(sender As Object, e As DoWorkEventArgs)
+            Dim buffer As Byte()
+            Dim oldBuffer As Byte()
+            Dim bytesRead As Integer
+            Dim oldBytesRead As Integer
+            Dim size As Long
+            Dim totalBytesRead As Long = 0
+            Using stream As Stream = File.OpenRead(DirectCast(e.Argument, String))
+                Using hashAlgorithm As HashAlgorithm = MD5.Create()
+                    size = stream.Length
+                    buffer = New Byte(4095) {}
+                    bytesRead = stream.Read(buffer, 0, buffer.Length)
+                    totalBytesRead += bytesRead
+                    Do
+                        oldBytesRead = bytesRead
+                        oldBuffer = buffer
+                        buffer = New Byte(4095) {}
+                        bytesRead = stream.Read(buffer, 0, buffer.Length)
+                        totalBytesRead += bytesRead
+                        If bytesRead = 0 Then
+                            hashAlgorithm.TransformFinalBlock(oldBuffer, 0, oldBytesRead)
+                        Else
+                            hashAlgorithm.TransformBlock(oldBuffer, 0, oldBytesRead, oldBuffer, 0)
+                        End If
+                        BackgroundWorker.ReportProgress(CInt(Math.Truncate(CDbl(totalBytesRead) * 100 / size)))
+                    Loop While bytesRead <> 0
+                    e.Result = hashAlgorithm.Hash
+                End Using
+            End Using
+        End Sub
+    End Class
+End Namespace
+```
 
 ## Compile requirements
 See [CompileInstructions.md](https://github.com/Walkman100/WinCompile/blob/master/CompileInstructions.md)
