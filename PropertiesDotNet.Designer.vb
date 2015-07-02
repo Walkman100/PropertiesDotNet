@@ -652,6 +652,7 @@ Partial Class PropertiesDotNet
         Me.Controls.Add(Me.grpEditID)
         Me.Controls.Add(Me.grpChangeable)
         Me.Controls.Add(Me.grpReadOnly)
+        Me.Icon = Global.PropertiesDotNet.My.Resources.Resources.document_properties
         Me.MaximizeBox = false
         Me.Name = "PropertiesDotNet"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

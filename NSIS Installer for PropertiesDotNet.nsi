@@ -2,7 +2,7 @@
 ; get NSIS at http://nsis.sourceforge.net/Download
 ; As a program that all Power PC users should have, Notepad++ is recommended to edit this file
 
-;Icon "Resources\PropertiesDotNet.ico"
+Icon "My Project\document-properties.ico"
 Caption "PropertiesDotNet Installer"
 Name "PropertiesDotNet"
 AutoCloseWindow true
