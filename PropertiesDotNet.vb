@@ -110,8 +110,24 @@ Public Class PropertiesDotNet
         Process.Start(lblFullPath.Text)
     End Sub
     Sub btnOpenWith_Click() Handles btnOpenWith.Click
-        Shell("rundll32 shell32.dll,OpenAs_RunDLL " & lblFullPath.Text, AppWinStyle.NormalFocus, True, 500)
-        'Process.Start("rundll32", "shell32.dll,OpenAs_RunDLL " & lblFullPath.Text)
+        Dim isDangerousExtension As New Boolean
+        Dim dangerousExtensions() As String = {".exe", ".bat", ".cmd", ".lnk", ".com"}
+        For i = 1 To dangerousExtensions.Length
+            If lblExtension.Text = dangerousExtensions(i-1) Then
+                isDangerousExtension = True
+                Exit For
+            End If
+        Next
+        If isDangerousExtension Then
+            If MsgBox("Are you sure you want to open the ""Open With"" dialog for """ & lblExtension.Text & _
+              """ files? this could potentially make your PC unusable if you click ""Ok"" in it while the ""Always use the selected program"" checkbox is checked!", _
+              MsgBoxStyle.Critical + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then _
+                If MsgBox("You have been warned!", MsgBoxStyle.Exclamation + MsgBoxStyle.OkCancel) = MsgBoxResult.Ok Then _
+                  Shell("rundll32 shell32.dll,OpenAs_RunDLL " & lblFullPath.Text, AppWinStyle.NormalFocus, True, 500)
+        Else
+            Shell("rundll32 shell32.dll,OpenAs_RunDLL " & lblFullPath.Text, AppWinStyle.NormalFocus, True, 500)
+            'Process.Start("rundll32", "shell32.dll,OpenAs_RunDLL " & lblFullPath.Text)
+        End If
     End Sub
     Sub btnStartAssocProg_Click() Handles btnStartAssocProg.Click
         Process.Start(lblOpenWith.Text)
@@ -287,6 +303,33 @@ Public Class PropertiesDotNet
               lblLocation.Text = SaveFileDialog.FileName
         End If
         CheckData
+    End Sub
+    Sub btnCopy_MouseUp(sender As Object, e As MouseEventArgs) Handles btnCopy.MouseUp
+        If e.Button = Windows.Forms.MouseButtons.Right Then
+            Dim FileProperties As New FileInfo(lblLocation.Text)
+            Dim newName = InputBox("Copy to:", "Copy file", FileProperties.Name)
+            If newName <> "" Then
+                Try
+                    FileProperties.CopyTo(newName)
+                    lblLocation.Text = newName
+                Catch ex As exception
+                    If ex.GetType.ToString = "System.UnauthorizedAccessException" Then
+                        If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+                            MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                            CreateObject("Shell.Application").ShellExecute("xcopy", """" & lblFullPath.Text & _
+                                """ """ & newName & """", "", "runas")
+                            If MsgBox("Read new file?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+                                lblLocation.Text = newName
+                        Else
+                            ErrorParser(ex)
+                        End If
+                    Else
+                        ErrorParser(ex)
+                    End If
+                End Try
+            End If
+            CheckData
+        End If
     End Sub
     Sub btnMove_Click() Handles btnMove.Click
         Dim FileProperties As New FileInfo(lblLocation.Text)
