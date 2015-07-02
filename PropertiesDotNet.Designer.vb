@@ -120,7 +120,6 @@ Partial Class PropertiesDotNet
         '
         Me.grpReadOnly.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.grpReadOnly.Controls.Add(Me.lblOpenWith)
         Me.grpReadOnly.Controls.Add(Me.btnOpenWith)
         Me.grpReadOnly.Controls.Add(Me.lblOpenWithLbl)
         Me.grpReadOnly.Controls.Add(Me.imgFile)
@@ -150,6 +149,7 @@ Partial Class PropertiesDotNet
         Me.grpReadOnly.Controls.Add(Me.lblFullPathLbl)
         Me.grpReadOnly.Controls.Add(Me.lblPathLbl)
         Me.grpReadOnly.Controls.Add(Me.lblLocation)
+        Me.grpReadOnly.Controls.Add(Me.lblOpenWith)
         Me.grpReadOnly.Location = New System.Drawing.Point(2, 4)
         Me.grpReadOnly.Name = "grpReadOnly"
         Me.grpReadOnly.Size = New System.Drawing.Size(411, 216)
@@ -219,11 +219,13 @@ Partial Class PropertiesDotNet
         'btnHashes
         '
         Me.btnHashes.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnHashes.Location = New System.Drawing.Point(307, 187)
+        Me.btnHashes.Image = Global.PropertiesDotNet.My.Resources.Resources.hashx16
+        Me.btnHashes.Location = New System.Drawing.Point(291, 187)
         Me.btnHashes.Name = "btnHashes"
-        Me.btnHashes.Size = New System.Drawing.Size(98, 23)
+        Me.btnHashes.Size = New System.Drawing.Size(114, 23)
         Me.btnHashes.TabIndex = 23
         Me.btnHashes.Text = "Compute Hashes"
+        Me.btnHashes.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.btnHashes.UseVisualStyleBackColor = true
         '
         'btnCopyFullPath

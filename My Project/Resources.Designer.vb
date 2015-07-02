@@ -58,9 +58,39 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         '''</summary>
+        Friend Shared ReadOnly Property compress() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("compress", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        '''</summary>
         Friend Shared ReadOnly Property document_properties() As System.Drawing.Icon
             Get
                 Dim obj As Object = ResourceManager.GetObject("document-properties", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend Shared ReadOnly Property hashx16() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("hashx16", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        '''</summary>
+        Friend Shared ReadOnly Property hashx64() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("hashx64", resourceCulture)
                 Return CType(obj,System.Drawing.Icon)
             End Get
         End Property

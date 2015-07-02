@@ -31,11 +31,12 @@ Public Class CompressReport
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(334, 40)
-        Me.ControlBox = false
         Me.Controls.Add(Me.imgLoading)
         Me.Controls.Add(Me.lblStatus)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-        Me.ShowInTaskbar = false
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = Global.PropertiesDotNet.My.Resources.Resources.compress
+        Me.MaximizeBox = false
+        Me.MinimizeBox = false
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Compressing..."
         CType(Me.imgLoading,System.ComponentModel.ISupportInitialize).EndInit

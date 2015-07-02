@@ -243,10 +243,10 @@ Public Class Hashes
         Me.Controls.Add(Me.btnAllCalculate)
         Me.Controls.Add(Me.grpSHA1)
         Me.Controls.Add(Me.grpMD5)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = Global.PropertiesDotNet.My.Resources.Resources.hashx64
         Me.MaximizeBox = false
         Me.Name = "Hashes"
-        Me.ShowInTaskbar = false
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Generate Hashes"
         Me.grpMD5.ResumeLayout(false)
