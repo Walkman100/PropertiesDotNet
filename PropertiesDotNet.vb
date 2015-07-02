@@ -14,10 +14,20 @@ Public Class PropertiesDotNet
             If lblLocation.Text = "Checking..." Then
                 lblLocation.Text = s
             Else
-                lblLocation.Text = lblLocation.Text & " " & s 
+                Process.Start(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", """" & s & """")
             End If
         Next
-        If lblLocation.Text <> "Checking..." Then CheckData
+        If lblLocation.Text = "Checking..." Then
+            Dim OpenFileDialog As New OpenFileDialog()
+            OpenFileDialog.Filter = "All Files|*.*"
+            OpenFileDialog.Title = "Select a file to view properties for:"
+            If OpenFileDialog.ShowDialog() = DialogResult.OK Then
+                lblLocation.Text = OpenFileDialog.FileName
+            Else
+                Application.Exit
+            End If
+        End If
+        CheckData
     End Sub
     
     Sub CheckData Handles chkUTC.CheckedChanged
@@ -296,7 +306,7 @@ Public Class PropertiesDotNet
         SaveFileDialog.InitialDirectory = FileProperties.DirectoryName
         SaveFileDialog.FileName = FileProperties.Name
         SaveFileDialog.Title = "Choose where to copy """ & FileProperties.Name & """ to:"
-        If (SaveFileDialog.ShowDialog() = DialogResult.OK) Then
+        If SaveFileDialog.ShowDialog() = DialogResult.OK Then
             ' No point in adding an access denied check here, since the SaveFileDialog doesn't allow you to select a location that needs admin access
             FileProperties.CopyTo(SaveFileDialog.FileName)
             If MsgBox("Read new file?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
@@ -336,7 +346,7 @@ Public Class PropertiesDotNet
         SaveFileDialog.InitialDirectory = FileProperties.DirectoryName
         SaveFileDialog.FileName = FileProperties.Name
         SaveFileDialog.Title = "Choose where to move """ & FileProperties.Name & """ to:"
-        If (SaveFileDialog.ShowDialog() = DialogResult.OK) Then
+        If SaveFileDialog.ShowDialog() = DialogResult.OK Then
             Try
                 FileProperties.MoveTo(SaveFileDialog.FileName)
                 lblLocation.Text = SaveFileDialog.FileName

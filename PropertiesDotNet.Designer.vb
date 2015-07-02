@@ -27,6 +27,7 @@ Partial Class PropertiesDotNet
         Me.chkHidden = New System.Windows.Forms.CheckBox()
         Me.chkSystem = New System.Windows.Forms.CheckBox()
         Me.grpReadOnly = New System.Windows.Forms.GroupBox()
+        Me.btnStartAssocProg = New System.Windows.Forms.Button()
         Me.btnCopyOpenWith = New System.Windows.Forms.Button()
         Me.btnOpenWith = New System.Windows.Forms.Button()
         Me.lblOpenWithLbl = New System.Windows.Forms.Label()
@@ -76,7 +77,6 @@ Partial Class PropertiesDotNet
         Me.btnCopy = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnRename = New System.Windows.Forms.Button()
-        Me.btnStartAssocProg = New System.Windows.Forms.Button()
         Me.grpReadOnly.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpChangeable.SuspendLayout
@@ -159,6 +159,16 @@ Partial Class PropertiesDotNet
         Me.grpReadOnly.TabStop = false
         Me.grpReadOnly.Text = "Properties:"
         '
+        'btnStartAssocProg
+        '
+        Me.btnStartAssocProg.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnStartAssocProg.Location = New System.Drawing.Point(298, 125)
+        Me.btnStartAssocProg.Name = "btnStartAssocProg"
+        Me.btnStartAssocProg.Size = New System.Drawing.Size(62, 23)
+        Me.btnStartAssocProg.TabIndex = 31
+        Me.btnStartAssocProg.Text = "Launch..."
+        Me.btnStartAssocProg.UseVisualStyleBackColor = true
+        '
         'btnCopyOpenWith
         '
         Me.btnCopyOpenWith.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
@@ -190,6 +200,7 @@ Partial Class PropertiesDotNet
         '
         'imgFile
         '
+        Me.imgFile.ErrorImage = Nothing
         Me.imgFile.Image = Global.PropertiesDotNet.My.Resources.Resources.loading4
         Me.imgFile.InitialImage = Nothing
         Me.imgFile.Location = New System.Drawing.Point(10, 130)
@@ -653,16 +664,6 @@ Partial Class PropertiesDotNet
         Me.btnRename.TabIndex = 0
         Me.btnRename.Text = "Rename..."
         Me.btnRename.UseVisualStyleBackColor = true
-        '
-        'btnStartAssocProg
-        '
-        Me.btnStartAssocProg.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnStartAssocProg.Location = New System.Drawing.Point(298, 125)
-        Me.btnStartAssocProg.Name = "btnStartAssocProg"
-        Me.btnStartAssocProg.Size = New System.Drawing.Size(62, 23)
-        Me.btnStartAssocProg.TabIndex = 31
-        Me.btnStartAssocProg.Text = "Launch..."
-        Me.btnStartAssocProg.UseVisualStyleBackColor = true
         '
         'PropertiesDotNet
         '
