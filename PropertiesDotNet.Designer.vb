@@ -27,6 +27,7 @@ Partial Class PropertiesDotNet
         Me.chkHidden = New System.Windows.Forms.CheckBox()
         Me.chkSystem = New System.Windows.Forms.CheckBox()
         Me.grpReadOnly = New System.Windows.Forms.GroupBox()
+        Me.btnCopyOpenWith = New System.Windows.Forms.Button()
         Me.btnOpenWith = New System.Windows.Forms.Button()
         Me.lblOpenWithLbl = New System.Windows.Forms.Label()
         Me.imgFile = New System.Windows.Forms.PictureBox()
@@ -75,6 +76,7 @@ Partial Class PropertiesDotNet
         Me.btnCopy = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnRename = New System.Windows.Forms.Button()
+        Me.btnStartAssocProg = New System.Windows.Forms.Button()
         Me.grpReadOnly.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpChangeable.SuspendLayout
@@ -118,6 +120,8 @@ Partial Class PropertiesDotNet
         '
         Me.grpReadOnly.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpReadOnly.Controls.Add(Me.btnStartAssocProg)
+        Me.grpReadOnly.Controls.Add(Me.btnCopyOpenWith)
         Me.grpReadOnly.Controls.Add(Me.btnOpenWith)
         Me.grpReadOnly.Controls.Add(Me.lblOpenWithLbl)
         Me.grpReadOnly.Controls.Add(Me.imgFile)
@@ -155,10 +159,20 @@ Partial Class PropertiesDotNet
         Me.grpReadOnly.TabStop = false
         Me.grpReadOnly.Text = "Properties:"
         '
+        'btnCopyOpenWith
+        '
+        Me.btnCopyOpenWith.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnCopyOpenWith.Location = New System.Drawing.Point(361, 125)
+        Me.btnCopyOpenWith.Name = "btnCopyOpenWith"
+        Me.btnCopyOpenWith.Size = New System.Drawing.Size(44, 23)
+        Me.btnCopyOpenWith.TabIndex = 30
+        Me.btnCopyOpenWith.Text = "Copy"
+        Me.btnCopyOpenWith.UseVisualStyleBackColor = true
+        '
         'btnOpenWith
         '
         Me.btnOpenWith.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnOpenWith.Location = New System.Drawing.Point(330, 125)
+        Me.btnOpenWith.Location = New System.Drawing.Point(285, 96)
         Me.btnOpenWith.Name = "btnOpenWith"
         Me.btnOpenWith.Size = New System.Drawing.Size(75, 23)
         Me.btnOpenWith.TabIndex = 28
@@ -192,7 +206,7 @@ Partial Class PropertiesDotNet
         Me.btnOpenDir.Name = "btnOpenDir"
         Me.btnOpenDir.Size = New System.Drawing.Size(62, 23)
         Me.btnOpenDir.TabIndex = 25
-        Me.btnOpenDir.Text = "Open"
+        Me.btnOpenDir.Text = "Open..."
         Me.btnOpenDir.UseVisualStyleBackColor = true
         '
         'btnLaunch
@@ -640,6 +654,16 @@ Partial Class PropertiesDotNet
         Me.btnRename.Text = "Rename..."
         Me.btnRename.UseVisualStyleBackColor = true
         '
+        'btnStartAssocProg
+        '
+        Me.btnStartAssocProg.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnStartAssocProg.Location = New System.Drawing.Point(298, 125)
+        Me.btnStartAssocProg.Name = "btnStartAssocProg"
+        Me.btnStartAssocProg.Size = New System.Drawing.Size(62, 23)
+        Me.btnStartAssocProg.TabIndex = 31
+        Me.btnStartAssocProg.Text = "Launch..."
+        Me.btnStartAssocProg.UseVisualStyleBackColor = true
+        '
         'PropertiesDotNet
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -661,6 +685,8 @@ Partial Class PropertiesDotNet
         Me.grpEditID.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
+    Private WithEvents btnStartAssocProg As System.Windows.Forms.Button
+    Private WithEvents btnCopyOpenWith As System.Windows.Forms.Button
     Private SaveFileDialog As System.Windows.Forms.SaveFileDialog
     Private WithEvents btnLaunch As System.Windows.Forms.Button
     Private WithEvents btnOpenDir As System.Windows.Forms.Button

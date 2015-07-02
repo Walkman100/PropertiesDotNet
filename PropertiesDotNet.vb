@@ -94,6 +94,15 @@ Public Class PropertiesDotNet
             MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
         End Try
     End Sub
+    Sub btnCopyOpenWith_Click() Handles btnCopyOpenWith.Click
+        Try
+            Clipboard.SetText(lblOpenWith.Text, TextDataFormat.UnicodeText)
+            MsgBox(lblOpenWith.Text & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
+        Catch ex As Exception
+            MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
+        End Try
+    End Sub
+    
     Sub btnOpenDir_Click() Handles btnOpenDir.Click
         Process.Start(lblDirectory.Text)
     End Sub
@@ -103,6 +112,9 @@ Public Class PropertiesDotNet
     Sub btnOpenWith_Click() Handles btnOpenWith.Click
         Shell("rundll32 shell32.dll,OpenAs_RunDLL " & lblFullPath.Text, AppWinStyle.NormalFocus, True, 500)
         'Process.Start("rundll32", "shell32.dll,OpenAs_RunDLL " & lblFullPath.Text)
+    End Sub
+    Sub btnStartAssocProg_Click() Handles btnStartAssocProg.Click
+        Process.Start(lblOpenWith.Text)
     End Sub
     Sub btnHashes_Click() Handles btnHashes.Click
         Hashes.Show
