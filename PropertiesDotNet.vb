@@ -121,7 +121,7 @@ Public Class PropertiesDotNet
     End Sub
     Sub btnOpenWith_Click() Handles btnOpenWith.Click
         Dim isDangerousExtension As New Boolean
-        Dim dangerousExtensions() As String = {".exe", ".bat", ".cmd", ".lnk", ".com"}
+        Dim dangerousExtensions() As String = {".exe", ".bat", ".cmd", ".lnk", ".com", ".scr"}
         For i = 1 To dangerousExtensions.Length
             If lblExtension.Text = dangerousExtensions(i-1) Then
                 isDangerousExtension = True
@@ -261,7 +261,7 @@ Public Class PropertiesDotNet
         If newName <> "" Then
             Try
                 FileProperties.MoveTo(FileProperties.DirectoryName & "\" & newName)
-                lblLocation.Text = FileProperties.DirectoryName & "\" & newName
+                lblLocation.Text = FileProperties.FullName
             Catch ex As exception
                 If ex.GetType.ToString = "System.UnauthorizedAccessException" Then
                     If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
@@ -317,19 +317,20 @@ Public Class PropertiesDotNet
     Sub btnCopy_MouseUp(sender As Object, e As MouseEventArgs) Handles btnCopy.MouseUp
         If e.Button = Windows.Forms.MouseButtons.Right Then
             Dim FileProperties As New FileInfo(lblLocation.Text)
-            Dim newName = InputBox("Copy to:", "Copy file", FileProperties.Name)
+            Dim newName = InputBox("Copy to:", "Copy file", FileProperties.FullName)
             If newName <> "" Then
                 Try
                     FileProperties.CopyTo(newName)
-                    lblLocation.Text = newName
+                    If MsgBox("Read new file?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+                        lblLocation.Text = newName
                 Catch ex As exception
                     If ex.GetType.ToString = "System.UnauthorizedAccessException" Then
                         If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
-                            MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                          MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                             CreateObject("Shell.Application").ShellExecute("xcopy", """" & lblFullPath.Text & _
-                                """ """ & newName & """", "", "runas")
+                              """ """ & newName & """", "", "runas")
                             If MsgBox("Read new file?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-                                lblLocation.Text = newName
+                              lblLocation.Text = newName
                         Else
                             ErrorParser(ex)
                         End If
