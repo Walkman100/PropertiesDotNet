@@ -183,6 +183,8 @@ Public Class PropertiesDotNet
                         FileProperties.Encrypt
                     Catch ex As IOException
                         MsgBox("Could not encrypt!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
+                    Catch ex As Exception
+                        ErrorParser(ex)
                     End Try
                 End If
             End If
@@ -194,6 +196,8 @@ Public Class PropertiesDotNet
                         FileProperties.Decrypt
                     Catch ex As IOException
                         MsgBox("Could not decrypt!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
+                    Catch ex As Exception
+                        ErrorParser(ex)
                     End Try
                 End If
             End If
