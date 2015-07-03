@@ -37,7 +37,7 @@ Public Class PropertiesDotNet
         lblFullPath.Text = FileProperties.FullName
         lblDirectory.Text = FileProperties.DirectoryName
         lblName.Text = FileProperties.Name
-        If lblName.Width>62 Then Me.Width = lblName.Width + 370
+        If lblFullPath.Width>256 Then Me.Width = lblFullPath.Width + 176
         lblExtension.Text = FileProperties.Extension
         lblSize.Text = FileProperties.Length
         imgFile.ImageLocation = FileProperties.FullName
