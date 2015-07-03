@@ -262,20 +262,18 @@ Public Class PropertiesDotNet
             Try
                 FileProperties.MoveTo(FileProperties.DirectoryName & "\" & newName)
                 lblLocation.Text = FileProperties.FullName
-            Catch ex As exception
-                If ex.GetType.ToString = "System.UnauthorizedAccessException" Then
-                    If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
-                      MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                        CreateObject("Shell.Application").ShellExecute("cmd", "/k ren """ & lblFullPath.Text & _
-                          """ """ & newName & """", "", "runas")
-                        If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-                          lblLocation.Text = FileProperties.DirectoryName & "\" & newName
-                    Else
-                        ErrorParser(ex)
-                    End If
+            Catch ex As UnauthorizedAccessException
+                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+                  MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                    CreateObject("Shell.Application").ShellExecute("cmd", "/k ren """ & lblFullPath.Text & _
+                      """ """ & newName & """", "", "runas")
+                    If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+                      lblLocation.Text = FileProperties.DirectoryName & "\" & newName
                 Else
                     ErrorParser(ex)
                 End If
+            Catch ex As exception
+                ErrorParser(ex)
             End Try
         End If
         CheckData
@@ -286,17 +284,15 @@ Public Class PropertiesDotNet
             Try
                 FileProperties.Delete
                 Application.Exit
-            Catch ex As exception
-                If ex.GetType.ToString = "System.UnauthorizedAccessException" Then
-                    If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
-                      MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                        CreateObject("Shell.Application").ShellExecute("cmd", "/k del """ & lblFullPath.Text & """", "", "runas")
-                    Else
-                        ErrorParser(ex)
-                    End If
+            Catch ex As UnauthorizedAccessException
+                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+                  MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                    CreateObject("Shell.Application").ShellExecute("cmd", "/k del """ & lblFullPath.Text & """", "", "runas")
                 Else
                     ErrorParser(ex)
                 End If
+            Catch ex As exception
+                ErrorParser(ex)
             End Try
         End If
         CheckData
@@ -323,9 +319,8 @@ Public Class PropertiesDotNet
                     FileProperties.CopyTo(newName)
                     If MsgBox("Read new file?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                         lblLocation.Text = newName
-                Catch ex As exception
-                    If ex.GetType.ToString = "System.UnauthorizedAccessException" Then
-                        If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+                Catch ex As UnauthorizedAccessException
+                    If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                           MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                             CreateObject("Shell.Application").ShellExecute("xcopy", """" & lblFullPath.Text & _
                               """ """ & newName & """", "", "runas")
@@ -334,9 +329,8 @@ Public Class PropertiesDotNet
                         Else
                             ErrorParser(ex)
                         End If
-                    Else
-                        ErrorParser(ex)
-                    End If
+                Catch ex As exception
+                    ErrorParser(ex)
                 End Try
             End If
             CheckData
@@ -351,20 +345,18 @@ Public Class PropertiesDotNet
             Try
                 FileProperties.MoveTo(SaveFileDialog.FileName)
                 lblLocation.Text = SaveFileDialog.FileName
-            Catch ex As exception
-                If ex.GetType.ToString = "System.UnauthorizedAccessException" Then
-                    If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
-                      MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                        CreateObject("Shell.Application").ShellExecute("cmd", "/k move """ & lblFullPath.Text & _
-                          """ """ & SaveFileDialog.FileName & """", "", "runas")
-                        If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-                          lblLocation.Text = SaveFileDialog.FileName
-                    Else
-                        ErrorParser(ex)
-                    End If
+            Catch ex As UnauthorizedAccessException
+                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+                  MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                    CreateObject("Shell.Application").ShellExecute("cmd", "/k move """ & lblFullPath.Text & _
+                      """ """ & SaveFileDialog.FileName & """", "", "runas")
+                    If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+                      lblLocation.Text = SaveFileDialog.FileName
                 Else
                     ErrorParser(ex)
                 End If
+            Catch ex As exception
+                ErrorParser(ex)
             End Try
         End If
         CheckData

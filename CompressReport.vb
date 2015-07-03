@@ -26,10 +26,11 @@ Public Class CompressReport
         Me.lblStatus.Text = "Starting compression..."
         'imgLoading
         Me.imgLoading.Name = "imgLoading"
+        'To get code autocomplete, comment out the following line:
         Me.imgLoading.Image = Global.PropertiesDotNet.My.Resources.Resources.loading4
         Me.imgLoading.Location = New System.Drawing.Point(12, 12)
         Me.imgLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.imgLoading.TabStop = false
+        Me.imgLoading.TabStop = False
         'bwCompress
         AddHandler Me.bwCompress.DoWork, AddressOf Me.bwCompress_DoWork
         'CompressReport
@@ -40,6 +41,7 @@ Public Class CompressReport
         Me.Controls.Add(Me.imgLoading)
         Me.Controls.Add(Me.lblStatus)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        'To get code autocomplete, comment out the following line:
         Me.Icon = Global.PropertiesDotNet.My.Resources.Resources.compress
         Me.MaximizeBox = false
         Me.MinimizeBox = false
@@ -112,9 +114,9 @@ Public Class CompressReport
             lblStatus.Text = "Failed! File in use!"
             Sleep(2000)
             Me.Close
-        Catch ex As exception
-            MsgBox(ex.tostring, MsgBoxStyle.Exclamation)
-            Me.close
+        Catch ex As Exception
+            MsgBox(ex.ToString, MsgBoxStyle.Exclamation)
+            Me.Close
         End Try
     End Sub
 End Class
