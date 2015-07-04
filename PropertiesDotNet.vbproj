@@ -38,6 +38,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <StartAction>Project</StartAction>
+    <StartArguments>"..\..\NSIS Installer for PropertiesDotNet.nsi"</StartArguments>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

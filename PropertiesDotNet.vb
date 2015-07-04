@@ -119,6 +119,9 @@ Public Class PropertiesDotNet
     Sub btnLaunch_Click() Handles btnLaunch.Click
         Process.Start(lblFullPath.Text)
     End Sub
+    Sub btnLaunchAdmin_Click() Handles btnLaunchAdmin.Click
+        CreateObject("Shell.Application").ShellExecute(lblOpenWith.Text, """" & lblFullPath.Text & """", "", "runas")
+    End Sub
     Sub btnOpenWith_Click() Handles btnOpenWith.Click
         Dim isDangerousExtension As New Boolean
         Dim dangerousExtensions() As String = {".exe", ".bat", ".cmd", ".lnk", ".com", ".scr"}
@@ -141,6 +144,9 @@ Public Class PropertiesDotNet
     End Sub
     Sub btnStartAssocProg_Click() Handles btnStartAssocProg.Click
         Process.Start(lblOpenWith.Text)
+    End Sub
+    Sub btnStartAssocProgAdmin_Click() Handles btnStartAssocProgAdmin.Click
+        CreateObject("Shell.Application").ShellExecute(lblOpenWith.Text, "", "", "runas")
     End Sub
     Sub btnHashes_Click() Handles btnHashes.Click
         Hashes.Show

@@ -77,6 +77,8 @@ Partial Class PropertiesDotNet
         Me.btnCopy = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnRename = New System.Windows.Forms.Button()
+        Me.btnStartAssocProgAdmin = New System.Windows.Forms.Button()
+        Me.btnLaunchAdmin = New System.Windows.Forms.Button()
         Me.grpReadOnly.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpChangeable.SuspendLayout
@@ -120,6 +122,8 @@ Partial Class PropertiesDotNet
         '
         Me.grpReadOnly.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpReadOnly.Controls.Add(Me.btnLaunchAdmin)
+        Me.grpReadOnly.Controls.Add(Me.btnStartAssocProgAdmin)
         Me.grpReadOnly.Controls.Add(Me.btnStartAssocProg)
         Me.grpReadOnly.Controls.Add(Me.btnCopyOpenWith)
         Me.grpReadOnly.Controls.Add(Me.btnOpenWith)
@@ -162,7 +166,7 @@ Partial Class PropertiesDotNet
         'btnStartAssocProg
         '
         Me.btnStartAssocProg.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnStartAssocProg.Location = New System.Drawing.Point(298, 125)
+        Me.btnStartAssocProg.Location = New System.Drawing.Point(276, 125)
         Me.btnStartAssocProg.Name = "btnStartAssocProg"
         Me.btnStartAssocProg.Size = New System.Drawing.Size(62, 23)
         Me.btnStartAssocProg.TabIndex = 31
@@ -223,7 +227,7 @@ Partial Class PropertiesDotNet
         'btnLaunch
         '
         Me.btnLaunch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnLaunch.Location = New System.Drawing.Point(298, 72)
+        Me.btnLaunch.Location = New System.Drawing.Point(275, 72)
         Me.btnLaunch.Name = "btnLaunch"
         Me.btnLaunch.Size = New System.Drawing.Size(62, 23)
         Me.btnLaunch.TabIndex = 24
@@ -666,6 +670,26 @@ Partial Class PropertiesDotNet
         Me.btnRename.Text = "Rename..."
         Me.btnRename.UseVisualStyleBackColor = true
         '
+        'btnStartAssocProgAdmin
+        '
+        Me.btnStartAssocProgAdmin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnStartAssocProgAdmin.Image = Global.PropertiesDotNet.My.Resources.Resources.admin
+        Me.btnStartAssocProgAdmin.Location = New System.Drawing.Point(337, 125)
+        Me.btnStartAssocProgAdmin.Name = "btnStartAssocProgAdmin"
+        Me.btnStartAssocProgAdmin.Size = New System.Drawing.Size(23, 23)
+        Me.btnStartAssocProgAdmin.TabIndex = 32
+        Me.btnStartAssocProgAdmin.UseVisualStyleBackColor = true
+        '
+        'btnLaunchAdmin
+        '
+        Me.btnLaunchAdmin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnLaunchAdmin.Image = Global.PropertiesDotNet.My.Resources.Resources.admin
+        Me.btnLaunchAdmin.Location = New System.Drawing.Point(337, 72)
+        Me.btnLaunchAdmin.Name = "btnLaunchAdmin"
+        Me.btnLaunchAdmin.Size = New System.Drawing.Size(23, 23)
+        Me.btnLaunchAdmin.TabIndex = 33
+        Me.btnLaunchAdmin.UseVisualStyleBackColor = true
+        '
         'PropertiesDotNet
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -688,6 +712,8 @@ Partial Class PropertiesDotNet
         Me.grpEditID.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
+    Private WithEvents btnLaunchAdmin As System.Windows.Forms.Button
+    Private WithEvents btnStartAssocProgAdmin As System.Windows.Forms.Button
     Private WithEvents btnStartAssocProg As System.Windows.Forms.Button
     Private WithEvents btnCopyOpenWith As System.Windows.Forms.Button
     Private SaveFileDialog As System.Windows.Forms.SaveFileDialog
