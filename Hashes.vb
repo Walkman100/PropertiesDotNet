@@ -389,11 +389,9 @@ Public Class Hashes
         Me.Close
     End Sub
     
-    ''' <summary>
-    ''' Original code, thanks to http://us.informatiweb.net/programmation/36--generate-hashes-md5-sha-1-and-sha-256-of-a-file.html
-    ''' Code that reports progress, thanks to http://www.infinitec.de/post/2007/06/09/Displaying-progress-updates-when-hashing-large-files.aspx
-    ''' </summary>
-
+    ' Original code, thanks to http://us.informatiweb.net/programmation/36--generate-hashes-md5-sha-1-and-sha-256-of-a-file.html
+    ' Code that reports progress, thanks to http://www.infinitec.de/post/2007/06/09/Displaying-progress-updates-when-hashing-large-files.aspx
+    
     Dim hashType As String
     Dim hashHex As String
     Dim hashObject
@@ -490,6 +488,8 @@ Public Class Hashes
         bwCalcHashes.RunWorkerAsync
     End Sub
     
+    ''' <summary>Set the correct labels text to the status, depending on the hashType</summary>
+    ''' <param name="status">The text to set the label to.</param>
     Sub HashGeneratorOutput(status As String)
         If hashType.StartsWith("MD5") Then
             lblMD5.Text = status

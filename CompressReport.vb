@@ -26,7 +26,7 @@ Public Class CompressReport
         Me.lblStatus.Text = "Starting compression..."
         'imgLoading
         Me.imgLoading.Name = "imgLoading"
-        'To get code autocomplete, comment out the following line:
+'To get code autocomplete, comment out the following line:
         Me.imgLoading.Image = Global.PropertiesDotNet.My.Resources.Resources.loading4
         Me.imgLoading.Location = New System.Drawing.Point(12, 12)
         Me.imgLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
@@ -41,7 +41,7 @@ Public Class CompressReport
         Me.Controls.Add(Me.imgLoading)
         Me.Controls.Add(Me.lblStatus)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        'To get code autocomplete, comment out the following line:
+'To get code autocomplete, comment out the following line:
         Me.Icon = Global.PropertiesDotNet.My.Resources.Resources.compress
         Me.MaximizeBox = false
         Me.MinimizeBox = false
@@ -56,11 +56,9 @@ Public Class CompressReport
     Friend lblStatus As System.Windows.Forms.Label
     Private imgLoading As System.Windows.Forms.PictureBox
     
-    ''' <summary>
-    ''' Imported Functions: DeviceIoControl:
-    '''  Used for (De)Compressing files
-    '''   http://www.thescarms.com/dotnet/NTFSCompress.aspx
-    ''' </summary>
+    ' Imported Functions: DeviceIoControl:
+    '  Used for (De)Compressing files
+    '   http://www.thescarms.com/dotnet/NTFSCompress.aspx
     <DllImport("Kernel32.dll")> _
     Public Shared Function DeviceIoControl(hDevice As IntPtr,dwIoControlCode As Integer,ByRef lpInBuffer As Short, _
     nInBufferSize As Integer,lpOutBuffer As IntPtr,nOutBufferSize As Integer,ByRef lpBytesReturned As Integer,lpOverlapped As IntPtr)As Integer
@@ -69,6 +67,11 @@ Public Class CompressReport
     Dim fileToCompressPath As String
     Dim CompressB As Boolean
     
+    ''' <summary>Compress or decompress the file passed.
+    ''' Shows the compress form, compresses in the background, then closes it.
+    ''' </summary>
+    ''' <param name="fileToCompressPathParam">The file to compress.</param>
+    ''' <param name="CompressBParam">Optional. True to compress, False to decompress. Default: True.</param>
     Sub Compress(fileToCompressPathParam As String, Optional CompressBParam As Boolean = True)
         fileToCompressPath = fileToCompressPathParam
         CompressB = CompressBParam
@@ -77,10 +80,8 @@ Public Class CompressReport
     
     Sub bwCompress_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs)
         Try
-            ''' <summary>
-            ''' Credits to http://www.thescarms.com/dotnet/NTFSCompress.aspx
-            ''' Converted to VB.Net with SharpDevelop (which I believe uses MSBuild anyway to convert)
-            ''' </summary>
+            ' Credits to http://www.thescarms.com/dotnet/NTFSCompress.aspx
+            ' Converted to VB.Net with SharpDevelop (which I believe uses MSBuild anyway to convert)
             If CompressB Then Me.Text = "Compressing..." Else Me.Text = "Decompressing..."
             lblStatus.Text = "[1/5] Opening File stream..."
             Dim FilePropertiesStream As FileStream = File.Open(fileToCompressPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None)

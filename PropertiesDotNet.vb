@@ -1,12 +1,11 @@
 ﻿Imports System.IO
 Imports System.IO.File
+Imports System.Security.Principal
 
 Public Class PropertiesDotNet
-    ''' <summary>
-    ''' Imported Functions: FindExecutable:
-    '''  Used for finding the program that a file opens with
-    '''   http://www.vb-helper.com/howto_get_associated_program.html
-    ''' </summary>
+    ' Imported Functions: FindExecutable:
+    '  Used for finding the program that a file opens with
+    '   http://www.vb-helper.com/howto_get_associated_program.html
     Private Declare Function FindExecutable Lib "shell32.dll" Alias "FindExecutableA"(lpFile As String, lpDirectory As String, lpResult As String) As Long
     
     Sub PropertiesDotNet_Load(sender As Object, e As EventArgs) Handles Me.Load
@@ -33,7 +32,8 @@ Public Class PropertiesDotNet
     Sub CheckData Handles chkUTC.CheckedChanged
         'Properties:
         Dim FileProperties As New FileInfo(lblLocation.Text)
-        Me.Text = "Properties: " & FileProperties.Name
+        If IsRunningAsAdmin Then Me.Text = "[Admin] Properties: " & FileProperties.Name Else _
+          Me.Text = "Properties: " & FileProperties.Name
         lblFullPath.Text = FileProperties.FullName
         lblDirectory.Text = FileProperties.DirectoryName
         lblName.Text = FileProperties.Name
@@ -114,7 +114,7 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub btnOpenDir_Click() Handles btnOpenDir.Click
-        Process.Start(lblDirectory.Text)
+        Process.Start("explorer.exe", "/select, " & lblFullPath.Text)
     End Sub
     Sub btnLaunch_Click() Handles btnLaunch.Click
         Process.Start(lblFullPath.Text)
@@ -369,7 +369,11 @@ Public Class PropertiesDotNet
         Application.Exit
     End Sub
     
-    Function SetAttribWCheck(path As String, fileAttributes As FileAttributes)
+    ''' <summary>Sets the specified System.IO.FileAttributes of the file on the specified path, with a try..catch block.</summary>
+    ''' <param name="path">The path to the file.</param>
+    ''' <param name="fileAttributes">A bitwise combination of the enumeration values.</param>
+    ''' <returns>True if setting the attribute was successful, False if not.</returns>
+    Function SetAttribWCheck(path As String, fileAttributes As FileAttributes) As Boolean
         Try
             SetAttributes(path, fileAttributes)
             Return True
@@ -379,11 +383,21 @@ Public Class PropertiesDotNet
         End Try
     End Function
     
+    ''' <summary>
+    ''' Checks if process is running with administrator priveledges.
+    ''' </summary>
+    ''' <returns>True if process is admin, False if not.</returns>
+    Public Shared Function IsRunningAsAdmin() As Boolean
+        ' Thanks to https://stackoverflow.com/a/22691609/2999220
+        Dim principal As New WindowsPrincipal(WindowsIdentity.GetCurrent)
+        Return principal.IsInRole(WindowsBuiltInRole.Administrator)
+    End Function
+    
     Sub ErrorParser(ex As Exception)
         ''' <summary>
         ''' Copied from DirectoryImage (see the end of the file)
         ''' </summary>
-        If ex.GetType.ToString = "System.UnauthorizedAccessException" Then
+        If ex.GetType.ToString = "System.UnauthorizedAccessException" AndAlso Not IsRunningAsAdmin Then
             If MsgBox(ex.message & vbnewline & vbnewline & "Try launching PropertiesDotNet As Administrator?", _
               MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                 CreateObject("Shell.Application").ShellExecute(Application.StartupPath & "\" & _
