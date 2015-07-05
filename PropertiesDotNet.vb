@@ -23,10 +23,23 @@ Public Class PropertiesDotNet
             If OpenFileDialog.ShowDialog() = DialogResult.OK Then
                 lblLocation.Text = OpenFileDialog.FileName
             Else
-                Application.Exit
+                Dim SelectFolderDialog As New FolderBrowserDialog
+                SelectFolderDialog.Description = "Select a folder to view properties for:"
+                If SelectFolderDialog.ShowDialog = DialogResult.OK Then
+                    lblLocation.Text = SelectFolderDialog.SelectedPath
+                Else
+                    Application.Exit
+                End If
             End If
         End If
-        CheckData
+        If Exists(lblLocation.Text) Then
+            CheckData
+        ElseIf Directory.Exists(lblLocation.Text)
+            CheckData
+        Else
+            MsgBox("File or directory """ & lblLocation.Text & """ not found!", MsgBoxStyle.Critical)
+            Application.Exit
+        End If
     End Sub
     
     Sub CheckData Handles chkUTC.CheckedChanged
@@ -39,7 +52,17 @@ Public Class PropertiesDotNet
         lblName.Text = FileProperties.Name
         If lblFullPath.Width>256 Then Me.Width = lblFullPath.Width + 176
         lblExtension.Text = FileProperties.Extension
-        lblSize.Text = FileProperties.Length
+        If Exists(lblLocation.Text) Then
+            lblSize.Text = FileProperties.Length
+            btnHashes.Enabled = True
+            chkTemporary.Enabled = True
+        ElseIf Directory.Exists(lblLocation.Text)
+            Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
+            lblSize.Text = "Computing..."
+            'bwDirSizeCalculation.RunWorkerASync
+            btnHashes.Enabled = False
+            chkTemporary.Enabled = False
+        End If
         imgFile.ImageLocation = FileProperties.FullName
         
         Dim result As String = Space$(1024)
