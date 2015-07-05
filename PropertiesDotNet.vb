@@ -71,9 +71,63 @@ Public Class PropertiesDotNet
         ElseIf Directory.Exists(lblLocation.Text)
             Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
             lblSize.Text = "Computing..."
-            'TODO: Add background worker, implement DirectoryImage code
+            'TODO: Add background worker
             'bwDirSizeCalculation.RunWorkerASync
-            'Copy DirectoryImage code, or link it
+            
+            Dim gotIconOrIsAbsolute As Boolean = False
+            Dim parsedIconPath As String = DirectoryProperties.FullName
+            If DirectoryProperties.FullName.endswith(":\") Then
+                If Exists(DirectoryProperties.FullName & "\Autorun.inf") Then
+                    For Each line In ReadLines(DirectoryProperties.FullName & "\Autorun.inf")
+                        If line.StartsWith("Icon=", True, Nothing) Then
+                            parsedIconPath = line.Substring(5)
+                            gotIconOrIsAbsolute = True
+                        End If
+                    Next
+                End If
+            Else
+                If Exists(DirectoryProperties.FullName & "\desktop.ini") Then
+                    gotIconOrIsAbsolute = False
+                    For Each line In ReadLines(DirectoryProperties.FullName & "\desktop.ini")
+                        If line.StartsWith("IconResource=", True, Nothing) Then
+                            parsedIconPath = line.Substring(13)
+                            gotIconOrIsAbsolute = True
+                        ElseIf line.StartsWith("IconFile=", True, Nothing) And gotIconOrIsAbsolute = False Then
+                            parsedIconPath = line.Substring(9)
+                            gotIconOrIsAbsolute = True
+                        End If
+                    Next
+                End If
+            End If
+            If gotIconOrIsAbsolute Then
+                gotIconOrIsAbsolute = False
+                If parsedIconPath.StartsWith("%") Then
+                    gotIconOrIsAbsolute = True
+                Else
+                    For i = 1 To 26 ' The Chr() below will give all letters from A to Z
+                        If parsedIconPath.StartsWith(Chr(i+64) & ":\") Then
+                            gotIconOrIsAbsolute = True
+                            Exit For
+                        End If
+                    Next
+                    If gotIconOrIsAbsolute = False Then
+                        For i = 1 To 26 ' The Chr() below will give all letters from a to z
+                            If parsedIconPath.StartsWith(Chr(i+96) & ":\") Then
+                                gotIconOrIsAbsolute = True
+                                Exit For
+                            End If
+                        Next
+                    End If
+                End If
+                If gotIconOrIsAbsolute Then
+                    imgFile.ImageLocation = parsedIconPath
+                Else
+                    imgFile.ImageLocation = DirectoryProperties.FullName & "\" & parsedIconPath
+                End If
+            Else
+                imgFile.Image = Nothing
+            End If
+            
             btnLaunchAdmin.Enabled = False
             lblExtensionLbl.Enabled = False
             lblExtension.Enabled = False
