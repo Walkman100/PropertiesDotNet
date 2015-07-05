@@ -52,18 +52,41 @@ Public Class PropertiesDotNet
         lblName.Text = FileProperties.Name
         If lblFullPath.Width>256 Then Me.Width = lblFullPath.Width + 176
         lblExtension.Text = FileProperties.Extension
+        
         If Exists(lblLocation.Text) Then
             lblSize.Text = FileProperties.Length
+            imgFile.ImageLocation = FileProperties.FullName
+            btnLaunchAdmin.Enabled = True
+            lblExtensionLbl.Enabled = True
+            lblExtension.Enabled = True
+            btnOpenWith.Enabled = True
+            btnCopyExtension.Enabled = True
+            lblOpenWithLbl.Enabled = True
+            lblOpenWith.Enabled = True
+            btnStartAssocProg.Enabled = True
+            btnStartAssocProgAdmin.Enabled = True
+            btnCopyOpenWith.Enabled = True
             btnHashes.Enabled = True
             chkTemporary.Enabled = True
         ElseIf Directory.Exists(lblLocation.Text)
             Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
             lblSize.Text = "Computing..."
+            'TODO: Add background worker, implement DirectoryImage code
             'bwDirSizeCalculation.RunWorkerASync
+            'Copy DirectoryImage code, or link it
+            btnLaunchAdmin.Enabled = False
+            lblExtensionLbl.Enabled = False
+            lblExtension.Enabled = False
+            btnOpenWith.Enabled = False
+            btnCopyExtension.Enabled = False
+            lblOpenWithLbl.Enabled = False
+            lblOpenWith.Enabled = False
+            btnStartAssocProg.Enabled = False
+            btnStartAssocProgAdmin.Enabled = False
+            btnCopyOpenWith.Enabled = False
             btnHashes.Enabled = False
             chkTemporary.Enabled = False
         End If
-        imgFile.ImageLocation = FileProperties.FullName
         
         Dim result As String = Space$(1024)
         FindExecutable(lblName.Text, lblDirectory.Text & "\", result)
@@ -315,7 +338,22 @@ Public Class PropertiesDotNet
         Dim FileProperties As New FileInfo(lblLocation.Text)
         If MsgBox("Are you sure you want to delete """ & FileProperties.Name & """?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
             Try
-                FileProperties.Delete
+                If Exists(lblLocation.Text) Then
+                    FileProperties.Delete
+                ElseIf Directory.Exists(lblLocation.Text)
+                    Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
+                    For Each SubFile As FileInfo In DirectoryProperties.GetFiles
+                        SubFile.Delete
+                    Next
+                    'TODO: Implement SubFolderFiles, and delete them
+                    'For Each SubFileInDir As FileInfo In GetSubFolderFiles(DirectoryProperties)
+                    '    SubFileInDir.CopyTo(SaveFileDialog.FileName & "\" & SubFileInDir.DirectoryName)
+                    'Next
+                    For Each SubFolder As DirectoryInfo In DirectoryProperties.GetDirectories
+                        SubFolder.Delete
+                    Next
+                    DirectoryProperties.Delete
+            End If
                 Application.Exit
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
@@ -337,8 +375,23 @@ Public Class PropertiesDotNet
         SaveFileDialog.Title = "Choose where to copy """ & FileProperties.Name & """ to:"
         If SaveFileDialog.ShowDialog() = DialogResult.OK Then
             ' No point in adding an access denied check here, since the SaveFileDialog doesn't allow you to select a location that needs admin access
-            FileProperties.CopyTo(SaveFileDialog.FileName)
-            If MsgBox("Read new file?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+            If Exists(lblLocation.Text) Then
+                FileProperties.CopyTo(SaveFileDialog.FileName)
+            ElseIf Directory.Exists(lblLocation.Text)
+                Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
+                Directory.CreateDirectory(SaveFileDialog.FileName)
+                For Each SubFile As FileInfo In DirectoryProperties.GetFiles
+                    SubFile.CopyTo(SaveFileDialog.FileName & "\" & SubFile.Name)
+                Next
+                For Each SubFolder As DirectoryInfo In DirectoryProperties.GetDirectories
+                    Directory.CreateDirectory(SaveFileDialog.FileName & "\" & SubFolder.Name)
+                Next
+                'TODO: Impelement SubFolderFiles, and copy them
+                'For Each SubFileInDir As FileInfo In GetSubFolderFiles(DirectoryProperties)
+                '    SubFileInDir.CopyTo(SaveFileDialog.FileName & "\" & SubFileInDir.DirectoryName)
+                'Next
+            End If
+            If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
               lblLocation.Text = SaveFileDialog.FileName
         End If
         CheckData
