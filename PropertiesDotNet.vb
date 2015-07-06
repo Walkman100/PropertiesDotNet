@@ -71,8 +71,10 @@ Public Class PropertiesDotNet
         ElseIf Directory.Exists(lblLocation.Text)
             Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
             lblSize.Text = "Computing..."
-            'TODO: Add background worker
-            'bwDirSizeCalculation.RunWorkerASync
+            lblSize.Text = 0
+            For Each SubFile As FileInfo In DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
+                lblSize.Text += SubFile.Length
+            Next
             
             Dim gotIconOrIsAbsolute As Boolean = False
             Dim parsedIconPath As String = DirectoryProperties.FullName
