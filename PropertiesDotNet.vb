@@ -396,16 +396,13 @@ Public Class PropertiesDotNet
                     FileProperties.Delete
                 ElseIf Directory.Exists(lblLocation.Text)
                     Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
-                    For Each SubFile As FileInfo In DirectoryProperties.GetFiles
+                    For Each SubFile As FileInfo In DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
                         SubFile.Delete
                     Next
-                    'TODO: Implement SubFolderFiles, and delete them
-                    'For Each SubFileInDir As FileInfo In GetSubFolderFiles(DirectoryProperties)
-                    '    SubFileInDir.CopyTo(SaveFileDialog.FileName & "\" & SubFileInDir.DirectoryName)
-                    'Next
-                    For Each SubFolder As DirectoryInfo In DirectoryProperties.GetDirectories
+                    For Each SubFolder As DirectoryInfo In DirectoryProperties.GetDirectories("*", SearchOption.AllDirectories)
                         SubFolder.Delete
                     Next
+                    Sleep(100)
                     DirectoryProperties.Delete
             End If
                 Application.Exit
@@ -434,16 +431,12 @@ Public Class PropertiesDotNet
             ElseIf Directory.Exists(lblLocation.Text)
                 Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
                 Directory.CreateDirectory(SaveFileDialog.FileName)
-                For Each SubFile As FileInfo In DirectoryProperties.GetFiles
-                    SubFile.CopyTo(SaveFileDialog.FileName & "\" & SubFile.Name)
+                For Each SubFolder As DirectoryInfo In DirectoryProperties.GetDirectories("*", SearchOption.AllDirectories)
+                    Directory.CreateDirectory(SaveFileDialog.FileName & SubFolder.FullName.Substring(DirectoryProperties.FullName.Length))
                 Next
-                For Each SubFolder As DirectoryInfo In DirectoryProperties.GetDirectories
-                    Directory.CreateDirectory(SaveFileDialog.FileName & "\" & SubFolder.Name)
+                For Each SubFile As FileInfo In DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
+                    SubFile.CopyTo(SaveFileDialog.FileName & SubFile.FullName.Substring(DirectoryProperties.FullName.Length))
                 Next
-                'TODO: Impelement SubFolderFiles, and copy them
-                'For Each SubFileInDir As FileInfo In GetSubFolderFiles(DirectoryProperties)
-                '    SubFileInDir.CopyTo(SaveFileDialog.FileName & "\" & SubFileInDir.DirectoryName)
-                'Next
             End If
             If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
               lblLocation.Text = SaveFileDialog.FileName
@@ -456,7 +449,18 @@ Public Class PropertiesDotNet
             Dim newName = InputBox("Copy to:", "Copy file", FileProperties.FullName)
             If newName <> "" Then
                 Try
-                    FileProperties.CopyTo(newName)
+                    If Exists(lblLocation.Text) Then
+                        FileProperties.CopyTo(newName)
+                    ElseIf Directory.Exists(lblLocation.Text)
+                        Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
+                        Directory.CreateDirectory(newName)
+                        For Each SubFolder As DirectoryInfo In DirectoryProperties.GetDirectories("*", SearchOption.AllDirectories)
+                            Directory.CreateDirectory(newName & SubFolder.FullName.Substring(DirectoryProperties.FullName.Length))
+                        Next
+                        For Each SubFile As FileInfo In DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
+                            SubFile.CopyTo(newName & SubFile.FullName.Substring(DirectoryProperties.FullName.Length))
+                        Next
+                    End If
                     If MsgBox("Read new file?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                         lblLocation.Text = newName
                 Catch ex As UnauthorizedAccessException
