@@ -1,0 +1,3 @@
+[submodule "W7PB"]
+	path = W7PB
+	url = https://github.com/Walkman100/Windows7ProgressBar.git

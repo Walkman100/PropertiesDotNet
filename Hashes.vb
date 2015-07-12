@@ -222,6 +222,7 @@ Public Class Hashes
         AddHandler Me.btnSHA512Calculate.Click, AddressOf Me.btnSHA512Calculate_Click
         'btnCancel
         Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Enabled = false
         Me.btnCancel.Location = New System.Drawing.Point(136, 257)
         Me.btnCancel.Name = "btnCancel"
@@ -231,8 +232,10 @@ Public Class Hashes
         Me.btnCancel.UseVisualStyleBackColor = true
         AddHandler Me.btnCancel.Click, AddressOf Me.BtnCancel_Click
         'Hashes
+        Me.AcceptButton = Me.btnAllCalculate
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(515, 293)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.grpSHA512)

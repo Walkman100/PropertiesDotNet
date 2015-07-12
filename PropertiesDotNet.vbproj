@@ -50,6 +50,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Windows7ProgressBar">
+      <HintPath>W7PB\bin\Debug\Windows7ProgressBar.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompressReport.vb">

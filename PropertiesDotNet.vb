@@ -526,7 +526,7 @@ Public Class PropertiesDotNet
     End Function
     
     ''' <summary>
-    ''' Checks if process is running with administrator priveledges.
+    ''' Checks if process is running with administrator privileges.
     ''' </summary>
     ''' <returns>True if process is admin, False if not.</returns>
     Public Shared Function IsRunningAsAdmin() As Boolean
