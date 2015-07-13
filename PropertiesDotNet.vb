@@ -406,7 +406,7 @@ Public Class PropertiesDotNet
                     Next
                     Sleep(100)
                     DirectoryProperties.Delete
-            End If
+                End If
                 Application.Exit
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
@@ -531,8 +531,7 @@ Public Class PropertiesDotNet
     ''' <returns>True if process is admin, False if not.</returns>
     Public Shared Function IsRunningAsAdmin() As Boolean
         ' Thanks to https://stackoverflow.com/a/22691609/2999220
-        Dim principal As New WindowsPrincipal(WindowsIdentity.GetCurrent)
-        Return principal.IsInRole(WindowsBuiltInRole.Administrator)
+        Return New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(WindowsBuiltInRole.Administrator)
     End Function
     
     Sub ErrorParser(ex As Exception)

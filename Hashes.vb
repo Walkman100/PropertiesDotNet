@@ -175,10 +175,12 @@ Public Class Hashes
         AddHandler Me.btnClose.Click, AddressOf Me.btnClose_Click
         'pbCalculateProgress
         '''
-        ' Taskbar Progress code: comment out next three lines to use the normal ProgressBar
+        ' Taskbar Progress code: uncomment the next line and the #End If below to use the normal ProgressBar
+        '#If IsReference = True
             Me.pbCalculateProgress = New wyDay.Controls.Windows7ProgressBar()
             Me.pbCalculateProgress.ContainerControl = Me
-            Me.pbCalculateProgress.ShowInTaskbar = true
+            Me.pbCalculateProgress.ShowInTaskbar = True
+        '#End If
         '''
         Me.pbCalculateProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.pbCalculateProgress.Location = New System.Drawing.Point(9, 228)
