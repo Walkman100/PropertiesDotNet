@@ -174,6 +174,12 @@ Public Class Hashes
         Me.btnClose.UseVisualStyleBackColor = true
         AddHandler Me.btnClose.Click, AddressOf Me.btnClose_Click
         'pbCalculateProgress
+        '''
+        ' Taskbar Progress code: comment out next three lines to use the normal ProgressBar
+            Me.pbCalculateProgress = New wyDay.Controls.Windows7ProgressBar()
+            Me.pbCalculateProgress.ContainerControl = Me
+            Me.pbCalculateProgress.ShowInTaskbar = true
+        '''
         Me.pbCalculateProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.pbCalculateProgress.Location = New System.Drawing.Point(9, 228)
         Me.pbCalculateProgress.Name = "pbCalculateProgress"
@@ -250,7 +256,8 @@ Public Class Hashes
         Me.Icon = Global.PropertiesDotNet.My.Resources.Resources.hashx64
         Me.MaximizeBox = false
         Me.Name = "Hashes"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
+        Me.Location = New System.Drawing.Size((My.Computer.Screen.WorkingArea.Width/2) - 257.5, (My.Computer.Screen.WorkingArea.Height/2) - 146.5)
         Me.Text = "Generate Hashes"
         Me.grpMD5.ResumeLayout(false)
         Me.grpMD5.PerformLayout
@@ -268,7 +275,8 @@ Public Class Hashes
     Private btnSHA512Copy As System.Windows.Forms.Button
     Private grpSHA512 As System.Windows.Forms.GroupBox
     Private bwCalcHashes As System.ComponentModel.BackgroundWorker
-    Private pbCalculateProgress As System.Windows.Forms.ProgressBar
+    'wyDay.Controls.Windows7ProgressBar or System.Windows.Forms.ProgressBar
+    Private pbCalculateProgress As Object
     Private btnClose As System.Windows.Forms.Button
     Private btnAllCalculate As System.Windows.Forms.Button
     Private btnAllCopy As System.Windows.Forms.Button
