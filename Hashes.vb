@@ -296,37 +296,32 @@ Public Class Hashes
     
     Sub btnMD5Calculate_Click()
         hashType = "MD5"
-        hashHex = PropertiesDotNet.lblLocation.Text
         btnCancel.Text = "Restart"
-        bwCalcHashes.RunWorkerAsync
+        bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
     End Sub
     
     Sub btnSHA1Calculate_Click()
         hashType = "SHA1"
-        hashHex = PropertiesDotNet.lblLocation.Text
         btnCancel.Text = "Restart"
-        bwCalcHashes.RunWorkerAsync
+        bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
     End Sub
     
     Sub btnSHA256Calculate_Click()
         hashType = "SHA256"
-        hashHex = PropertiesDotNet.lblLocation.Text
         btnCancel.Text = "Restart"
-        bwCalcHashes.RunWorkerAsync
+        bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
     End Sub
     
     Sub btnSHA512Calculate_Click()
         hashType = "SHA512"
-        hashHex = PropertiesDotNet.lblLocation.Text
         btnCancel.Text = "Restart"
-        bwCalcHashes.RunWorkerAsync
+        bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
     End Sub
     
     Sub btnAllCalculate_Click()
         hashType = "MD5,SHA1,SHA256,SHA512"
-        hashHex = PropertiesDotNet.lblLocation.Text
         btnCancel.Text = "Cancel Further Hashes"
-        bwCalcHashes.RunWorkerAsync
+        bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
     End Sub
     
     Sub btnCancel_Click()
@@ -418,7 +413,7 @@ Public Class Hashes
     Dim bytesRead As Integer
     Dim totalBytesRead As Long = 0
     
-    Sub bwCalcHashes_DoWork()
+    Sub bwCalcHashes_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs)
         Try
             ' Set up GUI
             btnMD5Calculate.Enabled = False
@@ -441,7 +436,7 @@ Public Class Hashes
             End If
             
             HashGeneratorOutput("Opening file...")
-            Dim FilePropertiesStream As FileStream = File.OpenRead(hashHex)
+            Dim FilePropertiesStream As FileStream = File.OpenRead(e.Argument.ToString)
             
             HashGeneratorOutput("Setting file position...")
             FilePropertiesStream.Position = 0
@@ -504,8 +499,7 @@ Public Class Hashes
         Else
             Exit Sub
         End If
-        hashHex = PropertiesDotNet.lblLocation.Text
-        bwCalcHashes.RunWorkerAsync
+        bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
     End Sub
     
     ''' <summary>Set the correct labels text to the status, depending on the hashType</summary>
