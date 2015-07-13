@@ -149,9 +149,9 @@ Public Class Hashes
         AddHandler Me.btnSHA256Calculate.Click, AddressOf Me.btnSHA256Calculate_Click
         'btnAllCopy
         Me.btnAllCopy.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnAllCopy.Location = New System.Drawing.Point(261, 257)
+        Me.btnAllCopy.Location = New System.Drawing.Point(265, 257)
         Me.btnAllCopy.Name = "btnAllCopy"
-        Me.btnAllCopy.Size = New System.Drawing.Size(118, 23)
+        Me.btnAllCopy.Size = New System.Drawing.Size(116, 23)
         Me.btnAllCopy.TabIndex = 2
         Me.btnAllCopy.Text = "Copy All"
         Me.btnAllCopy.UseVisualStyleBackColor = true
@@ -159,16 +159,16 @@ Public Class Hashes
         'btnAllCalculate
         Me.btnAllCalculate.Location = New System.Drawing.Point(12, 257)
         Me.btnAllCalculate.Name = "btnAllCalculate"
-        Me.btnAllCalculate.Size = New System.Drawing.Size(118, 23)
+        Me.btnAllCalculate.Size = New System.Drawing.Size(116, 23)
         Me.btnAllCalculate.TabIndex = 0
         Me.btnAllCalculate.Text = "Calculate All..."
         Me.btnAllCalculate.UseVisualStyleBackColor = true
         AddHandler Me.btnAllCalculate.Click, AddressOf Me.btnAllCalculate_Click
         'btnClose
         Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnClose.Location = New System.Drawing.Point(385, 257)
+        Me.btnClose.Location = New System.Drawing.Point(387, 257)
         Me.btnClose.Name = "btnClose"
-        Me.btnClose.Size = New System.Drawing.Size(118, 23)
+        Me.btnClose.Size = New System.Drawing.Size(116, 23)
         Me.btnClose.TabIndex = 4
         Me.btnClose.Text = "Close"
         Me.btnClose.UseVisualStyleBackColor = true
@@ -227,14 +227,13 @@ Public Class Hashes
         Me.btnSHA512Calculate.UseVisualStyleBackColor = true
         AddHandler Me.btnSHA512Calculate.Click, AddressOf Me.btnSHA512Calculate_Click
         'btnCancel
-        Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Enabled = false
-        Me.btnCancel.Location = New System.Drawing.Point(136, 257)
+        Me.btnCancel.Location = New System.Drawing.Point(134, 257)
         Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(118, 23)
+        Me.btnCancel.Size = New System.Drawing.Size(125, 23)
         Me.btnCancel.TabIndex = 7
-        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.Text = "Restart"
         Me.btnCancel.UseVisualStyleBackColor = true
         AddHandler Me.btnCancel.Click, AddressOf Me.BtnCancel_Click
         'Hashes
@@ -296,30 +295,35 @@ Public Class Hashes
     Sub btnMD5Calculate_Click()
         hashType = "MD5"
         hashHex = PropertiesDotNet.lblLocation.Text
+        btnCancel.Text = "Restart"
         bwCalcHashes.RunWorkerAsync
     End Sub
     
     Sub btnSHA1Calculate_Click()
         hashType = "SHA1"
         hashHex = PropertiesDotNet.lblLocation.Text
+        btnCancel.Text = "Restart"
         bwCalcHashes.RunWorkerAsync
     End Sub
     
     Sub btnSHA256Calculate_Click()
         hashType = "SHA256"
         hashHex = PropertiesDotNet.lblLocation.Text
+        btnCancel.Text = "Restart"
         bwCalcHashes.RunWorkerAsync
     End Sub
     
     Sub btnSHA512Calculate_Click()
         hashType = "SHA512"
         hashHex = PropertiesDotNet.lblLocation.Text
+        btnCancel.Text = "Restart"
         bwCalcHashes.RunWorkerAsync
     End Sub
     
     Sub btnAllCalculate_Click()
         hashType = "MD5,SHA1,SHA256,SHA512"
         hashHex = PropertiesDotNet.lblLocation.Text
+        btnCancel.Text = "Cancel Further Hashes"
         bwCalcHashes.RunWorkerAsync
     End Sub
     
@@ -335,18 +339,20 @@ Public Class Hashes
         Else
             Exit Sub
         End If
-        Do Until bwCalcHashes.CancellationPending
+        If btnCancel.Text = "Restart" Then
             bwCalcHashes.CancelAsync
-        Loop
-        btnMD5Calculate.Enabled = True
-        btnSHA1Calculate.Enabled = True
-        btnSHA256Calculate.Enabled = True
-        btnSHA512Calculate.Enabled = True
-        btnAllCalculate.Enabled = True
-        btnCancel.Enabled = False
-        If bwCalcHashes.IsBusy Then
-            If MsgBox("Couldn't cancel current operation!" & vbNewLine & vbNewLine & "Restart PropertiesDotNet?", _
-              MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation) = MsgBoxResult.Yes Then Application.Restart()
+            Do Until bwCalcHashes.CancellationPending
+                bwCalcHashes.CancelAsync
+            Loop
+            If bwCalcHashes.IsBusy Then
+                If My.Application.CommandLineArgs.Count < 1 OrElse PropertiesDotNet.lblLocation.Text <> My.Application.CommandLineArgs(0) Then
+                    Process.Start(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", PropertiesDotNet.lblLocation.Text)
+                    Application.Exit
+                Else: Application.Restart
+                End If
+            End If
+        Else
+            btnCancel.Text = "Restart"
         End If
     End Sub
     
@@ -490,6 +496,7 @@ Public Class Hashes
             hashType = hashType.Substring(5)
         ElseIf hashType.StartsWith("SHA256") AndAlso hashType.Length>6
             hashType = hashType.Substring(7)
+            btnCancel.Text = "Restart"
         ElseIf hashType.StartsWith("SHA512") AndAlso hashType.Length>6
             hashType = hashType.Substring(7)
         Else
