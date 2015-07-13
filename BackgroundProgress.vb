@@ -74,7 +74,7 @@ Public Class BackgroundProgress
     ''' delete, deletePath
     ''' copy, copyFromPath, copyToPath
     Sub bwFolderOperations_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bwFolderOperations.DoWork
-        Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
+        Dim DirectoryProperties As New DirectoryInfo(e.Argument(1))
         Try
             If e.Argument(0) = "delete" Then
                 Me.Text = "Deleting """ & DirectoryProperties.Name & """..."
