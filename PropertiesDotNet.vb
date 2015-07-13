@@ -72,9 +72,9 @@ Public Class PropertiesDotNet
             chkTemporary.Enabled = True
         ElseIf Directory.Exists(lblLocation.Text)
             Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
-            If bwFolderOperations.IsBusy = False Then
+            If bwCalcSize.IsBusy = False Then
                 lblSize.Text = "Computing..."
-                bwFolderOperations.RunWorkerAsync("calcSize")
+                bwCalcSize.RunWorkerAsync("calcSize")
             End If
             
             Dim gotIconOrIsAbsolute As Boolean = False
@@ -404,10 +404,11 @@ Public Class PropertiesDotNet
             Try
                 If Exists(lblLocation.Text) Then
                     FileProperties.Delete
-                    Application.Exit
                 ElseIf Directory.Exists(lblLocation.Text)
-                    bwFolderOperations.RunWorkerAsync("delete")
+                    BackgroundProgress.bwFolderOperations.RunWorkerAsync({"delete", lblLocation.Text})
+                    BackgroundProgress.ShowDialog
                 End If
+                Application.Exit
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
@@ -430,11 +431,12 @@ Public Class PropertiesDotNet
             ' No point in adding an access denied check here, since the SaveFileDialog doesn't allow you to select a location that needs admin access
             If Exists(lblLocation.Text) Then
                 FileProperties.CopyTo(SaveFileDialog.FileName)
-                If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-                  lblLocation.Text = SaveFileDialog.FileName
             ElseIf Directory.Exists(lblLocation.Text)
-                bwFolderOperations.RunWorkerAsync("copy," & SaveFileDialog.FileName)
+                BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", lblLocation.Text, SaveFileDialog.FileName})
+                BackgroundProgress.ShowDialog
             End If
+            If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+              lblLocation.Text = SaveFileDialog.FileName
         End If
         CheckData
     End Sub
@@ -446,17 +448,18 @@ Public Class PropertiesDotNet
                 Try
                     If Exists(lblLocation.Text) Then
                         FileProperties.CopyTo(newName)
-                        If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-                          lblLocation.Text = newName
                     ElseIf Directory.Exists(lblLocation.Text)
-                        bwFolderOperations.RunWorkerAsync("copy," & newName)
+                        BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", lblLocation.Text, newName})
+                        BackgroundProgress.ShowDialog
                     End If
+                    If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+                      lblLocation.Text = newName
                 Catch ex As UnauthorizedAccessException
                     If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                           MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                             CreateObject("Shell.Application").ShellExecute("xcopy", """" & lblFullPath.Text & _
                               """ """ & newName & """", "", "runas")
-                            If MsgBox("Read new file?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+                            If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                               lblLocation.Text = newName
                         Else
                             ErrorParser(ex)
@@ -497,40 +500,15 @@ Public Class PropertiesDotNet
         Application.Exit
     End Sub
     
-    ''' calcSize
-    ''' delete
-    ''' copy,copyToPath
-    Sub bwFolderOperations_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bwFolderOperations.DoWork
+    Sub bwCalcSize_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bwCalcSize.DoWork
         Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
         Try
-            If e.Argument = "calcSize" Then
-                lblSize.Text = "Getting file list... (May take a while)"
-                Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
-                lblSize.Text = 0
-                For Each SubFile As FileInfo In SubFiles 'DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
-                    lblSize.Text += SubFile.Length
-                Next
-            ElseIf e.Argument = "delete" Then
-                For Each SubFile As FileInfo In DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
-                    SubFile.Delete
-                Next
-                For Each SubFolder As DirectoryInfo In DirectoryProperties.GetDirectories("*", SearchOption.AllDirectories)
-                    SubFolder.Delete
-                Next
-                Sleep(100)
-                DirectoryProperties.Delete
-                Application.Exit
-            ElseIf e.Argument.StartsWith("copy,") Then
-                Directory.CreateDirectory(e.Argument.ToString.Substring(5))
-                For Each SubFolder As DirectoryInfo In DirectoryProperties.GetDirectories("*", SearchOption.AllDirectories)
-                    Directory.CreateDirectory(e.Argument.ToString.Substring(5) & SubFolder.FullName.Substring(DirectoryProperties.FullName.Length))
-                Next
-                For Each SubFile As FileInfo In DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
-                    SubFile.CopyTo(e.Argument.ToString.Substring(5) & SubFile.FullName.Substring(DirectoryProperties.FullName.Length))
-                Next
-                If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-                  lblLocation.Text = e.Argument.ToString.Substring(5)
-            End If
+            lblSize.Text = "Getting file list... (May take a while)"
+            Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
+            lblSize.Text = 0
+            For Each SubFile As FileInfo In SubFiles 'DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
+                lblSize.Text += SubFile.Length
+            Next
         Catch ex As Exception
             ErrorParser(ex)
         End Try

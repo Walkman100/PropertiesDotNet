@@ -79,7 +79,7 @@ Partial Class PropertiesDotNet
         Me.btnCopy = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnRename = New System.Windows.Forms.Button()
-        Me.bwFolderOperations = New System.ComponentModel.BackgroundWorker()
+        Me.bwCalcSize = New System.ComponentModel.BackgroundWorker()
         Me.grpReadOnly.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpChangeable.SuspendLayout
@@ -691,10 +691,10 @@ Partial Class PropertiesDotNet
         Me.btnRename.Text = "Rename..."
         Me.btnRename.UseVisualStyleBackColor = true
         '
-        'bwFolderOperations
+        'bwCalcSize
         '
-        Me.bwFolderOperations.WorkerReportsProgress = true
-        Me.bwFolderOperations.WorkerSupportsCancellation = true
+        Me.bwCalcSize.WorkerReportsProgress = true
+        Me.bwCalcSize.WorkerSupportsCancellation = true
         '
         'PropertiesDotNet
         '
@@ -718,7 +718,7 @@ Partial Class PropertiesDotNet
         Me.grpEditID.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
-    Private WithEvents bwFolderOperations As System.ComponentModel.BackgroundWorker
+    Private WithEvents bwCalcSize As System.ComponentModel.BackgroundWorker
     Private WithEvents btnLaunchAdmin As System.Windows.Forms.Button
     Private WithEvents btnStartAssocProgAdmin As System.Windows.Forms.Button
     Private WithEvents btnStartAssocProg As System.Windows.Forms.Button
