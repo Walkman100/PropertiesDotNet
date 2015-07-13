@@ -27,6 +27,8 @@ Partial Class PropertiesDotNet
         Me.chkHidden = New System.Windows.Forms.CheckBox()
         Me.chkSystem = New System.Windows.Forms.CheckBox()
         Me.grpReadOnly = New System.Windows.Forms.GroupBox()
+        Me.btnLaunchAdmin = New System.Windows.Forms.Button()
+        Me.btnStartAssocProgAdmin = New System.Windows.Forms.Button()
         Me.btnStartAssocProg = New System.Windows.Forms.Button()
         Me.btnCopyOpenWith = New System.Windows.Forms.Button()
         Me.btnOpenWith = New System.Windows.Forms.Button()
@@ -77,8 +79,7 @@ Partial Class PropertiesDotNet
         Me.btnCopy = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnRename = New System.Windows.Forms.Button()
-        Me.btnStartAssocProgAdmin = New System.Windows.Forms.Button()
-        Me.btnLaunchAdmin = New System.Windows.Forms.Button()
+        Me.bwFolderOperations = New System.ComponentModel.BackgroundWorker()
         Me.grpReadOnly.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpChangeable.SuspendLayout
@@ -162,6 +163,26 @@ Partial Class PropertiesDotNet
         Me.grpReadOnly.TabIndex = 3
         Me.grpReadOnly.TabStop = false
         Me.grpReadOnly.Text = "Properties:"
+        '
+        'btnLaunchAdmin
+        '
+        Me.btnLaunchAdmin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnLaunchAdmin.Image = Global.PropertiesDotNet.My.Resources.Resources.admin
+        Me.btnLaunchAdmin.Location = New System.Drawing.Point(337, 72)
+        Me.btnLaunchAdmin.Name = "btnLaunchAdmin"
+        Me.btnLaunchAdmin.Size = New System.Drawing.Size(23, 23)
+        Me.btnLaunchAdmin.TabIndex = 33
+        Me.btnLaunchAdmin.UseVisualStyleBackColor = true
+        '
+        'btnStartAssocProgAdmin
+        '
+        Me.btnStartAssocProgAdmin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnStartAssocProgAdmin.Image = Global.PropertiesDotNet.My.Resources.Resources.admin
+        Me.btnStartAssocProgAdmin.Location = New System.Drawing.Point(337, 125)
+        Me.btnStartAssocProgAdmin.Name = "btnStartAssocProgAdmin"
+        Me.btnStartAssocProgAdmin.Size = New System.Drawing.Size(23, 23)
+        Me.btnStartAssocProgAdmin.TabIndex = 32
+        Me.btnStartAssocProgAdmin.UseVisualStyleBackColor = true
         '
         'btnStartAssocProg
         '
@@ -670,25 +691,10 @@ Partial Class PropertiesDotNet
         Me.btnRename.Text = "Rename..."
         Me.btnRename.UseVisualStyleBackColor = true
         '
-        'btnStartAssocProgAdmin
+        'bwFolderOperations
         '
-        Me.btnStartAssocProgAdmin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnStartAssocProgAdmin.Image = Global.PropertiesDotNet.My.Resources.Resources.admin
-        Me.btnStartAssocProgAdmin.Location = New System.Drawing.Point(337, 125)
-        Me.btnStartAssocProgAdmin.Name = "btnStartAssocProgAdmin"
-        Me.btnStartAssocProgAdmin.Size = New System.Drawing.Size(23, 23)
-        Me.btnStartAssocProgAdmin.TabIndex = 32
-        Me.btnStartAssocProgAdmin.UseVisualStyleBackColor = true
-        '
-        'btnLaunchAdmin
-        '
-        Me.btnLaunchAdmin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnLaunchAdmin.Image = Global.PropertiesDotNet.My.Resources.Resources.admin
-        Me.btnLaunchAdmin.Location = New System.Drawing.Point(337, 72)
-        Me.btnLaunchAdmin.Name = "btnLaunchAdmin"
-        Me.btnLaunchAdmin.Size = New System.Drawing.Size(23, 23)
-        Me.btnLaunchAdmin.TabIndex = 33
-        Me.btnLaunchAdmin.UseVisualStyleBackColor = true
+        Me.bwFolderOperations.WorkerReportsProgress = true
+        Me.bwFolderOperations.WorkerSupportsCancellation = true
         '
         'PropertiesDotNet
         '
@@ -712,6 +718,7 @@ Partial Class PropertiesDotNet
         Me.grpEditID.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
+    Private WithEvents bwFolderOperations As System.ComponentModel.BackgroundWorker
     Private WithEvents btnLaunchAdmin As System.Windows.Forms.Button
     Private WithEvents btnStartAssocProgAdmin As System.Windows.Forms.Button
     Private WithEvents btnStartAssocProg As System.Windows.Forms.Button

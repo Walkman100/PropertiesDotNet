@@ -45,7 +45,9 @@ Public Class PropertiesDotNet
     Sub CheckData Handles chkUTC.CheckedChanged
         'Properties:
         Dim FileProperties As New FileInfo(lblLocation.Text)
-        If IsRunningAsAdmin Then Me.Text = "[Admin] Properties: " & FileProperties.Name Else _
+        ' Thanks to https://stackoverflow.com/a/22691609/2999220
+        If New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(WindowsBuiltInRole.Administrator) Then _
+          Me.Text = "[Admin] Properties: " & FileProperties.Name Else _
           Me.Text = "Properties: " & FileProperties.Name
         lblFullPath.Text = FileProperties.FullName
         lblDirectory.Text = FileProperties.DirectoryName
@@ -525,20 +527,12 @@ Public Class PropertiesDotNet
         End Try
     End Function
     
-    ''' <summary>
-    ''' Checks if process is running with administrator privileges.
-    ''' </summary>
-    ''' <returns>True if process is admin, False if not.</returns>
-    Public Shared Function IsRunningAsAdmin() As Boolean
-        ' Thanks to https://stackoverflow.com/a/22691609/2999220
-        Return New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(WindowsBuiltInRole.Administrator)
-    End Function
-    
     Sub ErrorParser(ex As Exception)
         ''' <summary>
         ''' Copied from DirectoryImage (see the end of the file)
         ''' </summary>
-        If ex.GetType.ToString = "System.UnauthorizedAccessException" AndAlso Not IsRunningAsAdmin Then
+        If ex.GetType.ToString = "System.UnauthorizedAccessException" AndAlso _
+          Not New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(WindowsBuiltInRole.Administrator) Then
             If MsgBox(ex.message & vbnewline & vbnewline & "Try launching PropertiesDotNet As Administrator?", _
               MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                 CreateObject("Shell.Application").ShellExecute(Application.StartupPath & "\" & _
