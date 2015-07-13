@@ -276,14 +276,14 @@ Public Class PropertiesDotNet
         If chkCompressed.Checked Then
             If SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Compressed) Then
                 If Not GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed) Then
-                    CompressReport.Compress(lblFullPath.Text)
+                    CompressReport.bwCompress.RunWorkerAsync({True, lblFullPath.Text})
                     CompressReport.ShowDialog
                 End If
             End If
         Else
             If SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Compressed) Then
                 If GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed) Then
-                    CompressReport.Compress(lblFullPath.Text, False)
+                    CompressReport.bwCompress.RunWorkerAsync({False, lblFullPath.Text})
                     CompressReport.ShowDialog
                 End If
             End If
