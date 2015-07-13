@@ -1,5 +1,4 @@
-﻿Imports System.IO
-Imports System.Security
+﻿Imports System.Security
 Imports System.Security.Cryptography
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -166,6 +165,7 @@ Public Class Hashes
         AddHandler Me.btnAllCalculate.Click, AddressOf Me.btnAllCalculate_Click
         'btnClose
         Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.btnClose.Location = New System.Drawing.Point(387, 257)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(116, 23)
@@ -229,7 +229,6 @@ Public Class Hashes
         Me.btnSHA512Calculate.UseVisualStyleBackColor = true
         AddHandler Me.btnSHA512Calculate.Click, AddressOf Me.btnSHA512Calculate_Click
         'btnCancel
-        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Enabled = false
         Me.btnCancel.Location = New System.Drawing.Point(134, 257)
         Me.btnCancel.Name = "btnCancel"
@@ -242,7 +241,7 @@ Public Class Hashes
         Me.AcceptButton = Me.btnAllCalculate
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.CancelButton = Me.btnCancel
+        Me.CancelButton = Me.btnClose
         Me.ClientSize = New System.Drawing.Size(515, 293)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.grpSHA512)
@@ -470,7 +469,7 @@ Public Class Hashes
             HashGeneratorOutput(hashHex.ToLower)
             bwCalcHashes.ReportProgress(100)
         Catch ex As Exception
-            PropertiesDotNet.ErrorParser(ex)
+            MsgBox(ex.ToString, MsgBoxStyle.Exclamation)
             HashGeneratorOutput("Click ""Calculate""")
             bwCalcHashes.ReportProgress(0)
         End Try

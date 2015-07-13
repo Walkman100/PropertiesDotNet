@@ -1,5 +1,4 @@
-﻿Imports System.IO
-Imports System.Runtime.InteropServices 'For NTFS compression
+﻿Imports System.Runtime.InteropServices 'For NTFS compression
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Public Class CompressReport

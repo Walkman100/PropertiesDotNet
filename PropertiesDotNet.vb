@@ -1,5 +1,4 @@
-﻿Imports System.IO
-Imports System.IO.File
+﻿Imports System.IO.File
 Imports System.Security.Principal
 
 Public Class PropertiesDotNet
