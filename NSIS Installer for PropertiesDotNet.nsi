@@ -51,9 +51,15 @@ Section "Quick Launch Shortcut"
 SectionEnd
 
 Section "Add PropertiesDotNet to context menu"
+  ; File item
   WriteRegStr HKCR "*\shell\PropertiesDotNet" "" "Properties..."
   WriteRegStr HKCR "*\shell\PropertiesDotNet" "Icon" "$INSTDIR\PropertiesDotNet.exe"
   WriteRegStr HKCR "*\shell\PropertiesDotNet\command" "" "$\"$INSTDIR\PropertiesDotNet.exe$\" $\"%1$\""
+  
+  ; Folder item
+  WriteRegStr HKCR "Directory\shell\PropertiesDotNet" "" "Properties..."
+  WriteRegStr HKCR "Directory\shell\PropertiesDotNet" "Icon" "$INSTDIR\PropertiesDotNet.exe"
+  WriteRegStr HKCR "Directory\shell\PropertiesDotNet\command" "" "$\"$INSTDIR\PropertiesDotNet.exe$\" $\"%1$\""
 SectionEnd
 
 ; Functions
@@ -75,18 +81,19 @@ FunctionEnd
 ; Uninstaller
 
 Section "Uninstall"
-  Delete "$INSTDIR\PropertiesDotNet-Uninst.exe"   ; Remove Application Files
+  Delete "$INSTDIR\PropertiesDotNet-Uninst.exe" ; Remove Application Files
   Delete "$INSTDIR\PropertiesDotNet.exe"
   RMDir "$INSTDIR"
   
-  Delete "$SMPROGRAMS\WalkmanOSS\PropertiesDotNet.lnk"   ; Remove Start Menu Shortcuts & Folder
+  Delete "$SMPROGRAMS\WalkmanOSS\PropertiesDotNet.lnk" ; Remove Start Menu Shortcuts & Folder
   Delete "$SMPROGRAMS\WalkmanOSS\Uninstall PropertiesDotNet.lnk"
   RMDir "$SMPROGRAMS\WalkmanOSS"
   
-  Delete "$DESKTOP\PropertiesDotNet.lnk"   ; Remove Desktop Shortcut
-  Delete "$QUICKLAUNCH\PropertiesDotNet.lnk"   ; Remove Quick Launch Shortcut
+  Delete "$DESKTOP\PropertiesDotNet.lnk"     ; Remove Desktop      Shortcut
+  Delete "$QUICKLAUNCH\PropertiesDotNet.lnk" ; Remove Quick Launch Shortcut
   
-  DeleteRegKey HKCR "*\shell\PropertiesDotNet" ; Remove context menu item
+  DeleteRegKey HKCR "*\shell\PropertiesDotNet"         ; Remove files  context menu item
+  DeleteRegKey HKCR "Directory\shell\PropertiesDotNet" ; Remove folder context menu item
 SectionEnd
 
 ; Uninstaller Functions

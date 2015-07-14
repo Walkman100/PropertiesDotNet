@@ -216,13 +216,6 @@ Public Class BackgroundProgress
         End Try
     End Sub
     
-    ''' <summary>Sets the status label text to statusText.</summary>
-    ''' TEMPORARY SUB
-    ''' <param name="statusText">The text to display on the status label</param>
-    Sub SetStatus(statusText As String)
-        lblStatus.Text = statusText
-    End Sub
-    
     ''' <summary>Sets the status label text to statusText, and the progress bar percent to statusPercent.</summary>
     ''' <param name="statusText">The text to display on the status label</param>
     ''' <param name="statusPercent">The percent to set the progress bar value to. 0-100</param>
