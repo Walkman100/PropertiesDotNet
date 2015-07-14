@@ -70,52 +70,77 @@ Public Class BackgroundProgress
     Private lblStatus As System.Windows.Forms.Label
     Private imgLoading As System.Windows.Forms.PictureBox
     
+    Dim i As Integer
     ''' delete, deletePath
     ''' copy, copyFromPath, copyToPath
     Sub bwFolderOperations_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bwFolderOperations.DoWork
         Dim DirectoryProperties As New DirectoryInfo(e.Argument(1))
         Try
             If e.Argument(0) = "delete" Then
+                'Get file list (2%)
+                'Delete files (95% total)
+                'Get folder list (1%)
+                'Delete folders (1%)
+                'Delete final folder (1%)
+                
                 Me.Text = "Deleting """ & DirectoryProperties.Name & """..."
-                
-                SetStatus("Getting file list... (May take a while)")
+                SetStatus("Getting file list... (May take a while)", 0.01)
                 Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
+                
+                i = 0
                 For Each SubFile As FileInfo In SubFiles
-                    SetStatus("Deleting file """ & SubFile.Name & """...")
+                    SetStatus("Deleting file """ & SubFile.Name & """...", (( i/SubFiles.Length ) *95 ) +2 )
                     SubFile.Delete
+                    i += 1
                 Next
                 
-                SetStatus("Getting folder list...")
+                SetStatus("Getting folder list...", 97)
                 Dim SubFolders = DirectoryProperties.GetDirectories("*", SearchOption.AllDirectories)
+                
+                i = 0
                 For Each SubFolder As DirectoryInfo In SubFolders
-                    SetStatus("Deleting folder """ & SubFolder.Name & """...")
+                    SetStatus("Deleting folder """ & SubFolder.Name & """...", (( i/SubFolders.Length ) *1 ) +98 )
                     SubFolder.Delete
+                    i += 1
                 Next
                 
+                SetStatus("Deleting folder """ & DirectoryProperties.Name & """...", 99)
                 Sleep(100)
-                SetStatus("Deleting folder """ & DirectoryProperties.Name & """...")
                 DirectoryProperties.Delete
                 Me.Close
+                Me.Dispose
             ElseIf e.Argument(0) = "copy" Then
+                'Create root dir (1%)
+                'Get folder list (1%)
+                'Create folders (1%)
+                'Get file list (2%)
+                'Copy files (95%)
+                
                 Me.Text = "Copying """ & DirectoryProperties.Name & """ to """ & e.Argument(2) & """..."
                 Directory.CreateDirectory(e.Argument(2))
                 
-                SetStatus("Getting folder list...")
+                SetStatus("Getting folder list...", 1)
                 Dim SubFolders = DirectoryProperties.GetDirectories("*", SearchOption.AllDirectories)
+                
+                i = 0
                 For Each SubFolder As DirectoryInfo In SubFolders
-                    SetStatus("Creating folder """ & SubFolder.Name & """...")
+                    SetStatus("Creating folder """ & SubFolder.Name & """...", (( i/SubFolders.Length ) *1 ) +1 )
                     Directory.CreateDirectory(e.Argument(2) & SubFolder.FullName.Substring(DirectoryProperties.FullName.Length))
+                    i += 1
                 Next
                 
-                SetStatus("Getting file list... (May take a while)")
+                SetStatus("Getting file list... (May take a while)", 3)
                 Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
+                
+                i = 0
                 For Each SubFile As FileInfo In SubFiles
-                    SetStatus("Copying file """ & SubFile.Name & """...")
+                    SetStatus("Copying file """ & SubFile.Name & """...", (( i/SubFiles.Length ) *95 ) +5)
                     SubFile.CopyTo(e.Argument(2) & SubFile.FullName.Substring(DirectoryProperties.FullName.Length))
                 Next
                 
                 Sleep(100)
                 Me.Close
+                Me.Dispose
             End If
         Catch ex As Exception
             MsgBox(ex.ToString, MsgBoxStyle.Exclamation)
