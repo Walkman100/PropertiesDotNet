@@ -49,10 +49,11 @@ Public Class PropertiesDotNet
           Me.Text = "[Admin] Properties: " & FileProperties.Name Else _
           Me.Text = "Properties: " & FileProperties.Name
         lblFullPath.Text = FileProperties.FullName
+        If lblFullPath.Width>256 Then Me.Width = lblFullPath.Width+176 Else Me.Width = 432
         lblDirectory.Text = FileProperties.DirectoryName
         lblName.Text = FileProperties.Name
-        If lblFullPath.Width>256 Then Me.Width = lblFullPath.Width + 176
         lblExtension.Text = FileProperties.Extension
+        If lblExtension.Text = "" Then lblExtension.Text = "No extension!"
         
         If Exists(lblLocation.Text) Then
             lblSize.Text = FileProperties.Length
@@ -61,12 +62,10 @@ Public Class PropertiesDotNet
             lblExtensionLbl.Enabled = True
             lblExtension.Enabled = True
             btnOpenWith.Enabled = True
-            btnCopyExtension.Enabled = True
             lblOpenWithLbl.Enabled = True
             lblOpenWith.Enabled = True
             btnStartAssocProg.Enabled = True
             btnStartAssocProgAdmin.Enabled = True
-            btnCopyOpenWith.Enabled = True
             btnHashes.Enabled = True
             chkTemporary.Enabled = True
         ElseIf Directory.Exists(lblLocation.Text)
@@ -134,12 +133,10 @@ Public Class PropertiesDotNet
             lblExtensionLbl.Enabled = False
             lblExtension.Enabled = False
             btnOpenWith.Enabled = False
-            btnCopyExtension.Enabled = False
             lblOpenWithLbl.Enabled = False
             lblOpenWith.Enabled = False
             btnStartAssocProg.Enabled = False
             btnStartAssocProgAdmin.Enabled = False
-            btnCopyOpenWith.Enabled = False
             btnHashes.Enabled = False
             chkTemporary.Enabled = False
         End If
@@ -500,12 +497,12 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub bwCalcSize_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bwCalcSize.DoWork
-        Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
         Try
+            Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
             lblSize.Text = "Getting file list... (May take a while)"
             Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
             lblSize.Text = 0
-            For Each SubFile As FileInfo In SubFiles 'DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
+            For Each SubFile As FileInfo In SubFiles
                 lblSize.Text += SubFile.Length
             Next
         Catch ex As Exception
