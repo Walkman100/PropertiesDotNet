@@ -1,9 +1,9 @@
 # PropertiesDotNet [![Build status](https://ci.appveyor.com/api/projects/status/7iooy0iqejw297i0)](https://ci.appveyor.com/project/Walkman100/propertiesdotnet)
 A properties window made in VB.Net
 
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Walkman100/Walkman?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Walkman100/Walkman?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-## Screenshots
+<!-- ## Screenshots -->
 
 
 ## Credits/Acknowledgements
@@ -20,21 +20,21 @@ A properties window made in VB.Net
 
 ### Getting open with program
 - Find at: [PropertiesDotNet.vb#L6](PropertiesDotNet.vb#L6)
-- And: [PropertiesDotNet.vb#L45](PropertiesDotNet.vb#L45)
+- And: [PropertiesDotNet.vb#L147](PropertiesDotNet.vb#L147)
 - http://www.vb-helper.com/howto_get_associated_program.html
 - The page above is in VB6 however, so I needed to convert it (manually) to VB.Net. Also, the most important line, the `Function FindExecutable Lib "shell32.dll"`, is chopped off the sample you see on the page, so you have to download the `zip` to get that.
 
 ### NTFS Compression
 - Find at: [CompressReport.vb#L59](CompressReport.vb#L59)
-- And: [CompressReport.vb#L83](CompressReport.vb#L83)
+- And: [CompressReport.vb#L68](CompressReport.vb#L68)
 - http://www.thescarms.com/dotnet/NTFSCompress.aspx
-- Original code from above link has been copied, un-modified, to [here](NTFSCompressOriginalCode.cs)
-- I have edited it so it can be compiled [here](NTFSCompressConvertable.cs)
-- Then converted it to VB.Net [here](NTFSCompressConverted.vb)
+- Original code from above link has been copied, un-modified, to [NTFSCompressOriginalCode.cs](NTFSCompressOriginalCode.cs)
+- I have edited it so it can be compiled: [NTFSCompressConvertable.cs](NTFSCompressConvertable.cs)
+- Then I converted it to VB.Net: [NTFSCompressConverted.vb](NTFSCompressConverted.vb)
 - MSDN Info (for decompression value): https://msdn.microsoft.com/en-us/library/windows/desktop/aa364592(v=vs.85).aspx
 
 ### Hash Generating
-- Find at: [Hashes.vb#L392](Hashes.vb#L392)
+- Find at: [Hashes.vb#L405](Hashes.vb#L405)
 - Basic Hashing: http://us.informatiweb.net/programmation/36--generate-hashes-md5-sha-1-and-sha-256-of-a-file.html
 - Hashing with progress reporting: http://www.infinitec.de/post/2007/06/09/Displaying-progress-updates-when-hashing-large-files.aspx
 - Since the code on the page above is in C#, I converted it to VB.Net:
