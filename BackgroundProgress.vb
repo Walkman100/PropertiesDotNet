@@ -58,7 +58,6 @@ Public Class BackgroundProgress
         Me.MaximizeBox = false
         Me.MinimizeBox = false
         Me.Name = "BackgroundProgress"
-        Me.ShowInTaskbar = false
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
         Me.Location = New System.Drawing.Size((My.Computer.Screen.WorkingArea.Width/2) - 167, (My.Computer.Screen.WorkingArea.Height/2) - 35.5)
         CType(Me.imgLoading,System.ComponentModel.ISupportInitialize).EndInit
@@ -71,6 +70,7 @@ Public Class BackgroundProgress
     Private imgLoading As System.Windows.Forms.PictureBox
     
     Dim i As Integer
+    Dim WasError As Boolean = False
     ''' delete, deletePath
     ''' copy, copyFromPath, copyToPath
     Sub bwFolderOperations_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bwFolderOperations.DoWork
@@ -90,7 +90,25 @@ Public Class BackgroundProgress
                 i = 0
                 For Each SubFile As FileInfo In SubFiles
                     SetStatus("Deleting file """ & SubFile.Name & """...", (( i/SubFiles.Length ) *95 ) +2 )
-                    SubFile.Delete
+                    Try
+                        SubFile.Delete
+                    Catch ex As Exception
+                        Dim answer = MsgBox("There was an error deleting """ & SubFile.FullName & """!" & _
+                          vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.AbortRetryIgnore + MsgBoxStyle.Exclamation, "Error!")
+                        If answer = MsgBoxResult.Abort Then: Exit For
+                        ElseIf answer = MsgBoxResult.Retry Then
+                            Try
+                                SubFile.Delete
+                            Catch ex2 As Exception
+                                Dim answer2 = MsgBox("Error retrying delete for """ & SubFile.FullName & """:" & _
+                                  ex.Message, MsgBoxStyle.AbortRetryIgnore + MsgBoxStyle.Exclamation, "Error!")
+                                If answer2 = MsgBoxResult.Abort Then: Exit For
+                                ElseIf answer2 = MsgBoxResult.Retry Then
+                                    MsgBox("Already retried!", MsgBoxStyle.Exclamation)
+                                End If
+                            End Try
+                        End If
+                    End Try
                     i += 1
                 Next
                 
@@ -100,9 +118,22 @@ Public Class BackgroundProgress
                 i = 0
                 For Each SubFolder As DirectoryInfo In SubFolders
                     SetStatus("Deleting folder """ & SubFolder.Name & """...", (( i/SubFolders.Length ) *1 ) +98 )
-                    SubFolder.Delete
+                    Try
+                        SubFolder.Delete
+                    Catch
+                        WasError = True
+                    End Try
                     i += 1
                 Next
+                
+                If WasError Then
+                    For Each SubFolder As DirectoryInfo In SubFolders
+                        Try
+                            SubFolder.Delete
+                        Catch
+                        End Try
+                    Next
+                End If
                 
                 SetStatus("Deleting folder """ & DirectoryProperties.Name & """...", 99)
                 Sleep(100)
@@ -125,9 +156,22 @@ Public Class BackgroundProgress
                 i = 0
                 For Each SubFolder As DirectoryInfo In SubFolders
                     SetStatus("Creating folder """ & SubFolder.Name & """...", (( i/SubFolders.Length ) *1 ) +1 )
-                    Directory.CreateDirectory(e.Argument(2) & SubFolder.FullName.Substring(DirectoryProperties.FullName.Length))
+                    Try
+                        Directory.CreateDirectory(e.Argument(2) & SubFolder.FullName.Substring(DirectoryProperties.FullName.Length))
+                    Catch
+                        WasError = True
+                    End Try
                     i += 1
                 Next
+                
+                If WasError Then
+                    For Each SubFolder As DirectoryInfo In SubFolders
+                        Try
+                            Directory.CreateDirectory(e.Argument(2) & SubFolder.FullName.Substring(DirectoryProperties.FullName.Length))
+                        Catch
+                        End Try
+                    Next
+                End If
                 
                 SetStatus("Getting file list... (May take a while)", 3)
                 Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
@@ -135,7 +179,26 @@ Public Class BackgroundProgress
                 i = 0
                 For Each SubFile As FileInfo In SubFiles
                     SetStatus("Copying file """ & SubFile.Name & """...", (( i/SubFiles.Length ) *95 ) +5)
-                    SubFile.CopyTo(e.Argument(2) & SubFile.FullName.Substring(DirectoryProperties.FullName.Length))
+                    Try
+                        SubFile.CopyTo(e.Argument(2) & SubFile.FullName.Substring(DirectoryProperties.FullName.Length))
+                    Catch ex As Exception
+                        Dim answer = MsgBox("There was an error copying """ & SubFile.FullName & """ to """ & _
+                          e.Argument(2) & SubFile.FullName.Substring(DirectoryProperties.FullName.Length) & """!" & _
+                          vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.AbortRetryIgnore + MsgBoxStyle.Exclamation, "Error!")
+                        If answer = MsgBoxResult.Abort Then: Exit For
+                        ElseIf answer = MsgBoxResult.Retry Then
+                            Try
+                                SubFile.CopyTo(e.Argument(2) & SubFile.FullName.Substring(DirectoryProperties.FullName.Length))
+                            Catch ex2 As Exception
+                                Dim answer2 = MsgBox("Error retrying copy for """ & SubFile.FullName & """:" & _
+                                  ex.Message, MsgBoxStyle.AbortRetryIgnore + MsgBoxStyle.Exclamation, "Error!")
+                                If answer2 = MsgBoxResult.Abort Then: Exit For
+                                ElseIf answer2 = MsgBoxResult.Retry Then
+                                    MsgBox("Already retried!", MsgBoxStyle.Exclamation)
+                                End If
+                            End Try
+                        End If
+                    End Try
                 Next
                 
                 Sleep(100)
@@ -143,7 +206,8 @@ Public Class BackgroundProgress
                 Me.Dispose
             End If
         Catch ex As Exception
-            MsgBox(ex.ToString, MsgBoxStyle.Exclamation)
+            If MsgBox("Error: " & ex.Message & vbNewLine & vbNewLine & "View full stack trace?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then _
+                MsgBox(ex.ToString, MsgBoxStyle.Information)
             Me.Close
         End Try
     End Sub
