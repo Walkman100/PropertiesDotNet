@@ -26,7 +26,8 @@ Partial Class PropertiesDotNet
         Me.lblLocation = New System.Windows.Forms.Label()
         Me.chkHidden = New System.Windows.Forms.CheckBox()
         Me.chkSystem = New System.Windows.Forms.CheckBox()
-        Me.grpReadOnly = New System.Windows.Forms.GroupBox()
+        Me.grpProperties = New System.Windows.Forms.GroupBox()
+        Me.cbxSize = New System.Windows.Forms.ComboBox()
         Me.btnLaunchAdmin = New System.Windows.Forms.Button()
         Me.btnStartAssocProgAdmin = New System.Windows.Forms.Button()
         Me.btnStartAssocProg = New System.Windows.Forms.Button()
@@ -60,7 +61,7 @@ Partial Class PropertiesDotNet
         Me.lblFullPathLbl = New System.Windows.Forms.Label()
         Me.lblPathLbl = New System.Windows.Forms.Label()
         Me.lblOpenWith = New System.Windows.Forms.Label()
-        Me.grpChangeable = New System.Windows.Forms.GroupBox()
+        Me.grpAttributes = New System.Windows.Forms.GroupBox()
         Me.lnkAttributes = New System.Windows.Forms.LinkLabel()
         Me.chkSparse = New System.Windows.Forms.CheckBox()
         Me.chkReparse = New System.Windows.Forms.CheckBox()
@@ -73,17 +74,17 @@ Partial Class PropertiesDotNet
         Me.chkEncrypted = New System.Windows.Forms.CheckBox()
         Me.chkCompressed = New System.Windows.Forms.CheckBox()
         Me.chkReadOnly = New System.Windows.Forms.CheckBox()
-        Me.grpEditID = New System.Windows.Forms.GroupBox()
+        Me.grpFileLocation = New System.Windows.Forms.GroupBox()
         Me.btnClose = New System.Windows.Forms.Button()
         Me.btnMove = New System.Windows.Forms.Button()
         Me.btnCopy = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnRename = New System.Windows.Forms.Button()
         Me.bwCalcSize = New System.ComponentModel.BackgroundWorker()
-        Me.grpReadOnly.SuspendLayout
+        Me.grpProperties.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.grpChangeable.SuspendLayout
-        Me.grpEditID.SuspendLayout
+        Me.grpAttributes.SuspendLayout
+        Me.grpFileLocation.SuspendLayout
         Me.SuspendLayout
         '
         'SaveFileDialog
@@ -119,50 +120,62 @@ Partial Class PropertiesDotNet
         Me.chkSystem.Text = "System"
         Me.chkSystem.UseVisualStyleBackColor = true
         '
-        'grpReadOnly
+        'grpProperties
         '
-        Me.grpReadOnly.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+        Me.grpProperties.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.grpReadOnly.Controls.Add(Me.btnLaunchAdmin)
-        Me.grpReadOnly.Controls.Add(Me.btnStartAssocProgAdmin)
-        Me.grpReadOnly.Controls.Add(Me.btnStartAssocProg)
-        Me.grpReadOnly.Controls.Add(Me.btnCopyOpenWith)
-        Me.grpReadOnly.Controls.Add(Me.btnOpenWith)
-        Me.grpReadOnly.Controls.Add(Me.lblOpenWithLbl)
-        Me.grpReadOnly.Controls.Add(Me.imgFile)
-        Me.grpReadOnly.Controls.Add(Me.btnOpenDir)
-        Me.grpReadOnly.Controls.Add(Me.btnLaunch)
-        Me.grpReadOnly.Controls.Add(Me.btnHashes)
-        Me.grpReadOnly.Controls.Add(Me.btnCopyFullPath)
-        Me.grpReadOnly.Controls.Add(Me.btnCopyDirectory)
-        Me.grpReadOnly.Controls.Add(Me.btnCopyName)
-        Me.grpReadOnly.Controls.Add(Me.btnCopyExtension)
-        Me.grpReadOnly.Controls.Add(Me.lblSize)
-        Me.grpReadOnly.Controls.Add(Me.lblSizeLbl)
-        Me.grpReadOnly.Controls.Add(Me.chkUTC)
-        Me.grpReadOnly.Controls.Add(Me.lblLastWriteTime)
-        Me.grpReadOnly.Controls.Add(Me.lblLastWriteTimeLbl)
-        Me.grpReadOnly.Controls.Add(Me.lblLastAccessTime)
-        Me.grpReadOnly.Controls.Add(Me.lblLastAccessTimeLbl)
-        Me.grpReadOnly.Controls.Add(Me.lblCreationTime)
-        Me.grpReadOnly.Controls.Add(Me.lblCreationTimeLbl)
-        Me.grpReadOnly.Controls.Add(Me.lblFullPath)
-        Me.grpReadOnly.Controls.Add(Me.lblDirectory)
-        Me.grpReadOnly.Controls.Add(Me.lblExtension)
-        Me.grpReadOnly.Controls.Add(Me.lblName)
-        Me.grpReadOnly.Controls.Add(Me.lblDirectoryLbl)
-        Me.grpReadOnly.Controls.Add(Me.lblExtensionLbl)
-        Me.grpReadOnly.Controls.Add(Me.lblNameLbl)
-        Me.grpReadOnly.Controls.Add(Me.lblFullPathLbl)
-        Me.grpReadOnly.Controls.Add(Me.lblPathLbl)
-        Me.grpReadOnly.Controls.Add(Me.lblLocation)
-        Me.grpReadOnly.Controls.Add(Me.lblOpenWith)
-        Me.grpReadOnly.Location = New System.Drawing.Point(2, 4)
-        Me.grpReadOnly.Name = "grpReadOnly"
-        Me.grpReadOnly.Size = New System.Drawing.Size(411, 216)
-        Me.grpReadOnly.TabIndex = 3
-        Me.grpReadOnly.TabStop = false
-        Me.grpReadOnly.Text = "Properties:"
+        Me.grpProperties.Controls.Add(Me.cbxSize)
+        Me.grpProperties.Controls.Add(Me.btnLaunchAdmin)
+        Me.grpProperties.Controls.Add(Me.btnStartAssocProgAdmin)
+        Me.grpProperties.Controls.Add(Me.btnStartAssocProg)
+        Me.grpProperties.Controls.Add(Me.btnCopyOpenWith)
+        Me.grpProperties.Controls.Add(Me.btnOpenWith)
+        Me.grpProperties.Controls.Add(Me.lblOpenWithLbl)
+        Me.grpProperties.Controls.Add(Me.imgFile)
+        Me.grpProperties.Controls.Add(Me.btnOpenDir)
+        Me.grpProperties.Controls.Add(Me.btnLaunch)
+        Me.grpProperties.Controls.Add(Me.btnHashes)
+        Me.grpProperties.Controls.Add(Me.btnCopyFullPath)
+        Me.grpProperties.Controls.Add(Me.btnCopyDirectory)
+        Me.grpProperties.Controls.Add(Me.btnCopyName)
+        Me.grpProperties.Controls.Add(Me.btnCopyExtension)
+        Me.grpProperties.Controls.Add(Me.lblSize)
+        Me.grpProperties.Controls.Add(Me.lblSizeLbl)
+        Me.grpProperties.Controls.Add(Me.chkUTC)
+        Me.grpProperties.Controls.Add(Me.lblLastWriteTime)
+        Me.grpProperties.Controls.Add(Me.lblLastWriteTimeLbl)
+        Me.grpProperties.Controls.Add(Me.lblLastAccessTime)
+        Me.grpProperties.Controls.Add(Me.lblLastAccessTimeLbl)
+        Me.grpProperties.Controls.Add(Me.lblCreationTime)
+        Me.grpProperties.Controls.Add(Me.lblCreationTimeLbl)
+        Me.grpProperties.Controls.Add(Me.lblFullPath)
+        Me.grpProperties.Controls.Add(Me.lblDirectory)
+        Me.grpProperties.Controls.Add(Me.lblExtension)
+        Me.grpProperties.Controls.Add(Me.lblName)
+        Me.grpProperties.Controls.Add(Me.lblDirectoryLbl)
+        Me.grpProperties.Controls.Add(Me.lblExtensionLbl)
+        Me.grpProperties.Controls.Add(Me.lblNameLbl)
+        Me.grpProperties.Controls.Add(Me.lblFullPathLbl)
+        Me.grpProperties.Controls.Add(Me.lblPathLbl)
+        Me.grpProperties.Controls.Add(Me.lblLocation)
+        Me.grpProperties.Controls.Add(Me.lblOpenWith)
+        Me.grpProperties.Location = New System.Drawing.Point(2, 4)
+        Me.grpProperties.Name = "grpProperties"
+        Me.grpProperties.Size = New System.Drawing.Size(411, 233)
+        Me.grpProperties.TabIndex = 3
+        Me.grpProperties.TabStop = false
+        Me.grpProperties.Text = "Properties:"
+        '
+        'cbxSize
+        '
+        Me.cbxSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbxSize.FormattingEnabled = true
+        Me.cbxSize.Items.AddRange(New Object() {"bytes (8 bits)", "kB  (Decimal - 1000)", "KiB (Binary - 1024)", "MB (Decimal - 1000)", "MiB (Binary - 1024)", "GB  (Decimal - 1000)", "GiB (Binary - 1024)", "TB  (Decimal - 1000)", "TiB (Binary - 1024)", "PB  (Decimal - 1000)", "PiB (Binary - 1024)", "(Click to read more)"})
+        Me.cbxSize.Location = New System.Drawing.Point(303, 120)
+        Me.cbxSize.SelectedIndex = 3
+        Me.cbxSize.Name = "cbxSize"
+        Me.cbxSize.Size = New System.Drawing.Size(102, 21)
+        Me.cbxSize.TabIndex = 34
         '
         'btnLaunchAdmin
         '
@@ -178,7 +191,7 @@ Partial Class PropertiesDotNet
         '
         Me.btnStartAssocProgAdmin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnStartAssocProgAdmin.Image = Global.PropertiesDotNet.My.Resources.Resources.admin
-        Me.btnStartAssocProgAdmin.Location = New System.Drawing.Point(337, 125)
+        Me.btnStartAssocProgAdmin.Location = New System.Drawing.Point(337, 142)
         Me.btnStartAssocProgAdmin.Name = "btnStartAssocProgAdmin"
         Me.btnStartAssocProgAdmin.Size = New System.Drawing.Size(23, 23)
         Me.btnStartAssocProgAdmin.TabIndex = 32
@@ -187,7 +200,7 @@ Partial Class PropertiesDotNet
         'btnStartAssocProg
         '
         Me.btnStartAssocProg.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnStartAssocProg.Location = New System.Drawing.Point(276, 125)
+        Me.btnStartAssocProg.Location = New System.Drawing.Point(276, 142)
         Me.btnStartAssocProg.Name = "btnStartAssocProg"
         Me.btnStartAssocProg.Size = New System.Drawing.Size(62, 23)
         Me.btnStartAssocProg.TabIndex = 31
@@ -197,7 +210,7 @@ Partial Class PropertiesDotNet
         'btnCopyOpenWith
         '
         Me.btnCopyOpenWith.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnCopyOpenWith.Location = New System.Drawing.Point(361, 125)
+        Me.btnCopyOpenWith.Location = New System.Drawing.Point(361, 142)
         Me.btnCopyOpenWith.Name = "btnCopyOpenWith"
         Me.btnCopyOpenWith.Size = New System.Drawing.Size(44, 23)
         Me.btnCopyOpenWith.TabIndex = 30
@@ -217,7 +230,7 @@ Partial Class PropertiesDotNet
         'lblOpenWithLbl
         '
         Me.lblOpenWithLbl.AutoSize = true
-        Me.lblOpenWithLbl.Location = New System.Drawing.Point(48, 130)
+        Me.lblOpenWithLbl.Location = New System.Drawing.Point(48, 147)
         Me.lblOpenWithLbl.Name = "lblOpenWithLbl"
         Me.lblOpenWithLbl.Size = New System.Drawing.Size(63, 13)
         Me.lblOpenWithLbl.TabIndex = 27
@@ -228,7 +241,7 @@ Partial Class PropertiesDotNet
         Me.imgFile.ErrorImage = Nothing
         Me.imgFile.Image = Global.PropertiesDotNet.My.Resources.Resources.loading4
         Me.imgFile.InitialImage = Nothing
-        Me.imgFile.Location = New System.Drawing.Point(10, 130)
+        Me.imgFile.Location = New System.Drawing.Point(10, 147)
         Me.imgFile.Name = "imgFile"
         Me.imgFile.Size = New System.Drawing.Size(32, 32)
         Me.imgFile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -259,7 +272,7 @@ Partial Class PropertiesDotNet
         '
         Me.btnHashes.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnHashes.Image = Global.PropertiesDotNet.My.Resources.Resources.hashx16
-        Me.btnHashes.Location = New System.Drawing.Point(291, 187)
+        Me.btnHashes.Location = New System.Drawing.Point(291, 204)
         Me.btnHashes.Name = "btnHashes"
         Me.btnHashes.Size = New System.Drawing.Size(114, 23)
         Me.btnHashes.TabIndex = 23
@@ -310,7 +323,7 @@ Partial Class PropertiesDotNet
         'lblSize
         '
         Me.lblSize.AutoSize = true
-        Me.lblSize.Location = New System.Drawing.Point(101, 114)
+        Me.lblSize.Location = New System.Drawing.Point(101, 123)
         Me.lblSize.Name = "lblSize"
         Me.lblSize.Size = New System.Drawing.Size(61, 13)
         Me.lblSize.TabIndex = 18
@@ -319,16 +332,16 @@ Partial Class PropertiesDotNet
         'lblSizeLbl
         '
         Me.lblSizeLbl.AutoSize = true
-        Me.lblSizeLbl.Location = New System.Drawing.Point(6, 114)
+        Me.lblSizeLbl.Location = New System.Drawing.Point(6, 123)
         Me.lblSizeLbl.Name = "lblSizeLbl"
-        Me.lblSizeLbl.Size = New System.Drawing.Size(64, 13)
+        Me.lblSizeLbl.Size = New System.Drawing.Size(97, 13)
         Me.lblSizeLbl.TabIndex = 17
-        Me.lblSizeLbl.Text = "Size (bytes):"
+        Me.lblSizeLbl.Text = "Size (not disk size):"
         '
         'chkUTC
         '
         Me.chkUTC.AutoSize = true
-        Me.chkUTC.Location = New System.Drawing.Point(48, 146)
+        Me.chkUTC.Location = New System.Drawing.Point(48, 163)
         Me.chkUTC.Name = "chkUTC"
         Me.chkUTC.Size = New System.Drawing.Size(120, 17)
         Me.chkUTC.TabIndex = 16
@@ -338,7 +351,7 @@ Partial Class PropertiesDotNet
         'lblLastWriteTime
         '
         Me.lblLastWriteTime.AutoSize = true
-        Me.lblLastWriteTime.Location = New System.Drawing.Point(101, 192)
+        Me.lblLastWriteTime.Location = New System.Drawing.Point(101, 209)
         Me.lblLastWriteTime.Name = "lblLastWriteTime"
         Me.lblLastWriteTime.Size = New System.Drawing.Size(61, 13)
         Me.lblLastWriteTime.TabIndex = 15
@@ -347,7 +360,7 @@ Partial Class PropertiesDotNet
         'lblLastWriteTimeLbl
         '
         Me.lblLastWriteTimeLbl.AutoSize = true
-        Me.lblLastWriteTimeLbl.Location = New System.Drawing.Point(6, 192)
+        Me.lblLastWriteTimeLbl.Location = New System.Drawing.Point(6, 209)
         Me.lblLastWriteTimeLbl.Name = "lblLastWriteTimeLbl"
         Me.lblLastWriteTimeLbl.Size = New System.Drawing.Size(77, 13)
         Me.lblLastWriteTimeLbl.TabIndex = 14
@@ -356,7 +369,7 @@ Partial Class PropertiesDotNet
         'lblLastAccessTime
         '
         Me.lblLastAccessTime.AutoSize = true
-        Me.lblLastAccessTime.Location = New System.Drawing.Point(101, 179)
+        Me.lblLastAccessTime.Location = New System.Drawing.Point(101, 196)
         Me.lblLastAccessTime.Name = "lblLastAccessTime"
         Me.lblLastAccessTime.Size = New System.Drawing.Size(61, 13)
         Me.lblLastAccessTime.TabIndex = 13
@@ -365,7 +378,7 @@ Partial Class PropertiesDotNet
         'lblLastAccessTimeLbl
         '
         Me.lblLastAccessTimeLbl.AutoSize = true
-        Me.lblLastAccessTimeLbl.Location = New System.Drawing.Point(6, 179)
+        Me.lblLastAccessTimeLbl.Location = New System.Drawing.Point(6, 196)
         Me.lblLastAccessTimeLbl.Name = "lblLastAccessTimeLbl"
         Me.lblLastAccessTimeLbl.Size = New System.Drawing.Size(89, 13)
         Me.lblLastAccessTimeLbl.TabIndex = 12
@@ -374,7 +387,7 @@ Partial Class PropertiesDotNet
         'lblCreationTime
         '
         Me.lblCreationTime.AutoSize = true
-        Me.lblCreationTime.Location = New System.Drawing.Point(101, 166)
+        Me.lblCreationTime.Location = New System.Drawing.Point(101, 183)
         Me.lblCreationTime.Name = "lblCreationTime"
         Me.lblCreationTime.Size = New System.Drawing.Size(61, 13)
         Me.lblCreationTime.TabIndex = 11
@@ -383,7 +396,7 @@ Partial Class PropertiesDotNet
         'lblCreationTimeLbl
         '
         Me.lblCreationTimeLbl.AutoSize = true
-        Me.lblCreationTimeLbl.Location = New System.Drawing.Point(6, 166)
+        Me.lblCreationTimeLbl.Location = New System.Drawing.Point(6, 183)
         Me.lblCreationTimeLbl.Name = "lblCreationTimeLbl"
         Me.lblCreationTimeLbl.Size = New System.Drawing.Size(71, 13)
         Me.lblCreationTimeLbl.TabIndex = 10
@@ -473,36 +486,36 @@ Partial Class PropertiesDotNet
         'lblOpenWith
         '
         Me.lblOpenWith.AutoSize = true
-        Me.lblOpenWith.Location = New System.Drawing.Point(117, 130)
+        Me.lblOpenWith.Location = New System.Drawing.Point(117, 147)
         Me.lblOpenWith.Name = "lblOpenWith"
         Me.lblOpenWith.Size = New System.Drawing.Size(61, 13)
         Me.lblOpenWith.TabIndex = 29
         Me.lblOpenWith.Text = "Checking..."
         '
-        'grpChangeable
+        'grpAttributes
         '
-        Me.grpChangeable.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+        Me.grpAttributes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.grpChangeable.Controls.Add(Me.lnkAttributes)
-        Me.grpChangeable.Controls.Add(Me.chkSparse)
-        Me.grpChangeable.Controls.Add(Me.chkReparse)
-        Me.grpChangeable.Controls.Add(Me.chkOffline)
-        Me.grpChangeable.Controls.Add(Me.chkNotIndexed)
-        Me.grpChangeable.Controls.Add(Me.chkNoScrub)
-        Me.grpChangeable.Controls.Add(Me.chkIntegrity)
-        Me.grpChangeable.Controls.Add(Me.chkTemporary)
-        Me.grpChangeable.Controls.Add(Me.chkArchive)
-        Me.grpChangeable.Controls.Add(Me.chkSystem)
-        Me.grpChangeable.Controls.Add(Me.chkEncrypted)
-        Me.grpChangeable.Controls.Add(Me.chkCompressed)
-        Me.grpChangeable.Controls.Add(Me.chkHidden)
-        Me.grpChangeable.Controls.Add(Me.chkReadOnly)
-        Me.grpChangeable.Location = New System.Drawing.Point(2, 226)
-        Me.grpChangeable.Name = "grpChangeable"
-        Me.grpChangeable.Size = New System.Drawing.Size(411, 221)
-        Me.grpChangeable.TabIndex = 4
-        Me.grpChangeable.TabStop = false
-        Me.grpChangeable.Text = "Attributes:"
+        Me.grpAttributes.Controls.Add(Me.lnkAttributes)
+        Me.grpAttributes.Controls.Add(Me.chkSparse)
+        Me.grpAttributes.Controls.Add(Me.chkReparse)
+        Me.grpAttributes.Controls.Add(Me.chkOffline)
+        Me.grpAttributes.Controls.Add(Me.chkNotIndexed)
+        Me.grpAttributes.Controls.Add(Me.chkNoScrub)
+        Me.grpAttributes.Controls.Add(Me.chkIntegrity)
+        Me.grpAttributes.Controls.Add(Me.chkTemporary)
+        Me.grpAttributes.Controls.Add(Me.chkArchive)
+        Me.grpAttributes.Controls.Add(Me.chkSystem)
+        Me.grpAttributes.Controls.Add(Me.chkEncrypted)
+        Me.grpAttributes.Controls.Add(Me.chkCompressed)
+        Me.grpAttributes.Controls.Add(Me.chkHidden)
+        Me.grpAttributes.Controls.Add(Me.chkReadOnly)
+        Me.grpAttributes.Location = New System.Drawing.Point(2, 243)
+        Me.grpAttributes.Name = "grpAttributes"
+        Me.grpAttributes.Size = New System.Drawing.Size(411, 221)
+        Me.grpAttributes.TabIndex = 4
+        Me.grpAttributes.TabStop = false
+        Me.grpAttributes.Text = "Attributes:"
         '
         'lnkAttributes
         '
@@ -628,21 +641,21 @@ Partial Class PropertiesDotNet
         Me.chkReadOnly.Text = "Read-Only"
         Me.chkReadOnly.UseVisualStyleBackColor = true
         '
-        'grpEditID
+        'grpFileLocation
         '
-        Me.grpEditID.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+        Me.grpFileLocation.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.grpEditID.Controls.Add(Me.btnClose)
-        Me.grpEditID.Controls.Add(Me.btnMove)
-        Me.grpEditID.Controls.Add(Me.btnCopy)
-        Me.grpEditID.Controls.Add(Me.btnDelete)
-        Me.grpEditID.Controls.Add(Me.btnRename)
-        Me.grpEditID.Location = New System.Drawing.Point(2, 453)
-        Me.grpEditID.Name = "grpEditID"
-        Me.grpEditID.Size = New System.Drawing.Size(411, 50)
-        Me.grpEditID.TabIndex = 5
-        Me.grpEditID.TabStop = false
-        Me.grpEditID.Text = "File location:"
+        Me.grpFileLocation.Controls.Add(Me.btnClose)
+        Me.grpFileLocation.Controls.Add(Me.btnMove)
+        Me.grpFileLocation.Controls.Add(Me.btnCopy)
+        Me.grpFileLocation.Controls.Add(Me.btnDelete)
+        Me.grpFileLocation.Controls.Add(Me.btnRename)
+        Me.grpFileLocation.Location = New System.Drawing.Point(2, 470)
+        Me.grpFileLocation.Name = "grpFileLocation"
+        Me.grpFileLocation.Size = New System.Drawing.Size(411, 50)
+        Me.grpFileLocation.TabIndex = 5
+        Me.grpFileLocation.TabStop = false
+        Me.grpFileLocation.Text = "File location:"
         '
         'btnClose
         '
@@ -701,23 +714,27 @@ Partial Class PropertiesDotNet
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnClose
-        Me.ClientSize = New System.Drawing.Size(416, 505)
-        Me.Controls.Add(Me.grpEditID)
-        Me.Controls.Add(Me.grpChangeable)
-        Me.Controls.Add(Me.grpReadOnly)
+        Me.ClientSize = New System.Drawing.Size(416, 522)
+        Me.Controls.Add(Me.grpFileLocation)
+        Me.Controls.Add(Me.grpAttributes)
+        Me.Controls.Add(Me.grpProperties)
         Me.Icon = Global.PropertiesDotNet.My.Resources.Resources.document_properties
         Me.MaximizeBox = false
         Me.Name = "PropertiesDotNet"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Properties: "
-        Me.grpReadOnly.ResumeLayout(false)
-        Me.grpReadOnly.PerformLayout
+        Me.grpProperties.ResumeLayout(false)
+        Me.grpProperties.PerformLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).EndInit
-        Me.grpChangeable.ResumeLayout(false)
-        Me.grpChangeable.PerformLayout
-        Me.grpEditID.ResumeLayout(false)
+        Me.grpAttributes.ResumeLayout(false)
+        Me.grpAttributes.PerformLayout
+        Me.grpFileLocation.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
+    Private grpProperties As System.Windows.Forms.GroupBox
+    Private grpAttributes As System.Windows.Forms.GroupBox
+    Private grpFileLocation As System.Windows.Forms.GroupBox
+    Private WithEvents cbxSize As System.Windows.Forms.ComboBox
     Private WithEvents bwCalcSize As System.ComponentModel.BackgroundWorker
     Private WithEvents btnLaunchAdmin As System.Windows.Forms.Button
     Private WithEvents btnStartAssocProgAdmin As System.Windows.Forms.Button
@@ -754,7 +771,6 @@ Partial Class PropertiesDotNet
     Private WithEvents chkSparse As System.Windows.Forms.CheckBox
     Private lblSizeLbl As System.Windows.Forms.Label
     Private lblSize As System.Windows.Forms.Label
-    Private grpEditID As System.Windows.Forms.GroupBox
     Private lblLastWriteTime As System.Windows.Forms.Label
     Private WithEvents chkUTC As System.Windows.Forms.CheckBox
     Private lblName As System.Windows.Forms.Label
@@ -770,9 +786,7 @@ Partial Class PropertiesDotNet
     Private lblDirectoryLbl As System.Windows.Forms.Label
     Private lblFullPathLbl As System.Windows.Forms.Label
     Private lblNameLbl As System.Windows.Forms.Label
-    Private grpChangeable As System.Windows.Forms.GroupBox
     Private lblPathLbl As System.Windows.Forms.Label
-    Private grpReadOnly As System.Windows.Forms.GroupBox
     Private WithEvents chkSystem As System.Windows.Forms.CheckBox
     Private WithEvents chkHidden As System.Windows.Forms.CheckBox
     Friend lblLocation As System.Windows.Forms.Label
