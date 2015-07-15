@@ -172,10 +172,9 @@ Partial Class PropertiesDotNet
         Me.cbxSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbxSize.FormattingEnabled = true
         Me.cbxSize.Items.AddRange(New Object() {"bytes (8 bits)", "kB  (Decimal - 1000)", "KiB (Binary - 1024)", "MB (Decimal - 1000)", "MiB (Binary - 1024)", "GB  (Decimal - 1000)", "GiB (Binary - 1024)", "TB  (Decimal - 1000)", "TiB (Binary - 1024)", "PB  (Decimal - 1000)", "PiB (Binary - 1024)", "(Click to read more)"})
-        Me.cbxSize.Location = New System.Drawing.Point(303, 120)
-        Me.cbxSize.SelectedIndex = 3
+        Me.cbxSize.Location = New System.Drawing.Point(281, 120)
         Me.cbxSize.Name = "cbxSize"
-        Me.cbxSize.Size = New System.Drawing.Size(102, 21)
+        Me.cbxSize.Size = New System.Drawing.Size(122, 21)
         Me.cbxSize.TabIndex = 34
         '
         'btnLaunchAdmin

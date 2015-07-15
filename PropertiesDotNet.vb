@@ -6,6 +6,7 @@ Public Class PropertiesDotNet
     '  Used for finding the program that a file opens with
     '   http://www.vb-helper.com/howto_get_associated_program.html
     Private Declare Function FindExecutable Lib "shell32.dll" Alias "FindExecutableA"(lpFile As String, lpDirectory As String, lpResult As String) As Long
+    Dim byteSize As ULong = 0
     
     Sub PropertiesDotNet_Load(sender As Object, e As EventArgs) Handles Me.Load
         For Each s As String In My.Application.CommandLineArgs
@@ -39,6 +40,7 @@ Public Class PropertiesDotNet
             MsgBox("File or directory """ & lblLocation.Text & """ not found!", MsgBoxStyle.Critical)
             Application.Exit
         End If
+        cbxSize.SelectedIndex = 3
     End Sub
     
     Sub CheckData Handles chkUTC.CheckedChanged
@@ -56,7 +58,8 @@ Public Class PropertiesDotNet
         If lblExtension.Text = "" Then lblExtension.Text = "No extension!"
         
         If Exists(lblLocation.Text) Then
-            lblSize.Text = FileProperties.Length
+            byteSize = FileProperties.Length
+            ApplySizeFormatting
             imgFile.ImageLocation = FileProperties.FullName
             btnLaunchAdmin.Enabled = True
             lblExtensionLbl.Enabled = True
@@ -247,6 +250,41 @@ Public Class PropertiesDotNet
             Shell("rundll32 shell32.dll,OpenAs_RunDLL " & lblFullPath.Text, AppWinStyle.NormalFocus, True, 500)
             'Process.Start("rundll32", "shell32.dll,OpenAs_RunDLL " & lblFullPath.Text)
         End If
+    End Sub
+    Sub ApplySizeFormatting() Handles cbxSize.SelectedIndexChanged
+        Select Case cbxSize.SelectedIndex
+            Case 0 'bytes (8 bits)
+                lblSize.Text = byteSize
+            Case 1 'kB  (Decimal - 1000)
+                lblSize.Text = byteSize / 1000
+            Case 2 'KiB (Binary - 1024)
+                lblSize.Text = byteSize / 1024
+            Case 3 'MB (Decimal - 1000)
+                lblSize.Text = byteSize / 1000^2
+            Case 4 'MiB (Binary - 1024)
+                lblSize.Text = byteSize / 1024^2
+            Case 5 'GB  (Decimal - 1000)
+                lblSize.Text = byteSize / 1000^3
+            Case 6 'GiB (Binary - 1024)
+                lblSize.Text = byteSize / 1024^3
+            Case 7 'TB  (Decimal - 1000)
+                lblSize.Text = byteSize / 1000^4
+            Case 8 'TiB (Binary - 1024)
+                lblSize.Text = byteSize / 1024^4
+            Case 9 'PB  (Decimal - 1000)
+                lblSize.Text = byteSize / 1000^5
+            Case 10 'PiB (Binary - 1024)
+                lblSize.Text = byteSize / 1024^5
+            Case 11 '(Click to read more)
+                lblSize.Text = byteSize
+                Try
+                    Process.Start("https://en.wikipedia.org/wiki/Byte#Unit_symbol")
+                Catch ex As Exception
+                    If MsgBox("Unable to launch URL, copy to clipboard instead?", MsgBoxStyle.YesNo + MsgBoxStyle.Information) = MsgBoxResult.Yes Then _
+                      Clipboard.SetText("https://en.wikipedia.org/wiki/Byte#Unit_symbol")
+                End Try
+        End Select
+        ' format number here
     End Sub
     Sub btnStartAssocProg_Click() Handles btnStartAssocProg.Click
         Process.Start(lblOpenWith.Text)
@@ -498,13 +536,17 @@ Public Class PropertiesDotNet
     
     Sub bwCalcSize_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bwCalcSize.DoWork
         Try
+            cbxSize.Enabled = False
             Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
             lblSize.Text = "Getting file list... (May take a while)"
             Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
-            lblSize.Text = 0
+            byteSize = 0
             For Each SubFile As FileInfo In SubFiles
-                lblSize.Text += SubFile.Length
+                byteSize += SubFile.Length
+                lblSize.Text = byteSize
             Next
+            cbxSize.Enabled = True
+            ApplySizeFormatting
         Catch ex As Exception
             ErrorParser(ex)
         End Try
