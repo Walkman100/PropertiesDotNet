@@ -27,6 +27,7 @@ Partial Class PropertiesDotNet
         Me.chkHidden = New System.Windows.Forms.CheckBox()
         Me.chkSystem = New System.Windows.Forms.CheckBox()
         Me.grpProperties = New System.Windows.Forms.GroupBox()
+        Me.btnWindowsProperties = New System.Windows.Forms.Button()
         Me.cbxSize = New System.Windows.Forms.ComboBox()
         Me.btnLaunchAdmin = New System.Windows.Forms.Button()
         Me.btnStartAssocProgAdmin = New System.Windows.Forms.Button()
@@ -124,6 +125,7 @@ Partial Class PropertiesDotNet
         '
         Me.grpProperties.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpProperties.Controls.Add(Me.btnWindowsProperties)
         Me.grpProperties.Controls.Add(Me.cbxSize)
         Me.grpProperties.Controls.Add(Me.btnLaunchAdmin)
         Me.grpProperties.Controls.Add(Me.btnStartAssocProgAdmin)
@@ -165,6 +167,16 @@ Partial Class PropertiesDotNet
         Me.grpProperties.TabIndex = 3
         Me.grpProperties.TabStop = false
         Me.grpProperties.Text = "Properties:"
+        '
+        'btnWindowsProperties
+        '
+        Me.btnWindowsProperties.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnWindowsProperties.Location = New System.Drawing.Point(291, 178)
+        Me.btnWindowsProperties.Name = "btnWindowsProperties"
+        Me.btnWindowsProperties.Size = New System.Drawing.Size(114, 23)
+        Me.btnWindowsProperties.TabIndex = 35
+        Me.btnWindowsProperties.Text = "Windows Properties"
+        Me.btnWindowsProperties.UseVisualStyleBackColor = true
         '
         'cbxSize
         '
@@ -731,6 +743,7 @@ Partial Class PropertiesDotNet
         Me.grpFileLocation.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
+    Private WithEvents btnWindowsProperties As System.Windows.Forms.Button
     Private grpProperties As System.Windows.Forms.GroupBox
     Private grpAttributes As System.Windows.Forms.GroupBox
     Private grpFileLocation As System.Windows.Forms.GroupBox
