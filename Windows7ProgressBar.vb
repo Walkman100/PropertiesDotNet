@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft Corporation.  All rights reserved.
+﻿' Copyright (c) Microsoft Corporation.  All rights reserved.
 Imports System.ComponentModel
 'Windows7ProgressBar v1.0, created by Wyatt O'Day
 'Visit: http://wyday.com/windows-7-progress-bar/
@@ -147,22 +147,22 @@ Namespace wyDay.Controls
                 End If
             End Set
         End Property
-        Public Overrides Property Site() As ISite
-            Set
-                ' Runs at design time, ensures designer initializes ContainerControl
-                MyBase.Site = value
-                If value Is Nothing Then
-                    Return
-                End If
-                Dim service As Design.IDesignerHost = TryCast(value.GetService(GetType(Design.IDesignerHost)), Design.IDesignerHost)
-                If service Is Nothing Then
-                    Return
-                End If
-                Dim rootComponent As IComponent = service.RootComponent
+'        Public Overrides WriteOnly Property Site() As ISite
+'            Set
+'                ' Runs at design time, ensures designer initializes ContainerControl
+'                MyBase.Site = value
+'                If value Is Nothing Then
+'                    Return
+'                End If
+'                Dim service As Design.IDesignerHost = TryCast(value.GetService(GetType(Design.IDesignerHost)), Design.IDesignerHost)
+'                If service Is Nothing Then
+'                    Return
+'                End If
+'                Dim rootComponent As IComponent = service.RootComponent
 
-                ContainerControl = TryCast(rootComponent, ContainerControl)
-            End Set
-        End Property
+'                ContainerControl = TryCast(rootComponent, ContainerControl)
+'            End Set
+'        End Property
 
         Private Sub Windows7ProgressBar_Shown(sender As Object, e As System.EventArgs)
             If ShowInTaskbar Then
