@@ -121,6 +121,7 @@
     <Import Include="System.Drawing" />
     <Import Include="System.IO" />
     <Import Include="System.Linq" />
+    <Import Include="System.Runtime.InteropServices" />
     <Import Include="System.Threading.Tasks" />
     <Import Include="System.Threading.Thread" />
     <Import Include="System.Windows.Forms" />
