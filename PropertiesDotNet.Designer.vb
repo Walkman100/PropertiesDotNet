@@ -184,7 +184,7 @@ Partial Class PropertiesDotNet
         Me.cbxSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbxSize.FormattingEnabled = true
         Me.cbxSize.Items.AddRange(New Object() {"bytes (8 bits)", "kB  (Decimal - 1000)", "KiB (Binary - 1024)", "MB (Decimal - 1000)", "MiB (Binary - 1024)", "GB  (Decimal - 1000)", "GiB (Binary - 1024)", "TB  (Decimal - 1000)", "TiB (Binary - 1024)", "PB  (Decimal - 1000)", "PiB (Binary - 1024)", "(Click to read more)"})
-        Me.cbxSize.Location = New System.Drawing.Point(281, 120)
+        Me.cbxSize.Location = New System.Drawing.Point(282, 120)
         Me.cbxSize.Name = "cbxSize"
         Me.cbxSize.Size = New System.Drawing.Size(122, 21)
         Me.cbxSize.TabIndex = 34
@@ -273,7 +273,7 @@ Partial Class PropertiesDotNet
         'btnLaunch
         '
         Me.btnLaunch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnLaunch.Location = New System.Drawing.Point(275, 72)
+        Me.btnLaunch.Location = New System.Drawing.Point(276, 72)
         Me.btnLaunch.Name = "btnLaunch"
         Me.btnLaunch.Size = New System.Drawing.Size(62, 23)
         Me.btnLaunch.TabIndex = 24
@@ -756,7 +756,7 @@ Partial Class PropertiesDotNet
     Private SaveFileDialog As System.Windows.Forms.SaveFileDialog
     Private WithEvents btnLaunch As System.Windows.Forms.Button
     Private WithEvents btnOpenDir As System.Windows.Forms.Button
-    Private imgFile As System.Windows.Forms.PictureBox
+    Private WithEvents imgFile As System.Windows.Forms.PictureBox
     Private lblOpenWithLbl As System.Windows.Forms.Label
     Private WithEvents btnOpenWith As System.Windows.Forms.Button
     Private lblOpenWith As System.Windows.Forms.Label

@@ -174,6 +174,21 @@ Public Class PropertiesDotNet
         chkReparse.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.ReparsePoint)
         chkSparse.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.SparseFile)
     End Sub
+    
+    Sub imgFile_LoadCompleted(sender As Object, e As System.ComponentModel.AsyncCompletedEventArgs) Handles imgFile.LoadCompleted
+        If IsNothing(e.Error) Then
+            imgFile.Visible = True
+            lblOpenWithLbl.Location = New Point(48, lblOpenWithLbl.Location.Y)
+            lblOpenWith.Location = New Point(285, lblOpenWith.Location.Y)
+            chkUTC.Location = New Point(48, chkUTC.Location.Y)
+        Else
+            imgFile.Visible = False
+            lblOpenWithLbl.Location = New Point(6, lblOpenWithLbl.Location.Y)
+            lblOpenWith.Location = New Point(101, lblOpenWith.Location.Y)
+            chkUTC.Location = New Point(10, chkUTC.Location.Y)
+        End If
+    End Sub
+    
     Sub btnCopyFullPath_Click() Handles btnCopyFullPath.Click
         Try
             Clipboard.SetText(lblFullPath.Text, TextDataFormat.UnicodeText)
