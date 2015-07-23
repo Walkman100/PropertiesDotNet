@@ -3,8 +3,17 @@ A properties window made in VB.Net
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Walkman100/Walkman?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-<!-- ## Screenshots -->
-
+## Screenshots
+[![PropertiesDotNet main window][MainWindow]][MainWindow]
+[![Hash generator window][Hashes]][Hashes]
+[![Folder deleting window][Deletion]][Deletion]
+[![Folder copying window][Copying]][Copying]
+[![File compress dialog][Compress]][Compress]
+  [MainWindow]: http://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/MainWindow.png
+  [Hashes]: http://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/Hashes.png
+  [Deletion]: http://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/Deletion.png
+  [Copying]: http://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/Copying.png
+  [Compress]: http://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/Compress.png
 
 ## Credits/Acknowledgements
 ### Icons
