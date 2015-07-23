@@ -293,7 +293,14 @@ Public Class PropertiesDotNet
         CreateObject("Shell.Application").ShellExecute(lblOpenWith.Text, "", "", "runas")
     End Sub
     Sub btnWindowsProperties_Click() Handles btnWindowsProperties.Click
-        ShowProperties(lblLocation.Text)
+        Dim info As New ShellExecuteInfo
+        info.cbSize = Marshal.SizeOf(info)
+        info.lpVerb = "properties"
+        info.lpFile = lblLocation.Text
+        info.fMask = 12
+        If ShellExecuteEx(info) = False Then
+            MsgBox("Could not open properties window!", MsgBoxStyle.Exclamation)
+        End If
     End Sub
     Sub btnHashes_Click() Handles btnHashes.Click
         Hashes.Show
@@ -571,10 +578,10 @@ Public Class PropertiesDotNet
     
     ' https://stackoverflow.com/a/1936957/2999220
     <DllImport("shell32.dll", CharSet := CharSet.Auto)> _
-    Private Shared Function ShellExecuteEx(ByRef lpExecInfo As SHELLEXECUTEINFO) As Boolean
+    Private Shared Function ShellExecuteEx(ByRef lpExecInfo As ShellExecuteInfo) As Boolean
     End Function
     <StructLayout(LayoutKind.Sequential, CharSet := CharSet.Auto)> _
-    Public Structure SHELLEXECUTEINFO
+    Public Structure ShellExecuteInfo
         Public cbSize As Integer
         Public fMask As UInteger
         Public hwnd As IntPtr
@@ -596,18 +603,6 @@ Public Class PropertiesDotNet
         Public hIcon As IntPtr
         Public hProcess As IntPtr
     End Structure
-    
-    Private Const SW_SHOW As Integer = 5
-    Private Const SEE_MASK_INVOKEIDLIST As UInteger = 12
-    Public Shared Function ShowFileProperties(Filename As String) As Boolean
-        Dim info As New SHELLEXECUTEINFO()
-        info.cbSize = System.Runtime.InteropServices.Marshal.SizeOf(info)
-        info.lpVerb = "properties"
-        info.lpFile = Filename
-        info.nShow = SW_SHOW
-        info.fMask = SEE_MASK_INVOKEIDLIST
-        Return ShellExecuteEx(info)
-    End Function
     
     Sub ErrorParser(ex As Exception)
         ''' <summary>
