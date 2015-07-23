@@ -29,7 +29,7 @@ Public Class Hashes
         Me.btnAllCopy = New System.Windows.Forms.Button()
         Me.btnAllCalculate = New System.Windows.Forms.Button()
         Me.btnClose = New System.Windows.Forms.Button()
-        Me.pbCalculateProgress = New System.Windows.Forms.ProgressBar()
+        Me.pbCalculateProgress = New wyDay.Controls.Windows7ProgressBar()
         Me.bwCalcHashes = New System.ComponentModel.BackgroundWorker()
         Me.grpSHA512 = New System.Windows.Forms.GroupBox()
         Me.btnSHA512Copy = New System.Windows.Forms.Button()
@@ -174,14 +174,8 @@ Public Class Hashes
         Me.btnClose.UseVisualStyleBackColor = true
         AddHandler Me.btnClose.Click, AddressOf Me.btnClose_Click
         'pbCalculateProgress
-        '''
-        ' Taskbar Progress code: uncomment the next line and the #End If below to use the normal ProgressBar
-        '#If IsReference = True
-            Me.pbCalculateProgress = New wyDay.Controls.Windows7ProgressBar()
-            Me.pbCalculateProgress.ContainerControl = Me
-            Me.pbCalculateProgress.ShowInTaskbar = True
-        '#End If
-        '''
+        Me.pbCalculateProgress.ContainerControl = Me
+        Me.pbCalculateProgress.ShowInTaskbar = True
         Me.pbCalculateProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.pbCalculateProgress.Location = New System.Drawing.Point(9, 228)
         Me.pbCalculateProgress.Name = "pbCalculateProgress"
@@ -275,8 +269,7 @@ Public Class Hashes
     Private btnSHA512Copy As System.Windows.Forms.Button
     Private grpSHA512 As System.Windows.Forms.GroupBox
     Private bwCalcHashes As System.ComponentModel.BackgroundWorker
-    'wyDay.Controls.Windows7ProgressBar or System.Windows.Forms.ProgressBar
-    Private pbCalculateProgress As Object
+    Private pbCalculateProgress As wyDay.Controls.Windows7ProgressBar
     Private btnClose As System.Windows.Forms.Button
     Private btnAllCalculate As System.Windows.Forms.Button
     Private btnAllCopy As System.Windows.Forms.Button

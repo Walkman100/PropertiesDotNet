@@ -13,7 +13,7 @@ Public Class BackgroundProgress
     Private Sub InitializeComponent()
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.imgLoading = New System.Windows.Forms.PictureBox()
-        Me.pbTaskProgress = New System.Windows.Forms.ProgressBar()
+        Me.pbTaskProgress = New wyDay.Controls.Windows7ProgressBar()
         Me.bwFolderOperations = New System.ComponentModel.BackgroundWorker()
         CType(Me.imgLoading,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
@@ -31,14 +31,8 @@ Public Class BackgroundProgress
         Me.imgLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.imgLoading.TabStop = false
         'pbTaskProgress
-        '''
-        ' Taskbar Progress code: uncomment the next line and the #End If below to use the normal ProgressBar
-        '#If IsReference = True
-            Me.pbTaskProgress = New wyDay.Controls.Windows7ProgressBar()
-            Me.pbTaskProgress.ContainerControl = Me
-            Me.pbTaskProgress.ShowInTaskbar = True
-        '#End If
-        '''
+        Me.pbTaskProgress.ContainerControl = Me
+        Me.pbTaskProgress.ShowInTaskbar = True
         Me.pbTaskProgress.Location = New System.Drawing.Point(12, 34)
         Me.pbTaskProgress.Name = "pbTaskProgress"
         Me.pbTaskProgress.Size = New System.Drawing.Size(310, 23)
@@ -65,7 +59,7 @@ Public Class BackgroundProgress
         Me.PerformLayout
     End Sub
     Friend WithEvents bwFolderOperations As System.ComponentModel.BackgroundWorker
-    Private pbTaskProgress As Object 'wyDay.Controls.Windows7ProgressBar
+    Private pbTaskProgress As wyDay.Controls.Windows7ProgressBar
     Private lblStatus As System.Windows.Forms.Label
     Private imgLoading As System.Windows.Forms.PictureBox
     
