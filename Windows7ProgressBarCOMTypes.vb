@@ -1,8 +1,5 @@
 ' Copyright (c) Microsoft Corporation.  All rights reserved.
 
-Imports System
-Imports System.Runtime.InteropServices
-
 Namespace wyDay.Controls
     ''' <summary>
     ''' Represents the thumbnail progress bar state.

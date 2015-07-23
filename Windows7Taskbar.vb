@@ -1,7 +1,4 @@
 Imports System.ComponentModel
-Imports System.ComponentModel.Design
-Imports System.Drawing
-Imports System.Windows.Forms
 
 'Windows7ProgressBar v1.0, created by Wyatt O'Day
 'Visit: http://wyday.com/windows-7-progress-bar/
@@ -42,7 +39,7 @@ Namespace wyDay.Controls
                 If value Is Nothing Then
                     Return
                 End If
-                Dim service As IDesignerHost = TryCast(value.GetService(GetType(IDesignerHost)), IDesignerHost)
+                Dim service As Design.IDesignerHost = TryCast(value.GetService(GetType(Design.IDesignerHost)), Design.IDesignerHost)
                 If service Is Nothing Then
                     Return
                 End If

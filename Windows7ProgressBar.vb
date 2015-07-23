@@ -1,8 +1,5 @@
 ' Copyright (c) Microsoft Corporation.  All rights reserved.
 
-Imports System
-Imports System.Runtime.InteropServices
-
 Namespace wyDay.Controls
     ''' <summary>
     ''' The primary coordinator of the Windows 7 taskbar-related activities.
