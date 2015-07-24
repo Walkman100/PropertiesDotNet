@@ -57,7 +57,7 @@ Public Class PropertiesDotNet
         lblExtension.Text = FileProperties.Extension
         If lblExtension.Text = "" Then lblExtension.Text = "No extension!"
         
-        If Exists(lblLocation.Text) Then
+        If Exists(lblFullPath.Text) Then
             byteSize = FileProperties.Length
             ApplySizeFormatting
             imgFile.ImageLocation = FileProperties.FullName
@@ -71,18 +71,17 @@ Public Class PropertiesDotNet
             btnStartAssocProgAdmin.Enabled = True
             btnHashes.Enabled = True
             chkTemporary.Enabled = True
-        ElseIf Directory.Exists(lblLocation.Text)
-            Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
+        ElseIf Directory.Exists(lblFullPath.Text)
             If bwCalcSize.IsBusy = False Then
                 lblSize.Text = "Computing..."
                 bwCalcSize.RunWorkerAsync("calcSize")
             End If
             
             Dim gotIconOrIsAbsolute As Boolean = False
-            Dim parsedIconPath As String = DirectoryProperties.FullName
-            If DirectoryProperties.FullName.endswith(":\") Then
-                If Exists(DirectoryProperties.FullName & "\Autorun.inf") Then
-                    For Each line In ReadLines(DirectoryProperties.FullName & "\Autorun.inf")
+            Dim parsedIconPath As String = lblFullPath.Text
+            If lblFullPath.Text.endswith(":\") Then
+                If Exists(lblFullPath.Text & "\Autorun.inf") Then
+                    For Each line In ReadLines(lblFullPath.Text & "\Autorun.inf")
                         If line.StartsWith("Icon=", True, Nothing) Then
                             parsedIconPath = line.Substring(5)
                             gotIconOrIsAbsolute = True
@@ -90,9 +89,9 @@ Public Class PropertiesDotNet
                     Next
                 End If
             Else
-                If Exists(DirectoryProperties.FullName & "\desktop.ini") Then
+                If Exists(lblFullPath.Text & "\desktop.ini") Then
                     gotIconOrIsAbsolute = False
-                    For Each line In ReadLines(DirectoryProperties.FullName & "\desktop.ini")
+                    For Each line In ReadLines(lblFullPath.Text & "\desktop.ini")
                         If line.StartsWith("IconResource=", True, Nothing) Then
                             parsedIconPath = line.Substring(13)
                             gotIconOrIsAbsolute = True
@@ -126,7 +125,7 @@ Public Class PropertiesDotNet
                 If gotIconOrIsAbsolute Then
                     imgFile.ImageLocation = parsedIconPath
                 Else
-                    imgFile.ImageLocation = DirectoryProperties.FullName & "\" & parsedIconPath
+                    imgFile.ImageLocation = lblFullPath.Text & "\" & parsedIconPath
                 End If
             Else
                 imgFile.Image = Nothing
@@ -150,29 +149,29 @@ Public Class PropertiesDotNet
         If lblOpenWith.Text = "" Then lblOpenWith.Text = "Filetype not associated!"
         
         If chkUTC.Checked Then
-            lblCreationTime.Text = GetCreationTime(lblLocation.Text)
-            lblLastAccessTime.Text = GetLastAccessTime(lblLocation.Text)
-            lblLastWriteTime.Text = GetLastWriteTime(lblLocation.Text)
+            lblCreationTime.Text = GetCreationTime(lblFullPath.Text)
+            lblLastAccessTime.Text = GetLastAccessTime(lblFullPath.Text)
+            lblLastWriteTime.Text = GetLastWriteTime(lblFullPath.Text)
         Else
-            lblCreationTime.Text = GetCreationTimeUtc(lblLocation.Text)
-            lblLastAccessTime.Text = GetLastAccessTimeUtc(lblLocation.Text)
-            lblLastWriteTime.Text = GetLastWriteTimeUtc(lblLocation.Text)
+            lblCreationTime.Text = GetCreationTimeUtc(lblFullPath.Text)
+            lblLastAccessTime.Text = GetLastAccessTimeUtc(lblFullPath.Text)
+            lblLastWriteTime.Text = GetLastWriteTimeUtc(lblFullPath.Text)
         End If
         
         'Attributes:
-        chkReadOnly.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.ReadOnly)
-        chkHidden.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Hidden)
-        chkCompressed.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed)
-        chkEncrypted.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Encrypted)
-        chkSystem.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.System)
-        chkArchive.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Archive)
-        chkTemporary.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Temporary)
-        chkIntegrity.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.IntegrityStream)
-        chkNoScrub.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.NoScrubData)
-        chkNotIndexed.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.NotContentIndexed)
-        chkOffline.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Offline)
-        chkReparse.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.ReparsePoint)
-        chkSparse.Checked = GetAttributes(lblLocation.Text).HasFlag(FileAttributes.SparseFile)
+        chkReadOnly.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.ReadOnly)
+        chkHidden.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Hidden)
+        chkCompressed.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed)
+        chkEncrypted.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted)
+        chkSystem.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.System)
+        chkArchive.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Archive)
+        chkTemporary.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Temporary)
+        chkIntegrity.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.IntegrityStream)
+        chkNoScrub.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.NoScrubData)
+        chkNotIndexed.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.NotContentIndexed)
+        chkOffline.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Offline)
+        chkReparse.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.ReparsePoint)
+        chkSparse.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.SparseFile)
     End Sub
     
     Sub imgFile_LoadCompleted(sender As Object, e As System.ComponentModel.AsyncCompletedEventArgs) Handles imgFile.LoadCompleted
@@ -322,7 +321,7 @@ Public Class PropertiesDotNet
         Dim info As New ShellExecuteInfo
         info.cbSize = Marshal.SizeOf(info)
         info.lpVerb = "properties"
-        info.lpFile = lblLocation.Text
+        info.lpFile = lblFullPath.Text
         info.fMask = 12
         If ShellExecuteEx(info) = False Then
             MsgBox("Could not open properties window!", MsgBoxStyle.Exclamation)
@@ -333,26 +332,26 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub chkReadOnly_Click() Handles chkReadOnly.Click
-        If chkReadOnly.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.ReadOnly) _
-          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.ReadOnly)
+        If chkReadOnly.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.ReadOnly) _
+          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.ReadOnly)
         CheckData
     End Sub
     Sub chkHidden_Click() Handles chkHidden.Click
-        If chkHidden.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Hidden) _
-          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Hidden)
+        If chkHidden.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Hidden) _
+          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Hidden)
         CheckData
     End Sub
     Sub chkCompressed_Click() Handles chkCompressed.Click
         If chkCompressed.Checked Then
-            If SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Compressed) Then
-                If Not GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed) Then
+            If SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Compressed) Then
+                If Not GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
                     CompressReport.bwCompress.RunWorkerAsync({True, lblFullPath.Text})
                     CompressReport.ShowDialog
                 End If
             End If
         Else
-            If SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Compressed) Then
-                If GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Compressed) Then
+            If SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Compressed) Then
+                If GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
                     CompressReport.bwCompress.RunWorkerAsync({False, lblFullPath.Text})
                     CompressReport.ShowDialog
                 End If
@@ -362,9 +361,9 @@ Public Class PropertiesDotNet
     End Sub
     Sub chkEncrypted_Click() Handles chkEncrypted.Click
         If chkEncrypted.Checked Then
-            If SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Encrypted) Then
-                If Not GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Encrypted) Then
-                    Dim FileProperties As New FileInfo(lblLocation.Text)
+            If SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Encrypted) Then
+                If Not GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted) Then
+                    Dim FileProperties As New FileInfo(lblFullPath.Text)
                     Try
                         FileProperties.Encrypt
                     Catch ex As IOException
@@ -375,9 +374,9 @@ Public Class PropertiesDotNet
                 End If
             End If
         Else
-            If SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Encrypted) Then
-                If GetAttributes(lblLocation.Text).HasFlag(FileAttributes.Encrypted) Then
-                    Dim FileProperties As New FileInfo(lblLocation.Text)
+            If SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Encrypted) Then
+                If GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted) Then
+                    Dim FileProperties As New FileInfo(lblFullPath.Text)
                     Try
                         FileProperties.Decrypt
                     Catch ex As IOException
@@ -391,48 +390,48 @@ Public Class PropertiesDotNet
         CheckData
     End Sub
     Sub chkSystem_Click() Handles chkSystem.Click
-        If chkSystem.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.System) _
-          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.System)
+        If chkSystem.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.System) _
+          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.System)
         CheckData
     End Sub
     Sub chkArchive_Click() Handles chkArchive.Click
-        If chkArchive.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Archive) _
-          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Archive)
+        If chkArchive.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Archive) _
+          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Archive)
         CheckData
     End Sub
     Sub chkTemporary_Click() Handles chkTemporary.Click
-        If chkTemporary.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Temporary) _
-          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Temporary)
+        If chkTemporary.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Temporary) _
+          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Temporary)
         CheckData
     End Sub
     Sub chkIntegrity_Click() Handles chkIntegrity.Click
-        If chkIntegrity.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.IntegrityStream) _
-          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.IntegrityStream)
+        If chkIntegrity.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.IntegrityStream) _
+          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.IntegrityStream)
         CheckData
     End Sub
     Sub chkNoScrub_Click() Handles chkNoScrub.Click
-        If chkNoScrub.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.NoScrubData) _
-          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.NoScrubData)
+        If chkNoScrub.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.NoScrubData) _
+          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.NoScrubData)
         CheckData
     End Sub
     Sub chkNotIndexed_Click() Handles chkNotIndexed.Click
-        If chkNotIndexed.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.NotContentIndexed) _
-          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.NotContentIndexed)
+        If chkNotIndexed.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.NotContentIndexed) _
+          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.NotContentIndexed)
         CheckData
     End Sub
     Sub chkOffline_Click() Handles chkOffline.Click
-        If chkOffline.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.Offline) _
-          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.Offline)
+        If chkOffline.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Offline) _
+          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Offline)
         CheckData
     End Sub
     Sub chkReparse_Click() Handles chkReparse.Click
-        If chkReparse.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.ReparsePoint) _
-          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.ReparsePoint)
+        If chkReparse.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.ReparsePoint) _
+          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.ReparsePoint)
         CheckData
     End Sub
     Sub chkSparse_Click() Handles chkSparse.Click
-        If chkSparse.Checked Then SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) + FileAttributes.SparseFile) _
-          Else SetAttribWCheck(lblLocation.Text, GetAttributes(lblLocation.Text) - FileAttributes.SparseFile)
+        If chkSparse.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.SparseFile) _
+          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.SparseFile)
         CheckData
     End Sub
     
@@ -446,7 +445,7 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub btnRename_Click() Handles btnRename.Click
-        Dim FileProperties As New FileInfo(lblLocation.Text)
+        Dim FileProperties As New FileInfo(lblFullPath.Text)
         Dim newName = InputBox("Rename to:", "New name", FileProperties.Name)
         If newName <> "" Then
             Try
@@ -469,13 +468,13 @@ Public Class PropertiesDotNet
         CheckData
     End Sub
     Sub btnDelete_Click() Handles btnDelete.Click
-        Dim FileProperties As New FileInfo(lblLocation.Text)
+        Dim FileProperties As New FileInfo(lblFullPath.Text)
         If MsgBox("Are you sure you want to delete """ & FileProperties.Name & """?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
             Try
-                If Exists(lblLocation.Text) Then
+                If Exists(lblFullPath.Text) Then
                     FileProperties.Delete
-                ElseIf Directory.Exists(lblLocation.Text)
-                    BackgroundProgress.bwFolderOperations.RunWorkerAsync({"delete", lblLocation.Text})
+                ElseIf Directory.Exists(lblFullPath.Text)
+                    BackgroundProgress.bwFolderOperations.RunWorkerAsync({"delete", lblFullPath.Text})
                     BackgroundProgress.ShowDialog
                 End If
                 Application.Exit
@@ -493,16 +492,16 @@ Public Class PropertiesDotNet
         CheckData
     End Sub
     Sub btnCopy_Click() Handles btnCopy.Click
-        Dim FileProperties As New FileInfo(lblLocation.Text)
+        Dim FileProperties As New FileInfo(lblFullPath.Text)
         SaveFileDialog.InitialDirectory = FileProperties.DirectoryName
         SaveFileDialog.FileName = FileProperties.Name
         SaveFileDialog.Title = "Choose where to copy """ & FileProperties.Name & """ to:"
         If SaveFileDialog.ShowDialog() = DialogResult.OK Then
             ' No point in adding an access denied check here, since the SaveFileDialog doesn't allow you to select a location that needs admin access
-            If Exists(lblLocation.Text) Then
+            If Exists(lblFullPath.Text) Then
                 FileProperties.CopyTo(SaveFileDialog.FileName)
-            ElseIf Directory.Exists(lblLocation.Text)
-                BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", lblLocation.Text, SaveFileDialog.FileName})
+            ElseIf Directory.Exists(lblFullPath.Text)
+                BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", lblFullPath.Text, SaveFileDialog.FileName})
                 BackgroundProgress.ShowDialog
             End If
             If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
@@ -512,14 +511,14 @@ Public Class PropertiesDotNet
     End Sub
     Sub btnCopy_MouseUp(sender As Object, e As MouseEventArgs) Handles btnCopy.MouseUp
         If e.Button = Windows.Forms.MouseButtons.Right Then
-            Dim FileProperties As New FileInfo(lblLocation.Text)
+            Dim FileProperties As New FileInfo(lblFullPath.Text)
             Dim newName = InputBox("Copy to:", "Copy file", FileProperties.FullName)
             If newName <> "" Then
                 Try
-                    If Exists(lblLocation.Text) Then
+                    If Exists(lblFullPath.Text) Then
                         FileProperties.CopyTo(newName)
-                    ElseIf Directory.Exists(lblLocation.Text)
-                        BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", lblLocation.Text, newName})
+                    ElseIf Directory.Exists(lblFullPath.Text)
+                        BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", lblFullPath.Text, newName})
                         BackgroundProgress.ShowDialog
                     End If
                     If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
@@ -542,7 +541,7 @@ Public Class PropertiesDotNet
         End If
     End Sub
     Sub btnMove_Click() Handles btnMove.Click
-        Dim FileProperties As New FileInfo(lblLocation.Text)
+        Dim FileProperties As New FileInfo(lblFullPath.Text)
         SaveFileDialog.InitialDirectory = FileProperties.DirectoryName
         SaveFileDialog.FileName = FileProperties.Name
         SaveFileDialog.Title = "Choose where to move """ & FileProperties.Name & """ to:"
@@ -573,7 +572,7 @@ Public Class PropertiesDotNet
     Sub bwCalcSize_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bwCalcSize.DoWork
         Try
             cbxSize.Enabled = False
-            Dim DirectoryProperties As New DirectoryInfo(lblLocation.Text)
+            Dim DirectoryProperties As New DirectoryInfo(lblFullPath.Text)
             lblSize.Text = "Getting file list... (May take a while)"
             Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
             byteSize = 0
