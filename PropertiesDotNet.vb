@@ -61,6 +61,7 @@ Public Class PropertiesDotNet
             byteSize = FileProperties.Length
             ApplySizeFormatting
             imgFile.ImageLocation = FileProperties.FullName
+            
             btnLaunchAdmin.Enabled = True
             lblExtensionLbl.Enabled = True
             lblExtension.Enabled = True
@@ -76,60 +77,7 @@ Public Class PropertiesDotNet
                 lblSize.Text = "Computing..."
                 bwCalcSize.RunWorkerAsync("calcSize")
             End If
-            
-            Dim gotIconOrIsAbsolute As Boolean = False
-            Dim parsedIconPath As String = lblFullPath.Text
-            If lblFullPath.Text.endswith(":\") Then
-                If Exists(lblFullPath.Text & "\Autorun.inf") Then
-                    For Each line In ReadLines(lblFullPath.Text & "\Autorun.inf")
-                        If line.StartsWith("Icon=", True, Nothing) Then
-                            parsedIconPath = line.Substring(5)
-                            gotIconOrIsAbsolute = True
-                        End If
-                    Next
-                End If
-            Else
-                If Exists(lblFullPath.Text & "\desktop.ini") Then
-                    gotIconOrIsAbsolute = False
-                    For Each line In ReadLines(lblFullPath.Text & "\desktop.ini")
-                        If line.StartsWith("IconResource=", True, Nothing) Then
-                            parsedIconPath = line.Substring(13)
-                            gotIconOrIsAbsolute = True
-                        ElseIf line.StartsWith("IconFile=", True, Nothing) And gotIconOrIsAbsolute = False Then
-                            parsedIconPath = line.Substring(9)
-                            gotIconOrIsAbsolute = True
-                        End If
-                    Next
-                End If
-            End If
-            If gotIconOrIsAbsolute Then
-                gotIconOrIsAbsolute = False
-                If parsedIconPath.StartsWith("%") Then
-                    gotIconOrIsAbsolute = True
-                Else
-                    For i = 1 To 26 ' The Chr() below will give all letters from A to Z
-                        If parsedIconPath.StartsWith(Chr(i+64) & ":\") Then
-                            gotIconOrIsAbsolute = True
-                            Exit For
-                        End If
-                    Next
-                    If gotIconOrIsAbsolute = False Then
-                        For i = 1 To 26 ' The Chr() below will give all letters from a to z
-                            If parsedIconPath.StartsWith(Chr(i+96) & ":\") Then
-                                gotIconOrIsAbsolute = True
-                                Exit For
-                            End If
-                        Next
-                    End If
-                End If
-                If gotIconOrIsAbsolute Then
-                    imgFile.ImageLocation = parsedIconPath
-                Else
-                    imgFile.ImageLocation = lblFullPath.Text & "\" & parsedIconPath
-                End If
-            Else
-                imgFile.Image = Nothing
-            End If
+            imgFile.ImageLocation = GetFolderIconPath(lblFullPath.Text)
             
             btnLaunchAdmin.Enabled = False
             lblExtensionLbl.Enabled = False
@@ -174,16 +122,85 @@ Public Class PropertiesDotNet
         chkSparse.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.SparseFile)
     End Sub
     
+    ''' <summary>Get the path to the folder icon</summary>
+    ''' <param name="folder">the folder path get the icon path for</param>
+    ''' <returns>the icon path</returns>
+    Function GetFolderIconPath(folder As String) As String
+        Dim gotIconOrIsAbsolute As Boolean = False
+        Dim parsedIconPath As String = folder
+        If folder.endswith(":\") Then
+            If Exists(folder & "\Autorun.inf") Then
+                For Each line In ReadLines(folder & "\Autorun.inf")
+                    If line.StartsWith("Icon=", True, Nothing) Then
+                        parsedIconPath = line.Substring(5)
+                        gotIconOrIsAbsolute = True
+                    End If
+                Next
+            End If
+        Else
+            If Exists(folder & "\desktop.ini") Then
+                For Each line In ReadLines(folder & "\desktop.ini")
+                    If line.StartsWith("IconResource=", True, Nothing) Then
+                        parsedIconPath = line.Substring(13)
+                        gotIconOrIsAbsolute = True
+                    ElseIf line.StartsWith("IconFile=", True, Nothing) And gotIconOrIsAbsolute = False Then
+                        parsedIconPath = line.Substring(9)
+                        gotIconOrIsAbsolute = True
+                    End If
+                Next
+            End If
+        End If
+        If gotIconOrIsAbsolute Then
+            gotIconOrIsAbsolute = False
+            If parsedIconPath.StartsWith("%") Then
+                gotIconOrIsAbsolute = True
+            Else
+                For i = 1 To 26 ' The Chr() below will give all letters from A to Z
+                    If parsedIconPath.StartsWith(Chr(i+64) & ":\") Then
+                        gotIconOrIsAbsolute = True
+                        Exit For
+                    End If
+                Next
+                If gotIconOrIsAbsolute = False Then
+                    For i = 1 To 26 ' The Chr() below will give all letters from a to z
+                        If parsedIconPath.StartsWith(Chr(i+96) & ":\") Then
+                            gotIconOrIsAbsolute = True
+                            Exit For
+                        End If
+                    Next
+                End If
+            End If
+            If parsedIconPath.EndsWith(",0") Then
+                parsedIconPath = parsedIconPath.Remove(parsedIconPath.Length-2)
+            End If
+            If gotIconOrIsAbsolute Then
+                Return parsedIconPath
+            Else
+                Return folder & "\" & parsedIconPath
+            End If
+        Else
+            Return "no icon found"
+        End If
+    End Function
     Sub imgFile_LoadCompleted(sender As Object, e As System.ComponentModel.AsyncCompletedEventArgs) Handles imgFile.LoadCompleted
         If IsNothing(e.Error) Then
             ShowImageBox
         Else
-            Try
-                imgFile.Image = Icon.ExtractAssociatedIcon(lblFullPath.Text).ToBitmap
-                ShowImageBox
-            Catch
-                HideImageBox
-            End Try
+            If Exists(lblFullPath.Text) Then
+                Try
+                    imgFile.Image = Icon.ExtractAssociatedIcon(lblFullPath.Text).ToBitmap
+                    ShowImageBox
+                Catch
+                    HideImageBox
+                End Try
+            ElseIf Directory.Exists(lblFullPath.Text)
+                Try
+                    imgFile.Image = Icon.ExtractAssociatedIcon(GetFolderIconPath(lblFullPath.Text)).ToBitmap
+                    ShowImageBox
+                Catch
+                    HideImageBox
+                End Try
+            End If
         End If
     End Sub
     Sub ShowImageBox
