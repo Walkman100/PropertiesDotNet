@@ -177,16 +177,27 @@ Public Class PropertiesDotNet
     
     Sub imgFile_LoadCompleted(sender As Object, e As System.ComponentModel.AsyncCompletedEventArgs) Handles imgFile.LoadCompleted
         If IsNothing(e.Error) Then
-            imgFile.Visible = True
-            lblOpenWithLbl.Location = New Point(48, lblOpenWithLbl.Location.Y)
-            lblOpenWith.Location = New Point(285, lblOpenWith.Location.Y)
-            chkUTC.Location = New Point(48, chkUTC.Location.Y)
+            ShowImageBox
         Else
-            imgFile.Visible = False
-            lblOpenWithLbl.Location = New Point(6, lblOpenWithLbl.Location.Y)
-            lblOpenWith.Location = New Point(101, lblOpenWith.Location.Y)
-            chkUTC.Location = New Point(10, chkUTC.Location.Y)
+            Try
+                imgFile.Image = Icon.ExtractAssociatedIcon(lblFullPath.Text).ToBitmap
+                ShowImageBox
+            Catch
+                HideImageBox
+            End Try
         End If
+    End Sub
+    Sub ShowImageBox
+        imgFile.Visible = True
+        lblOpenWithLbl.Location = New Point(48, lblOpenWithLbl.Location.Y)
+        lblOpenWith.Location = New Point(117, lblOpenWith.Location.Y)
+        chkUTC.Location = New Point(48, chkUTC.Location.Y)
+    End Sub
+    Sub HideImageBox
+        imgFile.Visible = False
+        lblOpenWithLbl.Location = New Point(6, lblOpenWithLbl.Location.Y)
+        lblOpenWith.Location = New Point(101, lblOpenWith.Location.Y)
+        chkUTC.Location = New Point(10, chkUTC.Location.Y)
     End Sub
     
     Sub btnCopyFullPath_Click() Handles btnCopyFullPath.Click
