@@ -32,9 +32,9 @@ Public Class BackgroundProgress
         Me.imgLoading.TabStop = false
         'pbTaskProgress
         Me.pbTaskProgress.ContainerControl = Me
-        Me.pbTaskProgress.ShowInTaskbar = True
         Me.pbTaskProgress.Location = New System.Drawing.Point(12, 34)
         Me.pbTaskProgress.Name = "pbTaskProgress"
+        Me.pbTaskProgress.ShowInTaskbar = true
         Me.pbTaskProgress.Size = New System.Drawing.Size(310, 23)
         'bwFolderOperations
         Me.bwFolderOperations.WorkerReportsProgress = true
@@ -197,6 +197,7 @@ Public Class BackgroundProgress
                             End Try
                         End If
                     End Try
+                    i += 1
                 Next
                 
                 Sleep(100)

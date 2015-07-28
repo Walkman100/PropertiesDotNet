@@ -61,6 +61,9 @@
     <Compile Include="Hashes.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ImageViewer.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PropertiesDotNet.vb">
       <SubType>Form</SubType>
     </Compile>

@@ -250,9 +250,10 @@ Partial Class PropertiesDotNet
         '
         'imgFile
         '
+        Me.imgFile.Cursor = System.Windows.Forms.Cursors.Hand
         Me.imgFile.ErrorImage = Nothing
         Me.imgFile.Image = Global.PropertiesDotNet.My.Resources.Resources.loading4
-        Me.imgFile.InitialImage = Nothing
+        Me.imgFile.InitialImage = Global.PropertiesDotNet.My.Resources.Resources.loading4
         Me.imgFile.Location = New System.Drawing.Point(10, 147)
         Me.imgFile.Name = "imgFile"
         Me.imgFile.Size = New System.Drawing.Size(32, 32)
@@ -756,7 +757,7 @@ Partial Class PropertiesDotNet
     Private SaveFileDialog As System.Windows.Forms.SaveFileDialog
     Private WithEvents btnLaunch As System.Windows.Forms.Button
     Private WithEvents btnOpenDir As System.Windows.Forms.Button
-    Private WithEvents imgFile As System.Windows.Forms.PictureBox
+    Friend WithEvents imgFile As System.Windows.Forms.PictureBox
     Private lblOpenWithLbl As System.Windows.Forms.Label
     Private WithEvents btnOpenWith As System.Windows.Forms.Button
     Private lblOpenWith As System.Windows.Forms.Label

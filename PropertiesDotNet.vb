@@ -8,7 +8,7 @@ Public Class PropertiesDotNet
     Private Declare Function FindExecutable Lib "shell32.dll" Alias "FindExecutableA"(lpFile As String, lpDirectory As String, lpResult As String) As Long
     Dim byteSize As ULong = 0
     
-    Sub PropertiesDotNet_Load(sender As Object, e As EventArgs) Handles Me.Load
+    Sub PropertiesDotNet_Load() Handles Me.Load
         For Each s As String In My.Application.CommandLineArgs
             If lblLocation.Text = "Checking..." Then
                 lblLocation.Text = s
@@ -214,6 +214,13 @@ Public Class PropertiesDotNet
         lblOpenWithLbl.Location = New Point(6, lblOpenWithLbl.Location.Y)
         lblOpenWith.Location = New Point(101, lblOpenWith.Location.Y)
         chkUTC.Location = New Point(10, chkUTC.Location.Y)
+    End Sub
+    Sub imgFile_Click() Handles imgFile.Click
+        ImageViewer.Close
+        ImageViewer.fileImage.Image = Nothing
+        ImageViewer.Text = lblName.Text
+        ImageViewer.Show
+        ImageViewer.fileImage.Image = imgFile.Image
     End Sub
     
     Sub btnCopyFullPath_Click() Handles btnCopyFullPath.Click
