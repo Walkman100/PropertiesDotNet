@@ -20,6 +20,7 @@ Public Class PropertiesDotNet
             Dim OpenFileDialog As New OpenFileDialog()
             OpenFileDialog.Filter = "All Files|*.*"
             OpenFileDialog.Title = "Select a file to view properties for:"
+            OpenFileDialog.DereferenceLinks = False
             If OpenFileDialog.ShowDialog() = DialogResult.OK Then
                 lblLocation.Text = OpenFileDialog.FileName
             Else

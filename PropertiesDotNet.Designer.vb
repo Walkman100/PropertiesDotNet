@@ -251,9 +251,7 @@ Partial Class PropertiesDotNet
         'imgFile
         '
         Me.imgFile.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.imgFile.ErrorImage = Nothing
         Me.imgFile.Image = Global.PropertiesDotNet.My.Resources.Resources.loading4
-        Me.imgFile.InitialImage = Global.PropertiesDotNet.My.Resources.Resources.loading4
         Me.imgFile.Location = New System.Drawing.Point(10, 147)
         Me.imgFile.Name = "imgFile"
         Me.imgFile.Size = New System.Drawing.Size(32, 32)
