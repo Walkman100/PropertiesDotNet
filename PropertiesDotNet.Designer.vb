@@ -82,6 +82,7 @@ Partial Class PropertiesDotNet
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnRename = New System.Windows.Forms.Button()
         Me.bwCalcSize = New System.ComponentModel.BackgroundWorker()
+        Me.chkUseSystem = New System.Windows.Forms.CheckBox()
         Me.grpProperties.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpAttributes.SuspendLayout
@@ -661,6 +662,7 @@ Partial Class PropertiesDotNet
         Me.grpFileLocation.Controls.Add(Me.btnCopy)
         Me.grpFileLocation.Controls.Add(Me.btnDelete)
         Me.grpFileLocation.Controls.Add(Me.btnRename)
+        Me.grpFileLocation.Controls.Add(Me.chkUseSystem)
         Me.grpFileLocation.Location = New System.Drawing.Point(2, 470)
         Me.grpFileLocation.Name = "grpFileLocation"
         Me.grpFileLocation.Size = New System.Drawing.Size(411, 50)
@@ -720,6 +722,18 @@ Partial Class PropertiesDotNet
         Me.bwCalcSize.WorkerReportsProgress = true
         Me.bwCalcSize.WorkerSupportsCancellation = true
         '
+        'chkUseSystem
+        '
+        Me.chkUseSystem.AutoSize = true
+        Me.chkUseSystem.Checked = true
+        Me.chkUseSystem.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkUseSystem.Location = New System.Drawing.Point(330, 23)
+        Me.chkUseSystem.Name = "chkUseSystem"
+        Me.chkUseSystem.Size = New System.Drawing.Size(126, 17)
+        Me.chkUseSystem.TabIndex = 5
+        Me.chkUseSystem.Text = "Use system functions"
+        Me.chkUseSystem.UseVisualStyleBackColor = true
+        '
         'PropertiesDotNet
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -740,8 +754,10 @@ Partial Class PropertiesDotNet
         Me.grpAttributes.ResumeLayout(false)
         Me.grpAttributes.PerformLayout
         Me.grpFileLocation.ResumeLayout(false)
+        Me.grpFileLocation.PerformLayout
         Me.ResumeLayout(false)
     End Sub
+    Private chkUseSystem As System.Windows.Forms.CheckBox
     Private WithEvents btnWindowsProperties As System.Windows.Forms.Button
     Private grpProperties As System.Windows.Forms.GroupBox
     Private grpAttributes As System.Windows.Forms.GroupBox

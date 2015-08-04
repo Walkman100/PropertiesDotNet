@@ -1,7 +1,4 @@
-﻿Imports System.IO.File
-Imports System.Security.Principal
-
-Public Class PropertiesDotNet
+﻿Public Class PropertiesDotNet
     ' Imported Functions: FindExecutable:
     '  Used for finding the program that a file opens with
     '   http://www.vb-helper.com/howto_get_associated_program.html
@@ -502,11 +499,19 @@ Public Class PropertiesDotNet
         Dim FileProperties As New FileInfo(lblFullPath.Text)
         If MsgBox("Are you sure you want to delete """ & FileProperties.Name & """?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
             Try
-                If Exists(lblFullPath.Text) Then
-                    FileProperties.Delete
-                ElseIf Directory.Exists(lblFullPath.Text)
-                    BackgroundProgress.bwFolderOperations.RunWorkerAsync({"delete", lblFullPath.Text})
-                    BackgroundProgress.ShowDialog
+                If chkUseSystem.Checked Then
+                    If Exists(lblFullPath.Text) Then
+                        My.Computer.FileSystem.DeleteFile(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
+                    Else
+                        My.Computer.FileSystem.DeleteDirectory(lblFullPath.Text,  FileIO.UIOption.AllDialogs,                             FileIO.RecycleOption.DeletePermanently)
+                    End If
+                Else
+                    If Exists(lblFullPath.Text) Then
+                        FileProperties.Delete
+                    ElseIf Directory.Exists(lblFullPath.Text)
+                        BackgroundProgress.bwFolderOperations.RunWorkerAsync({"delete", lblFullPath.Text})
+                        BackgroundProgress.ShowDialog
+                    End If
                 End If
                 Application.Exit
             Catch ex As UnauthorizedAccessException
@@ -529,12 +534,21 @@ Public Class PropertiesDotNet
         SaveFileDialog.Title = "Choose where to copy """ & FileProperties.Name & """ to:"
         If SaveFileDialog.ShowDialog() = DialogResult.OK Then
             ' No point in adding an access denied check here, since the SaveFileDialog doesn't allow you to select a location that needs admin access
-            If Exists(lblFullPath.Text) Then
-                FileProperties.CopyTo(SaveFileDialog.FileName)
-            ElseIf Directory.Exists(lblFullPath.Text)
-                BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", lblFullPath.Text, SaveFileDialog.FileName})
-                BackgroundProgress.ShowDialog
+            If chkUseSystem.Checked Then
+                If Exists(lblFullPath.Text) Then
+                    My.Computer.FileSystem.CopyFile(lblFullPath.Text, SaveFileDialog.FileName, FileIO.UIOption.AllDialogs)
+                Else
+                    My.Computer.FileSystem.CopyDirectory(lblFullPath.Text, SaveFileDialog.FileName, FileIO.UIOption.AllDialogs)
+                End If
+            Else
+                If Exists(lblFullPath.Text) Then
+                    FileProperties.CopyTo(SaveFileDialog.FileName)
+                ElseIf Directory.Exists(lblFullPath.Text)
+                    BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", lblFullPath.Text, SaveFileDialog.FileName})
+                    BackgroundProgress.ShowDialog
+                End If
             End If
+            
             If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
               lblLocation.Text = SaveFileDialog.FileName
         End If
@@ -546,11 +560,19 @@ Public Class PropertiesDotNet
             Dim newName = InputBox("Copy to:", "Copy file", FileProperties.FullName)
             If newName <> "" Then
                 Try
-                    If Exists(lblFullPath.Text) Then
-                        FileProperties.CopyTo(newName)
-                    ElseIf Directory.Exists(lblFullPath.Text)
-                        BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", lblFullPath.Text, newName})
-                        BackgroundProgress.ShowDialog
+                    If chkUseSystem.Checked Then
+                        If Exists(lblFullPath.Text) Then
+                            My.Computer.FileSystem.CopyFile(lblFullPath.Text, newName, FileIO.UIOption.AllDialogs)
+                        Else
+                            My.Computer.FileSystem.CopyDirectory(lblFullPath.Text, newName, FileIO.UIOption.AllDialogs)
+                        End If
+                    Else
+                        If Exists(lblFullPath.Text)
+                            FileProperties.CopyTo(newName)
+                        ElseIf Directory.Exists(lblFullPath.Text)
+                            BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", lblFullPath.Text, newName})
+                            BackgroundProgress.ShowDialog
+                        End If
                     End If
                     If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                       lblLocation.Text = newName
@@ -578,7 +600,15 @@ Public Class PropertiesDotNet
         SaveFileDialog.Title = "Choose where to move """ & FileProperties.Name & """ to:"
         If SaveFileDialog.ShowDialog() = DialogResult.OK Then
             Try
-                FileProperties.MoveTo(SaveFileDialog.FileName)
+                If chkUseSystem.Checked Then
+                    If Exists(lblFullPath.Text) Then
+                        My.Computer.FileSystem.MoveFile(lblFullPath.Text, SaveFileDialog.FileName, FileIO.UIOption.AllDialogs)
+                    ElseIf Directory.Exists(lblFullPath.Text)
+                        My.Computer.FileSystem.MoveDirectory(lblFullPath.Text, SaveFileDialog.FileName, FileIO.UIOption.AllDialogs)
+                    End If
+                Else
+                    FileProperties.MoveTo(SaveFileDialog.FileName)
+                End If
                 lblLocation.Text = SaveFileDialog.FileName
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
