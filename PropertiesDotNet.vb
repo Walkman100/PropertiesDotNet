@@ -71,8 +71,10 @@ Public Class PropertiesDotNet
             lblOpenWith.Enabled = True
             btnStartAssocProg.Enabled = True
             btnStartAssocProgAdmin.Enabled = True
-            btnHashes.Enabled = True
             chkTemporary.Enabled = True
+            
+            btnHashes.Image = My.Resources.Resources.hashx16
+            btnHashes.Text = "Compute Hashes"
         ElseIf Directory.Exists(lblFullPath.Text)
             If bwCalcSize.IsBusy = False Then
                 lblSize.Text = "Computing..."
@@ -88,8 +90,10 @@ Public Class PropertiesDotNet
             lblOpenWith.Enabled = False
             btnStartAssocProg.Enabled = False
             btnStartAssocProgAdmin.Enabled = False
-            btnHashes.Enabled = False
             chkTemporary.Enabled = False
+            
+            btnHashes.Image = My.Resources.Resources.Shell32__326_
+            btnHashes.Text = "DirectoryImage..."
         End If
         
         Dim result As String = Space$(1024)
@@ -353,7 +357,15 @@ Public Class PropertiesDotNet
         End If
     End Sub
     Sub btnHashes_Click() Handles btnHashes.Click
-        Hashes.Show
+        If btnHashes.Text = "Compute Hashes" Then
+            Hashes.Show
+        ElseIf btnHashes.Text = "DirectoryImage..."
+            Try
+                Process.Start(Application.StartupPath & "\DirectoryImage", lblFullPath.Text)
+            Catch ex As Exception
+                MsgBox("""" & Application.StartupPath & "\DirectoryImage"" executable not found!", MsgBoxStyle.Exclamation)
+            End Try
+        End If
     End Sub
     
     Sub chkReadOnly_Click() Handles chkReadOnly.Click
