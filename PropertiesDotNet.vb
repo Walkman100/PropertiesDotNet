@@ -67,14 +67,9 @@ Public Class PropertiesDotNet
             lblExtensionLbl.Enabled = True
             lblExtension.Enabled = True
             btnOpenWith.Enabled = True
-            lblOpenWithLbl.Enabled = True
-            lblOpenWith.Enabled = True
-            btnStartAssocProg.Enabled = True
-            btnStartAssocProgAdmin.Enabled = True
+            btnStartAssocProg.Visible = True
+            btnStartAssocProgAdmin.Visible = True
             chkTemporary.Enabled = True
-            
-            btnHashes.Image = My.Resources.Resources.hashx16
-            btnHashes.Text = "Compute Hashes"
         ElseIf Directory.Exists(lblFullPath.Text)
             If bwCalcSize.IsBusy = False Then
                 lblSize.Text = "Computing..."
@@ -86,12 +81,11 @@ Public Class PropertiesDotNet
             lblExtensionLbl.Enabled = False
             lblExtension.Enabled = False
             btnOpenWith.Enabled = False
-            lblOpenWithLbl.Enabled = False
-            lblOpenWith.Enabled = False
-            btnStartAssocProg.Enabled = False
-            btnStartAssocProgAdmin.Enabled = False
+            btnStartAssocProg.Visible = False
+            btnStartAssocProgAdmin.Visible = False
             chkTemporary.Enabled = False
             
+            lblOpenWithLbl.Text = "Number of files:"
             btnHashes.Image = My.Resources.Resources.Shell32__326_
             btnHashes.Text = "DirectoryImage..."
         End If
@@ -211,7 +205,7 @@ Public Class PropertiesDotNet
     Sub ShowImageBox
         imgFile.Visible = True
         lblOpenWithLbl.Location = New Point(48, lblOpenWithLbl.Location.Y)
-        lblOpenWith.Location = New Point(117, lblOpenWith.Location.Y)
+        lblOpenWith.Location = New Point(lblOpenWithLbl.Width +54, lblOpenWith.Location.Y)
         chkUTC.Location = New Point(48, chkUTC.Location.Y)
     End Sub
     Sub HideImageBox
@@ -612,11 +606,13 @@ Public Class PropertiesDotNet
             Dim DirectoryProperties As New DirectoryInfo(lblFullPath.Text)
             lblSize.Text = "Getting file list... (May take a while)"
             Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
+            lblOpenWith.Text = SubFiles.Count
             byteSize = 0
             For Each SubFile As FileInfo In SubFiles
                 byteSize += SubFile.Length
                 lblSize.Text = byteSize
             Next
+            lblOpenWith.Text = SubFiles.Count
             cbxSize.Enabled = True
             ApplySizeFormatting
         Catch ex As Exception
