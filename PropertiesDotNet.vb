@@ -69,8 +69,7 @@
             chkTemporary.Enabled = True
         ElseIf Directory.Exists(lblFullPath.Text)
             If bwCalcSize.IsBusy = False Then
-                lblSize.Text = "Computing..."
-                bwCalcSize.RunWorkerAsync("calcSize")
+                bwCalcSize.RunWorkerAsync()
             End If
             imgFile.ImageLocation = GetFolderIconPath(lblFullPath.Text)
             
@@ -630,21 +629,34 @@
         Application.Exit
     End Sub
     
-    Sub bwCalcSize_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bwCalcSize.DoWork
+    Sub bwCalcSize_DoWork() Handles bwCalcSize.DoWork
         Try
-            cbxSize.Enabled = False
-            Dim DirectoryProperties As New DirectoryInfo(lblFullPath.Text)
-            lblSize.Text = "Getting file list... (May take a while)"
-            Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
-            lblOpenWith.Text = SubFiles.Count
-            byteSize = 0
-            For Each SubFile As FileInfo In SubFiles
-                byteSize += SubFile.Length
-                lblSize.Text = byteSize
-            Next
-            lblOpenWith.Text = SubFiles.Count
-            cbxSize.Enabled = True
-            ApplySizeFormatting
+            If byteSize = 0 Then
+                cbxSize.Enabled = False
+                Dim DirectoryProperties As New DirectoryInfo(lblFullPath.Text)
+                lblSize.Text = "Getting file list... (May take a while)"
+                Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
+                lblOpenWith.Text = SubFiles.Count
+                byteSize = 0
+                For Each SubFile As FileInfo In SubFiles
+                    byteSize += SubFile.Length
+                    lblSize.Text = byteSize
+                Next
+                lblOpenWith.Text = SubFiles.Count
+                cbxSize.Enabled = True
+                ApplySizeFormatting
+            Else
+                Dim DirectoryProperties As New DirectoryInfo(lblFullPath.Text)
+                lblOpenWith.Text = "Getting file list... (May take a while)"
+                Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
+                lblOpenWith.Text = SubFiles.Count
+                byteSize = 0
+                For Each SubFile As FileInfo In SubFiles
+                    byteSize += SubFile.Length
+                Next
+                lblOpenWith.Text = SubFiles.Count
+                ApplySizeFormatting
+            End If
         Catch ex As Exception
             ErrorParser(ex)
         End Try
