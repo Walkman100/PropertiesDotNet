@@ -266,14 +266,7 @@
         Process.Start(lblFullPath.Text)
     End Sub
     Sub btnLaunchAdmin_Click() Handles btnLaunchAdmin.Click
-        'Dim proc As New ProcessStartInfo
-        'proc.FileName = lblFullPath.Text
-        'proc.Verb = "runas"
-        'Try
-        '    Process.Start(proc)
-        'Catch
-        CreateObject("Shell.Application").ShellExecute(lblOpenWith.Text, """" & lblFullPath.Text & """", "", "runas")
-        'End Try
+        RunAsAdmin(lblOpenWith.Text, lblFullPath.Text)
     End Sub
     Sub btnOpenWith_Click() Handles btnOpenWith.Click
         Dim isDangerousExtension As New Boolean
@@ -334,7 +327,7 @@
         Process.Start(lblOpenWith.Text)
     End Sub
     Sub btnStartAssocProgAdmin_Click() Handles btnStartAssocProgAdmin.Click
-        CreateObject("Shell.Application").ShellExecute(lblOpenWith.Text, "", "", "runas")
+        RunAsAdmin(lblOpenWith.Text)
     End Sub
     Sub btnWindowsProperties_Click() Handles btnWindowsProperties.Click
         Dim info As New ShellExecuteInfo
@@ -481,8 +474,7 @@
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    CreateObject("Shell.Application").ShellExecute("cmd", "/k ren """ & lblFullPath.Text & _
-                      """ """ & newName & """", "", "runas")
+                    RunAsAdmin("cmd", "/k ren """ & lblFullPath.Text & """ """ & newName & """")
                     If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                       lblLocation.Text = FileProperties.DirectoryName & "\" & newName
                 Else
@@ -516,7 +508,7 @@
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    CreateObject("Shell.Application").ShellExecute("cmd", "/k del """ & lblFullPath.Text & """", "", "runas")
+                    RunAsAdmin("cmd", "/k del """ & lblFullPath.Text & """")
                 Else
                     ErrorParser(ex)
                 End If
@@ -578,8 +570,7 @@
                 Catch ex As UnauthorizedAccessException
                     If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                           MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                            CreateObject("Shell.Application").ShellExecute("xcopy", """" & lblFullPath.Text & _
-                              """ """ & newName & """", "", "runas")
+                            RunAsAdmin("xcopy", """" & lblFullPath.Text & """ """ & newName & """")
                             If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                               lblLocation.Text = newName
                         Else
@@ -612,8 +603,7 @@
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    CreateObject("Shell.Application").ShellExecute("cmd", "/k move """ & lblFullPath.Text & _
-                      """ """ & SaveFileDialog.FileName & """", "", "runas")
+                    RunAsAdmin("cmd", "/k move """ & lblFullPath.Text & """ """ & SaveFileDialog.FileName & """")
                     If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                       lblLocation.Text = SaveFileDialog.FileName
                 Else
@@ -676,6 +666,17 @@
         End Try
     End Function
     
+    ''' <summary>Starts a program with a set of command-line arguments as an administrator.</summary>
+    ''' <param name="fileName">The name of an application file to run in the process.</param>
+    ''' <param name="arguments">Optional. Command-line arguments to pass when starting the process.</param>
+    Sub RunAsAdmin(fileName As String, Optional arguments As String = "")
+        If arguments = "" Then
+            CreateObject("Shell.Application").ShellExecute(fileName, "", "", "runas")
+        Else
+            CreateObject("Shell.Application").ShellExecute(fileName, """" & arguments & """", "", "runas")
+        End If
+    End Sub
+    
     ' https://stackoverflow.com/a/1936957/2999220
     <DllImport("shell32.dll", CharSet := CharSet.Auto)> _
     Private Shared Function ShellExecuteEx(ByRef lpExecInfo As ShellExecuteInfo) As Boolean
@@ -712,8 +713,7 @@
           Not New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(WindowsBuiltInRole.Administrator) Then
             If MsgBox(ex.message & vbnewline & vbnewline & "Try launching PropertiesDotNet As Administrator?", _
               MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                CreateObject("Shell.Application").ShellExecute(Application.StartupPath & "\" & _
-                  Process.GetCurrentProcess.ProcessName & ".exe", """" & lblFullPath.Text & """", "", "runas")
+                RunAsAdmin(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", lblFullPath.Text)
                 Application.Exit
             End If
         Else
