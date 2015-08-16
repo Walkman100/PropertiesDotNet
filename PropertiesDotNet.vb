@@ -266,7 +266,22 @@
         Process.Start(lblFullPath.Text)
     End Sub
     Sub btnLaunchAdmin_Click() Handles btnLaunchAdmin.Click
-        RunAsAdmin(lblOpenWith.Text, lblFullPath.Text)
+        If lblOpenWith.Text = Environment.GetEnvironmentVariable("ProgramFiles") & "\Windows Photo Viewer\PhotoViewer.dll" Then
+            ' rundll32 "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen FilePath
+            RunAsAdmin("rundll32", Environment.GetEnvironmentVariable("ProgramFiles") & "\Windows Photo Viewer\PhotoViewer.dll"", " & _
+              "ImageView_Fullscreen " & lblFullPath.Text)
+            
+        ElseIf lblOpenWith.Text = Environment.GetEnvironmentVariable("ProgramFiles(x86)") & "\Windows Photo Viewer\PhotoViewer.dll" Then
+            RunAsAdmin("rundll32", Environment.GetEnvironmentVariable("ProgramFiles(x86)") & "\Windows Photo Viewer\PhotoViewer.dll"", " & _
+              "ImageView_Fullscreen " & lblFullPath.Text)
+              
+        ElseIf lblOpenWith.Text = Environment.GetEnvironmentVariable("ProgramW6432") & "\Windows Photo Viewer\PhotoViewer.dll" Then
+            RunAsAdmin("rundll32", Environment.GetEnvironmentVariable("ProgramW6432") & "\Windows Photo Viewer\PhotoViewer.dll"", " & _
+              "ImageView_Fullscreen " & lblFullPath.Text)
+              
+        Else
+            RunAsAdmin(lblOpenWith.Text, lblFullPath.Text & """")
+        End If
     End Sub
     Sub btnOpenWith_Click() Handles btnOpenWith.Click
         Dim isDangerousExtension As New Boolean
@@ -474,7 +489,7 @@
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    RunAsAdmin("cmd", "/k ren """ & lblFullPath.Text & """ """ & newName & """")
+                    RunAsAdmin("cmd", "/k ren """ & lblFullPath.Text & """ """ & newName & """""")
                     If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                       lblLocation.Text = FileProperties.DirectoryName & "\" & newName
                 Else
@@ -508,7 +523,7 @@
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    RunAsAdmin("cmd", "/k del """ & lblFullPath.Text & """")
+                    RunAsAdmin("cmd", "/k del """ & lblFullPath.Text & """""")
                 Else
                     ErrorParser(ex)
                 End If
@@ -570,7 +585,7 @@
                 Catch ex As UnauthorizedAccessException
                     If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                           MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                            RunAsAdmin("xcopy", """" & lblFullPath.Text & """ """ & newName & """")
+                            RunAsAdmin("xcopy", lblFullPath.Text & """ """ & newName & """")
                             If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                               lblLocation.Text = newName
                         Else
@@ -603,7 +618,7 @@
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    RunAsAdmin("cmd", "/k move """ & lblFullPath.Text & """ """ & SaveFileDialog.FileName & """")
+                    RunAsAdmin("cmd", "/k move """ & lblFullPath.Text & """ """ & SaveFileDialog.FileName & """""")
                     If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                       lblLocation.Text = SaveFileDialog.FileName
                 Else
@@ -673,7 +688,7 @@
         If arguments = "" Then
             CreateObject("Shell.Application").ShellExecute(fileName, "", "", "runas")
         Else
-            CreateObject("Shell.Application").ShellExecute(fileName, """" & arguments & """", "", "runas")
+            CreateObject("Shell.Application").ShellExecute(fileName, """" & arguments, "", "runas")
         End If
     End Sub
     
@@ -713,7 +728,7 @@
           Not New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(WindowsBuiltInRole.Administrator) Then
             If MsgBox(ex.message & vbnewline & vbnewline & "Try launching PropertiesDotNet As Administrator?", _
               MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                RunAsAdmin(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", lblFullPath.Text)
+                RunAsAdmin(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", lblFullPath.Text & """")
                 Application.Exit
             End If
         Else
