@@ -359,7 +359,7 @@
             Hashes.Show
         ElseIf btnHashes.Text = "DirectoryImage..."
             Try
-                Process.Start(Application.StartupPath & "\DirectoryImage", lblFullPath.Text)
+                Process.Start(Application.StartupPath & "\DirectoryImage", """" & lblFullPath.Text & """")
             Catch ex As Exception
                 MsgBox("""" & Application.StartupPath & "\DirectoryImage"" executable not found!", MsgBoxStyle.Exclamation)
             End Try
