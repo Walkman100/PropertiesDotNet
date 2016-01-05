@@ -118,7 +118,7 @@
     End Sub
     
     ''' <summary>Get the path to the folder icon</summary>
-    ''' <param name="folder">the folder path get the icon path for</param>
+    ''' <param name="folder">the folder path to get the icon path for</param>
     ''' <returns>the icon path</returns>
     Function GetFolderIconPath(folder As String) As String
         Dim gotIconOrIsAbsolute As Boolean = False
