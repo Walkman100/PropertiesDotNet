@@ -57,9 +57,10 @@ Section "Add PropertiesDotNet to context menu"
   WriteRegStr HKCR "*\shell\PropertiesDotNet\command" "" "$\"$INSTDIR\PropertiesDotNet.exe$\" $\"%1$\""
   
   ; Folder item
-  WriteRegStr HKCR "Directory\shell\PropertiesDotNet" "" "Properties..."
-  WriteRegStr HKCR "Directory\shell\PropertiesDotNet" "Icon" "$INSTDIR\PropertiesDotNet.exe"
-  WriteRegStr HKCR "Directory\shell\PropertiesDotNet\command" "" "$\"$INSTDIR\PropertiesDotNet.exe$\" $\"%1$\""
+  DeleteRegKey HKCR "Directory\shell\PropertiesDotNet" ; Remove old context menu item, 'Folder' also covers drives
+  WriteRegStr HKCR "Folder\shell\PropertiesDotNet" "" "Properties..."
+  WriteRegStr HKCR "Folder\shell\PropertiesDotNet" "Icon" "$INSTDIR\PropertiesDotNet.exe"
+  WriteRegStr HKCR "Folder\shell\PropertiesDotNet\command" "" "$\"$INSTDIR\PropertiesDotNet.exe$\" $\"%1$\""
 SectionEnd
 
 ; Functions
@@ -93,7 +94,8 @@ Section "Uninstall"
   Delete "$QUICKLAUNCH\PropertiesDotNet.lnk" ; Remove Quick Launch Shortcut
   
   DeleteRegKey HKCR "*\shell\PropertiesDotNet"         ; Remove files  context menu item
-  DeleteRegKey HKCR "Directory\shell\PropertiesDotNet" ; Remove folder context menu item
+  DeleteRegKey HKCR "Directory\shell\PropertiesDotNet" ; Remove folder context menu item1
+  DeleteRegKey HKCR "Folder\shell\PropertiesDotNet" ; Remove folder context menu item2
 SectionEnd
 
 ; Uninstaller Functions
