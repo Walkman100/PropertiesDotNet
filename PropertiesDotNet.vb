@@ -561,7 +561,7 @@
         CheckData
     End Sub
     Sub btnCopy_MouseUp(sender As Object, e As MouseEventArgs) Handles btnCopy.MouseUp
-        If e.Button = Windows.Forms.MouseButtons.Right Then
+        If e.Button = MouseButtons.Right Then
             Dim FileProperties As New FileInfo(lblFullPath.Text)
             Dim newName = InputBox("Copy to:", "Copy file", FileProperties.FullName)
             If newName <> "" Then
