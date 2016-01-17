@@ -13,6 +13,9 @@
                 Process.Start(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", """" & s & """")
             End If
         Next
+        If lblLocation.Text.EndsWith("""") Then
+            lblLocation.Text = lblLocation.Text.Remove(lblLocation.Text.Length - 1) & "\"
+        End If
         If lblLocation.Text = "Checking..." Then
             Dim OpenFileDialog As New OpenFileDialog()
             OpenFileDialog.Filter = "All Files|*.*"
