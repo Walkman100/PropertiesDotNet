@@ -92,13 +92,13 @@
         If lblOpenWith.Text = "" Then lblOpenWith.Text = "Filetype not associated!"
         
         If chkUTC.Checked Then
-            lblCreationTime.Text = GetCreationTime(lblFullPath.Text)
-            lblLastAccessTime.Text = GetLastAccessTime(lblFullPath.Text)
-            lblLastWriteTime.Text = GetLastWriteTime(lblFullPath.Text)
-        Else
             lblCreationTime.Text = GetCreationTimeUtc(lblFullPath.Text)
             lblLastAccessTime.Text = GetLastAccessTimeUtc(lblFullPath.Text)
             lblLastWriteTime.Text = GetLastWriteTimeUtc(lblFullPath.Text)
+        Else
+            lblCreationTime.Text = GetCreationTime(lblFullPath.Text)
+            lblLastAccessTime.Text = GetLastAccessTime(lblFullPath.Text)
+            lblLastWriteTime.Text = GetLastWriteTime(lblFullPath.Text)
         End If
         
         'Attributes:

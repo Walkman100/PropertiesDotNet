@@ -49,7 +49,7 @@ Public Class ImageViewer
     Sub btnSave_Click()
         Dim SaveFileDialog As New SaveFileDialog
         SaveFileDialog.Title = "Save image"
-        SaveFileDialog.FileName = PropertiesDotNet.imgFile.ImageLocation
+        SaveFileDialog.FileName = PropertiesDotNet.imgFile.ImageLocation & ".png"
         If SaveFileDialog.ShowDialog = DialogResult.OK Then
             fileImage.Image.Save(SaveFileDialog.FileName)
         End If
