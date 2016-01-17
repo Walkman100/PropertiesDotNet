@@ -472,10 +472,10 @@
     
     Sub lnkAttributes_LinkClicked() Handles lnkAttributes.LinkClicked
         Try
-            Process.Start("https://msdn.microsoft.com/en-us/library/system.io.fileattributes(v=vs.110).aspx#memberList")
+            Process.Start("https://msdn.microsoft.com/en-us/library/system.io.fileattributes%28v=vs.110%29.aspx#Anchor_1")
         Catch ex As Exception
             If MsgBox("Unable to launch URL, copy to clipboard instead?", MsgBoxStyle.YesNo + MsgBoxStyle.Information) = MsgBoxResult.Yes Then _
-              Clipboard.SetText("https://msdn.microsoft.com/en-us/library/system.io.fileattributes(v=vs.110).aspx#memberList")
+              Clipboard.SetText("https://msdn.microsoft.com/en-us/library/system.io.fileattributes%28v=vs.110%29.aspx#Anchor_1")
         End Try
     End Sub
     
