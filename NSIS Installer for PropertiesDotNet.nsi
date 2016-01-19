@@ -5,6 +5,7 @@
 Icon "My Project\document-properties.ico"
 Caption "PropertiesDotNet Installer"
 Name "PropertiesDotNet"
+XPStyle on
 AutoCloseWindow true
 ShowInstDetails show
 
