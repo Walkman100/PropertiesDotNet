@@ -247,7 +247,7 @@ Public Class Hashes
         Me.Controls.Add(Me.grpSHA1)
         Me.Controls.Add(Me.grpMD5)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Icon = Global.PropertiesDotNet.My.Resources.Resources.hashx64
+        Me.Icon = My.Resources.Resources.hashx64
         Me.MaximizeBox = false
         Me.Name = "Hashes"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
@@ -285,6 +285,8 @@ Public Class Hashes
     Private lblMD5 As System.Windows.Forms.Label
     Private btnMD5Copy As System.Windows.Forms.Button
     Private grpMD5 As System.Windows.Forms.GroupBox
+    
+    Dim hashType As String
     
     Sub btnMD5Calculate_Click()
         hashType = "MD5"
@@ -381,11 +383,30 @@ Public Class Hashes
         End Try
     End Sub
     
+    Dim ToCopy As String
     Sub btnAllCopy_Click()
+        If lblMD5.Text = "Click ""Calculate""" Then
+            ToCopy = "MD5: Not generated" & vbNewLine
+        Else
+            ToCopy = "MD5: " & lblMD5.Text & vbNewLine
+        End If
+        If lblSHA1.Text = "Click ""Calculate""" Then
+            ToCopy &= "SHA1: Not generated" & vbNewLine
+        Else
+            ToCopy &= "SHA1: " & lblSHA1.Text & vbNewLine
+        End If
+        If lblSHA256.Text = "Click ""Calculate""" Then
+            ToCopy &= "SHA256: Not generated" & vbNewLine
+        Else
+            ToCopy &= "SHA256: " & lblSHA256.Text & vbNewLine
+        End If
+        If lblSHA512.Text = "Click ""Calculate""" Then
+            ToCopy &= "SHA512: Not generated"
+        Else
+            ToCopy &= "SHA512: " & lblSHA512.Text
+        End If
         Try
-            Clipboard.SetText(lblMD5.Text & vbNewLine & lblSHA1.Text & vbNewLine & lblSHA256.Text & vbNewLine & lblSHA512.Text, TextDataFormat.UnicodeText)
-            MsgBox(lblMD5.Text & vbNewLine & lblSHA1.Text & vbNewLine & lblSHA256.Text & vbNewLine & lblSHA512.Text _
-                & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
+            Clipboard.SetText(ToCopy, TextDataFormat.UnicodeText)
         Catch ex As Exception
             MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
         End Try
@@ -398,7 +419,6 @@ Public Class Hashes
     ' Original code, thanks to http://us.informatiweb.net/programmation/36--generate-hashes-md5-sha-1-and-sha-256-of-a-file.html
     ' Code that reports progress, thanks to http://www.infinitec.de/post/2007/06/09/Displaying-progress-updates-when-hashing-large-files.aspx
     
-    Dim hashType As String
     Dim hashHex As String
     Dim hashObject
     Dim buffer As Byte()
