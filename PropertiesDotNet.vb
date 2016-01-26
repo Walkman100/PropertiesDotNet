@@ -44,6 +44,27 @@
         cbxSize.SelectedIndex = 3
     End Sub
     
+    Sub PropertiesDotNet_DragEnter(sender As Object, e As DragEventArgs) Handles Me.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.All
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+    Sub PropertiesDotNet_DragDrop(sender As Object, e As DragEventArgs) Handles Me.DragDrop
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            If Exists(e.Data.GetData(DataFormats.FileDrop)(0)) Then
+                lblLocation.Text = e.Data.GetData(DataFormats.FileDrop)(0)
+                CheckData
+            ElseIf Directory.Exists(e.Data.GetData(DataFormats.FileDrop)(0))
+                lblLocation.Text = e.Data.GetData(DataFormats.FileDrop)(0)
+                CheckData
+            Else
+                MsgBox("File or directory """ & e.Data.GetData(DataFormats.FileDrop)(0) & """ not found!", MsgBoxStyle.Critical)
+            End If
+        End If
+     End Sub
+    
     Sub CheckData Handles chkUTC.CheckedChanged
         'Properties:
         Dim FileProperties As New FileInfo(lblLocation.Text)
@@ -119,7 +140,7 @@
         chkSparse.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.SparseFile)
     End Sub
     
-    ''' <summary>Get the path to the folder icon</summary>
+    ''' <summary>Gets the path to the folder icon</summary>
     ''' <param name="folder">the folder path to get the icon path for</param>
     ''' <returns>the icon path</returns>
     Function GetFolderIconPath(folder As String) As String

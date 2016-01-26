@@ -81,8 +81,8 @@ Partial Class PropertiesDotNet
         Me.btnCopy = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnRename = New System.Windows.Forms.Button()
-        Me.bwCalcSize = New System.ComponentModel.BackgroundWorker()
         Me.chkUseSystem = New System.Windows.Forms.CheckBox()
+        Me.bwCalcSize = New System.ComponentModel.BackgroundWorker()
         Me.grpProperties.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpAttributes.SuspendLayout
@@ -717,11 +717,6 @@ Partial Class PropertiesDotNet
         Me.btnRename.Text = "Rename..."
         Me.btnRename.UseVisualStyleBackColor = true
         '
-        'bwCalcSize
-        '
-        Me.bwCalcSize.WorkerReportsProgress = true
-        Me.bwCalcSize.WorkerSupportsCancellation = true
-        '
         'chkUseSystem
         '
         Me.chkUseSystem.AutoSize = true
@@ -734,8 +729,14 @@ Partial Class PropertiesDotNet
         Me.chkUseSystem.Text = "Use system functions"
         Me.chkUseSystem.UseVisualStyleBackColor = true
         '
+        'bwCalcSize
+        '
+        Me.bwCalcSize.WorkerReportsProgress = true
+        Me.bwCalcSize.WorkerSupportsCancellation = true
+        '
         'PropertiesDotNet
         '
+        Me.AllowDrop = true
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnClose
