@@ -54,14 +54,18 @@
     Sub PropertiesDotNet_DragDrop(sender As Object, e As DragEventArgs) Handles Me.DragDrop
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
             If Exists(e.Data.GetData(DataFormats.FileDrop)(0)) Then
-                lblLocation.Text = e.Data.GetData(DataFormats.FileDrop)(0)
-                CheckData
+                'yay continue
             ElseIf Directory.Exists(e.Data.GetData(DataFormats.FileDrop)(0))
-                lblLocation.Text = e.Data.GetData(DataFormats.FileDrop)(0)
-                CheckData
+                'yay continue
             Else
                 MsgBox("File or directory """ & e.Data.GetData(DataFormats.FileDrop)(0) & """ not found!", MsgBoxStyle.Critical)
+                Exit Sub
             End If
+            
+            lblLocation.Text = e.Data.GetData(DataFormats.FileDrop)(0)
+            imgFile.Image = My.Resources.Resources.loading4
+            ShowImageBox
+            CheckData
         End If
      End Sub
     
@@ -87,10 +91,13 @@
             btnLaunchAdmin.Enabled = True
             lblExtensionLbl.Enabled = True
             lblExtension.Enabled = True
-            btnOpenWith.Enabled = True
             btnStartAssocProg.Visible = True
             btnStartAssocProgAdmin.Visible = True
             chkTemporary.Enabled = True
+            
+            lblOpenWithLbl.Text = "Opens with:"
+            btnHashes.Image = My.Resources.Resources.hashx16
+            btnHashes.Text = "Compute Hashes"
         ElseIf Directory.Exists(lblFullPath.Text)
             If bwCalcSize.IsBusy = False Then
                 bwCalcSize.RunWorkerAsync()
