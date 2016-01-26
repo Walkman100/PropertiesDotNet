@@ -79,7 +79,6 @@
             btnLaunchAdmin.Enabled = False
             lblExtensionLbl.Enabled = False
             lblExtension.Enabled = False
-            btnOpenWith.Enabled = False
             btnStartAssocProg.Visible = False
             btnStartAssocProgAdmin.Visible = False
             chkTemporary.Enabled = False
