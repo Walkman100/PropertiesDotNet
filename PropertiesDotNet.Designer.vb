@@ -738,7 +738,7 @@ Partial Class PropertiesDotNet
         '
         'timerDelayedBrowse
         '
-        Me.timerDelayedBrowse.Interval = 500
+        Me.timerDelayedBrowse.Interval = 50
         '
         'PropertiesDotNet
         '
