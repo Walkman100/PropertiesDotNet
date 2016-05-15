@@ -22,6 +22,7 @@ Partial Class PropertiesDotNet
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.lblLocation = New System.Windows.Forms.Label()
         Me.chkHidden = New System.Windows.Forms.CheckBox()
@@ -83,6 +84,7 @@ Partial Class PropertiesDotNet
         Me.btnRename = New System.Windows.Forms.Button()
         Me.chkUseSystem = New System.Windows.Forms.CheckBox()
         Me.bwCalcSize = New System.ComponentModel.BackgroundWorker()
+        Me.timerDelayedBrowse = New System.Windows.Forms.Timer(Me.components)
         Me.grpProperties.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpAttributes.SuspendLayout
@@ -734,6 +736,10 @@ Partial Class PropertiesDotNet
         Me.bwCalcSize.WorkerReportsProgress = true
         Me.bwCalcSize.WorkerSupportsCancellation = true
         '
+        'timerDelayedBrowse
+        '
+        Me.timerDelayedBrowse.Interval = 500
+        '
         'PropertiesDotNet
         '
         Me.AllowDrop = true
@@ -758,6 +764,7 @@ Partial Class PropertiesDotNet
         Me.grpFileLocation.PerformLayout
         Me.ResumeLayout(false)
     End Sub
+    Private WithEvents timerDelayedBrowse As System.Windows.Forms.Timer
     Private chkUseSystem As System.Windows.Forms.CheckBox
     Private WithEvents btnWindowsProperties As System.Windows.Forms.Button
     Private grpProperties As System.Windows.Forms.GroupBox

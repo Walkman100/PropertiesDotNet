@@ -16,6 +16,11 @@
         If lblLocation.Text.EndsWith("""") Then
             lblLocation.Text = lblLocation.Text.Remove(lblLocation.Text.Length - 1) & "\"
         End If
+        timerDelayedBrowse.Start
+    End Sub
+    
+    Sub timerDelayedBrowse_Tick() Handles timerDelayedBrowse.Tick
+        timerDelayedBrowse.Stop
         If lblLocation.Text = "Checking..." Then
             Dim OpenFileDialog As New OpenFileDialog()
             OpenFileDialog.Filter = "All Files|*.*"
@@ -539,7 +544,7 @@
                     If Exists(lblFullPath.Text) Then
                         My.Computer.FileSystem.DeleteFile(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
                     Else
-                        My.Computer.FileSystem.DeleteDirectory(lblFullPath.Text,  FileIO.UIOption.AllDialogs,                             FileIO.RecycleOption.DeletePermanently)
+                        My.Computer.FileSystem.DeleteDirectory(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
                     End If
                 Else
                     If Exists(lblFullPath.Text) Then
