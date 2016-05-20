@@ -124,7 +124,14 @@
         Dim result As String = Space$(1024)
         FindExecutable(lblName.Text, lblDirectory.Text & "\", result)
         lblOpenWith.Text = Strings.Left$(result, InStr(result, Chr(0)) - 1)
-        If lblOpenWith.Text = "" Then lblOpenWith.Text = "Filetype not associated!"
+        If lblOpenWith.Text = "" Then 
+            lblOpenWith.Text = "Filetype not associated!"
+            btnStartAssocProg.Enabled = False
+            btnStartAssocProgAdmin.Enabled = False
+        Else
+            btnStartAssocProg.Enabled = True
+            btnStartAssocProgAdmin.Enabled = True
+        End If
         
         If chkUTC.Checked Then
             lblCreationTime.Text = GetCreationTimeUtc(lblFullPath.Text)
@@ -315,7 +322,11 @@
               "ImageView_Fullscreen " & lblFullPath.Text)
               
         Else
-            RunAsAdmin(lblOpenWith.Text, lblFullPath.Text & """")
+            If lblOpenWith.Text = "Filetype not associated!" Then
+                RunAsAdmin(lblFullPath.Text)
+            Else
+                RunAsAdmin(lblOpenWith.Text, lblFullPath.Text & """")
+            End If
         End If
     End Sub
     Sub btnOpenWith_Click() Handles btnOpenWith.Click
