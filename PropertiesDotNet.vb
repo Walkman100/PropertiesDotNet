@@ -349,6 +349,15 @@
             'Process.Start("rundll32", "shell32.dll,OpenAs_RunDLL " & lblFullPath.Text)
         End If
     End Sub
+    Sub btnOpenWith_MouseUp(sender As Object, e As MouseEventArgs) Handles btnOpenWith.MouseUp
+        If e.Button = MouseButtons.Right Then
+            Try
+                Process.Start(Application.StartupPath & "\ProgramLauncher", """" & lblFullPath.Text & """")
+            Catch ex As Exception
+                MsgBox("""" & Application.StartupPath & "\ProgramLauncher"" executable not found!", MsgBoxStyle.Exclamation)
+            End Try
+        End If
+    End Sub
     Sub ApplySizeFormatting() Handles cbxSize.SelectedIndexChanged
         Select Case cbxSize.SelectedIndex
             Case 0 'bytes (8 bits)
