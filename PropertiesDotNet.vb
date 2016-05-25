@@ -46,7 +46,7 @@
             MsgBox("File or directory """ & lblLocation.Text & """ not found!", MsgBoxStyle.Critical)
             Application.Exit
         End If
-        cbxSize.SelectedIndex = 3
+        cbxSize.SelectedIndex = 1
     End Sub
     
     Sub PropertiesDotNet_DragEnter(sender As Object, e As DragEventArgs) Handles Me.DragEnter
@@ -90,6 +90,7 @@
         
         If Exists(lblFullPath.Text) Then
             byteSize = FileProperties.Length
+            AutoDetectSize
             ApplySizeFormatting
             imgFile.ImageLocation = FileProperties.FullName
             
@@ -356,6 +357,19 @@
             Catch ex As Exception
                 MsgBox("""" & Application.StartupPath & "\ProgramLauncher"" executable not found!", MsgBoxStyle.Exclamation)
             End Try
+        End If
+    End Sub
+    Sub AutoDetectSize()
+        If byteSize > 1000^5 Then
+            cbxSize.SelectedIndex = 9
+        ElseIf byteSize > 1000^4 Then
+            cbxSize.SelectedIndex = 7
+        ElseIf byteSize > 1000^3 Then
+            cbxSize.SelectedIndex = 5
+        ElseIf byteSize > 1000^2 Then
+            cbxSize.SelectedIndex = 3
+        ElseIf byteSize > 1000 Then
+            cbxSize.SelectedIndex = 1
         End If
     End Sub
     Sub ApplySizeFormatting() Handles cbxSize.SelectedIndexChanged
@@ -705,7 +719,10 @@
             Next
             
             lblOpenWith.Text = SubFiles.Count
-            If byteSize = 0 Then cbxSize.Enabled = True
+            If cbxSize.Enabled = False Then
+                cbxSize.Enabled = True
+                AutoDetectSize
+            End If
             ApplySizeFormatting
         Catch ex As Exception
             ErrorParser(ex)
