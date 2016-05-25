@@ -691,32 +691,22 @@
     
     Sub bwCalcSize_DoWork() Handles bwCalcSize.DoWork
         Try
-            If byteSize = 0 Then
-                cbxSize.Enabled = False
-                Dim DirectoryProperties As New DirectoryInfo(lblFullPath.Text)
-                lblSize.Text = "Getting file list... (May take a while)"
-                Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
-                lblOpenWith.Text = SubFiles.Count
-                byteSize = 0
-                For Each SubFile As FileInfo In SubFiles
-                    byteSize += SubFile.Length
-                    lblSize.Text = byteSize
-                Next
-                lblOpenWith.Text = SubFiles.Count
-                cbxSize.Enabled = True
-                ApplySizeFormatting
-            Else
-                Dim DirectoryProperties As New DirectoryInfo(lblFullPath.Text)
-                lblOpenWith.Text = "Getting file list... (May take a while)"
-                Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
-                lblOpenWith.Text = SubFiles.Count
-                byteSize = 0
-                For Each SubFile As FileInfo In SubFiles
-                    byteSize += SubFile.Length
-                Next
-                lblOpenWith.Text = SubFiles.Count
-                ApplySizeFormatting
-            End If
+            If byteSize = 0 Then cbxSize.Enabled = False
+            Dim DirectoryProperties As New DirectoryInfo(lblFullPath.Text)
+            
+            lblSize.Text = "Getting file list... (May take a while)"
+            Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
+            
+            lblOpenWith.Text = SubFiles.Count
+            byteSize = 0
+            For Each SubFile As FileInfo In SubFiles
+                byteSize += SubFile.Length
+                lblSize.Text = byteSize
+            Next
+            
+            lblOpenWith.Text = SubFiles.Count
+            If byteSize = 0 Then cbxSize.Enabled = True
+            ApplySizeFormatting
         Catch ex As Exception
             ErrorParser(ex)
         End Try
