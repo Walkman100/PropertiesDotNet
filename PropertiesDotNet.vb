@@ -370,6 +370,8 @@
             cbxSize.SelectedIndex = 3
         ElseIf byteSize > 1000 Then
             cbxSize.SelectedIndex = 1
+        Else
+            cbxSize.SelectedIndex = 0
         End If
     End Sub
     Sub ApplySizeFormatting() Handles cbxSize.SelectedIndexChanged
