@@ -801,6 +801,7 @@
                 frmBugReport.Height = 525
                 frmBugReport.StartPosition = FormStartPosition.CenterParent
                 frmBugReport.WindowState = Me.WindowState
+                frmBugReport.Show()
                 frmBugReport.ShowIcon = False
                 frmBugReport.ShowInTaskbar = True
                 frmBugReport.Text = "Full error trace"
@@ -809,17 +810,22 @@
                 txtBugReport.ScrollBars = ScrollBars.Vertical
                 frmBugReport.Controls.Add(txtBugReport)
                 txtBugReport.Dock = DockStyle.Fill
-                txtBugReport.Text = "ToString:" & vbNewLine & ex.ToString & vbNewLine & vbNewLine & _
-                                    "Data:" & vbNewLine & ex.Data.ToString & vbNewLine & vbNewLine & _
-                                    "BaseException:" & vbNewLine & ex.GetBaseException.ToString & vbNewLine & vbNewLine & _
-                                    "HashCode:" & vbNewLine & ex.GetHashCode.ToString & vbNewLine & vbNewLine & _
-                                    "Type:" & vbNewLine & ex.GetType.ToString & vbNewLine & vbNewLine & _
-                                    "HResult:" & vbNewLine & ex.HResult.ToString & vbNewLine & vbNewLine & _
-                                    "Message:" & vbNewLine & ex.Message.ToString & vbNewLine & vbNewLine & _
-                                    "Source:" & vbNewLine & ex.Source.ToString & vbNewLine & vbNewLine & _
-                                    "StackTrace:" & vbNewLine & ex.StackTrace.ToString & vbNewLine & vbNewLine & _
-                                    "TargetSite:" & vbNewLine & ex.TargetSite.ToString
-                frmBugReport.Show()
+                txtBugReport.Text = "ToString:" & vbNewLine & ex.ToString & vbNewLine & vbNewLine
+                txtBugReport.Text &= "BaseException:" & vbNewLine & ex.GetBaseException.ToString & vbNewLine & vbNewLine
+                txtBugReport.Text &= "Type: " & ex.GetType.ToString & vbNewLine
+                txtBugReport.Text &= "Message: " & ex.Message.ToString & vbNewLine & vbNewLine
+                txtBugReport.Text &= "StackTrace:" & vbNewLine & ex.StackTrace.ToString & vbNewLine & vbNewLine
+                txtBugReport.Text &= "Source: " & ex.Source.ToString & vbNewLine
+                txtBugReport.Text &= "TargetSite: " & ex.TargetSite.ToString & vbNewLine
+                txtBugReport.Text &= "HashCode: " & ex.GetHashCode.ToString & vbNewLine
+                txtBugReport.Text &= "HResult: " & ex.HResult.ToString & vbNewLine & vbNewLine
+                For i = 0 To Integer.MaxValue
+                    Try
+                        txtBugReport.Text &= "Data:" & vbNewLine & ex.Data(i).ToString & vbNewLine & vbNewLine
+                    Catch
+                        Exit For
+                    End Try
+                Next
             End If
         End If
     End Sub
