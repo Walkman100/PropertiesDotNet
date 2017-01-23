@@ -1,4 +1,4 @@
-﻿Imports System.Security
+Imports System.Security
 Imports System.Security.Cryptography
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _

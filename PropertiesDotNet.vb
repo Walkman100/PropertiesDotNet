@@ -1,4 +1,4 @@
-﻿Public Class PropertiesDotNet
+Public Class PropertiesDotNet
     ' Imported Functions: FindExecutable:
     '  Used for finding the program that a file opens with
     '   http://www.vb-helper.com/howto_get_associated_program.html

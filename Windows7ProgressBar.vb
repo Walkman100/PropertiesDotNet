@@ -1,4 +1,4 @@
-﻿' Copyright (c) Microsoft Corporation.  All rights reserved.
+' Copyright (c) Microsoft Corporation.  All rights reserved.
 Imports System.ComponentModel
 'Windows7ProgressBar v1.0, created by Wyatt O'Day
 'Visit: http://wyday.com/windows-7-progress-bar/

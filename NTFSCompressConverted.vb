@@ -1,4 +1,4 @@
-﻿''' <summary>
+''' <summary>
 ''' Code from http://www.thescarms.com/dotnet/NTFSCompress.aspx, converted to VB.Net
 ''' </summary>
 Imports System

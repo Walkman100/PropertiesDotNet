@@ -1,4 +1,4 @@
-﻿/// <summary>
+/// <summary>
 /// Code from http://www.thescarms.com/dotnet/NTFSCompress.aspx,
 /// but you can convert this to another language i.e. it compiles
 /// </summary>

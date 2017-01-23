@@ -1,4 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Public Class ImageViewer
     Inherits System.Windows.Forms.Form
     Private components As System.ComponentModel.IContainer

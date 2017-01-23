@@ -1,4 +1,4 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Public Class CompressReport
     Inherits System.Windows.Forms.Form
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)

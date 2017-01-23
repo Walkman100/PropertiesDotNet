@@ -1,4 +1,4 @@
-﻿/// <summary>
+/// <summary>
 /// Original, non-convertable code from http://www.thescarms.com/dotnet/NTFSCompress.aspx
 /// </summary>
 using System.IO;
