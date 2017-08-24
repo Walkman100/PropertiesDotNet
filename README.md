@@ -9,6 +9,7 @@ A properties window made in VB.Net
 [![Folder deleting window][Deletion]][Deletion]
 [![Folder copying window][Copying]][Copying]
 [![File compress dialog][Compress]][Compress]
+
   [MainWindow]: http://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/MainWindow.png
   [Hashes]: http://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/Hashes.png
   [Deletion]: http://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/Deletion.png
