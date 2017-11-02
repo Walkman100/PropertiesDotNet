@@ -442,9 +442,9 @@ Public Class PropertiesDotNet
     End Sub
     Sub btnTakeOwn_Click() Handles btnTakeOwn.Click
         If Exists(lblFullPath.Text) Then
-            Process.Start("cmd.exe", "/k takeown /f " & lblFullPath.Text & " && icacls " & lblFullPath.Text & " /grant administrators:F && pause")
+            RunAsAdmin("cmd.exe", "/c takeown /f " & lblFullPath.Text & " && icacls " & lblFullPath.Text & " /grant administrators:F && pause")
         ElseIf Directory.Exists(lblFullPath.Text)
-            Process.Start("cmd.exe", "/k takeown /f " & lblFullPath.Text & " /r /d y && icacls " & lblFullPath.Text & " /grant administrators:F /t && pause")
+            RunAsAdmin("cmd.exe", "/c takeown /f " & lblFullPath.Text & " /r /d y && icacls " & lblFullPath.Text & " /grant administrators:F /t && pause")
         End If
     End Sub
     
@@ -758,7 +758,7 @@ Public Class PropertiesDotNet
     
     ''' <summary>Starts a program with a set of command-line arguments as an administrator.</summary>
     ''' <param name="fileName">The name of an application file to run in the process.</param>
-    ''' <param name="arguments">Optional. Command-line arguments to pass when starting the process.</param>
+    ''' <param name="arguments">Optional. Command-line arguments to pass when starting the process. If supplied, add extra double-apostrophies to the end e.g. '& """"'</param>
     Sub RunAsAdmin(fileName As String, Optional arguments As String = "")
         If arguments = "" Then
             CreateObject("Shell.Application").ShellExecute(fileName, "", "", "runas")
