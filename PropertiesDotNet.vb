@@ -436,6 +436,13 @@ Public Class PropertiesDotNet
             End Try
         End If
     End Sub
+    Sub btnTakeOwn_Click() Handles btnTakeOwn.Click
+        If Exists(lblFullPath.Text) Then
+            Process.Start("cmd.exe", "/k takeown /f " & lblFullPath.Text & " && icacls " & lblFullPath.Text & " /grant administrators:F && pause")
+        ElseIf Directory.Exists(lblFullPath.Text)
+            Process.Start("cmd.exe", "/k takeown /f " & lblFullPath.Text & " /r /d y && icacls " & lblFullPath.Text & " /grant administrators:F /t && pause")
+        End If
+    End Sub
     
     Sub chkReadOnly_Click() Handles chkReadOnly.Click
         If chkReadOnly.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.ReadOnly) _

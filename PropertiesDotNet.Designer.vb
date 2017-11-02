@@ -85,6 +85,7 @@ Partial Class PropertiesDotNet
         Me.chkUseSystem = New System.Windows.Forms.CheckBox()
         Me.bwCalcSize = New System.ComponentModel.BackgroundWorker()
         Me.timerDelayedBrowse = New System.Windows.Forms.Timer(Me.components)
+        Me.btnTakeOwn = New System.Windows.Forms.Button()
         Me.grpProperties.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpAttributes.SuspendLayout
@@ -187,7 +188,7 @@ Partial Class PropertiesDotNet
         Me.cbxSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbxSize.FormattingEnabled = true
         Me.cbxSize.Items.AddRange(New Object() {"bytes (8 bits)", "kB  (Decimal - 1000)", "KiB (Binary - 1024)", "MB (Decimal - 1000)", "MiB (Binary - 1024)", "GB  (Decimal - 1000)", "GiB (Binary - 1024)", "TB  (Decimal - 1000)", "TiB (Binary - 1024)", "PB  (Decimal - 1000)", "PiB (Binary - 1024)", "(Click to read more)"})
-        Me.cbxSize.Location = New System.Drawing.Point(282, 120)
+        Me.cbxSize.Location = New System.Drawing.Point(283, 120)
         Me.cbxSize.Name = "cbxSize"
         Me.cbxSize.Size = New System.Drawing.Size(122, 21)
         Me.cbxSize.TabIndex = 20
@@ -510,6 +511,7 @@ Partial Class PropertiesDotNet
         '
         Me.grpAttributes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpAttributes.Controls.Add(Me.btnTakeOwn)
         Me.grpAttributes.Controls.Add(Me.lnkAttributes)
         Me.grpAttributes.Controls.Add(Me.chkSparse)
         Me.grpAttributes.Controls.Add(Me.chkReparse)
@@ -740,6 +742,16 @@ Partial Class PropertiesDotNet
         '
         Me.timerDelayedBrowse.Interval = 50
         '
+        'btnTakeOwn
+        '
+        Me.btnTakeOwn.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnTakeOwn.Location = New System.Drawing.Point(291, 36)
+        Me.btnTakeOwn.Name = "btnTakeOwn"
+        Me.btnTakeOwn.Size = New System.Drawing.Size(114, 23)
+        Me.btnTakeOwn.TabIndex = 14
+        Me.btnTakeOwn.Text = "Take Ownership..."
+        Me.btnTakeOwn.UseVisualStyleBackColor = true
+        '
         'PropertiesDotNet
         '
         Me.AcceptButton = Me.btnWindowsProperties
@@ -765,6 +777,7 @@ Partial Class PropertiesDotNet
         Me.grpFileLocation.PerformLayout
         Me.ResumeLayout(false)
     End Sub
+    Private WithEvents btnTakeOwn As System.Windows.Forms.Button
     Private WithEvents timerDelayedBrowse As System.Windows.Forms.Timer
     Private chkUseSystem As System.Windows.Forms.CheckBox
     Private WithEvents btnWindowsProperties As System.Windows.Forms.Button
