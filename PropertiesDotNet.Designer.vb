@@ -101,7 +101,7 @@ Partial Class PropertiesDotNet
         Me.lblLocation.Location = New System.Drawing.Point(101, 16)
         Me.lblLocation.Name = "lblLocation"
         Me.lblLocation.Size = New System.Drawing.Size(61, 13)
-        Me.lblLocation.TabIndex = 0
+        Me.lblLocation.TabIndex = 1
         Me.lblLocation.Text = "Checking..."
         '
         'chkHidden
@@ -120,7 +120,7 @@ Partial Class PropertiesDotNet
         Me.chkSystem.Location = New System.Drawing.Point(6, 79)
         Me.chkSystem.Name = "chkSystem"
         Me.chkSystem.Size = New System.Drawing.Size(60, 17)
-        Me.chkSystem.TabIndex = 2
+        Me.chkSystem.TabIndex = 4
         Me.chkSystem.Text = "System"
         Me.chkSystem.UseVisualStyleBackColor = true
         '
@@ -167,7 +167,7 @@ Partial Class PropertiesDotNet
         Me.grpProperties.Location = New System.Drawing.Point(2, 4)
         Me.grpProperties.Name = "grpProperties"
         Me.grpProperties.Size = New System.Drawing.Size(411, 233)
-        Me.grpProperties.TabIndex = 3
+        Me.grpProperties.TabIndex = 0
         Me.grpProperties.TabStop = false
         Me.grpProperties.Text = "Properties:"
         '
@@ -177,7 +177,7 @@ Partial Class PropertiesDotNet
         Me.btnWindowsProperties.Location = New System.Drawing.Point(291, 178)
         Me.btnWindowsProperties.Name = "btnWindowsProperties"
         Me.btnWindowsProperties.Size = New System.Drawing.Size(114, 23)
-        Me.btnWindowsProperties.TabIndex = 35
+        Me.btnWindowsProperties.TabIndex = 33
         Me.btnWindowsProperties.Text = "Windows Properties"
         Me.btnWindowsProperties.UseVisualStyleBackColor = true
         '
@@ -190,7 +190,7 @@ Partial Class PropertiesDotNet
         Me.cbxSize.Location = New System.Drawing.Point(282, 120)
         Me.cbxSize.Name = "cbxSize"
         Me.cbxSize.Size = New System.Drawing.Size(122, 21)
-        Me.cbxSize.TabIndex = 34
+        Me.cbxSize.TabIndex = 20
         '
         'btnLaunchAdmin
         '
@@ -199,7 +199,7 @@ Partial Class PropertiesDotNet
         Me.btnLaunchAdmin.Location = New System.Drawing.Point(337, 72)
         Me.btnLaunchAdmin.Name = "btnLaunchAdmin"
         Me.btnLaunchAdmin.Size = New System.Drawing.Size(23, 23)
-        Me.btnLaunchAdmin.TabIndex = 33
+        Me.btnLaunchAdmin.TabIndex = 12
         Me.btnLaunchAdmin.UseVisualStyleBackColor = true
         '
         'btnStartAssocProgAdmin
@@ -209,7 +209,7 @@ Partial Class PropertiesDotNet
         Me.btnStartAssocProgAdmin.Location = New System.Drawing.Point(337, 142)
         Me.btnStartAssocProgAdmin.Name = "btnStartAssocProgAdmin"
         Me.btnStartAssocProgAdmin.Size = New System.Drawing.Size(23, 23)
-        Me.btnStartAssocProgAdmin.TabIndex = 32
+        Me.btnStartAssocProgAdmin.TabIndex = 24
         Me.btnStartAssocProgAdmin.UseVisualStyleBackColor = true
         '
         'btnStartAssocProg
@@ -218,7 +218,7 @@ Partial Class PropertiesDotNet
         Me.btnStartAssocProg.Location = New System.Drawing.Point(276, 142)
         Me.btnStartAssocProg.Name = "btnStartAssocProg"
         Me.btnStartAssocProg.Size = New System.Drawing.Size(62, 23)
-        Me.btnStartAssocProg.TabIndex = 31
+        Me.btnStartAssocProg.TabIndex = 23
         Me.btnStartAssocProg.Text = "Launch..."
         Me.btnStartAssocProg.UseVisualStyleBackColor = true
         '
@@ -228,7 +228,7 @@ Partial Class PropertiesDotNet
         Me.btnCopyOpenWith.Location = New System.Drawing.Point(361, 142)
         Me.btnCopyOpenWith.Name = "btnCopyOpenWith"
         Me.btnCopyOpenWith.Size = New System.Drawing.Size(44, 23)
-        Me.btnCopyOpenWith.TabIndex = 30
+        Me.btnCopyOpenWith.TabIndex = 25
         Me.btnCopyOpenWith.Text = "Copy"
         Me.btnCopyOpenWith.UseVisualStyleBackColor = true
         '
@@ -238,7 +238,7 @@ Partial Class PropertiesDotNet
         Me.btnOpenWith.Location = New System.Drawing.Point(285, 96)
         Me.btnOpenWith.Name = "btnOpenWith"
         Me.btnOpenWith.Size = New System.Drawing.Size(75, 23)
-        Me.btnOpenWith.TabIndex = 28
+        Me.btnOpenWith.TabIndex = 16
         Me.btnOpenWith.Text = "Open with..."
         Me.btnOpenWith.UseVisualStyleBackColor = true
         '
@@ -248,7 +248,7 @@ Partial Class PropertiesDotNet
         Me.lblOpenWithLbl.Location = New System.Drawing.Point(48, 147)
         Me.lblOpenWithLbl.Name = "lblOpenWithLbl"
         Me.lblOpenWithLbl.Size = New System.Drawing.Size(63, 13)
-        Me.lblOpenWithLbl.TabIndex = 27
+        Me.lblOpenWithLbl.TabIndex = 21
         Me.lblOpenWithLbl.Text = "Opens with:"
         '
         'imgFile
@@ -268,7 +268,7 @@ Partial Class PropertiesDotNet
         Me.btnOpenDir.Location = New System.Drawing.Point(298, 48)
         Me.btnOpenDir.Name = "btnOpenDir"
         Me.btnOpenDir.Size = New System.Drawing.Size(62, 23)
-        Me.btnOpenDir.TabIndex = 25
+        Me.btnOpenDir.TabIndex = 7
         Me.btnOpenDir.Text = "Open..."
         Me.btnOpenDir.UseVisualStyleBackColor = true
         '
@@ -278,7 +278,7 @@ Partial Class PropertiesDotNet
         Me.btnLaunch.Location = New System.Drawing.Point(276, 72)
         Me.btnLaunch.Name = "btnLaunch"
         Me.btnLaunch.Size = New System.Drawing.Size(62, 23)
-        Me.btnLaunch.TabIndex = 24
+        Me.btnLaunch.TabIndex = 11
         Me.btnLaunch.Text = "Launch..."
         Me.btnLaunch.UseVisualStyleBackColor = true
         '
@@ -289,7 +289,7 @@ Partial Class PropertiesDotNet
         Me.btnHashes.Location = New System.Drawing.Point(291, 204)
         Me.btnHashes.Name = "btnHashes"
         Me.btnHashes.Size = New System.Drawing.Size(114, 23)
-        Me.btnHashes.TabIndex = 23
+        Me.btnHashes.TabIndex = 34
         Me.btnHashes.Text = "Compute Hashes"
         Me.btnHashes.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.btnHashes.UseVisualStyleBackColor = true
@@ -300,7 +300,7 @@ Partial Class PropertiesDotNet
         Me.btnCopyFullPath.Location = New System.Drawing.Point(361, 24)
         Me.btnCopyFullPath.Name = "btnCopyFullPath"
         Me.btnCopyFullPath.Size = New System.Drawing.Size(44, 23)
-        Me.btnCopyFullPath.TabIndex = 22
+        Me.btnCopyFullPath.TabIndex = 4
         Me.btnCopyFullPath.Text = "Copy"
         Me.btnCopyFullPath.UseVisualStyleBackColor = true
         '
@@ -310,7 +310,7 @@ Partial Class PropertiesDotNet
         Me.btnCopyDirectory.Location = New System.Drawing.Point(361, 48)
         Me.btnCopyDirectory.Name = "btnCopyDirectory"
         Me.btnCopyDirectory.Size = New System.Drawing.Size(44, 23)
-        Me.btnCopyDirectory.TabIndex = 21
+        Me.btnCopyDirectory.TabIndex = 8
         Me.btnCopyDirectory.Text = "Copy"
         Me.btnCopyDirectory.UseVisualStyleBackColor = true
         '
@@ -320,7 +320,7 @@ Partial Class PropertiesDotNet
         Me.btnCopyName.Location = New System.Drawing.Point(361, 72)
         Me.btnCopyName.Name = "btnCopyName"
         Me.btnCopyName.Size = New System.Drawing.Size(44, 23)
-        Me.btnCopyName.TabIndex = 20
+        Me.btnCopyName.TabIndex = 13
         Me.btnCopyName.Text = "Copy"
         Me.btnCopyName.UseVisualStyleBackColor = true
         '
@@ -330,7 +330,7 @@ Partial Class PropertiesDotNet
         Me.btnCopyExtension.Location = New System.Drawing.Point(361, 96)
         Me.btnCopyExtension.Name = "btnCopyExtension"
         Me.btnCopyExtension.Size = New System.Drawing.Size(44, 23)
-        Me.btnCopyExtension.TabIndex = 19
+        Me.btnCopyExtension.TabIndex = 17
         Me.btnCopyExtension.Text = "Copy"
         Me.btnCopyExtension.UseVisualStyleBackColor = true
         '
@@ -340,7 +340,7 @@ Partial Class PropertiesDotNet
         Me.lblSize.Location = New System.Drawing.Point(101, 123)
         Me.lblSize.Name = "lblSize"
         Me.lblSize.Size = New System.Drawing.Size(61, 13)
-        Me.lblSize.TabIndex = 18
+        Me.lblSize.TabIndex = 19
         Me.lblSize.Text = "Checking..."
         '
         'lblSizeLbl
@@ -349,7 +349,7 @@ Partial Class PropertiesDotNet
         Me.lblSizeLbl.Location = New System.Drawing.Point(6, 123)
         Me.lblSizeLbl.Name = "lblSizeLbl"
         Me.lblSizeLbl.Size = New System.Drawing.Size(97, 13)
-        Me.lblSizeLbl.TabIndex = 17
+        Me.lblSizeLbl.TabIndex = 18
         Me.lblSizeLbl.Text = "Size (not disk size):"
         '
         'chkUTC
@@ -358,7 +358,7 @@ Partial Class PropertiesDotNet
         Me.chkUTC.Location = New System.Drawing.Point(48, 163)
         Me.chkUTC.Name = "chkUTC"
         Me.chkUTC.Size = New System.Drawing.Size(120, 17)
-        Me.chkUTC.TabIndex = 16
+        Me.chkUTC.TabIndex = 26
         Me.chkUTC.Text = "Show Times in UTC"
         Me.chkUTC.UseVisualStyleBackColor = true
         '
@@ -368,7 +368,7 @@ Partial Class PropertiesDotNet
         Me.lblLastWriteTime.Location = New System.Drawing.Point(101, 209)
         Me.lblLastWriteTime.Name = "lblLastWriteTime"
         Me.lblLastWriteTime.Size = New System.Drawing.Size(61, 13)
-        Me.lblLastWriteTime.TabIndex = 15
+        Me.lblLastWriteTime.TabIndex = 32
         Me.lblLastWriteTime.Text = "Checking..."
         '
         'lblLastWriteTimeLbl
@@ -377,7 +377,7 @@ Partial Class PropertiesDotNet
         Me.lblLastWriteTimeLbl.Location = New System.Drawing.Point(6, 209)
         Me.lblLastWriteTimeLbl.Name = "lblLastWriteTimeLbl"
         Me.lblLastWriteTimeLbl.Size = New System.Drawing.Size(77, 13)
-        Me.lblLastWriteTimeLbl.TabIndex = 14
+        Me.lblLastWriteTimeLbl.TabIndex = 31
         Me.lblLastWriteTimeLbl.Text = "Last write time:"
         '
         'lblLastAccessTime
@@ -386,7 +386,7 @@ Partial Class PropertiesDotNet
         Me.lblLastAccessTime.Location = New System.Drawing.Point(101, 196)
         Me.lblLastAccessTime.Name = "lblLastAccessTime"
         Me.lblLastAccessTime.Size = New System.Drawing.Size(61, 13)
-        Me.lblLastAccessTime.TabIndex = 13
+        Me.lblLastAccessTime.TabIndex = 30
         Me.lblLastAccessTime.Text = "Checking..."
         '
         'lblLastAccessTimeLbl
@@ -395,7 +395,7 @@ Partial Class PropertiesDotNet
         Me.lblLastAccessTimeLbl.Location = New System.Drawing.Point(6, 196)
         Me.lblLastAccessTimeLbl.Name = "lblLastAccessTimeLbl"
         Me.lblLastAccessTimeLbl.Size = New System.Drawing.Size(89, 13)
-        Me.lblLastAccessTimeLbl.TabIndex = 12
+        Me.lblLastAccessTimeLbl.TabIndex = 29
         Me.lblLastAccessTimeLbl.Text = "Last access time:"
         '
         'lblCreationTime
@@ -404,7 +404,7 @@ Partial Class PropertiesDotNet
         Me.lblCreationTime.Location = New System.Drawing.Point(101, 183)
         Me.lblCreationTime.Name = "lblCreationTime"
         Me.lblCreationTime.Size = New System.Drawing.Size(61, 13)
-        Me.lblCreationTime.TabIndex = 11
+        Me.lblCreationTime.TabIndex = 28
         Me.lblCreationTime.Text = "Checking..."
         '
         'lblCreationTimeLbl
@@ -413,7 +413,7 @@ Partial Class PropertiesDotNet
         Me.lblCreationTimeLbl.Location = New System.Drawing.Point(6, 183)
         Me.lblCreationTimeLbl.Name = "lblCreationTimeLbl"
         Me.lblCreationTimeLbl.Size = New System.Drawing.Size(71, 13)
-        Me.lblCreationTimeLbl.TabIndex = 10
+        Me.lblCreationTimeLbl.TabIndex = 27
         Me.lblCreationTimeLbl.Text = "Creation time:"
         '
         'lblFullPath
@@ -422,7 +422,7 @@ Partial Class PropertiesDotNet
         Me.lblFullPath.Location = New System.Drawing.Point(101, 29)
         Me.lblFullPath.Name = "lblFullPath"
         Me.lblFullPath.Size = New System.Drawing.Size(61, 13)
-        Me.lblFullPath.TabIndex = 9
+        Me.lblFullPath.TabIndex = 3
         Me.lblFullPath.Text = "Checking..."
         '
         'lblDirectory
@@ -431,7 +431,7 @@ Partial Class PropertiesDotNet
         Me.lblDirectory.Location = New System.Drawing.Point(101, 53)
         Me.lblDirectory.Name = "lblDirectory"
         Me.lblDirectory.Size = New System.Drawing.Size(61, 13)
-        Me.lblDirectory.TabIndex = 8
+        Me.lblDirectory.TabIndex = 6
         Me.lblDirectory.Text = "Checking..."
         '
         'lblExtension
@@ -440,7 +440,7 @@ Partial Class PropertiesDotNet
         Me.lblExtension.Location = New System.Drawing.Point(101, 101)
         Me.lblExtension.Name = "lblExtension"
         Me.lblExtension.Size = New System.Drawing.Size(61, 13)
-        Me.lblExtension.TabIndex = 7
+        Me.lblExtension.TabIndex = 15
         Me.lblExtension.Text = "Checking..."
         '
         'lblName
@@ -449,7 +449,7 @@ Partial Class PropertiesDotNet
         Me.lblName.Location = New System.Drawing.Point(101, 77)
         Me.lblName.Name = "lblName"
         Me.lblName.Size = New System.Drawing.Size(61, 13)
-        Me.lblName.TabIndex = 6
+        Me.lblName.TabIndex = 10
         Me.lblName.Text = "Checking..."
         '
         'lblDirectoryLbl
@@ -467,7 +467,7 @@ Partial Class PropertiesDotNet
         Me.lblExtensionLbl.Location = New System.Drawing.Point(6, 101)
         Me.lblExtensionLbl.Name = "lblExtensionLbl"
         Me.lblExtensionLbl.Size = New System.Drawing.Size(56, 13)
-        Me.lblExtensionLbl.TabIndex = 4
+        Me.lblExtensionLbl.TabIndex = 14
         Me.lblExtensionLbl.Text = "Extension:"
         '
         'lblNameLbl
@@ -476,7 +476,7 @@ Partial Class PropertiesDotNet
         Me.lblNameLbl.Location = New System.Drawing.Point(6, 77)
         Me.lblNameLbl.Name = "lblNameLbl"
         Me.lblNameLbl.Size = New System.Drawing.Size(38, 13)
-        Me.lblNameLbl.TabIndex = 3
+        Me.lblNameLbl.TabIndex = 9
         Me.lblNameLbl.Text = "Name:"
         '
         'lblFullPathLbl
@@ -494,7 +494,7 @@ Partial Class PropertiesDotNet
         Me.lblPathLbl.Location = New System.Drawing.Point(6, 16)
         Me.lblPathLbl.Name = "lblPathLbl"
         Me.lblPathLbl.Size = New System.Drawing.Size(83, 13)
-        Me.lblPathLbl.TabIndex = 1
+        Me.lblPathLbl.TabIndex = 0
         Me.lblPathLbl.Text = "Read from path:"
         '
         'lblOpenWith
@@ -503,7 +503,7 @@ Partial Class PropertiesDotNet
         Me.lblOpenWith.Location = New System.Drawing.Point(117, 147)
         Me.lblOpenWith.Name = "lblOpenWith"
         Me.lblOpenWith.Size = New System.Drawing.Size(61, 13)
-        Me.lblOpenWith.TabIndex = 29
+        Me.lblOpenWith.TabIndex = 22
         Me.lblOpenWith.Text = "Checking..."
         '
         'grpAttributes
@@ -527,7 +527,7 @@ Partial Class PropertiesDotNet
         Me.grpAttributes.Location = New System.Drawing.Point(2, 243)
         Me.grpAttributes.Name = "grpAttributes"
         Me.grpAttributes.Size = New System.Drawing.Size(411, 221)
-        Me.grpAttributes.TabIndex = 4
+        Me.grpAttributes.TabIndex = 1
         Me.grpAttributes.TabStop = false
         Me.grpAttributes.Text = "Attributes:"
         '
@@ -540,7 +540,7 @@ Partial Class PropertiesDotNet
         Me.lnkAttributes.Location = New System.Drawing.Point(279, 16)
         Me.lnkAttributes.Name = "lnkAttributes"
         Me.lnkAttributes.Size = New System.Drawing.Size(126, 17)
-        Me.lnkAttributes.TabIndex = 14
+        Me.lnkAttributes.TabIndex = 13
         Me.lnkAttributes.TabStop = true
         Me.lnkAttributes.Text = "See full description here"
         Me.lnkAttributes.UseCompatibleTextRendering = true
@@ -551,7 +551,7 @@ Partial Class PropertiesDotNet
         Me.chkSparse.Location = New System.Drawing.Point(6, 199)
         Me.chkSparse.Name = "chkSparse"
         Me.chkSparse.Size = New System.Drawing.Size(234, 17)
-        Me.chkSparse.TabIndex = 13
+        Me.chkSparse.TabIndex = 12
         Me.chkSparse.Text = "Sparse - large files consisting of mostly zeros"
         Me.chkSparse.UseVisualStyleBackColor = true
         '
@@ -561,7 +561,7 @@ Partial Class PropertiesDotNet
         Me.chkReparse.Location = New System.Drawing.Point(6, 184)
         Me.chkReparse.Name = "chkReparse"
         Me.chkReparse.Size = New System.Drawing.Size(279, 17)
-        Me.chkReparse.TabIndex = 12
+        Me.chkReparse.TabIndex = 11
         Me.chkReparse.Text = "Contains Reparse Point - A block of user-defined data"
         Me.chkReparse.UseVisualStyleBackColor = true
         '
@@ -571,7 +571,7 @@ Partial Class PropertiesDotNet
         Me.chkOffline.Location = New System.Drawing.Point(6, 169)
         Me.chkOffline.Name = "chkOffline"
         Me.chkOffline.Size = New System.Drawing.Size(211, 17)
-        Me.chkOffline.TabIndex = 11
+        Me.chkOffline.TabIndex = 10
         Me.chkOffline.Text = "Offline - File is not immediately available"
         Me.chkOffline.UseVisualStyleBackColor = true
         '
@@ -581,7 +581,7 @@ Partial Class PropertiesDotNet
         Me.chkNotIndexed.Location = New System.Drawing.Point(6, 154)
         Me.chkNotIndexed.Name = "chkNotIndexed"
         Me.chkNotIndexed.Size = New System.Drawing.Size(292, 17)
-        Me.chkNotIndexed.TabIndex = 10
+        Me.chkNotIndexed.TabIndex = 9
         Me.chkNotIndexed.Text = "Not Indexed - File will not be indexed by indexing service"
         Me.chkNotIndexed.UseVisualStyleBackColor = true
         '
@@ -591,7 +591,7 @@ Partial Class PropertiesDotNet
         Me.chkNoScrub.Location = New System.Drawing.Point(6, 139)
         Me.chkNoScrub.Name = "chkNoScrub"
         Me.chkNoScrub.Size = New System.Drawing.Size(314, 17)
-        Me.chkNoScrub.TabIndex = 9
+        Me.chkNoScrub.TabIndex = 8
         Me.chkNoScrub.Text = "No Scrub Data - Path is excluded from the data integrity scan"
         Me.chkNoScrub.UseVisualStyleBackColor = true
         '
@@ -601,7 +601,7 @@ Partial Class PropertiesDotNet
         Me.chkIntegrity.Location = New System.Drawing.Point(6, 124)
         Me.chkIntegrity.Name = "chkIntegrity"
         Me.chkIntegrity.Size = New System.Drawing.Size(331, 17)
-        Me.chkIntegrity.TabIndex = 8
+        Me.chkIntegrity.TabIndex = 7
         Me.chkIntegrity.Text = "Data Integrity - The file or directory includes data integrity support"
         Me.chkIntegrity.UseVisualStyleBackColor = true
         '
@@ -611,7 +611,7 @@ Partial Class PropertiesDotNet
         Me.chkTemporary.Location = New System.Drawing.Point(6, 109)
         Me.chkTemporary.Name = "chkTemporary"
         Me.chkTemporary.Size = New System.Drawing.Size(76, 17)
-        Me.chkTemporary.TabIndex = 7
+        Me.chkTemporary.TabIndex = 6
         Me.chkTemporary.Text = "Temporary"
         Me.chkTemporary.UseVisualStyleBackColor = true
         '
@@ -621,7 +621,7 @@ Partial Class PropertiesDotNet
         Me.chkArchive.Location = New System.Drawing.Point(6, 94)
         Me.chkArchive.Name = "chkArchive"
         Me.chkArchive.Size = New System.Drawing.Size(259, 17)
-        Me.chkArchive.TabIndex = 6
+        Me.chkArchive.TabIndex = 5
         Me.chkArchive.Text = "Archive - file is a candidate for backup or removal"
         Me.chkArchive.UseVisualStyleBackColor = true
         '
@@ -631,7 +631,7 @@ Partial Class PropertiesDotNet
         Me.chkEncrypted.Location = New System.Drawing.Point(6, 64)
         Me.chkEncrypted.Name = "chkEncrypted"
         Me.chkEncrypted.Size = New System.Drawing.Size(74, 17)
-        Me.chkEncrypted.TabIndex = 5
+        Me.chkEncrypted.TabIndex = 3
         Me.chkEncrypted.Text = "Encrypted"
         Me.chkEncrypted.UseVisualStyleBackColor = true
         '
@@ -641,7 +641,7 @@ Partial Class PropertiesDotNet
         Me.chkCompressed.Location = New System.Drawing.Point(6, 49)
         Me.chkCompressed.Name = "chkCompressed"
         Me.chkCompressed.Size = New System.Drawing.Size(84, 17)
-        Me.chkCompressed.TabIndex = 4
+        Me.chkCompressed.TabIndex = 2
         Me.chkCompressed.Text = "Compressed"
         Me.chkCompressed.UseVisualStyleBackColor = true
         '
@@ -651,7 +651,7 @@ Partial Class PropertiesDotNet
         Me.chkReadOnly.Location = New System.Drawing.Point(6, 19)
         Me.chkReadOnly.Name = "chkReadOnly"
         Me.chkReadOnly.Size = New System.Drawing.Size(76, 17)
-        Me.chkReadOnly.TabIndex = 3
+        Me.chkReadOnly.TabIndex = 0
         Me.chkReadOnly.Text = "Read-Only"
         Me.chkReadOnly.UseVisualStyleBackColor = true
         '
@@ -668,7 +668,7 @@ Partial Class PropertiesDotNet
         Me.grpFileLocation.Location = New System.Drawing.Point(2, 470)
         Me.grpFileLocation.Name = "grpFileLocation"
         Me.grpFileLocation.Size = New System.Drawing.Size(411, 50)
-        Me.grpFileLocation.TabIndex = 5
+        Me.grpFileLocation.TabIndex = 2
         Me.grpFileLocation.TabStop = false
         Me.grpFileLocation.Text = "File location:"
         '
@@ -679,7 +679,7 @@ Partial Class PropertiesDotNet
         Me.btnClose.Location = New System.Drawing.Point(330, 19)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(75, 23)
-        Me.btnClose.TabIndex = 4
+        Me.btnClose.TabIndex = 5
         Me.btnClose.Text = "Close"
         Me.btnClose.UseVisualStyleBackColor = true
         '
@@ -727,7 +727,7 @@ Partial Class PropertiesDotNet
         Me.chkUseSystem.Location = New System.Drawing.Point(330, 23)
         Me.chkUseSystem.Name = "chkUseSystem"
         Me.chkUseSystem.Size = New System.Drawing.Size(126, 17)
-        Me.chkUseSystem.TabIndex = 5
+        Me.chkUseSystem.TabIndex = 4
         Me.chkUseSystem.Text = "Use system functions"
         Me.chkUseSystem.UseVisualStyleBackColor = true
         '
@@ -742,6 +742,7 @@ Partial Class PropertiesDotNet
         '
         'PropertiesDotNet
         '
+        Me.AcceptButton = Me.btnWindowsProperties
         Me.AllowDrop = true
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
