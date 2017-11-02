@@ -38,9 +38,7 @@ Public Class PropertiesDotNet
                 End If
             End If
         End If
-        If Exists(lblLocation.Text) Then
-            CheckData
-        ElseIf Directory.Exists(lblLocation.Text)
+        If Exists(lblLocation.Text) Or Directory.Exists(lblLocation.Text) Then
             CheckData
         Else
             MsgBox("File or directory """ & lblLocation.Text & """ not found!", MsgBoxStyle.Critical)
@@ -340,11 +338,17 @@ Public Class PropertiesDotNet
             End If
         Next
         If isDangerousExtension Then
-            If MsgBox("Are you sure you want to open the ""Open With"" dialog for """ & lblExtension.Text & _
-              """ files? this could potentially make your PC unusable if you click ""Ok"" in it while the ""Always use the selected program"" checkbox is checked!", _
-              MsgBoxStyle.Critical + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then _
-                If MsgBox("You have been warned!", MsgBoxStyle.Exclamation + MsgBoxStyle.OkCancel) = MsgBoxResult.Ok Then _
-                  Shell("rundll32 shell32.dll,OpenAs_RunDLL " & lblFullPath.Text, AppWinStyle.NormalFocus, True, 500)
+            Dim MsgBoxText As String = "Are you sure you want to open the ""Open With"" dialog for """ & lblExtension.Text & """ files?"
+            If Environment.OSVersion.Version.Major > 6 OrElse (Environment.OSVersion.Version.Major = 6 AndAlso Environment.OSVersion.Version.Minor >= 2) Then
+                ' We're on Win8+
+                MsgBoxText &= " This could potentially make your PC unusable if you click ""Ok"" while the ""Use this application for all " & lblExtension.Text & " files"" checkbox is checked!"
+            Else
+                ' We're on Win7 and below
+                MsgBoxText &= " This could potentially make your PC unusable if you click ""Ok"" while the ""Always use the selected program"" checkbox is checked!"
+            End If
+            If MsgBox(MsgBoxText, MsgBoxStyle.Critical + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then _
+              If MsgBox("You have been warned!", MsgBoxStyle.Exclamation + MsgBoxStyle.OkCancel) = MsgBoxResult.Ok Then _
+                Shell("rundll32 shell32.dll,OpenAs_RunDLL " & lblFullPath.Text, AppWinStyle.NormalFocus, True, 500)
         Else
             Shell("rundll32 shell32.dll,OpenAs_RunDLL " & lblFullPath.Text, AppWinStyle.NormalFocus, True, 500)
             'Process.Start("rundll32", "shell32.dll,OpenAs_RunDLL " & lblFullPath.Text)
