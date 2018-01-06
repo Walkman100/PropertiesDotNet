@@ -56,11 +56,7 @@ Public Class PropertiesDotNet
     End Sub
     Sub PropertiesDotNet_DragDrop(sender As Object, e As DragEventArgs) Handles Me.DragDrop
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
-            If Exists(e.Data.GetData(DataFormats.FileDrop)(0)) Then
-                'yay continue
-            ElseIf Directory.Exists(e.Data.GetData(DataFormats.FileDrop)(0))
-                'yay continue
-            Else
+            If Not Exists(e.Data.GetData(DataFormats.FileDrop)(0)) And Not Directory.Exists(e.Data.GetData(DataFormats.FileDrop)(0))
                 MsgBox("File or directory """ & e.Data.GetData(DataFormats.FileDrop)(0) & """ not found!", MsgBoxStyle.Critical)
                 Exit Sub
             End If
@@ -70,7 +66,7 @@ Public Class PropertiesDotNet
             ShowImageBox
             CheckData
         End If
-     End Sub
+    End Sub
     
     Sub CheckData Handles chkUTC.CheckedChanged
         'Properties:
@@ -738,6 +734,8 @@ Public Class PropertiesDotNet
             End If
             ApplySizeFormatting
         Catch ex As Exception
+            lblSize.Text = "Error: " & ex.Message
+            lblOpenWith.Text = "?"
             ErrorParser(ex)
         End Try
     End Sub
