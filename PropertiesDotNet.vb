@@ -39,7 +39,7 @@ Public Class PropertiesDotNet
             End If
         End If
         If Exists(lblLocation.Text) Or Directory.Exists(lblLocation.Text) Then
-            CheckData
+            CheckData(True)
         Else
             MsgBox("File or directory """ & lblLocation.Text & """ not found!", MsgBoxStyle.Critical)
             Application.Exit
@@ -64,11 +64,14 @@ Public Class PropertiesDotNet
             lblLocation.Text = e.Data.GetData(DataFormats.FileDrop)(0)
             imgFile.Image = My.Resources.Resources.loading4
             ShowImageBox
-            CheckData
+            CheckData(True)
         End If
     End Sub
     
-    Sub CheckData Handles chkUTC.CheckedChanged
+    Sub chkUTC_CheckedChanged() Handles chkUTC.CheckedChanged
+        CheckData
+    End Sub
+    Sub CheckData(Optional recalculateFolderSize As Boolean = False) 
         'Properties:
         Dim FileProperties As New FileInfo(lblLocation.Text)
         ' Thanks to https://stackoverflow.com/a/22691609/2999220
@@ -99,7 +102,7 @@ Public Class PropertiesDotNet
             btnHashes.Image = My.Resources.Resources.hashx16
             btnHashes.Text = "Compute Hashes"
         ElseIf Directory.Exists(lblFullPath.Text)
-            If bwCalcSize.IsBusy = False Then
+            If bwCalcSize.IsBusy = False And recalculateFolderSize = True Then
                 bwCalcSize.RunWorkerAsync()
             End If
             imgFile.ImageLocation = GetFolderIconPath(lblFullPath.Text)
