@@ -44,7 +44,6 @@ Public Class PropertiesDotNet
             MsgBox("File or directory """ & lblLocation.Text & """ not found!", MsgBoxStyle.Critical)
             Application.Exit
         End If
-        cbxSize.SelectedIndex = 1
     End Sub
     
     Sub PropertiesDotNet_DragEnter(sender As Object, e As DragEventArgs) Handles Me.DragEnter
