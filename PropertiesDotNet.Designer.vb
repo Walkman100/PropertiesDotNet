@@ -64,6 +64,7 @@ Partial Class PropertiesDotNet
         Me.lblPathLbl = New System.Windows.Forms.Label()
         Me.lblOpenWith = New System.Windows.Forms.Label()
         Me.grpAttributes = New System.Windows.Forms.GroupBox()
+        Me.btnTakeOwn = New System.Windows.Forms.Button()
         Me.lnkAttributes = New System.Windows.Forms.LinkLabel()
         Me.chkSparse = New System.Windows.Forms.CheckBox()
         Me.chkReparse = New System.Windows.Forms.CheckBox()
@@ -85,7 +86,6 @@ Partial Class PropertiesDotNet
         Me.chkUseSystem = New System.Windows.Forms.CheckBox()
         Me.bwCalcSize = New System.ComponentModel.BackgroundWorker()
         Me.timerDelayedBrowse = New System.Windows.Forms.Timer(Me.components)
-        Me.btnTakeOwn = New System.Windows.Forms.Button()
         Me.grpProperties.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpAttributes.SuspendLayout
@@ -197,9 +197,9 @@ Partial Class PropertiesDotNet
         '
         Me.btnLaunchAdmin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnLaunchAdmin.Image = Global.PropertiesDotNet.My.Resources.Resources.admin
-        Me.btnLaunchAdmin.Location = New System.Drawing.Point(337, 72)
+        Me.btnLaunchAdmin.Location = New System.Drawing.Point(337, 71)
         Me.btnLaunchAdmin.Name = "btnLaunchAdmin"
-        Me.btnLaunchAdmin.Size = New System.Drawing.Size(23, 23)
+        Me.btnLaunchAdmin.Size = New System.Drawing.Size(23, 25)
         Me.btnLaunchAdmin.TabIndex = 12
         Me.btnLaunchAdmin.UseVisualStyleBackColor = true
         '
@@ -207,9 +207,9 @@ Partial Class PropertiesDotNet
         '
         Me.btnStartAssocProgAdmin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnStartAssocProgAdmin.Image = Global.PropertiesDotNet.My.Resources.Resources.admin
-        Me.btnStartAssocProgAdmin.Location = New System.Drawing.Point(337, 142)
+        Me.btnStartAssocProgAdmin.Location = New System.Drawing.Point(337, 141)
         Me.btnStartAssocProgAdmin.Name = "btnStartAssocProgAdmin"
-        Me.btnStartAssocProgAdmin.Size = New System.Drawing.Size(23, 23)
+        Me.btnStartAssocProgAdmin.Size = New System.Drawing.Size(23, 25)
         Me.btnStartAssocProgAdmin.TabIndex = 24
         Me.btnStartAssocProgAdmin.UseVisualStyleBackColor = true
         '
@@ -533,6 +533,18 @@ Partial Class PropertiesDotNet
         Me.grpAttributes.TabStop = false
         Me.grpAttributes.Text = "Attributes:"
         '
+        'btnTakeOwn
+        '
+        Me.btnTakeOwn.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnTakeOwn.Image = Global.PropertiesDotNet.My.Resources.Resources.admin
+        Me.btnTakeOwn.Location = New System.Drawing.Point(287, 36)
+        Me.btnTakeOwn.Name = "btnTakeOwn"
+        Me.btnTakeOwn.Size = New System.Drawing.Size(118, 24)
+        Me.btnTakeOwn.TabIndex = 14
+        Me.btnTakeOwn.Text = "Take Ownership..."
+        Me.btnTakeOwn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.btnTakeOwn.UseVisualStyleBackColor = true
+        '
         'lnkAttributes
         '
         Me.lnkAttributes.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
@@ -741,16 +753,6 @@ Partial Class PropertiesDotNet
         'timerDelayedBrowse
         '
         Me.timerDelayedBrowse.Interval = 50
-        '
-        'btnTakeOwn
-        '
-        Me.btnTakeOwn.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnTakeOwn.Location = New System.Drawing.Point(291, 36)
-        Me.btnTakeOwn.Name = "btnTakeOwn"
-        Me.btnTakeOwn.Size = New System.Drawing.Size(114, 23)
-        Me.btnTakeOwn.TabIndex = 14
-        Me.btnTakeOwn.Text = "Take Ownership..."
-        Me.btnTakeOwn.UseVisualStyleBackColor = true
         '
         'PropertiesDotNet
         '
