@@ -51,18 +51,24 @@ Section "Quick Launch Shortcut"
   CreateShortCut "$QUICKLAUNCH\PropertiesDotNet.lnk" "$INSTDIR\PropertiesDotNet.exe" "" "$INSTDIR\PropertiesDotNet.exe" "" "" "" "PropertiesDotNet"
 SectionEnd
 
-Section "Add PropertiesDotNet to context menu"
-  ; File item
-  WriteRegStr HKCR "*\shell\PropertiesDotNet" "" "Properties..."
-  WriteRegStr HKCR "*\shell\PropertiesDotNet" "Icon" "$INSTDIR\PropertiesDotNet.exe"
-  WriteRegStr HKCR "*\shell\PropertiesDotNet\command" "" "$\"$INSTDIR\PropertiesDotNet.exe$\" $\"%1$\""
-  
-  ; Folder item
-  DeleteRegKey HKCR "Directory\shell\PropertiesDotNet" ; Remove old context menu item, 'Folder' also covers drives
-  WriteRegStr HKCR "Folder\shell\PropertiesDotNet" "" "Properties..."
-  WriteRegStr HKCR "Folder\shell\PropertiesDotNet" "Icon" "$INSTDIR\PropertiesDotNet.exe"
-  WriteRegStr HKCR "Folder\shell\PropertiesDotNet\command" "" "$\"$INSTDIR\PropertiesDotNet.exe$\" $\"%1$\""
-SectionEnd
+SubSection "Context menu entry"
+  Section "Add to context menu for all files"
+    WriteRegStr HKCR "*\shell\PropertiesDotNet" "" "Properties..."
+    WriteRegStr HKCR "*\shell\PropertiesDotNet" "Icon" "$INSTDIR\PropertiesDotNet.exe"
+      WriteRegStr HKCR "*\shell\PropertiesDotNet\command" "" "$\"$INSTDIR\PropertiesDotNet.exe$\" $\"%1$\""
+  SectionEnd
+  Section "Add to context menu for .url files"
+    WriteRegStr HKCR "IE.AssocFile.URL\shell\PropertiesDotNet" "" "Properties..."
+    WriteRegStr HKCR "IE.AssocFile.URL\shell\PropertiesDotNet" "Icon" "$INSTDIR\PropertiesDotNet.exe"
+      WriteRegStr HKCR "IE.AssocFile.URL\shell\PropertiesDotNet\command" "" "$\"$INSTDIR\PropertiesDotNet.exe$\" $\"%1$\""
+  SectionEnd
+  Section "Add to context menu for folders"
+    DeleteRegKey HKCR "Directory\shell\PropertiesDotNet" ; Remove old context menu item, 'Folder' also covers drives
+    WriteRegStr HKCR "Folder\shell\PropertiesDotNet" "" "Properties..."
+    WriteRegStr HKCR "Folder\shell\PropertiesDotNet" "Icon" "$INSTDIR\PropertiesDotNet.exe"
+      WriteRegStr HKCR "Folder\shell\PropertiesDotNet\command" "" "$\"$INSTDIR\PropertiesDotNet.exe$\" $\"%1$\""
+  SectionEnd
+SubSectionEnd
 
 ; Functions
 
@@ -95,8 +101,9 @@ Section "Uninstall"
   Delete "$QUICKLAUNCH\PropertiesDotNet.lnk" ; Remove Quick Launch Shortcut
   
   DeleteRegKey HKCR "*\shell\PropertiesDotNet"         ; Remove files  context menu item
-  DeleteRegKey HKCR "Directory\shell\PropertiesDotNet" ; Remove folder context menu item1
-  DeleteRegKey HKCR "Folder\shell\PropertiesDotNet" ; Remove folder context menu item2
+  DeleteRegKey HKCR "IE.AssocFile.URL\shell\PropertiesDotNet"
+  DeleteRegKey HKCR "Directory\shell\PropertiesDotNet" ; Remove old folder context menu item
+  DeleteRegKey HKCR "Folder\shell\PropertiesDotNet"    ; Remove current folder context menu item
 SectionEnd
 
 ; Uninstaller Functions
