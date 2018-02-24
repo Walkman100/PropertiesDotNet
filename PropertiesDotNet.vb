@@ -3,6 +3,10 @@ Public Class PropertiesDotNet
     '  Used for finding the program that a file opens with
     '   http://www.vb-helper.com/howto_get_associated_program.html
     Private Declare Function FindExecutable Lib "shell32.dll" Alias "FindExecutableA"(lpFile As String, lpDirectory As String, lpResult As String) As Long
+    ' GetCompressedFileSize:
+    '  Used to get the disk size of a file
+    '   http://www.pinvoke.net/default.aspx/kernel32/GetCompressedFileSize.html
+    Private Declare Function GetCompressedFileSize Lib "kernel32" Alias "GetCompressedFileSizeA"(ByVal lpFileName As String, ByVal lpFileSizeHigh As IntPtr) As UInt32
     Dim byteSize As ULong = 0
     
     Sub PropertiesDotNet_Load() Handles Me.Load
@@ -154,7 +158,33 @@ Public Class PropertiesDotNet
         chkOffline.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Offline)
         chkReparse.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.ReparsePoint)
         chkSparse.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.SparseFile)
+        
+        If GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
+            chkCompressed.Text = "Compressed (Size on disk: " & CompressedFileSize(lblFullPath.Text) & ")"
+        Else
+            chkCompressed.Text = "Compressed"
+        End If
     End Sub
+    
+    Public Function CompressedFileSize(ByVal path As String) As ULong
+        If File.Exists(path) Then
+            Try
+                Dim ptr As IntPtr = Marshal.AllocHGlobal(4)
+                Try
+                    Dim filelength As Long = Convert.ToInt64(GetCompressedFileSize(path, ptr))
+                    If filelength = &HFFFFFFFF Then
+                        Dim Err As Long = Marshal.GetLastWin32Error()
+                        If Err <> 0 Then Throw New IOException("Exception getting compressed size: " & Err.ToString)
+                    End If
+                    Return filelength + CLng(Marshal.ReadInt32(ptr)) '<< 32
+                Finally
+                    Marshal.FreeHGlobal(ptr)
+                End Try
+            Catch ex As Exception
+                Throw New IOException("The compressed size of the specified file could not be determined.")
+            End Try
+        End If
+    End Function
     
     ''' <summary>Gets the path to the folder icon</summary>
     ''' <param name="folder">the folder path to get the icon path for</param>
