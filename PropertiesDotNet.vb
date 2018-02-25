@@ -3,11 +3,8 @@ Public Class PropertiesDotNet
     '  Used for finding the program that a file opens with
     '   http://www.vb-helper.com/howto_get_associated_program.html
     Private Declare Function FindExecutable Lib "shell32.dll" Alias "FindExecutableA"(lpFile As String, lpDirectory As String, lpResult As String) As Long
-    ' GetCompressedFileSize:
-    '  Used to get the disk size of a file
-    '   http://www.pinvoke.net/default.aspx/kernel32/GetCompressedFileSize.html
-    Private Declare Function GetCompressedFileSize Lib "kernel32" Alias "GetCompressedFileSizeA"(ByVal lpFileName As String, ByVal lpFileSizeHigh As IntPtr) As UInt32
     Dim byteSize As ULong = 0
+    Dim compressedSizeOrError As String = " "
     
     Sub PropertiesDotNet_Load() Handles Me.Load
         For Each s As String In My.Application.CommandLineArgs
@@ -160,31 +157,14 @@ Public Class PropertiesDotNet
         chkSparse.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.SparseFile)
         
         If GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
-            chkCompressed.Text = "Compressed (Size on disk: " & CompressedFileSize(lblFullPath.Text) & ")"
-        Else
-            chkCompressed.Text = "Compressed"
+            Try
+                compressedSizeOrError = CompressedFileSize(lblFullPath.Text)
+            Catch ex As Exception
+                compressedSizeOrError = ex.Message
+            End Try
+            ApplySizeFormatting()
         End If
     End Sub
-    
-    Public Function CompressedFileSize(ByVal path As String) As ULong
-        If File.Exists(path) Then
-            Try
-                Dim ptr As IntPtr = Marshal.AllocHGlobal(4)
-                Try
-                    Dim filelength As Long = Convert.ToInt64(GetCompressedFileSize(path, ptr))
-                    If filelength = &HFFFFFFFF Then
-                        Dim Err As Long = Marshal.GetLastWin32Error()
-                        If Err <> 0 Then Throw New IOException("Exception getting compressed size: " & Err.ToString)
-                    End If
-                    Return filelength + CLng(Marshal.ReadInt32(ptr)) '<< 32
-                Finally
-                    Marshal.FreeHGlobal(ptr)
-                End Try
-            Catch ex As Exception
-                Throw New IOException("The compressed size of the specified file could not be determined.")
-            End Try
-        End If
-    End Function
     
     ''' <summary>Gets the path to the folder icon</summary>
     ''' <param name="folder">the folder path to get the icon path for</param>
@@ -440,6 +420,36 @@ Public Class PropertiesDotNet
                 End Try
         End Select
         ' format number here
+        If IsNumeric(compressedSizeOrError) Then
+            chkCompressed.Text = "Compressed (Size on disk: "
+            Select Case cbxSize.SelectedIndex
+                Case 0 'bytes (8 bits)
+                    chkCompressed.Text &= compressedSizeOrError
+                Case 1 'kB  (Decimal - 1000)
+                    chkCompressed.Text &= (compressedSizeOrError / 1000)
+                Case 2 'KiB (Binary - 1024)
+                    chkCompressed.Text &= (compressedSizeOrError / 1024)
+                Case 3 'MB (Decimal - 1000)
+                    chkCompressed.Text &= (compressedSizeOrError / 1000^2)
+                Case 4 'MiB (Binary - 1024)
+                    chkCompressed.Text &= (compressedSizeOrError / 1024^2)
+                Case 5 'GB  (Decimal - 1000)
+                    chkCompressed.Text &= (compressedSizeOrError / 1000^3)
+                Case 6 'GiB (Binary - 1024)
+                    chkCompressed.Text &= (compressedSizeOrError / 1024^3)
+                Case 7 'TB  (Decimal - 1000)
+                    chkCompressed.Text &= (compressedSizeOrError / 1000^4)
+                Case 8 'TiB (Binary - 1024)
+                    chkCompressed.Text &= (compressedSizeOrError / 1024^4)
+                Case 9 'PB  (Decimal - 1000)
+                    chkCompressed.Text &= (compressedSizeOrError / 1000^5)
+                Case 10 'PiB (Binary - 1024)
+                    chkCompressed.Text &= (compressedSizeOrError / 1024^5)
+            End Select
+            chkCompressed.Text &= " " & cbxSize.Text.Remove(3).Trim & ")"
+        Else
+            chkCompressed.Text = "Compressed"
+        End If
     End Sub
     Sub btnStartAssocProg_Click() Handles btnStartAssocProg.Click
         Process.Start(lblOpenWith.Text)
@@ -796,6 +806,30 @@ Public Class PropertiesDotNet
             CreateObject("Shell.Application").ShellExecute(fileName, """" & arguments, "", "runas")
         End If
     End Sub
+    
+    ' http://www.pinvoke.net/default.aspx/kernel32/GetCompressedFileSize.html
+    Private Declare Function GetCompressedFileSize Lib "kernel32" Alias "GetCompressedFileSizeA"(ByVal lpFileName As String, ByVal lpFileSizeHigh As IntPtr) As UInt32
+    Public Function CompressedFileSize(ByVal path As String) As ULong
+        If File.Exists(path) Then
+            Try
+                Dim ptr As IntPtr = Marshal.AllocHGlobal(4)
+                Try
+                    Dim filelength As Long = Convert.ToInt64(GetCompressedFileSize(path, ptr))
+                    If filelength = &HFFFFFFFF Then
+                        Dim Err As Long = Marshal.GetLastWin32Error()
+                        If Err <> 0 Then Throw New IOException("Exception getting compressed size: " & Err.ToString)
+                    End If
+                    Return filelength + CLng(Marshal.ReadInt32(ptr)) '<< 32
+                Finally
+                    Marshal.FreeHGlobal(ptr)
+                End Try
+            Catch ex As Exception
+                Throw New IOException("The compressed size of the specified file could not be determined.")
+            End Try
+        Else
+            Throw New FileNotFoundException("File not found", path)
+        End If
+    End Function
     
     ' https://stackoverflow.com/a/1936957/2999220
     <DllImport("shell32.dll", CharSet := CharSet.Auto)> _
