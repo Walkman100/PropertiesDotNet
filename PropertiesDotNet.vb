@@ -424,29 +424,28 @@ Public Class PropertiesDotNet
             chkCompressed.Text = "Compressed (Size on disk: "
             Select Case cbxSize.SelectedIndex
                 Case 0 'bytes (8 bits)
-                    chkCompressed.Text &= compressedSizeOrError
+                    chkCompressed.Text &= compressedSizeOrError & " bytes)"
                 Case 1 'kB  (Decimal - 1000)
-                    chkCompressed.Text &= (compressedSizeOrError / 1000)
+                    chkCompressed.Text &= (compressedSizeOrError / 1000) & " kB)"
                 Case 2 'KiB (Binary - 1024)
-                    chkCompressed.Text &= (compressedSizeOrError / 1024)
+                    chkCompressed.Text &= (compressedSizeOrError / 1024) & " KiB)"
                 Case 3 'MB (Decimal - 1000)
-                    chkCompressed.Text &= (compressedSizeOrError / 1000^2)
+                    chkCompressed.Text &= (compressedSizeOrError / 1000^2) & " MB)"
                 Case 4 'MiB (Binary - 1024)
-                    chkCompressed.Text &= (compressedSizeOrError / 1024^2)
+                    chkCompressed.Text &= (compressedSizeOrError / 1024^2) & " MiB)"
                 Case 5 'GB  (Decimal - 1000)
-                    chkCompressed.Text &= (compressedSizeOrError / 1000^3)
+                    chkCompressed.Text &= (compressedSizeOrError / 1000^3) & " GB)"
                 Case 6 'GiB (Binary - 1024)
-                    chkCompressed.Text &= (compressedSizeOrError / 1024^3)
+                    chkCompressed.Text &= (compressedSizeOrError / 1024^3) & " GiB)"
                 Case 7 'TB  (Decimal - 1000)
-                    chkCompressed.Text &= (compressedSizeOrError / 1000^4)
+                    chkCompressed.Text &= (compressedSizeOrError / 1000^4) & " TB)"
                 Case 8 'TiB (Binary - 1024)
-                    chkCompressed.Text &= (compressedSizeOrError / 1024^4)
+                    chkCompressed.Text &= (compressedSizeOrError / 1024^4) & " TiB)"
                 Case 9 'PB  (Decimal - 1000)
-                    chkCompressed.Text &= (compressedSizeOrError / 1000^5)
+                    chkCompressed.Text &= (compressedSizeOrError / 1000^5) & " PB)"
                 Case 10 'PiB (Binary - 1024)
-                    chkCompressed.Text &= (compressedSizeOrError / 1024^5)
+                    chkCompressed.Text &= (compressedSizeOrError / 1024^5) & " PiB)"
             End Select
-            chkCompressed.Text &= " " & cbxSize.Text.Remove(3).Trim & ")"
         Else
             chkCompressed.Text = "Compressed"
         End If
