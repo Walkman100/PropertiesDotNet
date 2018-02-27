@@ -23,8 +23,7 @@ Public Class CompressReport
         Me.lblStatus.Text = "Starting compression..."
         'imgLoading
         Me.imgLoading.Name = "imgLoading"
-'To get code autocomplete, comment out the following line:
-        Me.imgLoading.Image = Global.PropertiesDotNet.My.Resources.Resources.loading4
+        Me.imgLoading.Image = My.Resources.Resources.loading4
         Me.imgLoading.Location = New System.Drawing.Point(12, 12)
         Me.imgLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.imgLoading.TabStop = False
@@ -38,8 +37,7 @@ Public Class CompressReport
         Me.Controls.Add(Me.imgLoading)
         Me.Controls.Add(Me.lblStatus)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-'To get code autocomplete, comment out the following line:
-        Me.Icon = Global.PropertiesDotNet.My.Resources.Resources.compress
+        Me.Icon = My.Resources.Resources.compress
         Me.MaximizeBox = false
         Me.MinimizeBox = false
         Me.ShowInTaskbar = false
