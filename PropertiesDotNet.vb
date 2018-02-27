@@ -98,6 +98,18 @@ Public Class PropertiesDotNet
             ApplySizeFormatting
             imgFile.ImageLocation = FileProperties.FullName
             
+            Dim result As String = Space$(1024)
+            FindExecutable(lblName.Text, lblDirectory.Text & "\", result)
+            lblOpenWith.Text = Strings.Left$(result, InStr(result, Chr(0)) - 1)
+            If lblOpenWith.Text = "" Then 
+                lblOpenWith.Text = "Filetype not associated!"
+                btnStartAssocProg.Enabled = False
+                btnStartAssocProgAdmin.Enabled = False
+            Else
+                btnStartAssocProg.Enabled = True
+                btnStartAssocProgAdmin.Enabled = True
+            End If
+            
             btnLaunchAdmin.Enabled = True
             lblExtensionLbl.Enabled = True
             lblExtension.Enabled = True
@@ -124,18 +136,6 @@ Public Class PropertiesDotNet
             lblOpenWithLbl.Text = "Number of files:"
             btnHashes.Image = My.Resources.Resources.Shell32__326_
             btnHashes.Text = "DirectoryImage..."
-        End If
-        
-        Dim result As String = Space$(1024)
-        FindExecutable(lblName.Text, lblDirectory.Text & "\", result)
-        lblOpenWith.Text = Strings.Left$(result, InStr(result, Chr(0)) - 1)
-        If lblOpenWith.Text = "" Then 
-            lblOpenWith.Text = "Filetype not associated!"
-            btnStartAssocProg.Enabled = False
-            btnStartAssocProgAdmin.Enabled = False
-        Else
-            btnStartAssocProg.Enabled = True
-            btnStartAssocProgAdmin.Enabled = True
         End If
         
         If chkUTC.Checked Then
@@ -760,7 +760,7 @@ Public Class PropertiesDotNet
     
     Sub bwCalcSize_DoWork() Handles bwCalcSize.DoWork
         Try
-            If byteSize = 0 Then cbxSize.Enabled = False
+            cbxSize.Enabled = False
             Dim DirectoryProperties As New DirectoryInfo(lblFullPath.Text)
             
             lblSize.Text = "Getting file list... (May take a while)"
@@ -774,10 +774,8 @@ Public Class PropertiesDotNet
             Next
             
             lblOpenWith.Text = SubFiles.Count
-            If cbxSize.Enabled = False Then
-                cbxSize.Enabled = True
-                AutoDetectSize
-            End If
+            cbxSize.Enabled = True
+            AutoDetectSize
             ApplySizeFormatting
         Catch ex As Exception
             lblSize.Text = "Error: " & ex.Message
