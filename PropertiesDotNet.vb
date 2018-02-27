@@ -807,27 +807,17 @@ Public Class PropertiesDotNet
     End Sub
     
     ' http://www.pinvoke.net/default.aspx/kernel32/GetCompressedFileSize.html
-    Private Declare Function GetCompressedFileSize Lib "kernel32" Alias "GetCompressedFileSizeA"(ByVal lpFileName As String, ByVal lpFileSizeHigh As IntPtr) As UInt32
-    Public Function CompressedFileSize(ByVal path As String) As ULong
-        If File.Exists(path) Then
-            Try
-                Dim ptr As IntPtr = Marshal.AllocHGlobal(4)
-                Try
-                    Dim filelength As Long = Convert.ToInt64(GetCompressedFileSize(path, ptr))
-                    If filelength = &HFFFFFFFF Then
-                        Dim Err As Long = Marshal.GetLastWin32Error()
-                        If Err <> 0 Then Throw New IOException("Exception getting compressed size: " & Err.ToString)
-                    End If
-                    Return filelength + CLng(Marshal.ReadInt32(ptr)) '<< 32
-                Finally
-                    Marshal.FreeHGlobal(ptr)
-                End Try
-            Catch ex As Exception
-                Throw New IOException("The compressed size of the specified file could not be determined.")
-            End Try
-        Else
-            Throw New FileNotFoundException("File not found", path)
+    ' https://stackoverflow.com/a/22508299/2999220
+    Private Declare Function GetCompressedFileSize Lib "kernel32" Alias "GetCompressedFileSizeA"(ByVal lpFileName As String, ByRef lpFileSizeHigh As IntPtr) As UInteger
+    Public Function CompressedFileSize(path As String) As Double
+        Dim sizeMultiplier As IntPtr
+        Dim filelength As Long = Convert.ToInt64(GetCompressedFileSize(path, sizeMultiplier))
+        If filelength = &HFFFFFFFF Then
+            Dim Err As Long = Marshal.GetLastWin32Error()
+            If Err <> 0 Then Throw New IOException("Exception getting compressed size: " & Err.ToString)
         End If
+        Dim size As Double = (UInteger.MaxValue + 1) * CLng(sizeMultiplier) + filelength
+        Return size
     End Function
     
     ' https://stackoverflow.com/a/1936957/2999220
