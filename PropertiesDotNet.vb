@@ -96,7 +96,13 @@ Public Class PropertiesDotNet
             byteSize = FileProperties.Length
             AutoDetectSize
             ApplySizeFormatting
-            imgFile.ImageLocation = FileProperties.FullName
+            
+            Dim fileSizeMax = 200000000 '200 MB
+            If byteSize < fileSizeMax Then
+                imgFile.ImageLocation = FileProperties.FullName
+            Else
+                imgFile_LoadCompleted(Nothing, New System.ComponentModel.AsyncCompletedEventArgs(New FileLoadException("File too big", lblFullPath.Text), True, Nothing))
+            End If
             
             Dim result As String = Space$(1024)
             FindExecutable(lblName.Text, lblDirectory.Text & "\", result)
@@ -505,15 +511,23 @@ Public Class PropertiesDotNet
         If chkCompressed.Checked Then
             If SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Compressed) Then
                 If Not GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
-                    CompressReport.bwCompress.RunWorkerAsync({True, lblFullPath.Text})
-                    CompressReport.ShowDialog
+                    Dim oneGB = 1000000000 '1 GB
+                    If byteSize < oneGB Or (byteSize >= oneGB AndAlso MsgBox("Are you sure you want to compress this large file (>1GB)? This will take a while and can't be interrupted", _
+                            MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Compressing Large File") = MsgBoxResult.Yes) Then
+                        CompressReport.bwCompress.RunWorkerAsync({True, lblFullPath.Text})
+                        CompressReport.ShowDialog
+                    End If
                 End If
             End If
         Else
             If SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Compressed) Then
                 If GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
-                    CompressReport.bwCompress.RunWorkerAsync({False, lblFullPath.Text})
-                    CompressReport.ShowDialog
+                    Dim oneGB = 1000000000
+                    If byteSize < oneGB Or (byteSize >= oneGB AndAlso MsgBox("Are you sure you want to decompress this large file (>1GB)? This will take a while and can't be interrupted", _
+                            MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Decompressing Large File") = MsgBoxResult.Yes) Then
+                        CompressReport.bwCompress.RunWorkerAsync({False, lblFullPath.Text})
+                        CompressReport.ShowDialog
+                    End If
                 End If
             End If
         End If
