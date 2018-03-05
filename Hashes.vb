@@ -77,7 +77,7 @@ Public Class Hashes
         Me.btnMD5.TabIndex = 0
         Me.btnMD5.Text = "Calculate..."
         Me.btnMD5.UseVisualStyleBackColor = true
-        AddHandler Me.btnMD5.Click, AddressOf Me.btnMD5Calculate_Click
+        AddHandler Me.btnMD5.Click, AddressOf Me.btnMD5_Click
         'grpSHA1
         Me.grpSHA1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.grpSHA1.Controls.Add(Me.btnSHA1Copy)
@@ -114,7 +114,7 @@ Public Class Hashes
         Me.btnSHA1.TabIndex = 0
         Me.btnSHA1.Text = "Calculate..."
         Me.btnSHA1.UseVisualStyleBackColor = true
-        AddHandler Me.btnSHA1.Click, AddressOf Me.btnSHA1Calculate_Click
+        AddHandler Me.btnSHA1.Click, AddressOf Me.btnSHA1_Click
         'grpSHA256
         Me.grpSHA256.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.grpSHA256.Controls.Add(Me.btnSHA256Copy)
@@ -151,7 +151,7 @@ Public Class Hashes
         Me.btnSHA256.TabIndex = 0
         Me.btnSHA256.Text = "Calculate..."
         Me.btnSHA256.UseVisualStyleBackColor = true
-        AddHandler Me.btnSHA256.Click, AddressOf Me.btnSHA256Calculate_Click
+        AddHandler Me.btnSHA256.Click, AddressOf Me.btnSHA256_Click
         'btnAllCopy
         Me.btnAllCopy.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnAllCopy.Location = New System.Drawing.Point(265, 257)
@@ -229,7 +229,7 @@ Public Class Hashes
         Me.btnSHA512.TabIndex = 0
         Me.btnSHA512.Text = "Calculate..."
         Me.btnSHA512.UseVisualStyleBackColor = true
-        AddHandler Me.btnSHA512.Click, AddressOf Me.btnSHA512Calculate_Click
+        AddHandler Me.btnSHA512.Click, AddressOf Me.btnSHA512_Click
         'btnAllCancel
         Me.btnAllCancel.Enabled = false
         Me.btnAllCancel.Location = New System.Drawing.Point(134, 257)
@@ -238,7 +238,7 @@ Public Class Hashes
         Me.btnAllCancel.TabIndex = 6
         Me.btnAllCancel.Text = "Cancel All"
         Me.btnAllCancel.UseVisualStyleBackColor = true
-        AddHandler Me.btnAllCancel.Click, AddressOf Me.BtnCancel_Click
+        AddHandler Me.btnAllCancel.Click, AddressOf Me.btnAllCancel_Click
         'Hashes
         Me.AcceptButton = Me.btnAllCalculate
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -296,49 +296,49 @@ Public Class Hashes
     
     ''' End Designer code
     
-    Dim hashType As String
+    Dim hashQueue As String
     
     ' Starting & stopping
     
-    Sub btnMD5Calculate_Click()
-        hashType = "MD5"
+    Sub btnMD5_Click()
+        hashQueue = "MD5"
         btnAllCancel.Text = "Restart"
         bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
     End Sub
     
-    Sub btnSHA1Calculate_Click()
-        hashType = "SHA1"
+    Sub btnSHA1_Click()
+        hashQueue = "SHA1"
         btnAllCancel.Text = "Restart"
         bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
     End Sub
     
-    Sub btnSHA256Calculate_Click()
-        hashType = "SHA256"
+    Sub btnSHA256_Click()
+        hashQueue = "SHA256"
         btnAllCancel.Text = "Restart"
         bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
     End Sub
     
-    Sub btnSHA512Calculate_Click()
-        hashType = "SHA512"
+    Sub btnSHA512_Click()
+        hashQueue = "SHA512"
         btnAllCancel.Text = "Restart"
         bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
     End Sub
     
     Sub btnAllCalculate_Click()
-        hashType = "MD5,SHA1,SHA256,SHA512"
+        hashQueue = "MD5,SHA1,SHA256,SHA512"
         btnAllCancel.Text = "Cancel Further Hashes"
         bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
     End Sub
     
-    Sub btnCancel_Click()
-        If hashType.StartsWith("MD5") Then
-            hashType = "MD5"
-        ElseIf hashType.StartsWith("SHA1")
-            hashType = "SHA1"
-        ElseIf hashType.StartsWith("SHA256")
-            hashType = "SHA256"
-        ElseIf hashType.StartsWith("SHA512")
-            hashType = "SHA512"
+    Sub btnAllCancel_Click()
+        If hashQueue.StartsWith("MD5") Then
+            hashQueue = "MD5"
+        ElseIf hashQueue.StartsWith("SHA1")
+            hashQueue = "SHA1"
+        ElseIf hashQueue.StartsWith("SHA256")
+            hashQueue = "SHA256"
+        ElseIf hashQueue.StartsWith("SHA512")
+            hashQueue = "SHA512"
         Else
             Exit Sub
         End If
@@ -451,13 +451,13 @@ Public Class Hashes
             bwCalcHashes.ReportProgress(0)
             
             HashGeneratorOutput("Creating hash object...")
-            If hashType.StartsWith("MD5") Then
+            If hashQueue.StartsWith("MD5") Then
                 hashObject = MD5.Create
-            ElseIf hashType.StartsWith("SHA1")
+            ElseIf hashQueue.StartsWith("SHA1")
                 hashObject = SHA1.Create
-            ElseIf hashType.StartsWith("SHA256")
+            ElseIf hashQueue.StartsWith("SHA256")
                 hashObject = SHA256.Create
-            ElseIf hashType.StartsWith("SHA512")
+            ElseIf hashQueue.StartsWith("SHA512")
                 hashObject = SHA512.Create
             End If
             
@@ -513,31 +513,31 @@ Public Class Hashes
     End Sub
     
     Sub bwCalcHashes_RunWorkerCompleted()
-        If hashType.StartsWith("MD5") AndAlso hashType.Length>3 Then
-            hashType = hashType.Substring(4)
-        ElseIf hashType.StartsWith("SHA1") AndAlso hashType.Length>4
-            hashType = hashType.Substring(5)
-        ElseIf hashType.StartsWith("SHA256") AndAlso hashType.Length>6
-            hashType = hashType.Substring(7)
+        If hashQueue.StartsWith("MD5") AndAlso hashQueue.Length>3 Then
+            hashQueue = hashQueue.Substring(4)
+        ElseIf hashQueue.StartsWith("SHA1") AndAlso hashQueue.Length>4
+            hashQueue = hashQueue.Substring(5)
+        ElseIf hashQueue.StartsWith("SHA256") AndAlso hashQueue.Length>6
+            hashQueue = hashQueue.Substring(7)
             btnAllCancel.Text = "Restart"
-        ElseIf hashType.StartsWith("SHA512") AndAlso hashType.Length>6
-            hashType = hashType.Substring(7)
+        ElseIf hashQueue.StartsWith("SHA512") AndAlso hashQueue.Length>6
+            hashQueue = hashQueue.Substring(7)
         Else
             Exit Sub
         End If
         bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
     End Sub
     
-    ''' <summary>Set the correct labels text to the status, depending on the hashType</summary>
+    ''' <summary>Set the correct labels text to the status, depending on the hashQueue</summary>
     ''' <param name="status">The text to set the label to.</param>
     Sub HashGeneratorOutput(status As String)
-        If hashType.StartsWith("MD5") Then
+        If hashQueue.StartsWith("MD5") Then
             lblMD5.Text = status
-        ElseIf hashType.StartsWith("SHA1")
+        ElseIf hashQueue.StartsWith("SHA1")
             lblSHA1.Text = status
-        ElseIf hashType.StartsWith("SHA256")
+        ElseIf hashQueue.StartsWith("SHA256")
             lblSHA256.Text = status
-        ElseIf hashType.StartsWith("SHA512")
+        ElseIf hashQueue.StartsWith("SHA512")
             lblSHA512.Text = status
         End If
     End Sub
