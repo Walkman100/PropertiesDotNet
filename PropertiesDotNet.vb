@@ -474,6 +474,7 @@ Public Class PropertiesDotNet
     Sub btnHashes_Click() Handles btnHashes.Click
         If btnHashes.Text = "Compute Hashes" Then
             Hashes.Show
+            Hashes.Activate
         ElseIf btnHashes.Text = "DirectoryImage..."
             Try
                 Process.Start(Application.StartupPath & "\DirectoryImage", """" & lblFullPath.Text & """")

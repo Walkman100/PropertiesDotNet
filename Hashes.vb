@@ -421,7 +421,7 @@ Public Class Hashes
     End Sub
     
     Sub btnClose_Click()
-        Me.Close
+        Me.Hide
     End Sub
     
     ' Original code, thanks to http://us.informatiweb.net/programmation/36--generate-hashes-md5-sha-1-and-sha-256-of-a-file.html
