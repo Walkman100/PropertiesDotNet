@@ -493,6 +493,7 @@ Public Class Hashes
     Dim totalBytesRead As Long = 0
     
     Sub bwCalcHashes_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs)
+        Dim FilePropertiesStream As FileStream
         Try
             ' Set up GUI
             btnAllCalculate.Enabled = False
@@ -517,7 +518,7 @@ Public Class Hashes
             End If
             
             HashGeneratorOutput("Opening file...")
-            Dim FilePropertiesStream As FileStream = File.OpenRead(e.Argument.ToString)
+            FilePropertiesStream = File.OpenRead(e.Argument.ToString)
             
             HashGeneratorOutput("Setting file position...")
             FilePropertiesStream.Position = 0
@@ -533,6 +534,7 @@ Public Class Hashes
                 buffer = New Byte(4095) {}
                 bytesRead = FilePropertiesStream.Read(buffer, 0, buffer.Length)
                 totalBytesRead += bytesRead
+                If bwCalcHashes.CancellationPending Then Throw New OperationCanceledException("Operation was cancelled")
                 bwCalcHashes.ReportProgress(CInt(Math.Truncate(CDbl(totalBytesRead) * 100 / FilePropertiesStream.Length)))
             Loop
             hashObject.TransformFinalBlock(Buffer, 0, BytesRead)
@@ -550,13 +552,18 @@ Public Class Hashes
             
             HashGeneratorOutput(hashHex.ToLower)
             bwCalcHashes.ReportProgress(100)
+        Catch ex As OperationCanceledException
+            HashGeneratorOutput("Closing streams...")
+            FilePropertiesStream.Close()
+            hashObject.Clear
+            
+            HashGeneratorOutput(ex.Message)
+            bwCalcHashes.ReportProgress(0)
         Catch ex As Exception
             MsgBox(ex.ToString, MsgBoxStyle.Exclamation)
             HashGeneratorOutput("Click ""Calculate""")
             bwCalcHashes.ReportProgress(0)
         End Try
-        btnAllCalculate.Enabled = True
-        btnAllCancel.Enabled = False
     End Sub
     
     Sub bwCalcHashes_ProgressChanged(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs)
@@ -577,6 +584,8 @@ Public Class Hashes
             hashQueue = hashQueue.Substring(hashQueue.IndexOf(" ") + 1)
             bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
         Else
+            btnAllCalculate.Enabled = True
+            btnAllCancel.Enabled = False
             btnMD5.Text = "Calculate..."
             btnSHA1.Text = "Calculate..."
             btnSHA256.Text = "Calculate..."
