@@ -325,7 +325,6 @@ Public Class Hashes
                 bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
             Case "Cancel"
                 bwCalcHashes.CancelAsync()
-                btnMD5.Text = "Calculate..."
             Case "Queue"
                 hashQueue &= " MD5"
                 btnMD5.Text = "Unqueue"
@@ -343,7 +342,6 @@ Public Class Hashes
                 bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
             Case "Cancel"
                 bwCalcHashes.CancelAsync()
-                btnSHA1.Text = "Calculate..."
             Case "Queue"
                 hashQueue &= " SHA1"
                 btnSHA1.Text = "Unqueue"
@@ -361,7 +359,6 @@ Public Class Hashes
                 bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
             Case "Cancel"
                 bwCalcHashes.CancelAsync()
-                btnSHA256.Text = "Calculate..."
             Case "Queue"
                 hashQueue &= " SHA256"
                 btnSHA256.Text = "Unqueue"
@@ -379,7 +376,6 @@ Public Class Hashes
                 bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
             Case "Cancel"
                 bwCalcHashes.CancelAsync()
-                btnSHA512.Text = "Calculate..."
             Case "Queue"
                 hashQueue &= " SHA512"
                 btnSHA512.Text = "Unqueue"
@@ -458,8 +454,8 @@ Public Class Hashes
         End Try
     End Sub
     
-    Dim ToCopy As String
     Sub btnAllCopy_Click()
+        Dim ToCopy As String
         If lblMD5.Text = "Click ""Calculate""" Then
             ToCopy = "MD5: Not generated" & vbNewLine
         Else
@@ -491,7 +487,7 @@ Public Class Hashes
     ' Code that reports progress, thanks to http://www.infinitec.de/post/2007/06/09/Displaying-progress-updates-when-hashing-large-files.aspx
     
     Dim hashHex As String
-    Dim hashObject
+    Dim hashObject As HashAlgorithm
     Dim buffer As Byte()
     Dim bytesRead As Integer
     Dim totalBytesRead As Long = 0
