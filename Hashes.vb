@@ -298,36 +298,103 @@ Public Class Hashes
     
     Dim hashQueue As String
     
+    ''' <summary>
+    ''' Removes a hash type string from the queue. WARNING: cannot remove the first hash in queue - but that is currently being hashed anyway.
+    ''' </summary>
+    ''' <param name="type">The hash type to remove</param>
+    Sub ClearHashFromQueue(type As String) ' given queue of `MD5 SHA1` and argument of `SHA1` will result in `MD5` - this is _
+        If hashQueue.Contains(type) Then   ' to remove the space \/
+            hashQueue = hashQueue.Remove(hashQueue.IndexOf(type) - 1) & hashQueue.Substring(hashQueue.IndexOf(type) + type.Length)
+        End If
+    End Sub
+    
+    Sub SetAllToQueue()
+        btnMD5.Text = "Queue"
+        btnSHA1.Text = "Queue"
+        btnSHA256.Text = "Queue"
+        btnSHA512.Text = "Queue"
+    End Sub
+    
     ' Starting & stopping
     
     Sub btnMD5_Click()
-        hashQueue = "MD5"
-        btnAllCancel.Text = "Restart"
-        bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
+        Select Case btnMD5.Text
+            Case "Calculate..."
+                hashQueue = "MD5"
+                SetAllToQueue
+                bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
+            Case "Cancel"
+                bwCalcHashes.CancelAsync()
+                btnMD5.Text = "Calculate..."
+            Case "Queue"
+                hashQueue &= " MD5"
+                btnMD5.Text = "Unqueue"
+            Case "Unqueue"
+                ClearHashFromQueue("MD5")
+                btnMD5.Text = "Queue"
+        End Select
     End Sub
     
     Sub btnSHA1_Click()
-        hashQueue = "SHA1"
-        btnAllCancel.Text = "Restart"
-        bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
+        Select Case btnSHA1.Text
+            Case "Calculate..."
+                hashQueue = "SHA1"
+                SetAllToQueue
+                bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
+            Case "Cancel"
+                bwCalcHashes.CancelAsync()
+                btnSHA1.Text = "Calculate..."
+            Case "Queue"
+                hashQueue &= " SHA1"
+                btnSHA1.Text = "Unqueue"
+            Case "Unqueue"
+                ClearHashFromQueue("SHA1")
+                btnSHA1.Text = "Queue"
+        End Select
     End Sub
     
     Sub btnSHA256_Click()
-        hashQueue = "SHA256"
-        btnAllCancel.Text = "Restart"
-        bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
+        Select Case btnSHA256.Text
+            Case "Calculate..."
+                hashQueue = "SHA256"
+                SetAllToQueue
+                bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
+            Case "Cancel"
+                bwCalcHashes.CancelAsync()
+                btnSHA256.Text = "Calculate..."
+            Case "Queue"
+                hashQueue &= " SHA256"
+                btnSHA256.Text = "Unqueue"
+            Case "Unqueue"
+                ClearHashFromQueue("SHA256")
+                btnSHA256.Text = "Queue"
+        End Select
     End Sub
     
     Sub btnSHA512_Click()
-        hashQueue = "SHA512"
-        btnAllCancel.Text = "Restart"
-        bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
+        Select Case btnSHA512.Text
+            Case "Calculate..."
+                hashQueue = "SHA512"
+                SetAllToQueue
+                bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
+            Case "Cancel"
+                bwCalcHashes.CancelAsync()
+                btnSHA512.Text = "Calculate..."
+            Case "Queue"
+                hashQueue &= " SHA512"
+                btnSHA512.Text = "Unqueue"
+            Case "Unqueue"
+                ClearHashFromQueue("SHA512")
+                btnSHA512.Text = "Queue"
+        End Select
     End Sub
     
     Sub btnAllCalculate_Click()
-        hashQueue = "MD5,SHA1,SHA256,SHA512"
-        btnAllCancel.Text = "Cancel Further Hashes"
+        hashQueue = "MD5 SHA1 SHA256 SHA512"
         bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
+        btnSHA1.Text = "Unqueue"
+        btnSHA256.Text = "Unqueue"
+        btnSHA512.Text = "Unqueue"
     End Sub
     
     Sub btnAllCancel_Click()
@@ -342,21 +409,11 @@ Public Class Hashes
         Else
             Exit Sub
         End If
-        If btnAllCancel.Text = "Restart" Then
+        bwCalcHashes.CancelAsync
+        Do Until bwCalcHashes.CancellationPending
             bwCalcHashes.CancelAsync
-            Do Until bwCalcHashes.CancellationPending
-                bwCalcHashes.CancelAsync
-            Loop
-            If bwCalcHashes.IsBusy Then
-                If My.Application.CommandLineArgs.Count < 1 OrElse PropertiesDotNet.lblLocation.Text <> My.Application.CommandLineArgs(0) Then
-                    Process.Start(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", PropertiesDotNet.lblLocation.Text)
-                    Application.Exit
-                Else: Application.Restart
-                End If
-            End If
-        Else
-            btnAllCancel.Text = "Restart"
-        End If
+        Loop
+        btnAllCancel.Enabled = False
     End Sub
     
     Sub btnClose_Click()
@@ -442,10 +499,6 @@ Public Class Hashes
     Sub bwCalcHashes_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs)
         Try
             ' Set up GUI
-            btnMD5.Enabled = False
-            btnSHA1.Enabled = False
-            btnSHA256.Enabled = False
-            btnSHA512.Enabled = False
             btnAllCalculate.Enabled = False
             btnAllCancel.Enabled = True
             bwCalcHashes.ReportProgress(0)
@@ -453,12 +506,18 @@ Public Class Hashes
             HashGeneratorOutput("Creating hash object...")
             If hashQueue.StartsWith("MD5") Then
                 hashObject = MD5.Create
+                btnMD5.Text = "Cancel"
             ElseIf hashQueue.StartsWith("SHA1")
                 hashObject = SHA1.Create
+                btnSHA1.Text = "Cancel"
             ElseIf hashQueue.StartsWith("SHA256")
                 hashObject = SHA256.Create
+                btnSHA256.Text = "Cancel"
+            ElseIf hashQueue.StartsWith("SHA384")
+                hashObject = SHA384.Create
             ElseIf hashQueue.StartsWith("SHA512")
                 hashObject = SHA512.Create
+                btnSHA512.Text = "Cancel"
             End If
             
             HashGeneratorOutput("Opening file...")
@@ -500,12 +559,8 @@ Public Class Hashes
             HashGeneratorOutput("Click ""Calculate""")
             bwCalcHashes.ReportProgress(0)
         End Try
-            btnMD5.Enabled = True
-            btnSHA1.Enabled = True
-            btnSHA256.Enabled = True
-            btnSHA512.Enabled = True
-            btnAllCalculate.Enabled = True
-            btnAllCancel.Enabled = False
+        btnAllCalculate.Enabled = True
+        btnAllCancel.Enabled = False
     End Sub
     
     Sub bwCalcHashes_ProgressChanged(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs)
@@ -513,19 +568,24 @@ Public Class Hashes
     End Sub
     
     Sub bwCalcHashes_RunWorkerCompleted()
-        If hashQueue.StartsWith("MD5") AndAlso hashQueue.Length>3 Then
-            hashQueue = hashQueue.Substring(4)
-        ElseIf hashQueue.StartsWith("SHA1") AndAlso hashQueue.Length>4
-            hashQueue = hashQueue.Substring(5)
-        ElseIf hashQueue.StartsWith("SHA256") AndAlso hashQueue.Length>6
-            hashQueue = hashQueue.Substring(7)
-            btnAllCancel.Text = "Restart"
-        ElseIf hashQueue.StartsWith("SHA512") AndAlso hashQueue.Length>6
-            hashQueue = hashQueue.Substring(7)
+        If hashQueue.Contains(" ") Then
+            If hashQueue.StartsWith("MD5") Then
+                btnMD5.Text = "Queue"
+            ElseIf hashQueue.StartsWith("SHA1")
+                btnSHA1.Text = "Queue"
+            ElseIf hashQueue.StartsWith("SHA256")
+                btnSHA256.Text = "Queue"
+            ElseIf hashQueue.StartsWith("SHA512")
+                btnSHA512.Text = "Queue"
+            End If
+            hashQueue = hashQueue.Substring(hashQueue.IndexOf(" ") + 1)
+            bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
         Else
-            Exit Sub
+            btnMD5.Text = "Calculate..."
+            btnSHA1.Text = "Calculate..."
+            btnSHA256.Text = "Calculate..."
+            btnSHA512.Text = "Calculate..."
         End If
-        bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
     End Sub
     
     ''' <summary>Set the correct labels text to the status, depending on the hashQueue</summary>
