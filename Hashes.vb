@@ -456,32 +456,25 @@ Public Class Hashes
     
     Sub btnAllCopy_Click()
         Dim ToCopy As String
-        If lblMD5.Text = "Click ""Calculate""" Then
-            ToCopy = "MD5: Not generated" & vbNewLine
-        Else
-            ToCopy = "MD5: " & lblMD5.Text & vbNewLine
-        End If
-        If lblSHA1.Text = "Click ""Calculate""" Then
-            ToCopy &= "SHA1: Not generated" & vbNewLine
-        Else
-            ToCopy &= "SHA1: " & lblSHA1.Text & vbNewLine
-        End If
-        If lblSHA256.Text = "Click ""Calculate""" Then
-            ToCopy &= "SHA256: Not generated" & vbNewLine
-        Else
-            ToCopy &= "SHA256: " & lblSHA256.Text & vbNewLine
-        End If
-        If lblSHA512.Text = "Click ""Calculate""" Then
-            ToCopy &= "SHA512: Not generated"
-        Else
-            ToCopy &= "SHA512: " & lblSHA512.Text
-        End If
+        ToCopy = "MD5: " & CheckGenerated(lblMD5.Text) & vbNewLine
+        ToCopy &= "SHA1: " & CheckGenerated(lblSHA1.Text) & vbNewLine
+        ToCopy &= "SHA256: " & CheckGenerated(lblSHA256.Text) & vbNewLine
+        ToCopy &= "SHA512: " & CheckGenerated(lblSHA512.Text)
         Try
             Clipboard.SetText(ToCopy, TextDataFormat.UnicodeText)
         Catch ex As Exception
             MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
         End Try
     End Sub
+    Function CheckGenerated(status As String) As String
+        If status = "Click ""Calculate""" Then
+            Return "Not generated"
+        ElseIf status = "Operation was cancelled" Then
+            Return "Not generated"
+        Else
+            Return status
+        End If
+    End Function
     
     ' Original code, thanks to http://us.informatiweb.net/programmation/36--generate-hashes-md5-sha-1-and-sha-256-of-a-file.html
     ' Code that reports progress, thanks to http://www.infinitec.de/post/2007/06/09/Displaying-progress-updates-when-hashing-large-files.aspx
