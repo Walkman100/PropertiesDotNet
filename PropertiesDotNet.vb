@@ -93,6 +93,44 @@ Public Class PropertiesDotNet
         End Try
         chkCompressed.Text = "Compressed"
         
+        Try
+            Dim DriveProperties As New DriveInfo(lblLocation.Text)
+            lblDriveIsReady.Text = DriveProperties.IsReady
+            Select Case DriveProperties.DriveType
+                Case DriveType.Unknown
+                    lblDriveType.Text = "Unknown"
+                Case DriveType.NoRootDirectory
+                    lblDriveType.Text = "No Root Directory"
+                Case DriveType.Removable
+                    lblDriveType.Text = "Removable"
+                Case DriveType.Fixed
+                    lblDriveType.Text = "Fixed"
+                Case DriveType.Network
+                    lblDriveType.Text = "Network"
+                Case DriveType.CDRom
+                    lblDriveType.Text = "CD Rom"
+                Case DriveType.Ram
+                    lblDriveType.Text = "RAM"
+                Case Else
+                    lblDriveType.Text = DriveProperties.DriveType
+            End Select
+            lblDriveVolumeLabel.Text = DriveProperties.VolumeLabel
+            lblDriveFormat.Text = DriveProperties.DriveFormat
+            lblDriveTotalSize.Text = DriveProperties.TotalSize
+            driveSizes(0) = DriveProperties.TotalSize
+            lblDriveTotalFreeSpace.Text = DriveProperties.TotalFreeSpace
+            driveSizes(1) = DriveProperties.TotalFreeSpace
+            lblDriveAvailableFreeSpace.Text = DriveProperties.AvailableFreeSpace
+            driveSizes(2) = DriveProperties.AvailableFreeSpace
+            If DriveProperties.Name = FileProperties.FullName Then
+                Me.Height = 674
+            Else
+                Me.Height = 561
+            End If
+        Catch
+            Me.Height = 561
+        End Try
+        
         If Exists(lblFullPath.Text) Then
             byteSize = FileProperties.Length
             AutoDetectSize
@@ -144,44 +182,6 @@ Public Class PropertiesDotNet
             btnHashes.Image = My.Resources.Resources.Shell32__326_
             btnHashes.Text = "DirectoryImage..."
         End If
-        
-        Try
-            Dim DriveProperties As New DriveInfo(lblLocation.Text)
-            lblDriveIsReady.Text = DriveProperties.IsReady
-            Select Case DriveProperties.DriveType
-                Case DriveType.Unknown
-                    lblDriveType.Text = "Unknown"
-                Case DriveType.NoRootDirectory
-                    lblDriveType.Text = "No Root Directory"
-                Case DriveType.Removable
-                    lblDriveType.Text = "Removable"
-                Case DriveType.Fixed
-                    lblDriveType.Text = "Fixed"
-                Case DriveType.Network
-                    lblDriveType.Text = "Network"
-                Case DriveType.CDRom
-                    lblDriveType.Text = "CD Rom"
-                Case DriveType.Ram
-                    lblDriveType.Text = "RAM"
-                Case Else
-                    lblDriveType.Text = DriveProperties.DriveType
-            End Select
-            lblDriveVolumeLabel.Text = DriveProperties.VolumeLabel
-            lblDriveFormat.Text = DriveProperties.DriveFormat
-            lblDriveTotalSize.Text = DriveProperties.TotalSize
-            driveSizes(0) = DriveProperties.TotalSize
-            lblDriveTotalFreeSpace.Text = DriveProperties.TotalFreeSpace
-            driveSizes(1) = DriveProperties.TotalFreeSpace
-            lblDriveAvailableFreeSpace.Text = DriveProperties.AvailableFreeSpace
-            driveSizes(2) = DriveProperties.AvailableFreeSpace
-            If DriveProperties.Name = FileProperties.FullName Then
-                Me.Height = 674
-            Else
-                Me.Height = 561
-            End If
-        Catch
-            Me.Height = 561
-        End Try
         
         If chkUTC.Checked Then
             lblCreationTime.Text = GetCreationTimeUtc(lblFullPath.Text)
