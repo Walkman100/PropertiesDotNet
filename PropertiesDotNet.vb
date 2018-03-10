@@ -154,7 +154,24 @@ Public Class PropertiesDotNet
             Me.Height = 674
             
             lblDriveIsReady.Text = DriveProperties.IsReady
-            lblDriveType.Text = DriveProperties.DriveType
+            Select Case DriveProperties.DriveType
+                Case DriveType.Unknown
+                    lblDriveType.Text = "Unknown"
+                Case DriveType.NoRootDirectory
+                    lblDriveType.Text = "No Root Directory"
+                Case DriveType.Removable
+                    lblDriveType.Text = "Removable"
+                Case DriveType.Fixed
+                    lblDriveType.Text = "Fixed"
+                Case DriveType.Network
+                    lblDriveType.Text = "Network"
+                Case DriveType.CDRom
+                    lblDriveType.Text = "CD Rom"
+                Case DriveType.Ram
+                    lblDriveType.Text = "RAM"
+                Case Else
+                    lblDriveType.Text = DriveProperties.DriveType
+            End Select
             lblDriveVolumeLabel.Text = DriveProperties.VolumeLabel
             lblDriveFormat.Text = DriveProperties.DriveFormat
             lblDriveTotalSize.Text = DriveProperties.TotalSize
