@@ -28,6 +28,22 @@ Partial Class PropertiesDotNet
         Me.chkHidden = New System.Windows.Forms.CheckBox()
         Me.chkSystem = New System.Windows.Forms.CheckBox()
         Me.grpProperties = New System.Windows.Forms.GroupBox()
+        Me.lblDriveAvailableFreeSpaceInfo = New System.Windows.Forms.Label()
+        Me.btnDriveVolumeLabel = New System.Windows.Forms.Button()
+        Me.lblDriveAvailableFreeSpace = New System.Windows.Forms.Label()
+        Me.lblDriveTotalFreeSpace = New System.Windows.Forms.Label()
+        Me.lblDriveTotalSize = New System.Windows.Forms.Label()
+        Me.lblDriveFormat = New System.Windows.Forms.Label()
+        Me.lblDriveVolumeLabel = New System.Windows.Forms.Label()
+        Me.lblDriveType = New System.Windows.Forms.Label()
+        Me.lblDriveIsReady = New System.Windows.Forms.Label()
+        Me.lblDriveAvailableFreeSpaceLbl = New System.Windows.Forms.Label()
+        Me.lblDriveTotalFreeSpaceLbl = New System.Windows.Forms.Label()
+        Me.lblDriveTotalSizeLbl = New System.Windows.Forms.Label()
+        Me.lblDriveFormatLbl = New System.Windows.Forms.Label()
+        Me.lblDriveVolumeLabelLbl = New System.Windows.Forms.Label()
+        Me.lblDriveTypeLbl = New System.Windows.Forms.Label()
+        Me.lblDriveIsReadyLbl = New System.Windows.Forms.Label()
         Me.btnWindowsProperties = New System.Windows.Forms.Button()
         Me.cbxSize = New System.Windows.Forms.ComboBox()
         Me.btnLaunchAdmin = New System.Windows.Forms.Button()
@@ -127,8 +143,25 @@ Partial Class PropertiesDotNet
         '
         'grpProperties
         '
-        Me.grpProperties.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+        Me.grpProperties.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+                        Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpProperties.Controls.Add(Me.lblDriveAvailableFreeSpaceInfo)
+        Me.grpProperties.Controls.Add(Me.btnDriveVolumeLabel)
+        Me.grpProperties.Controls.Add(Me.lblDriveAvailableFreeSpace)
+        Me.grpProperties.Controls.Add(Me.lblDriveTotalFreeSpace)
+        Me.grpProperties.Controls.Add(Me.lblDriveTotalSize)
+        Me.grpProperties.Controls.Add(Me.lblDriveFormat)
+        Me.grpProperties.Controls.Add(Me.lblDriveVolumeLabel)
+        Me.grpProperties.Controls.Add(Me.lblDriveType)
+        Me.grpProperties.Controls.Add(Me.lblDriveIsReady)
+        Me.grpProperties.Controls.Add(Me.lblDriveAvailableFreeSpaceLbl)
+        Me.grpProperties.Controls.Add(Me.lblDriveTotalFreeSpaceLbl)
+        Me.grpProperties.Controls.Add(Me.lblDriveTotalSizeLbl)
+        Me.grpProperties.Controls.Add(Me.lblDriveFormatLbl)
+        Me.grpProperties.Controls.Add(Me.lblDriveVolumeLabelLbl)
+        Me.grpProperties.Controls.Add(Me.lblDriveTypeLbl)
+        Me.grpProperties.Controls.Add(Me.lblDriveIsReadyLbl)
         Me.grpProperties.Controls.Add(Me.btnWindowsProperties)
         Me.grpProperties.Controls.Add(Me.cbxSize)
         Me.grpProperties.Controls.Add(Me.btnLaunchAdmin)
@@ -172,6 +205,151 @@ Partial Class PropertiesDotNet
         Me.grpProperties.TabStop = false
         Me.grpProperties.Text = "Properties:"
         '
+        'lblDriveAvailableFreeSpaceInfo
+        '
+        Me.lblDriveAvailableFreeSpaceInfo.AutoSize = true
+        Me.lblDriveAvailableFreeSpaceInfo.Location = New System.Drawing.Point(22, 324)
+        Me.lblDriveAvailableFreeSpaceInfo.Name = "lblDriveAvailableFreeSpaceInfo"
+        Me.lblDriveAvailableFreeSpaceInfo.Size = New System.Drawing.Size(268, 13)
+        Me.lblDriveAvailableFreeSpaceInfo.TabIndex = 50
+        Me.lblDriveAvailableFreeSpaceInfo.Text = "(Available space takes into account user quotas, if any)"
+        '
+        'btnDriveVolumeLabel
+        '
+        Me.btnDriveVolumeLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnDriveVolumeLabel.Location = New System.Drawing.Point(330, 254)
+        Me.btnDriveVolumeLabel.Name = "btnDriveVolumeLabel"
+        Me.btnDriveVolumeLabel.Size = New System.Drawing.Size(75, 23)
+        Me.btnDriveVolumeLabel.TabIndex = 49
+        Me.btnDriveVolumeLabel.Text = "Rename..."
+        Me.btnDriveVolumeLabel.UseVisualStyleBackColor = true
+        '
+        'lblDriveAvailableFreeSpace
+        '
+        Me.lblDriveAvailableFreeSpace.AutoSize = true
+        Me.lblDriveAvailableFreeSpace.Location = New System.Drawing.Point(101, 311)
+        Me.lblDriveAvailableFreeSpace.Name = "lblDriveAvailableFreeSpace"
+        Me.lblDriveAvailableFreeSpace.Size = New System.Drawing.Size(61, 13)
+        Me.lblDriveAvailableFreeSpace.TabIndex = 48
+        Me.lblDriveAvailableFreeSpace.Text = "Checking..."
+        '
+        'lblDriveTotalFreeSpace
+        '
+        Me.lblDriveTotalFreeSpace.AutoSize = true
+        Me.lblDriveTotalFreeSpace.Location = New System.Drawing.Point(101, 298)
+        Me.lblDriveTotalFreeSpace.Name = "lblDriveTotalFreeSpace"
+        Me.lblDriveTotalFreeSpace.Size = New System.Drawing.Size(61, 13)
+        Me.lblDriveTotalFreeSpace.TabIndex = 47
+        Me.lblDriveTotalFreeSpace.Text = "Checking..."
+        '
+        'lblDriveTotalSize
+        '
+        Me.lblDriveTotalSize.AutoSize = true
+        Me.lblDriveTotalSize.Location = New System.Drawing.Point(101, 285)
+        Me.lblDriveTotalSize.Name = "lblDriveTotalSize"
+        Me.lblDriveTotalSize.Size = New System.Drawing.Size(61, 13)
+        Me.lblDriveTotalSize.TabIndex = 46
+        Me.lblDriveTotalSize.Text = "Checking..."
+        '
+        'lblDriveFormat
+        '
+        Me.lblDriveFormat.AutoSize = true
+        Me.lblDriveFormat.Location = New System.Drawing.Point(101, 272)
+        Me.lblDriveFormat.Name = "lblDriveFormat"
+        Me.lblDriveFormat.Size = New System.Drawing.Size(61, 13)
+        Me.lblDriveFormat.TabIndex = 45
+        Me.lblDriveFormat.Text = "Checking..."
+        '
+        'lblDriveVolumeLabel
+        '
+        Me.lblDriveVolumeLabel.AutoSize = true
+        Me.lblDriveVolumeLabel.Location = New System.Drawing.Point(101, 259)
+        Me.lblDriveVolumeLabel.Name = "lblDriveVolumeLabel"
+        Me.lblDriveVolumeLabel.Size = New System.Drawing.Size(61, 13)
+        Me.lblDriveVolumeLabel.TabIndex = 44
+        Me.lblDriveVolumeLabel.Text = "Checking..."
+        '
+        'lblDriveType
+        '
+        Me.lblDriveType.AutoSize = true
+        Me.lblDriveType.Location = New System.Drawing.Point(101, 246)
+        Me.lblDriveType.Name = "lblDriveType"
+        Me.lblDriveType.Size = New System.Drawing.Size(61, 13)
+        Me.lblDriveType.TabIndex = 43
+        Me.lblDriveType.Text = "Checking..."
+        '
+        'lblDriveIsReady
+        '
+        Me.lblDriveIsReady.AutoSize = true
+        Me.lblDriveIsReady.Location = New System.Drawing.Point(101, 233)
+        Me.lblDriveIsReady.Name = "lblDriveIsReady"
+        Me.lblDriveIsReady.Size = New System.Drawing.Size(61, 13)
+        Me.lblDriveIsReady.TabIndex = 42
+        Me.lblDriveIsReady.Text = "Checking..."
+        '
+        'lblDriveAvailableFreeSpaceLbl
+        '
+        Me.lblDriveAvailableFreeSpaceLbl.AutoSize = true
+        Me.lblDriveAvailableFreeSpaceLbl.Location = New System.Drawing.Point(6, 311)
+        Me.lblDriveAvailableFreeSpaceLbl.Name = "lblDriveAvailableFreeSpaceLbl"
+        Me.lblDriveAvailableFreeSpaceLbl.Size = New System.Drawing.Size(87, 13)
+        Me.lblDriveAvailableFreeSpaceLbl.TabIndex = 41
+        Me.lblDriveAvailableFreeSpaceLbl.Text = "Available Space:"
+        '
+        'lblDriveTotalFreeSpaceLbl
+        '
+        Me.lblDriveTotalFreeSpaceLbl.AutoSize = true
+        Me.lblDriveTotalFreeSpaceLbl.Location = New System.Drawing.Point(6, 298)
+        Me.lblDriveTotalFreeSpaceLbl.Name = "lblDriveTotalFreeSpaceLbl"
+        Me.lblDriveTotalFreeSpaceLbl.Size = New System.Drawing.Size(65, 13)
+        Me.lblDriveTotalFreeSpaceLbl.TabIndex = 40
+        Me.lblDriveTotalFreeSpaceLbl.Text = "Free Space:"
+        '
+        'lblDriveTotalSizeLbl
+        '
+        Me.lblDriveTotalSizeLbl.AutoSize = true
+        Me.lblDriveTotalSizeLbl.Location = New System.Drawing.Point(6, 285)
+        Me.lblDriveTotalSizeLbl.Name = "lblDriveTotalSizeLbl"
+        Me.lblDriveTotalSizeLbl.Size = New System.Drawing.Size(97, 13)
+        Me.lblDriveTotalSizeLbl.TabIndex = 39
+        Me.lblDriveTotalSizeLbl.Text = "Total Size of Drive:"
+        '
+        'lblDriveFormatLbl
+        '
+        Me.lblDriveFormatLbl.AutoSize = true
+        Me.lblDriveFormatLbl.Location = New System.Drawing.Point(6, 272)
+        Me.lblDriveFormatLbl.Name = "lblDriveFormatLbl"
+        Me.lblDriveFormatLbl.Size = New System.Drawing.Size(80, 13)
+        Me.lblDriveFormatLbl.TabIndex = 38
+        Me.lblDriveFormatLbl.Text = "Volume Format:"
+        '
+        'lblDriveVolumeLabelLbl
+        '
+        Me.lblDriveVolumeLabelLbl.AutoSize = true
+        Me.lblDriveVolumeLabelLbl.Location = New System.Drawing.Point(6, 259)
+        Me.lblDriveVolumeLabelLbl.Name = "lblDriveVolumeLabelLbl"
+        Me.lblDriveVolumeLabelLbl.Size = New System.Drawing.Size(74, 13)
+        Me.lblDriveVolumeLabelLbl.TabIndex = 37
+        Me.lblDriveVolumeLabelLbl.Text = "Volume Label:"
+        '
+        'lblDriveTypeLbl
+        '
+        Me.lblDriveTypeLbl.AutoSize = true
+        Me.lblDriveTypeLbl.Location = New System.Drawing.Point(6, 246)
+        Me.lblDriveTypeLbl.Name = "lblDriveTypeLbl"
+        Me.lblDriveTypeLbl.Size = New System.Drawing.Size(62, 13)
+        Me.lblDriveTypeLbl.TabIndex = 36
+        Me.lblDriveTypeLbl.Text = "Drive Type:"
+        '
+        'lblDriveIsReadyLbl
+        '
+        Me.lblDriveIsReadyLbl.AutoSize = true
+        Me.lblDriveIsReadyLbl.Location = New System.Drawing.Point(6, 233)
+        Me.lblDriveIsReadyLbl.Name = "lblDriveIsReadyLbl"
+        Me.lblDriveIsReadyLbl.Size = New System.Drawing.Size(79, 13)
+        Me.lblDriveIsReadyLbl.TabIndex = 35
+        Me.lblDriveIsReadyLbl.Text = "Drive is Ready:"
+        '
         'btnWindowsProperties
         '
         Me.btnWindowsProperties.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
@@ -188,7 +366,7 @@ Partial Class PropertiesDotNet
         Me.cbxSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbxSize.FormattingEnabled = true
         Me.cbxSize.Items.AddRange(New Object() {"bytes (8 bits)", "kB  (Decimal - 1000)", "KiB (Binary - 1024)", "MB (Decimal - 1000)", "MiB (Binary - 1024)", "GB  (Decimal - 1000)", "GiB (Binary - 1024)", "TB  (Decimal - 1000)", "TiB (Binary - 1024)", "PB  (Decimal - 1000)", "PiB (Binary - 1024)", "(Click to read more)"})
-        Me.cbxSize.Location = New System.Drawing.Point(283, 120)
+        Me.cbxSize.Location = New System.Drawing.Point(282, 120)
         Me.cbxSize.Name = "cbxSize"
         Me.cbxSize.Size = New System.Drawing.Size(122, 21)
         Me.cbxSize.TabIndex = 20
@@ -285,7 +463,7 @@ Partial Class PropertiesDotNet
         '
         'btnHashes
         '
-        Me.btnHashes.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnHashes.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnHashes.Image = Global.PropertiesDotNet.My.Resources.Resources.hashx16
         Me.btnHashes.Location = New System.Drawing.Point(291, 204)
         Me.btnHashes.Name = "btnHashes"
@@ -509,7 +687,7 @@ Partial Class PropertiesDotNet
         '
         'grpAttributes
         '
-        Me.grpAttributes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+        Me.grpAttributes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.grpAttributes.Controls.Add(Me.btnTakeOwn)
         Me.grpAttributes.Controls.Add(Me.lnkAttributes)
@@ -671,7 +849,7 @@ Partial Class PropertiesDotNet
         '
         'grpFileLocation
         '
-        Me.grpFileLocation.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+        Me.grpFileLocation.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.grpFileLocation.Controls.Add(Me.btnClose)
         Me.grpFileLocation.Controls.Add(Me.btnMove)
@@ -779,6 +957,22 @@ Partial Class PropertiesDotNet
         Me.grpFileLocation.PerformLayout
         Me.ResumeLayout(false)
     End Sub
+    Private lblDriveTotalFreeSpace As System.Windows.Forms.Label
+    Private lblDriveIsReadyLbl As System.Windows.Forms.Label
+    Private lblDriveTypeLbl As System.Windows.Forms.Label
+    Private lblDriveVolumeLabelLbl As System.Windows.Forms.Label
+    Private lblDriveFormatLbl As System.Windows.Forms.Label
+    Private lblDriveTotalSizeLbl As System.Windows.Forms.Label
+    Private lblDriveTotalFreeSpaceLbl As System.Windows.Forms.Label
+    Private lblDriveAvailableFreeSpaceLbl As System.Windows.Forms.Label
+    Private lblDriveIsReady As System.Windows.Forms.Label
+    Private lblDriveType As System.Windows.Forms.Label
+    Private lblDriveVolumeLabel As System.Windows.Forms.Label
+    Private lblDriveFormat As System.Windows.Forms.Label
+    Private lblDriveTotalSize As System.Windows.Forms.Label
+    Private lblDriveAvailableFreeSpace As System.Windows.Forms.Label
+    Private WithEvents btnDriveVolumeLabel As System.Windows.Forms.Button
+    Private lblDriveAvailableFreeSpaceInfo As System.Windows.Forms.Label
     Private WithEvents btnTakeOwn As System.Windows.Forms.Button
     Private WithEvents timerDelayedBrowse As System.Windows.Forms.Timer
     Private chkUseSystem As System.Windows.Forms.CheckBox

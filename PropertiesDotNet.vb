@@ -144,6 +144,26 @@ Public Class PropertiesDotNet
             btnHashes.Text = "DirectoryImage..."
         End If
         
+        Dim DriveProperties As DriveInfo
+        Try
+            DriveProperties = New DriveInfo(lblLocation.Text)
+        Catch ' The above will fail on a network connection. silently fail so the drive info will be hidden
+            DriveProperties = New DriveInfo("C:\")
+        End Try
+        If DriveProperties.Name = FileProperties.FullName Then
+            Me.Height = 674
+            
+            lblDriveIsReady.Text = DriveProperties.IsReady
+            lblDriveType.Text = DriveProperties.DriveType
+            lblDriveVolumeLabel.Text = DriveProperties.VolumeLabel
+            lblDriveFormat.Text = DriveProperties.DriveFormat
+            lblDriveTotalSize.Text = DriveProperties.TotalSize
+            lblDriveTotalFreeSpace.Text = DriveProperties.TotalFreeSpace
+            lblDriveAvailableFreeSpace.Text = DriveProperties.AvailableFreeSpace
+        Else
+            Me.Height = 561
+        End If
+        
         If chkUTC.Checked Then
             lblCreationTime.Text = GetCreationTimeUtc(lblFullPath.Text)
             lblLastAccessTime.Text = GetLastAccessTimeUtc(lblFullPath.Text)
@@ -488,6 +508,18 @@ Public Class PropertiesDotNet
                 MsgBox("""" & Application.StartupPath & "\DirectoryImage"" executable not found!", MsgBoxStyle.Exclamation)
             End Try
         End If
+    End Sub
+    Sub btnDriveVolumeLabel_Click() Handles btnDriveVolumeLabel.Click
+        Dim DriveProperties As New DriveInfo(lblLocation.Text)
+        Dim newName = InputBox("Rename to:", "New volume name", DriveProperties.VolumeLabel)
+        If newName <> "" Then
+            Try
+                DriveProperties.VolumeLabel = newName
+            Catch ex As exception
+                ErrorParser(ex)
+            End Try
+        End If
+        CheckData
     End Sub
     Sub btnTakeOwn_Click() Handles btnTakeOwn.Click
         If Exists(lblFullPath.Text) Then
