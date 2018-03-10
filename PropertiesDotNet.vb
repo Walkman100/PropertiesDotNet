@@ -830,7 +830,7 @@ Public Class PropertiesDotNet
     Public Function CompressedFileSize(path As String) As Double
         Dim sizeMultiplier As IntPtr
         Dim filelength As Long = Convert.ToInt64(GetCompressedFileSize(path, sizeMultiplier))
-        If filelength = &HFFFFFFFF Then
+        If filelength = 4294967295 Then ' decimal representation of &HFFFFFFFF
             Dim Err As Long = Marshal.GetLastWin32Error()
             If Err <> 0 Then Throw New IOException("Exception getting compressed size: " & Err.ToString)
         End If
