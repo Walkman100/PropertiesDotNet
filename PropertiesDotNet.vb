@@ -5,6 +5,7 @@ Public Class PropertiesDotNet
     Private Declare Function FindExecutable Lib "shell32.dll" Alias "FindExecutableA"(lpFile As String, lpDirectory As String, lpResult As String) As Long
     Dim byteSize As ULong = 0
     Dim compressedSizeOrError As String = " "
+    Dim driveSizes(3) As ULong
     
     Sub PropertiesDotNet_Load() Handles Me.Load
         For Each s As String In My.Application.CommandLineArgs
@@ -168,8 +169,11 @@ Public Class PropertiesDotNet
             lblDriveVolumeLabel.Text = DriveProperties.VolumeLabel
             lblDriveFormat.Text = DriveProperties.DriveFormat
             lblDriveTotalSize.Text = DriveProperties.TotalSize
+            driveSizes(0) = DriveProperties.TotalSize
             lblDriveTotalFreeSpace.Text = DriveProperties.TotalFreeSpace
+            driveSizes(1) = DriveProperties.TotalFreeSpace
             lblDriveAvailableFreeSpace.Text = DriveProperties.AvailableFreeSpace
+            driveSizes(2) = DriveProperties.AvailableFreeSpace
             If DriveProperties.Name = FileProperties.FullName Then
                 Me.Height = 674
             Else
@@ -426,31 +430,64 @@ Public Class PropertiesDotNet
         End If
     End Sub
     Sub ApplySizeFormatting() Handles cbxSize.SelectedIndexChanged
+        Dim tmpCompressedSize As ULong = compressedSizeOrError Or 0
+        chkCompressed.Text = "Compressed (Size on disk: "
+        
+        lblSize.Text = FormatNumber(byteSize)
+        chkCompressed.Text &= FormatNumber(compressedSizeOrError) & ")"
+        
+        lblDriveTotalSize.Text = FormatNumber(driveSizes(0))
+        lblDriveTotalFreeSpace.Text = FormatNumber(driveSizes(1))
+        lblDriveAvailableFreeSpace.Text = FormatNumber(driveSizes(2))
+        
+        If IsNumeric(compressedSizeOrError) Then
+            If compressedSizeOrError = 0 Then
+                chkCompressed.Text = "Compressed"
+            ElseIf compressedSizeOrError = byteSize Then
+                chkCompressed.Text = "Compressed (Size on disk is either 0 or bigger than size)"
+            End If
+        Else
+            chkCompressed.Text = "Compressed (GetSizeError: " & compressedSizeOrError & ")"
+        End If
+    End Sub
+    Function FormatNumber(number As Decimal) As String
+        Dim postString As String = ""
         Select Case cbxSize.SelectedIndex
             Case 0 'bytes (8 bits)
-                lblSize.Text = byteSize
+                number = number
+                postString = " bytes"
             Case 1 'kB  (Decimal - 1000)
-                lblSize.Text = byteSize / 1000
+                number = number / 1000
+                postString = " kB"
             Case 2 'KiB (Binary - 1024)
-                lblSize.Text = byteSize / 1024
+                number = number / 1024
+                postString = " KiB"
             Case 3 'MB (Decimal - 1000)
-                lblSize.Text = byteSize / 1000^2
+                number = number / 1000^2
+                postString = " MB"
             Case 4 'MiB (Binary - 1024)
-                lblSize.Text = byteSize / 1024^2
+                number = number / 1024^2
+                postString = " MiB"
             Case 5 'GB  (Decimal - 1000)
-                lblSize.Text = byteSize / 1000^3
+                number = number / 1000^3
+                postString = " GB"
             Case 6 'GiB (Binary - 1024)
-                lblSize.Text = byteSize / 1024^3
+                number = number / 1024^3
+                postString = " GiB"
             Case 7 'TB  (Decimal - 1000)
-                lblSize.Text = byteSize / 1000^4
+                number = number / 1000^4
+                postString = " TB"
             Case 8 'TiB (Binary - 1024)
-                lblSize.Text = byteSize / 1024^4
+                number = number / 1024^4
+                postString = " TiB"
             Case 9 'PB  (Decimal - 1000)
-                lblSize.Text = byteSize / 1000^5
+                number = number / 1000^5
+                postString = " PB"
             Case 10 'PiB (Binary - 1024)
-                lblSize.Text = byteSize / 1024^5
+                number = number / 1024^5
+                postString = " PiB"
             Case 11 '(Click to read more)
-                lblSize.Text = byteSize
+                postString = " bytes"
                 Try
                     Process.Start("https://en.wikipedia.org/wiki/Byte#Unit_symbol")
                 Catch ex As Exception
@@ -458,44 +495,9 @@ Public Class PropertiesDotNet
                       Clipboard.SetText("https://en.wikipedia.org/wiki/Byte#Unit_symbol")
                 End Try
         End Select
-        ' format number here
-        
-        If IsNumeric(compressedSizeOrError) Then
-            If compressedSizeOrError = 0 Then
-                chkCompressed.Text = "Compressed"
-            ElseIf compressedSizeOrError = byteSize Then
-                chkCompressed.Text = "Compressed (Size on disk is either 0 or bigger than size)"
-            Else
-                chkCompressed.Text = "Compressed (Size on disk: "
-                Select Case cbxSize.SelectedIndex
-                    Case 0 'bytes (8 bits)
-                        chkCompressed.Text &= compressedSizeOrError & " bytes)"
-                    Case 1 'kB  (Decimal - 1000)
-                        chkCompressed.Text &= (compressedSizeOrError / 1000) & " kB)"
-                    Case 2 'KiB (Binary - 1024)
-                        chkCompressed.Text &= (compressedSizeOrError / 1024) & " KiB)"
-                    Case 3 'MB (Decimal - 1000)
-                        chkCompressed.Text &= (compressedSizeOrError / 1000^2) & " MB)"
-                    Case 4 'MiB (Binary - 1024)
-                        chkCompressed.Text &= (compressedSizeOrError / 1024^2) & " MiB)"
-                    Case 5 'GB  (Decimal - 1000)
-                        chkCompressed.Text &= (compressedSizeOrError / 1000^3) & " GB)"
-                    Case 6 'GiB (Binary - 1024)
-                        chkCompressed.Text &= (compressedSizeOrError / 1024^3) & " GiB)"
-                    Case 7 'TB  (Decimal - 1000)
-                        chkCompressed.Text &= (compressedSizeOrError / 1000^4) & " TB)"
-                    Case 8 'TiB (Binary - 1024)
-                        chkCompressed.Text &= (compressedSizeOrError / 1024^4) & " TiB)"
-                    Case 9 'PB  (Decimal - 1000)
-                        chkCompressed.Text &= (compressedSizeOrError / 1000^5) & " PB)"
-                    Case 10 'PiB (Binary - 1024)
-                        chkCompressed.Text &= (compressedSizeOrError / 1024^5) & " PiB)"
-                End Select
-            End If
-        Else
-            chkCompressed.Text = "Compressed (GetSizeError: " & compressedSizeOrError & ")"
-        End If
-    End Sub
+        Return number.ToString("#,##0.### ### ### ### ### ### ###").Trim & postString
+    End Function
+    
     Sub btnStartAssocProg_Click() Handles btnStartAssocProg.Click
         Process.Start(lblOpenWith.Text)
     End Sub

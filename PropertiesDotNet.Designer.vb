@@ -365,7 +365,7 @@ Partial Class PropertiesDotNet
         Me.cbxSize.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.cbxSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbxSize.FormattingEnabled = true
-        Me.cbxSize.Items.AddRange(New Object() {"bytes (8 bits)", "kB  (Decimal - 1000)", "KiB (Binary - 1024)", "MB (Decimal - 1000)", "MiB (Binary - 1024)", "GB  (Decimal - 1000)", "GiB (Binary - 1024)", "TB  (Decimal - 1000)", "TiB (Binary - 1024)", "PB  (Decimal - 1000)", "PiB (Binary - 1024)", "(Click to read more)"})
+        Me.cbxSize.Items.AddRange(New Object() {"bytes (8 bits)", "kB  (Decimal - 1000)", "KiB (Binary    - 1024)", "MB (Decimal - 1000)", "MiB (Binary    - 1024)", "GB  (Decimal - 1000)", "GiB (Binary    - 1024)", "TB  (Decimal - 1000)", "TiB (Binary    - 1024)", "PB  (Decimal - 1000)", "PiB (Binary    - 1024)", "(Click to read more)"})
         Me.cbxSize.Location = New System.Drawing.Point(282, 120)
         Me.cbxSize.Name = "cbxSize"
         Me.cbxSize.Size = New System.Drawing.Size(122, 21)
