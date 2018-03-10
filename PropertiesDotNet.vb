@@ -144,15 +144,8 @@ Public Class PropertiesDotNet
             btnHashes.Text = "DirectoryImage..."
         End If
         
-        Dim DriveProperties As DriveInfo
         Try
-            DriveProperties = New DriveInfo(lblLocation.Text)
-        Catch ' The above will fail on a network connection. silently fail so the drive info will be hidden
-            DriveProperties = New DriveInfo("C:\")
-        End Try
-        If DriveProperties.Name = FileProperties.FullName Then
-            Me.Height = 674
-            
+            Dim DriveProperties As New DriveInfo(lblLocation.Text)
             lblDriveIsReady.Text = DriveProperties.IsReady
             Select Case DriveProperties.DriveType
                 Case DriveType.Unknown
@@ -177,9 +170,14 @@ Public Class PropertiesDotNet
             lblDriveTotalSize.Text = DriveProperties.TotalSize
             lblDriveTotalFreeSpace.Text = DriveProperties.TotalFreeSpace
             lblDriveAvailableFreeSpace.Text = DriveProperties.AvailableFreeSpace
-        Else
+            If DriveProperties.Name = FileProperties.FullName Then
+                Me.Height = 674
+            Else
+                Me.Height = 561
+            End If
+        Catch
             Me.Height = 561
-        End If
+        End Try
         
         If chkUTC.Checked Then
             lblCreationTime.Text = GetCreationTimeUtc(lblFullPath.Text)
