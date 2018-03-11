@@ -133,6 +133,7 @@ Public Class PropertiesDotNet
         
         If Exists(lblFullPath.Text) Then
             byteSize = FileProperties.Length
+            lblSize.Text = byteSize ' clear any folder errors
             AutoDetectSize
             ApplySizeFormatting
             
@@ -166,8 +167,12 @@ Public Class PropertiesDotNet
             btnHashes.Image = My.Resources.Resources.hashx16
             btnHashes.Text = "Compute Hashes"
         ElseIf Directory.Exists(lblFullPath.Text)
-            If bwCalcSize.IsBusy = False And recalculateFolderSize = True Then
-                bwCalcSize.RunWorkerAsync()
+            If bwCalcSize.IsBusy = False Then
+                If recalculateFolderSize = True Then
+                    bwCalcSize.RunWorkerAsync()
+                Else
+                    ApplySizeFormatting
+                End If
             End If
             imgFile.ImageLocation = GetFolderIconPath(lblFullPath.Text)
             
@@ -430,25 +435,26 @@ Public Class PropertiesDotNet
         End If
     End Sub
     Sub ApplySizeFormatting() Handles cbxSize.SelectedIndexChanged
-        Dim tmpCompressedSize As ULong = compressedSizeOrError Or 0
-        chkCompressed.Text = "Compressed (Size on disk: "
-        
-        lblSize.Text = FormatNumber(byteSize)
-        chkCompressed.Text &= FormatNumber(compressedSizeOrError) & ")"
-        
-        lblDriveTotalSize.Text = FormatNumber(driveSizes(0))
-        lblDriveTotalFreeSpace.Text = FormatNumber(driveSizes(1))
-        lblDriveAvailableFreeSpace.Text = FormatNumber(driveSizes(2))
+        If Not lblSize.Text.Contains("Error:") And lblSize.Text <> "Getting file list... (May take a while)" Then
+            lblSize.Text = FormatNumber(byteSize)
+        End If
         
         If IsNumeric(compressedSizeOrError) Then
             If compressedSizeOrError = 0 Then
                 chkCompressed.Text = "Compressed"
             ElseIf compressedSizeOrError = byteSize Then
                 chkCompressed.Text = "Compressed (Size on disk is either 0 or bigger than size)"
+            Else
+                chkCompressed.Text = "Compressed (Size on disk: "
+                chkCompressed.Text &= FormatNumber(compressedSizeOrError) & ")"
             End If
         Else
             chkCompressed.Text = "Compressed (GetSizeError: " & compressedSizeOrError & ")"
         End If
+        
+        lblDriveTotalSize.Text = FormatNumber(driveSizes(0))
+        lblDriveTotalFreeSpace.Text = FormatNumber(driveSizes(1))
+        lblDriveAvailableFreeSpace.Text = FormatNumber(driveSizes(2))
     End Sub
     Function FormatNumber(number As Decimal) As String
         Dim postString As String = ""
@@ -824,7 +830,6 @@ Public Class PropertiesDotNet
     
     Sub bwCalcSize_DoWork() Handles bwCalcSize.DoWork
         Try
-            cbxSize.Enabled = False
             Dim DirectoryProperties As New DirectoryInfo(lblFullPath.Text)
             
             lblSize.Text = "Getting file list... (May take a while)"
@@ -838,14 +843,13 @@ Public Class PropertiesDotNet
             Next
             
             lblOpenWith.Text = SubFiles.Count
-            cbxSize.Enabled = True
             AutoDetectSize
-            ApplySizeFormatting
         Catch ex As Exception
             lblSize.Text = "Error: " & ex.Message
             lblOpenWith.Text = "?"
             ErrorParser(ex)
         End Try
+        ApplySizeFormatting
     End Sub
     
     ''' <summary>Sets the specified System.IO.FileAttributes of the file on the specified path, with a try..catch block.</summary>
