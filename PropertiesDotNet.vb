@@ -43,8 +43,16 @@ Public Class PropertiesDotNet
         If Exists(lblLocation.Text) Or Directory.Exists(lblLocation.Text) Then
             CheckData(True)
         Else
-            MsgBox("File or directory """ & lblLocation.Text & """ not found!", MsgBoxStyle.Critical)
-            Application.Exit
+            Try
+                If New DriveInfo(lblLocation.Text).Name = New FileInfo(lblLocation.Text).FullName Then
+                    CheckData(True)
+                Else
+                    Throw New Exception
+                End If
+            Catch
+                MsgBox("File or directory """ & lblLocation.Text & """ not found!", MsgBoxStyle.Critical)
+                Application.Exit
+            End Try
         End If
     End Sub
     
@@ -114,14 +122,22 @@ Public Class PropertiesDotNet
                 Case Else
                     lblDriveType.Text = DriveProperties.DriveType
             End Select
-            lblDriveVolumeLabel.Text = DriveProperties.VolumeLabel
-            lblDriveFormat.Text = DriveProperties.DriveFormat
-            lblDriveTotalSize.Text = DriveProperties.TotalSize
-            driveSizes(0) = DriveProperties.TotalSize
-            lblDriveTotalFreeSpace.Text = DriveProperties.TotalFreeSpace
-            driveSizes(1) = DriveProperties.TotalFreeSpace
-            lblDriveAvailableFreeSpace.Text = DriveProperties.AvailableFreeSpace
-            driveSizes(2) = DriveProperties.AvailableFreeSpace
+            If DriveProperties.IsReady Then
+                lblDriveVolumeLabel.Text = DriveProperties.VolumeLabel
+                lblDriveFormat.Text = DriveProperties.DriveFormat
+                lblDriveTotalSize.Text = DriveProperties.TotalSize
+                driveSizes(0) = DriveProperties.TotalSize
+                lblDriveTotalFreeSpace.Text = DriveProperties.TotalFreeSpace
+                driveSizes(1) = DriveProperties.TotalFreeSpace
+                lblDriveAvailableFreeSpace.Text = DriveProperties.AvailableFreeSpace
+                driveSizes(2) = DriveProperties.AvailableFreeSpace
+            Else
+                lblDriveVolumeLabel.Text = "Not Ready"
+                lblDriveFormat.Text = "Not Ready"
+                lblDriveTotalSize.Text = "Not Ready"
+                lblDriveTotalFreeSpace.Text = "Not Ready"
+                lblDriveAvailableFreeSpace.Text = "Not Ready"
+            End If
             If DriveProperties.Name = FileProperties.FullName Then
                 Me.Height = 674
             Else
@@ -199,19 +215,22 @@ Public Class PropertiesDotNet
         End If
         
         'Attributes:
-        chkReadOnly.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.ReadOnly)
-        chkHidden.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Hidden)
-        chkCompressed.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed)
-        chkEncrypted.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted)
-        chkSystem.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.System)
-        chkArchive.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Archive)
-        chkTemporary.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Temporary)
-        chkIntegrity.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.IntegrityStream)
-        chkNoScrub.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.NoScrubData)
-        chkNotIndexed.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.NotContentIndexed)
-        chkOffline.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Offline)
-        chkReparse.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.ReparsePoint)
-        chkSparse.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.SparseFile)
+        Try
+            chkReadOnly.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.ReadOnly)
+            chkHidden.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Hidden)
+            chkCompressed.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed)
+            chkEncrypted.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted)
+            chkSystem.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.System)
+            chkArchive.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Archive)
+            chkTemporary.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Temporary)
+            chkIntegrity.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.IntegrityStream)
+            chkNoScrub.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.NoScrubData)
+            chkNotIndexed.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.NotContentIndexed)
+            chkOffline.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Offline)
+            chkReparse.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.ReparsePoint)
+            chkSparse.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.SparseFile)
+        Catch
+        End Try
     End Sub
     
     ''' <summary>Gets the path to the folder icon</summary>
