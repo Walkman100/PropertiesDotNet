@@ -832,17 +832,18 @@ Public Class PropertiesDotNet
         Try
             Dim DirectoryProperties As New DirectoryInfo(lblFullPath.Text)
             
+            lblOpenWith.Text = "Checking..."
             lblSize.Text = "Getting file list... (May take a while)"
             Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
             
-            lblOpenWith.Text = SubFiles.Count
+            lblOpenWith.Text = SubFiles.Count.ToString("N0")
             byteSize = 0
             For Each SubFile As FileInfo In SubFiles
                 byteSize += SubFile.Length
                 lblSize.Text = byteSize
             Next
             
-            lblOpenWith.Text = SubFiles.Count
+            lblOpenWith.Text = SubFiles.Count.ToString("N0")
             AutoDetectSize
         Catch ex As Exception
             lblSize.Text = "Error: " & ex.Message
