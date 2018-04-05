@@ -10,11 +10,16 @@ A properties window made in VB.Net
 [![Folder copying window][Copying]][Copying]
 [![File compress dialog][Compress]][Compress]
 
-  [MainWindow]: http://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/MainWindow.png
-  [Hashes]: http://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/Hashes.png
-  [Deletion]: http://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/Deletion.png
-  [Copying]: http://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/Copying.png
-  [Compress]: http://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/Compress.png
+  [MainWindow]: https://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/MainWindow.png
+  [Hashes]: https://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/Hashes.png
+  [Deletion]: https://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/Deletion.png
+  [Copying]: https://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/Copying.png
+  [Compress]: https://walkman100.github.io/images/Screenshots/My_Projects/PropertiesDotNet/Compress.png
+
+## Download
+Get the latest version [here](https://github.com/Walkman100/PropertiesDotNet/releases), and the latest build from commit
+[here](https://ci.appveyor.com/project/Walkman100/PropertiesDotNet/build/artifacts)
+(note that these builds are built for the Debug config and so are not optimised)
 
 ## Credits/Acknowledgements
 ### Icons
@@ -100,4 +105,4 @@ End Namespace
 ```
 
 ## Compile requirements
-See [CompileInstructions.md](https://github.com/Walkman100/WinCompile/blob/master/CompileInstructions.md)
+See [CompileInstructions.md](https://github.com/Walkman100/gists/blob/master/CompileInstructions.md)
