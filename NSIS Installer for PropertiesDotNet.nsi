@@ -2,21 +2,22 @@
 ; get NSIS at http://nsis.sourceforge.net/Download
 ; As a program that all Power PC users should have, Notepad++ is recommended to edit this file
 
+!define ProgramName "PropertiesDotNet"
 Icon "My Project\document-properties.ico"
-Caption "PropertiesDotNet Installer"
-Name "PropertiesDotNet"
+
+Name "${ProgramName}"
+Caption "${ProgramName} Installer"
 XPStyle on
-AutoCloseWindow true
 ShowInstDetails show
+AutoCloseWindow true
 
 LicenseBkColor /windows
 LicenseData "LICENSE.md"
 LicenseForceSelection checkbox "I have read and understand this notice"
-LicenseText "Please read the notice below before installing PropertiesDotNet. If you understand the notice, click the checkbox below and click Next."
+LicenseText "Please read the notice below before installing ${ProgramName}. If you understand the notice, click the checkbox below and click Next."
 
 InstallDir $PROGRAMFILES\WalkmanOSS
-
-OutFile "bin\Release\PropertiesDotNet-Installer.exe"
+OutFile "bin\Release\${ProgramName}-Installer.exe"
 
 ; Pages
 
@@ -24,6 +25,7 @@ Page license
 Page components
 Page directory
 Page instfiles
+Page custom postInstallShow postInstallFinish ": Install Complete"
 UninstPage uninstConfirm
 UninstPage instfiles
 
@@ -32,94 +34,132 @@ UninstPage instfiles
 Section "Executable & Uninstaller"
   SectionIn RO
   SetOutPath $INSTDIR
-  File "bin\Release\PropertiesDotNet.exe"
-  WriteUninstaller "PropertiesDotNet-Uninst.exe"
+  File "bin\Release\${ProgramName}.exe"
+  WriteUninstaller "${ProgramName}-Uninst.exe"
 SectionEnd
 
 Section "Start Menu Shortcuts"
   CreateDirectory "$SMPROGRAMS\WalkmanOSS"
-  CreateShortCut "$SMPROGRAMS\WalkmanOSS\PropertiesDotNet.lnk" "$INSTDIR\PropertiesDotNet.exe" "" "$INSTDIR\PropertiesDotNet.exe" "" "" "" "PropertiesDotNet"
-  CreateShortCut "$SMPROGRAMS\WalkmanOSS\Uninstall PropertiesDotNet.lnk" "$INSTDIR\PropertiesDotNet-Uninst.exe" "" "" "" "" "" "Uninstall PropertiesDotNet"
+  CreateShortCut "$SMPROGRAMS\WalkmanOSS\${ProgramName}.lnk" "$INSTDIR\${ProgramName}.exe" "" "$INSTDIR\${ProgramName}.exe" "" "" "" "${ProgramName}"
+  CreateShortCut "$SMPROGRAMS\WalkmanOSS\Uninstall ${ProgramName}.lnk" "$INSTDIR\${ProgramName}-Uninst.exe" "" "" "" "" "" "Uninstall ${ProgramName}"
   ;Syntax for CreateShortCut: link.lnk target.file [parameters [icon.file [icon_index_number [start_options [keyboard_shortcut [description]]]]]]
 SectionEnd
 
 Section "Desktop Shortcut"
-  CreateShortCut "$DESKTOP\PropertiesDotNet.lnk" "$INSTDIR\PropertiesDotNet.exe" "" "$INSTDIR\PropertiesDotNet.exe" "" "" "" "PropertiesDotNet"
+  CreateShortCut "$DESKTOP\${ProgramName}.lnk" "$INSTDIR\${ProgramName}.exe" "" "$INSTDIR\${ProgramName}.exe" "" "" "" "${ProgramName}"
 SectionEnd
 
 Section "Quick Launch Shortcut"
-  CreateShortCut "$QUICKLAUNCH\PropertiesDotNet.lnk" "$INSTDIR\PropertiesDotNet.exe" "" "$INSTDIR\PropertiesDotNet.exe" "" "" "" "PropertiesDotNet"
+  CreateShortCut "$QUICKLAUNCH\${ProgramName}.lnk" "$INSTDIR\${ProgramName}.exe" "" "$INSTDIR\${ProgramName}.exe" "" "" "" "${ProgramName}"
 SectionEnd
 
 SubSection "Context menu entry"
   Section "Add to context menu for all files"
-    WriteRegStr HKCR "*\shell\PropertiesDotNet" "" "Properties..."
-    WriteRegStr HKCR "*\shell\PropertiesDotNet" "Icon" "$INSTDIR\PropertiesDotNet.exe"
-      WriteRegStr HKCR "*\shell\PropertiesDotNet\command" "" "$\"$INSTDIR\PropertiesDotNet.exe$\" $\"%1$\""
+    WriteRegStr HKCR "*\shell\${ProgramName}" "" "Properties..."
+    WriteRegStr HKCR "*\shell\${ProgramName}" "Icon" "$INSTDIR\${ProgramName}.exe"
+      WriteRegStr HKCR "*\shell\${ProgramName}\command" "" "$\"$INSTDIR\${ProgramName}.exe$\" $\"%1$\""
   SectionEnd
   Section "Add to context menu for .url files"
-    WriteRegStr HKCR "IE.AssocFile.URL\shell\PropertiesDotNet" "" "Properties..."
-    WriteRegStr HKCR "IE.AssocFile.URL\shell\PropertiesDotNet" "Icon" "$INSTDIR\PropertiesDotNet.exe"
-      WriteRegStr HKCR "IE.AssocFile.URL\shell\PropertiesDotNet\command" "" "$\"$INSTDIR\PropertiesDotNet.exe$\" $\"%1$\""
+    WriteRegStr HKCR "IE.AssocFile.URL\shell\${ProgramName}" "" "Properties..."
+    WriteRegStr HKCR "IE.AssocFile.URL\shell\${ProgramName}" "Icon" "$INSTDIR\${ProgramName}.exe"
+      WriteRegStr HKCR "IE.AssocFile.URL\shell\${ProgramName}\command" "" "$\"$INSTDIR\${ProgramName}.exe$\" $\"%1$\""
   SectionEnd
   Section "Add to context menu for folders"
-    DeleteRegKey HKCR "Directory\shell\PropertiesDotNet" ; Remove old context menu item, 'Folder' also covers drives
-    WriteRegStr HKCR "Folder\shell\PropertiesDotNet" "" "Properties..."
-    WriteRegStr HKCR "Folder\shell\PropertiesDotNet" "Icon" "$INSTDIR\PropertiesDotNet.exe"
-      WriteRegStr HKCR "Folder\shell\PropertiesDotNet\command" "" "$\"$INSTDIR\PropertiesDotNet.exe$\" $\"%1$\""
+    DeleteRegKey HKCR "Directory\shell\${ProgramName}" ; Remove old context menu item, 'Folder' also covers drives
+    WriteRegStr HKCR "Folder\shell\${ProgramName}" "" "Properties..."
+    WriteRegStr HKCR "Folder\shell\${ProgramName}" "Icon" "$INSTDIR\${ProgramName}.exe"
+      WriteRegStr HKCR "Folder\shell\${ProgramName}\command" "" "$\"$INSTDIR\${ProgramName}.exe$\" $\"%1$\""
   SectionEnd
 SubSectionEnd
 
 ; Functions
 
 Function .onInit
-  MessageBox MB_YESNO "This will install PropertiesDotNet. Do you wish to continue?" IDYES gogogo
-    Abort
-  gogogo:
   SetShellVarContext all
   SetAutoClose true
 FunctionEnd
 
-Function .onInstSuccess
-    MessageBox MB_YESNO "Install Succeeded! Open ReadMe?" IDNO NoReadme
-      ExecShell "open" "https://github.com/Walkman100/PropertiesDotNet/blob/master/README.md#propertiesdotnet-"
-    NoReadme:
+; Custom Install Complete page
+
+!include nsDialogs.nsh
+!include LogicLib.nsh ; For ${IF} logic
+Var Dialog
+Var Label
+Var CheckboxReadme
+Var CheckboxReadme_State
+Var CheckboxRunProgram
+Var CheckboxRunProgram_State
+
+Function postInstallShow
+  nsDialogs::Create 1018
+  Pop $Dialog
+  ${If} $Dialog == error
+    Abort
+  ${EndIf}
+  
+  ${NSD_CreateLabel} 0 0 100% 12u "Setup will launch these tasks when you click close:"
+  Pop $Label
+  
+  ${NSD_CreateCheckbox} 10u 30u 100% 10u "&Open Readme"
+  Pop $CheckboxReadme
+  ${If} $CheckboxReadme_State == ${BST_CHECKED}
+    ${NSD_Check} $CheckboxReadme
+  ${EndIf}
+  
+  ${NSD_CreateCheckbox} 10u 50u 100% 10u "&Launch ${ProgramName}"
+  Pop $CheckboxRunProgram
+  ${If} $CheckboxRunProgram_State == ${BST_CHECKED}
+    ${NSD_Check} $CheckboxRunProgram
+  ${EndIf}
+  
+  # alternative for the above ${If}:
+  #${NSD_SetState} $Checkbox_State
+  nsDialogs::Show
+FunctionEnd
+
+Function postInstallFinish
+  ${NSD_GetState} $CheckboxReadme $CheckboxReadme_State
+  ${NSD_GetState} $CheckboxRunProgram $CheckboxRunProgram_State
+  
+  ${If} $CheckboxReadme_State == ${BST_CHECKED}
+    ExecShell "open" "https://github.com/Walkman100/${ProgramName}/blob/master/README.md#propertiesdotnet-"
+  ${EndIf}
+  ${If} $CheckboxRunProgram_State == ${BST_CHECKED}
+    ExecShell "open" "$INSTDIR\${ProgramName}.exe"
+  ${EndIf}
 FunctionEnd
 
 ; Uninstaller
 
 Section "Uninstall"
-  Delete "$INSTDIR\PropertiesDotNet-Uninst.exe" ; Remove Application Files
-  Delete "$INSTDIR\PropertiesDotNet.exe"
+  Delete "$INSTDIR\${ProgramName}-Uninst.exe" ; Remove Application Files
+  Delete "$INSTDIR\${ProgramName}.exe"
   RMDir "$INSTDIR"
   
-  Delete "$SMPROGRAMS\WalkmanOSS\PropertiesDotNet.lnk" ; Remove Start Menu Shortcuts & Folder
-  Delete "$SMPROGRAMS\WalkmanOSS\Uninstall PropertiesDotNet.lnk"
+  Delete "$SMPROGRAMS\WalkmanOSS\${ProgramName}.lnk" ; Remove Start Menu Shortcuts & Folder
+  Delete "$SMPROGRAMS\WalkmanOSS\Uninstall ${ProgramName}.lnk"
   RMDir "$SMPROGRAMS\WalkmanOSS"
   
-  Delete "$DESKTOP\PropertiesDotNet.lnk"     ; Remove Desktop      Shortcut
-  Delete "$QUICKLAUNCH\PropertiesDotNet.lnk" ; Remove Quick Launch Shortcut
+  Delete "$DESKTOP\${ProgramName}.lnk"     ; Remove Desktop      Shortcut
+  Delete "$QUICKLAUNCH\${ProgramName}.lnk" ; Remove Quick Launch Shortcut
   
-  DeleteRegKey HKCR "*\shell\PropertiesDotNet"         ; Remove files  context menu item
-  DeleteRegKey HKCR "IE.AssocFile.URL\shell\PropertiesDotNet"
-  DeleteRegKey HKCR "Directory\shell\PropertiesDotNet" ; Remove old folder context menu item
-  DeleteRegKey HKCR "Folder\shell\PropertiesDotNet"    ; Remove current folder context menu item
+  DeleteRegKey HKCR "*\shell\${ProgramName}"         ; Remove files  context menu item
+  DeleteRegKey HKCR "IE.AssocFile.URL\shell\${ProgramName}"
+  DeleteRegKey HKCR "Directory\shell\${ProgramName}" ; Remove old folder context menu item
+  DeleteRegKey HKCR "Folder\shell\${ProgramName}"    ; Remove current folder context menu item
 SectionEnd
 
 ; Uninstaller Functions
 
 Function un.onInit
-    MessageBox MB_YESNO "This will uninstall PropertiesDotNet. Continue?" IDYES NoAbort
-      Abort ; causes uninstaller to quit.
-    NoAbort:
-    SetShellVarContext all
-    SetAutoClose true
+  SetShellVarContext all
+  SetAutoClose true
 FunctionEnd
 
 Function un.onUninstFailed
-    MessageBox MB_OK "Uninstall Cancelled"
+  MessageBox MB_OK "Uninstall Cancelled"
 FunctionEnd
 
 Function un.onUninstSuccess
-    MessageBox MB_OK "Uninstall Completed"
+  MessageBox MB_OK "Uninstall Completed"
 FunctionEnd
