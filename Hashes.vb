@@ -254,9 +254,7 @@ Public Class Hashes
         Me.Controls.Add(Me.btnAllCalculate)
         Me.Controls.Add(Me.grpSHA1)
         Me.Controls.Add(Me.grpMD5)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = My.Resources.Resources.hashx64
-        Me.MaximizeBox = false
         Me.Name = "Hashes"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
         Me.Location = New System.Drawing.Size((My.Computer.Screen.WorkingArea.Width/2) - 257.5, (My.Computer.Screen.WorkingArea.Height/2) - 146.5)
