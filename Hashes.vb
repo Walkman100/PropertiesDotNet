@@ -258,7 +258,7 @@ Public Class Hashes
         Me.Name = "Hashes"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
         Me.Location = New System.Drawing.Size((My.Computer.Screen.WorkingArea.Width/2) - 257.5, (My.Computer.Screen.WorkingArea.Height/2) - 146.5)
-        Me.Text = "Generate Hashes"
+        Me.Text = "Generate Hashes: <filename>"
         Me.grpMD5.ResumeLayout(false)
         Me.grpMD5.PerformLayout
         Me.grpSHA1.ResumeLayout(false)
@@ -296,9 +296,7 @@ Public Class Hashes
     
     Dim hashQueue As String
     
-    ''' <summary>
-    ''' Removes a hash type string from the queue. WARNING: cannot remove the first hash in queue - but that is currently being hashed anyway.
-    ''' </summary>
+    ''' <summary>Removes a hash type string from the queue. WARNING: cannot remove the first hash in queue - but that is currently being hashed anyway.</summary>
     ''' <param name="type">The hash type to remove</param>
     Sub ClearHashFromQueue(type As String) ' given queue of `MD5 SHA1` and argument of `SHA1` will result in `MD5` - this is _
         If hashQueue.Contains(type) Then   ' to remove the space \/

@@ -542,6 +542,7 @@ Public Class PropertiesDotNet
     Sub btnHashes_Click() Handles btnHashes.Click
         If btnHashes.Text = "Compute Hashes" Then
             Hashes.Show
+            Hashes.Text = "Generate Hashes: " & lblName.Text
             Hashes.Activate
         ElseIf btnHashes.Text = "DirectoryImage..."
             Try
