@@ -141,10 +141,10 @@ Public Class PropertiesDotNet
             If DriveProperties.Name = FileProperties.FullName Then
                 Me.Height = 674
             Else
-                Me.Height = 561
+                Me.Height = 559
             End If
         Catch
-            Me.Height = 561
+            Me.Height = 559
         End Try
         
         If Exists(lblFullPath.Text) Then
@@ -533,36 +533,42 @@ Public Class PropertiesDotNet
     Sub lblCreationTime_DoubleClick(sender As Object, e As EventArgs) Handles lblCreationTime.DoubleClick
         If chkUTC.Checked Then
             SelectDateDialog.dateTimePicker.Value = GetCreationTimeUtc(lblFullPath.Text)
-            SelectDateDialog.ShowDialog()
-            SetCreationTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+            If SelectDateDialog.ShowDialog() = DialogResult.OK Then
+                SetCreationTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+            End If
         Else
             SelectDateDialog.dateTimePicker.Value = GetCreationTime(lblFullPath.Text)
-            SelectDateDialog.ShowDialog()
-            SetCreationTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+            If SelectDateDialog.ShowDialog() = DialogResult.OK Then
+                SetCreationTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+            End If
         End If
         CheckData
     End Sub
     Sub lblLastAccessTime_DoubleClick(sender As Object, e As EventArgs) Handles lblLastAccessTime.DoubleClick
         If chkUTC.Checked Then
             SelectDateDialog.dateTimePicker.Value = GetLastAccessTimeUtc(lblFullPath.Text)
-            SelectDateDialog.ShowDialog()
-            SetLastAccessTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+            If SelectDateDialog.ShowDialog() = DialogResult.OK Then
+                SetLastAccessTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+            End If
         Else
             SelectDateDialog.dateTimePicker.Value = GetLastAccessTime(lblFullPath.Text)
-            SelectDateDialog.ShowDialog()
-            SetLastAccessTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+            If SelectDateDialog.ShowDialog() = DialogResult.OK Then
+                SetLastAccessTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+            End If
         End If
         CheckData
     End Sub
     Sub lblLastWriteTime_DoubleClick(sender As Object, e As EventArgs) Handles lblLastWriteTime.DoubleClick
         If chkUTC.Checked Then
             SelectDateDialog.dateTimePicker.Value = GetLastWriteTimeUtc(lblFullPath.Text)
-            SelectDateDialog.ShowDialog()
-            SetLastWriteTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+            If SelectDateDialog.ShowDialog() = DialogResult.OK Then
+                SetLastWriteTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+            End If
         Else
             SelectDateDialog.dateTimePicker.Value = GetLastWriteTime(lblFullPath.Text)
-            SelectDateDialog.ShowDialog()
-            SetLastWriteTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+            If SelectDateDialog.ShowDialog() = DialogResult.OK Then
+                SetLastWriteTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+            End If
         End If
         CheckData
     End Sub
