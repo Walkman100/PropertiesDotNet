@@ -79,6 +79,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SelectDateDialog.vb" />
     <Compile Include="Windows7ProgressBar.vb" />
   </ItemGroup>
   <ItemGroup>

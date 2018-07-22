@@ -529,6 +529,44 @@ Public Class PropertiesDotNet
     Sub btnStartAssocProgAdmin_Click() Handles btnStartAssocProgAdmin.Click
         RunAsAdmin(lblOpenWith.Text)
     End Sub
+    
+    Sub lblCreationTime_DoubleClick(sender As Object, e As EventArgs) Handles lblCreationTime.DoubleClick
+        If chkUTC.Checked Then
+            SelectDateDialog.dateTimePicker.Value = GetCreationTimeUtc(lblFullPath.Text)
+            SelectDateDialog.ShowDialog()
+            SetCreationTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+        Else
+            SelectDateDialog.dateTimePicker.Value = GetCreationTime(lblFullPath.Text)
+            SelectDateDialog.ShowDialog()
+            SetCreationTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+        End If
+        CheckData
+    End Sub
+    Sub lblLastAccessTime_DoubleClick(sender As Object, e As EventArgs) Handles lblLastAccessTime.DoubleClick
+        If chkUTC.Checked Then
+            SelectDateDialog.dateTimePicker.Value = GetLastAccessTimeUtc(lblFullPath.Text)
+            SelectDateDialog.ShowDialog()
+            SetLastAccessTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+        Else
+            SelectDateDialog.dateTimePicker.Value = GetLastAccessTime(lblFullPath.Text)
+            SelectDateDialog.ShowDialog()
+            SetLastAccessTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+        End If
+        CheckData
+    End Sub
+    Sub lblLastWriteTime_DoubleClick(sender As Object, e As EventArgs) Handles lblLastWriteTime.DoubleClick
+        If chkUTC.Checked Then
+            SelectDateDialog.dateTimePicker.Value = GetLastWriteTimeUtc(lblFullPath.Text)
+            SelectDateDialog.ShowDialog()
+            SetLastWriteTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+        Else
+            SelectDateDialog.dateTimePicker.Value = GetLastWriteTime(lblFullPath.Text)
+            SelectDateDialog.ShowDialog()
+            SetLastWriteTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+        End If
+        CheckData
+    End Sub
+    
     Sub btnWindowsProperties_Click() Handles btnWindowsProperties.Click
         Dim info As New ShellExecuteInfo
         info.cbSize = Marshal.SizeOf(info)

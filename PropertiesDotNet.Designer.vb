@@ -1017,16 +1017,16 @@ Partial Class PropertiesDotNet
     Private WithEvents chkSparse As System.Windows.Forms.CheckBox
     Private lblSizeLbl As System.Windows.Forms.Label
     Private lblSize As System.Windows.Forms.Label
-    Private lblLastWriteTime As System.Windows.Forms.Label
+    Private WithEvents lblLastWriteTime As System.Windows.Forms.Label
     Private WithEvents chkUTC As System.Windows.Forms.CheckBox
     Private lblName As System.Windows.Forms.Label
     Private lblExtension As System.Windows.Forms.Label
     Private lblDirectory As System.Windows.Forms.Label
     Private lblFullPath As System.Windows.Forms.Label
     Private lblCreationTimeLbl As System.Windows.Forms.Label
-    Private lblCreationTime As System.Windows.Forms.Label
+    Private WithEvents lblCreationTime As System.Windows.Forms.Label
     Private lblLastAccessTimeLbl As System.Windows.Forms.Label
-    Private lblLastAccessTime As System.Windows.Forms.Label
+    Private WithEvents lblLastAccessTime As System.Windows.Forms.Label
     Private lblLastWriteTimeLbl As System.Windows.Forms.Label
     Private lblExtensionLbl As System.Windows.Forms.Label
     Private lblDirectoryLbl As System.Windows.Forms.Label
