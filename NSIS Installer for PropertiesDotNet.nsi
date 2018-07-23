@@ -35,6 +35,7 @@ Section "Executable & Uninstaller"
   SectionIn RO
   SetOutPath $INSTDIR
   File "bin\Release\${ProgramName}.exe"
+  File "bin\Release\${ProgramName}.exe.config"
   WriteUninstaller "${ProgramName}-Uninst.exe"
 SectionEnd
 

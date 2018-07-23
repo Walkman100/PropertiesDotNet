@@ -518,13 +518,20 @@ Public Class Hashes
             totalBytesRead = bytesRead
             
             HashGeneratorOutput("Generating hash byte array...")
+            Dim lastProgressPercent As Integer = 0
+            Dim currentProgressPercent As Integer
             Do While bytesRead <> 0
-                hashObject.TransformBlock(Buffer, 0, BytesRead, Buffer, 0)
+                hashObject.TransformBlock(buffer, 0, bytesRead, buffer, 0)
                 buffer = New Byte(4095) {}
                 bytesRead = FilePropertiesStream.Read(buffer, 0, buffer.Length)
                 totalBytesRead += bytesRead
+                
                 If bwCalcHashes.CancellationPending Then Throw New OperationCanceledException("Operation was cancelled")
-                bwCalcHashes.ReportProgress(CInt(Math.Truncate(CDbl(totalBytesRead) * 100 / FilePropertiesStream.Length)))
+                currentProgressPercent = CInt(Math.Truncate(CDbl(totalBytesRead) * 100 / FilePropertiesStream.Length))
+                If currentProgressPercent > lastProgressPercent Then
+                    bwCalcHashes.ReportProgress(currentProgressPercent)
+                    lastProgressPercent = currentProgressPercent
+                End If
             Loop
             hashObject.TransformFinalBlock(Buffer, 0, BytesRead)
             
