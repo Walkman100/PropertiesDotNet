@@ -918,9 +918,9 @@ Partial Class PropertiesDotNet
         Me.chkUseSystem.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkUseSystem.Location = New System.Drawing.Point(330, 23)
         Me.chkUseSystem.Name = "chkUseSystem"
-        Me.chkUseSystem.Size = New System.Drawing.Size(126, 17)
+        Me.chkUseSystem.Size = New System.Drawing.Size(133, 17)
         Me.chkUseSystem.TabIndex = 4
-        Me.chkUseSystem.Text = "Use system functions"
+        Me.chkUseSystem.Text = "Use Windows Explorer"
         Me.chkUseSystem.UseVisualStyleBackColor = true
         '
         'bwCalcSize

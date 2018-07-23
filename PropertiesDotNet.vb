@@ -40,6 +40,9 @@ Public Class PropertiesDotNet
                 End If
             End If
         End If
+        If lblLocation.Text.StartsWith("\\?\") Then
+            lblLocation.Text = lblLocation.Text.Substring(4)
+        End If
         If Exists(lblLocation.Text) Or Directory.Exists(lblLocation.Text) Then
             CheckData(True)
         Else
