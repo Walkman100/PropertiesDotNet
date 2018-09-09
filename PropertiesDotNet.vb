@@ -1,8 +1,4 @@
 Public Class PropertiesDotNet
-    ' Imported Functions: FindExecutable:
-    '  Used for finding the program that a file opens with
-    '   http://www.vb-helper.com/howto_get_associated_program.html
-    Private Declare Function FindExecutable Lib "shell32.dll" Alias "FindExecutableA"(lpFile As String, lpDirectory As String, lpResult As String) As Long
     Dim byteSize As ULong = 0
     Dim compressedSizeOrError As String = " "
     Dim driveSizes(3) As ULong
@@ -87,7 +83,7 @@ Public Class PropertiesDotNet
         'Properties:
         Dim FileProperties As New FileInfo(lblLocation.Text)
         ' Thanks to https://stackoverflow.com/a/22691609/2999220
-        If New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(WindowsBuiltInRole.Administrator) Then _
+        If WalkmanLib.IsAdmin() Then _
           Me.Text = "[Admin] Properties: " & FileProperties.Name Else _
           Me.Text = "Properties: " & FileProperties.Name
         lblFullPath.Text = FileProperties.FullName
@@ -98,7 +94,7 @@ Public Class PropertiesDotNet
         If lblExtension.Text = "" Then lblExtension.Text = "No extension!"
         
         Try
-            compressedSizeOrError = CompressedFileSize(lblFullPath.Text)
+            compressedSizeOrError = WalkmanLib.GetCompressedSize(lblFullPath.Text)
         Catch ex As Exception
             compressedSizeOrError = ex.Message
         End Try
@@ -163,11 +159,9 @@ Public Class PropertiesDotNet
                 imgFile_LoadCompleted(Nothing, New System.ComponentModel.AsyncCompletedEventArgs(New FileLoadException("File too big", lblFullPath.Text), True, Nothing))
             End If
             
-            Dim result As String = Space$(1024)
-            FindExecutable(lblName.Text, lblDirectory.Text & "\", result)
-            lblOpenWith.Text = Strings.Left$(result, InStr(result, Chr(0)) - 1)
-            If lblOpenWith.Text = "" Then 
-                lblOpenWith.Text = "Filetype not associated!"
+            
+            lblOpenWith.Text = WalkmanLib.GetOpenWith(lblFullPath.Text)
+            If lblOpenWith.Text = "Filetype not associated!" Then 
                 btnStartAssocProg.Enabled = False
                 btnStartAssocProgAdmin.Enabled = False
             Else
@@ -387,22 +381,22 @@ Public Class PropertiesDotNet
     Sub btnLaunchAdmin_Click() Handles btnLaunchAdmin.Click
         If lblOpenWith.Text = Environment.GetEnvironmentVariable("ProgramFiles") & "\Windows Photo Viewer\PhotoViewer.dll" Then
             ' rundll32 "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen FilePath
-            RunAsAdmin("rundll32", Environment.GetEnvironmentVariable("ProgramFiles") & "\Windows Photo Viewer\PhotoViewer.dll"", " & _
+            WalkmanLib.RunAsAdmin("rundll32", Environment.GetEnvironmentVariable("ProgramFiles") & "\Windows Photo Viewer\PhotoViewer.dll, " & _
               "ImageView_Fullscreen " & lblFullPath.Text)
             
         ElseIf lblOpenWith.Text = Environment.GetEnvironmentVariable("ProgramFiles(x86)") & "\Windows Photo Viewer\PhotoViewer.dll" Then
-            RunAsAdmin("rundll32", Environment.GetEnvironmentVariable("ProgramFiles(x86)") & "\Windows Photo Viewer\PhotoViewer.dll"", " & _
+            WalkmanLib.RunAsAdmin("rundll32", Environment.GetEnvironmentVariable("ProgramFiles(x86)") & "\Windows Photo Viewer\PhotoViewer.dll, " & _
               "ImageView_Fullscreen " & lblFullPath.Text)
               
         ElseIf lblOpenWith.Text = Environment.GetEnvironmentVariable("ProgramW6432") & "\Windows Photo Viewer\PhotoViewer.dll" Then
-            RunAsAdmin("rundll32", Environment.GetEnvironmentVariable("ProgramW6432") & "\Windows Photo Viewer\PhotoViewer.dll"", " & _
+            WalkmanLib.RunAsAdmin("rundll32", Environment.GetEnvironmentVariable("ProgramW6432") & "\Windows Photo Viewer\PhotoViewer.dll, " & _
               "ImageView_Fullscreen " & lblFullPath.Text)
               
         Else
             If lblOpenWith.Text = "Filetype not associated!" Then
-                RunAsAdmin(lblFullPath.Text)
+                WalkmanLib.RunAsAdmin(lblFullPath.Text)
             Else
-                RunAsAdmin(lblOpenWith.Text, lblFullPath.Text & """")
+                WalkmanLib.RunAsAdmin(lblOpenWith.Text, lblFullPath.Text)
             End If
         End If
     End Sub
@@ -530,7 +524,7 @@ Public Class PropertiesDotNet
         Process.Start(lblOpenWith.Text)
     End Sub
     Sub btnStartAssocProgAdmin_Click() Handles btnStartAssocProgAdmin.Click
-        RunAsAdmin(lblOpenWith.Text)
+        WalkmanLib.RunAsAdmin(lblOpenWith.Text)
     End Sub
     
     Sub lblCreationTime_DoubleClick(sender As Object, e As EventArgs) Handles lblCreationTime.DoubleClick
@@ -577,12 +571,7 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub btnWindowsProperties_Click() Handles btnWindowsProperties.Click
-        Dim info As New ShellExecuteInfo
-        info.cbSize = Marshal.SizeOf(info)
-        info.lpVerb = "properties"
-        info.lpFile = lblFullPath.Text
-        info.fMask = 12
-        If ShellExecuteEx(info) = False Then
+        If WalkmanLib.ShowProperties(lblFullPath.Text) = False Then
             MsgBox("Could not open properties window!", MsgBoxStyle.Exclamation)
         End If
     End Sub
@@ -613,25 +602,25 @@ Public Class PropertiesDotNet
     End Sub
     Sub btnTakeOwn_Click() Handles btnTakeOwn.Click
         If Exists(lblFullPath.Text) Then
-            RunAsAdmin("cmd.exe", "/c takeown /f " & lblFullPath.Text & " && icacls " & lblFullPath.Text & " /grant administrators:F && pause")
+            WalkmanLib.RunAsAdmin("cmd.exe", "/c takeown /f " & lblFullPath.Text & " && icacls " & lblFullPath.Text & " /grant administrators:F && pause")
         ElseIf Directory.Exists(lblFullPath.Text)
-            RunAsAdmin("cmd.exe", "/c takeown /f " & lblFullPath.Text & " /r /d y && icacls " & lblFullPath.Text & " /grant administrators:F /t && pause")
+            WalkmanLib.RunAsAdmin("cmd.exe", "/c takeown /f " & lblFullPath.Text & " /r /d y && icacls " & lblFullPath.Text & " /grant administrators:F /t && pause")
         End If
     End Sub
     
     Sub chkReadOnly_Click() Handles chkReadOnly.Click
-        If chkReadOnly.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.ReadOnly) _
-          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.ReadOnly)
+        If chkReadOnly.Checked Then WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.ReadOnly) _
+          Else WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.ReadOnly)
         CheckData
     End Sub
     Sub chkHidden_Click() Handles chkHidden.Click
-        If chkHidden.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Hidden) _
-          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Hidden)
+        If chkHidden.Checked Then WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Hidden) _
+          Else WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Hidden)
         CheckData
     End Sub
     Sub chkCompressed_Click() Handles chkCompressed.Click
         If chkCompressed.Checked Then
-            If SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Compressed) Then
+            If WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Compressed) Then
                 If Not GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
                     Dim oneGB = 1000000000 '1 GB
                     If byteSize < oneGB Or (byteSize >= oneGB AndAlso MsgBox("Are you sure you want to compress this large file (>1GB)? This will take a while and can't be interrupted", _
@@ -642,7 +631,7 @@ Public Class PropertiesDotNet
                 End If
             End If
         Else
-            If SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Compressed) Then
+            If WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Compressed) Then
                 If GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
                     Dim oneGB = 1000000000
                     If byteSize < oneGB Or (byteSize >= oneGB AndAlso MsgBox("Are you sure you want to decompress this large file (>1GB)? This will take a while and can't be interrupted", _
@@ -657,7 +646,7 @@ Public Class PropertiesDotNet
     End Sub
     Sub chkEncrypted_Click() Handles chkEncrypted.Click
         If chkEncrypted.Checked Then
-            If SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Encrypted) Then
+            If WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Encrypted) Then
                 If Not GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted) Then
                     Dim FileProperties As New FileInfo(lblFullPath.Text)
                     Try
@@ -670,7 +659,7 @@ Public Class PropertiesDotNet
                 End If
             End If
         Else
-            If SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Encrypted) Then
+            If WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Encrypted) Then
                 If GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted) Then
                     Dim FileProperties As New FileInfo(lblFullPath.Text)
                     Try
@@ -686,48 +675,48 @@ Public Class PropertiesDotNet
         CheckData
     End Sub
     Sub chkSystem_Click() Handles chkSystem.Click
-        If chkSystem.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.System) _
-          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.System)
+        If chkSystem.Checked Then WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.System) _
+          Else WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.System)
         CheckData
     End Sub
     Sub chkArchive_Click() Handles chkArchive.Click
-        If chkArchive.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Archive) _
-          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Archive)
+        If chkArchive.Checked Then WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Archive) _
+          Else WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Archive)
         CheckData
     End Sub
     Sub chkTemporary_Click() Handles chkTemporary.Click
-        If chkTemporary.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Temporary) _
-          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Temporary)
+        If chkTemporary.Checked Then WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Temporary) _
+          Else WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Temporary)
         CheckData
     End Sub
     Sub chkIntegrity_Click() Handles chkIntegrity.Click
-        If chkIntegrity.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.IntegrityStream) _
-          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.IntegrityStream)
+        If chkIntegrity.Checked Then WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.IntegrityStream) _
+          Else WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.IntegrityStream)
         CheckData
     End Sub
     Sub chkNoScrub_Click() Handles chkNoScrub.Click
-        If chkNoScrub.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.NoScrubData) _
-          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.NoScrubData)
+        If chkNoScrub.Checked Then WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.NoScrubData) _
+          Else WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.NoScrubData)
         CheckData
     End Sub
     Sub chkNotIndexed_Click() Handles chkNotIndexed.Click
-        If chkNotIndexed.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.NotContentIndexed) _
-          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.NotContentIndexed)
+        If chkNotIndexed.Checked Then WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.NotContentIndexed) _
+          Else WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.NotContentIndexed)
         CheckData
     End Sub
     Sub chkOffline_Click() Handles chkOffline.Click
-        If chkOffline.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Offline) _
-          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Offline)
+        If chkOffline.Checked Then WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.Offline) _
+          Else WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.Offline)
         CheckData
     End Sub
     Sub chkReparse_Click() Handles chkReparse.Click
-        If chkReparse.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.ReparsePoint) _
-          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.ReparsePoint)
+        If chkReparse.Checked Then WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.ReparsePoint) _
+          Else WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.ReparsePoint)
         CheckData
     End Sub
     Sub chkSparse_Click() Handles chkSparse.Click
-        If chkSparse.Checked Then SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.SparseFile) _
-          Else SetAttribWCheck(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.SparseFile)
+        If chkSparse.Checked Then WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) + FileAttributes.SparseFile) _
+          Else WalkmanLib.SetAttribute(lblFullPath.Text, GetAttributes(lblFullPath.Text) - FileAttributes.SparseFile)
         CheckData
     End Sub
     
@@ -750,7 +739,7 @@ Public Class PropertiesDotNet
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    RunAsAdmin("cmd", "/k ren """ & lblFullPath.Text & """ """ & newName & """""")
+                    WalkmanLib.RunAsAdmin("cmd", "/k ren """ & lblFullPath.Text & """ """ & newName & """")
                     If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                       lblLocation.Text = FileProperties.DirectoryName & "\" & newName
                 Else
@@ -784,7 +773,7 @@ Public Class PropertiesDotNet
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    RunAsAdmin("cmd", "/k del """ & lblFullPath.Text & """""")
+                    WalkmanLib.RunAsAdmin("cmd", "/k del """ & lblFullPath.Text & """")
                 Else
                     ErrorParser(ex)
                 End If
@@ -846,7 +835,7 @@ Public Class PropertiesDotNet
                 Catch ex As UnauthorizedAccessException
                     If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                           MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                            RunAsAdmin("xcopy", lblFullPath.Text & """ """ & newName & """")
+                            WalkmanLib.RunAsAdmin("xcopy", """" & lblFullPath.Text & """ """ & newName & """")
                             If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                               lblLocation.Text = newName
                         Else
@@ -879,7 +868,7 @@ Public Class PropertiesDotNet
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    RunAsAdmin("cmd", "/k move """ & lblFullPath.Text & """ """ & SaveFileDialog.FileName & """""")
+                    WalkmanLib.RunAsAdmin("cmd", "/k move """ & lblFullPath.Text & """ """ & SaveFileDialog.FileName & """")
                     If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                       lblLocation.Text = SaveFileDialog.FileName
                 Else
@@ -920,118 +909,18 @@ Public Class PropertiesDotNet
         ApplySizeFormatting
     End Sub
     
-    ''' <summary>Sets the specified System.IO.FileAttributes of the file on the specified path, with a try..catch block.</summary>
-    ''' <param name="path">The path to the file.</param>
-    ''' <param name="fileAttributes">A bitwise combination of the enumeration values.</param>
-    ''' <returns>True if setting the attribute was successful, False if not.</returns>
-    Function SetAttribWCheck(path As String, fileAttributes As FileAttributes) As Boolean
-        Try
-            SetAttributes(path, fileAttributes)
-            Return True
-        Catch ex As exception
-            ErrorParser(ex)
-            Return False
-        End Try
-    End Function
-    
-    ''' <summary>Starts a program with a set of command-line arguments as an administrator.</summary>
-    ''' <param name="fileName">The name of an application file to run in the process.</param>
-    ''' <param name="arguments">Optional. Command-line arguments to pass when starting the process. If supplied, add extra double-apostrophies to the end e.g. '& """"'</param>
-    Sub RunAsAdmin(fileName As String, Optional arguments As String = "")
-        If arguments = "" Then
-            CreateObject("Shell.Application").ShellExecute(fileName, "", "", "runas")
-        Else
-            CreateObject("Shell.Application").ShellExecute(fileName, """" & arguments, "", "runas")
-        End If
-    End Sub
-    
-    ' http://www.pinvoke.net/default.aspx/kernel32/GetCompressedFileSize.html
-    ' https://stackoverflow.com/a/22508299/2999220
-    Private Declare Function GetCompressedFileSize Lib "kernel32" Alias "GetCompressedFileSizeA"(ByVal lpFileName As String, ByRef lpFileSizeHigh As IntPtr) As UInteger
-    Public Function CompressedFileSize(path As String) As Double
-        Dim sizeMultiplier As IntPtr
-        Dim filelength As Long = Convert.ToInt64(GetCompressedFileSize(path, sizeMultiplier))
-        If filelength = 4294967295 Then ' decimal representation of &HFFFFFFFF
-            Dim Err As Long = Marshal.GetLastWin32Error()
-            If Err <> 0 Then Throw New IOException("Exception getting compressed size: " & Err.ToString)
-        End If
-        Dim size As Double = (UInteger.MaxValue + 1) * CLng(sizeMultiplier) + filelength
-        Return size
-    End Function
-    
-    ' https://stackoverflow.com/a/1936957/2999220
-    <DllImport("shell32.dll", CharSet := CharSet.Auto)> _
-    Private Shared Function ShellExecuteEx(ByRef lpExecInfo As ShellExecuteInfo) As Boolean
-    End Function
-    <StructLayout(LayoutKind.Sequential, CharSet := CharSet.Auto)> _
-    Public Structure ShellExecuteInfo
-        Public cbSize As Integer
-        Public fMask As UInteger
-        Public hwnd As IntPtr
-        <MarshalAs(UnmanagedType.LPTStr)> _
-        Public lpVerb As String
-        <MarshalAs(UnmanagedType.LPTStr)> _
-        Public lpFile As String
-        <MarshalAs(UnmanagedType.LPTStr)> _
-        Public lpParameters As String
-        <MarshalAs(UnmanagedType.LPTStr)> _
-        Public lpDirectory As String
-        Public nShow As Integer
-        Public hInstApp As IntPtr
-        Public lpIDList As IntPtr
-        <MarshalAs(UnmanagedType.LPTStr)> _
-        Public lpClass As String
-        Public hkeyClass As IntPtr
-        Public dwHotKey As UInteger
-        Public hIcon As IntPtr
-        Public hProcess As IntPtr
-    End Structure
-    
     Sub ErrorParser(ex As Exception)
         ''' <summary>
         ''' Copied from DirectoryImage (see the end of the file)
         ''' </summary>
-        If ex.GetType.ToString = "System.UnauthorizedAccessException" AndAlso _
-          Not New WindowsPrincipal(WindowsIdentity.GetCurrent).IsInRole(WindowsBuiltInRole.Administrator) Then
+        If ex.GetType.ToString = "System.UnauthorizedAccessException" AndAlso Not WalkmanLib.IsAdmin() Then
             If MsgBox(ex.message & vbnewline & vbnewline & "Try launching PropertiesDotNet As Administrator?", _
               MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                RunAsAdmin(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", lblFullPath.Text & """")
+                WalkmanLib.RunAsAdmin(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", lblFullPath.Text)
                 Application.Exit
             End If
         Else
-            If MsgBox("There was an error! Error message: " & ex.Message & vbNewLine & "Show full stacktrace? (For sending to developer/making bugreport)", _
-              MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Error!") = MsgBoxresult.Yes Then
-                Dim frmBugReport As New Form()
-                frmBugReport.Width = 600
-                frmBugReport.Height = 525
-                frmBugReport.StartPosition = FormStartPosition.CenterParent
-                frmBugReport.WindowState = Me.WindowState
-                frmBugReport.Show()
-                frmBugReport.ShowIcon = False
-                frmBugReport.ShowInTaskbar = True
-                frmBugReport.Text = "Full error trace"
-                Dim txtBugReport As New TextBox()
-                txtBugReport.Multiline = True
-                txtBugReport.ScrollBars = ScrollBars.Vertical
-                frmBugReport.Controls.Add(txtBugReport)
-                txtBugReport.Dock = DockStyle.Fill
-                txtBugReport.Text = "ToString:" & vbNewLine & ex.ToString & vbNewLine & vbNewLine
-                txtBugReport.Text &= "BaseException:" & vbNewLine & ex.GetBaseException.ToString & vbNewLine & vbNewLine
-                txtBugReport.Text &= "Type: " & ex.GetType.ToString & vbNewLine
-                txtBugReport.Text &= "Message: " & ex.Message.ToString & vbNewLine & vbNewLine
-                txtBugReport.Text &= "StackTrace:" & vbNewLine & ex.StackTrace.ToString & vbNewLine & vbNewLine
-                txtBugReport.Text &= "Source: " & ex.Source.ToString & vbNewLine
-                txtBugReport.Text &= "TargetSite: " & ex.TargetSite.ToString & vbNewLine
-                txtBugReport.Text &= "HashCode: " & ex.GetHashCode.ToString & vbNewLine
-                txtBugReport.Text &= "HResult: " & ex.HResult.ToString & vbNewLine & vbNewLine
-                For i = 0 To Integer.MaxValue
-                    Try
-                        txtBugReport.Text &= "Data:" & vbNewLine & ex.Data(i).ToString & vbNewLine & vbNewLine
-                    Catch
-                        Exit For
-                    End Try
-                Next
-            End If
+            WalkmanLib.ErrorDialog(ex)
         End If
     End Sub
 End Class
