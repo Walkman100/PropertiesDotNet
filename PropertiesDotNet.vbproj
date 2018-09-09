@@ -80,6 +80,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SelectDateDialog.vb" />
+    <Compile Include="WalkmanLib\WalkmanLibDotNet.vb">
+      <Link>WalkmanLibDotNet.vb</Link>
+    </Compile>
+    <Compile Include="WalkmanLib\WalkmanLibWin32.vb">
+      <Link>WalkmanLibWin32.vb</Link>
+    </Compile>
     <Compile Include="Windows7ProgressBar.vb" />
   </ItemGroup>
   <ItemGroup>

@@ -153,7 +153,7 @@ Public Class Hashes
         Me.btnSHA256.UseVisualStyleBackColor = true
         AddHandler Me.btnSHA256.Click, AddressOf Me.btnSHA256_Click
         'btnAllCopy
-        Me.btnAllCopy.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnAllCopy.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnAllCopy.Location = New System.Drawing.Point(265, 257)
         Me.btnAllCopy.Name = "btnAllCopy"
         Me.btnAllCopy.Size = New System.Drawing.Size(116, 23)
@@ -162,6 +162,7 @@ Public Class Hashes
         Me.btnAllCopy.UseVisualStyleBackColor = true
         AddHandler Me.btnAllCopy.Click, AddressOf Me.btnAllCopy_Click
         'btnAllCalculate
+        Me.btnAllCalculate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.btnAllCalculate.Location = New System.Drawing.Point(12, 257)
         Me.btnAllCalculate.Name = "btnAllCalculate"
         Me.btnAllCalculate.Size = New System.Drawing.Size(116, 23)
@@ -170,7 +171,7 @@ Public Class Hashes
         Me.btnAllCalculate.UseVisualStyleBackColor = true
         AddHandler Me.btnAllCalculate.Click, AddressOf Me.btnAllCalculate_Click
         'btnClose
-        Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.btnClose.Location = New System.Drawing.Point(387, 257)
         Me.btnClose.Name = "btnClose"
@@ -182,7 +183,7 @@ Public Class Hashes
         'pbCalculateProgress
         Me.pbCalculateProgress.ContainerControl = Me
         Me.pbCalculateProgress.ShowInTaskbar = True
-        Me.pbCalculateProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.pbCalculateProgress.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.pbCalculateProgress.Location = New System.Drawing.Point(9, 228)
         Me.pbCalculateProgress.Name = "pbCalculateProgress"
         Me.pbCalculateProgress.Size = New System.Drawing.Size(498, 23)
@@ -231,6 +232,7 @@ Public Class Hashes
         Me.btnSHA512.UseVisualStyleBackColor = true
         AddHandler Me.btnSHA512.Click, AddressOf Me.btnSHA512_Click
         'btnAllCancel
+        Me.btnAllCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.btnAllCancel.Enabled = false
         Me.btnAllCancel.Location = New System.Drawing.Point(134, 257)
         Me.btnAllCancel.Name = "btnAllCancel"
