@@ -296,22 +296,22 @@ Public Class PropertiesDotNet
     Sub btnLaunchAdmin_Click() Handles btnLaunchAdmin.Click
         If lblOpenWith.Text = Environment.GetEnvironmentVariable("ProgramFiles") & "\Windows Photo Viewer\PhotoViewer.dll" Then
             ' rundll32 "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen FilePath
-            WalkmanLib.RunAsAdmin("rundll32", Environment.GetEnvironmentVariable("ProgramFiles") & "\Windows Photo Viewer\PhotoViewer.dll, " & _
+            WalkmanLib.RunAsAdmin("rundll32", """" & Environment.GetEnvironmentVariable("ProgramFiles") & "\Windows Photo Viewer\PhotoViewer.dll"", " & _
               "ImageView_Fullscreen " & lblFullPath.Text)
             
         ElseIf lblOpenWith.Text = Environment.GetEnvironmentVariable("ProgramFiles(x86)") & "\Windows Photo Viewer\PhotoViewer.dll" Then
-            WalkmanLib.RunAsAdmin("rundll32", Environment.GetEnvironmentVariable("ProgramFiles(x86)") & "\Windows Photo Viewer\PhotoViewer.dll, " & _
+            WalkmanLib.RunAsAdmin("rundll32", """" & Environment.GetEnvironmentVariable("ProgramFiles(x86)") & "\Windows Photo Viewer\PhotoViewer.dll"", " & _
               "ImageView_Fullscreen " & lblFullPath.Text)
               
         ElseIf lblOpenWith.Text = Environment.GetEnvironmentVariable("ProgramW6432") & "\Windows Photo Viewer\PhotoViewer.dll" Then
-            WalkmanLib.RunAsAdmin("rundll32", Environment.GetEnvironmentVariable("ProgramW6432") & "\Windows Photo Viewer\PhotoViewer.dll, " & _
+            WalkmanLib.RunAsAdmin("rundll32", """" & Environment.GetEnvironmentVariable("ProgramW6432") & "\Windows Photo Viewer\PhotoViewer.dll"", " & _
               "ImageView_Fullscreen " & lblFullPath.Text)
               
         Else
             If lblOpenWith.Text = "Filetype not associated!" Then
                 WalkmanLib.RunAsAdmin(lblFullPath.Text)
             Else
-                WalkmanLib.RunAsAdmin(lblOpenWith.Text, lblFullPath.Text)
+                WalkmanLib.RunAsAdmin(lblOpenWith.Text, """" & lblFullPath.Text & """")
             End If
         End If
     End Sub
@@ -813,7 +813,7 @@ Public Class PropertiesDotNet
         If ex.GetType.ToString = "System.UnauthorizedAccessException" AndAlso Not WalkmanLib.IsAdmin() Then
             If MsgBox(ex.message & vbnewline & vbnewline & "Try launching PropertiesDotNet As Administrator?", _
               MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                WalkmanLib.RunAsAdmin(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", lblFullPath.Text)
+                WalkmanLib.RunAsAdmin(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", """" & lblFullPath.Text & """")
                 Application.Exit
             End If
         Else
