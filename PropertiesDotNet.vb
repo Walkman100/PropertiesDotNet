@@ -174,9 +174,11 @@ Public Class PropertiesDotNet
             lblExtension.Enabled = True
             btnStartAssocProg.Visible = True
             btnStartAssocProgAdmin.Visible = True
-            chkTemporary.Enabled = True
             
+            chkTemporary.Enabled = True
             chkTemporary.Text = "Temporary"
+            chkTemporary.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Temporary)
+            
             lblOpenWithLbl.Text = "Opens with:"
             btnHashes.Image = My.Resources.Resources.hashx16
             btnHashes.Text = "Compute Hashes"
@@ -199,6 +201,12 @@ Public Class PropertiesDotNet
             If My.Computer.Info.OSFullName.Contains("Windows 10") Then
                 chkTemporary.Enabled = True
                 chkTemporary.Text = "Case Sensitive Contents"
+                Try
+                    chkTemporary.Checked = QueryCaseSensitiveFlag(lblFullPath.Text)
+                Catch ex As Exception
+                    chkTemporary.Enabled = False
+                    chkTemporary.Text = "Case Sensitive Contents (" & ex.Message & ")"
+                End Try
             Else
                 chkTemporary.Enabled = False
                 chkTemporary.Text = "Temporary"
@@ -227,7 +235,7 @@ Public Class PropertiesDotNet
             chkEncrypted.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted)
             chkSystem.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.System)
             chkArchive.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Archive)
-            If Exists(lblFullPath.Text) Then chkTemporary.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Temporary) Else chkTemporary.Checked = QueryCaseSensitiveFlag(lblFullPath.Text)
+            ' chkTemporary moved to If Exists section above as it is the case sensitive checkbox for directories
             chkIntegrity.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.IntegrityStream)
             chkNoScrub.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.NoScrubData)
             chkNotIndexed.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.NotContentIndexed)
@@ -600,7 +608,21 @@ Public Class PropertiesDotNet
         If Exists(lblFullPath.Text) Then
             WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Temporary, chkTemporary.Checked)
         Else ' working on a directory and setting case sensitive
-            MsgBox(SetCaseSensitiveFlag(lblFullPath.Text, chkTemporary.Checked))
+            Dim output As String = SetCaseSensitiveFlag(lblFullPath.Text, chkTemporary.Checked)
+            
+            If output = "Error:  Access is denied." Then
+                If MsgBox("Access denied! Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                    Dim caseSensitiveFlag As String
+                    If chkTemporary.Checked Then caseSensitiveFlag = "enable" Else caseSensitiveFlag = "disable"
+                    
+                    WalkmanLib.RunAsAdmin("fsutil.exe", "file setCaseSensitiveInfo """ & lblFullPath.Text & """ " & caseSensitiveFlag)
+                    Threading.Thread.Sleep(500)
+                Else
+                    ErrorParser(New UnauthorizedAccessException(output))
+                End If
+            Else
+                MsgBox(output, MsgBoxStyle.Information)
+            End If
         End If
         
         CheckData
