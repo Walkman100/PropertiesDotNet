@@ -134,7 +134,7 @@ Partial Class PropertiesDotNet
         'chkSystem
         '
         Me.chkSystem.AutoSize = true
-        Me.chkSystem.Location = New System.Drawing.Point(6, 79)
+        Me.chkSystem.Location = New System.Drawing.Point(6, 49)
         Me.chkSystem.Name = "chkSystem"
         Me.chkSystem.Size = New System.Drawing.Size(60, 17)
         Me.chkSystem.TabIndex = 4
@@ -689,21 +689,21 @@ Partial Class PropertiesDotNet
         '
         Me.grpAttributes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.grpAttributes.Controls.Add(Me.btnTakeOwn)
-        Me.grpAttributes.Controls.Add(Me.lnkAttributes)
         Me.grpAttributes.Controls.Add(Me.chkSparse)
         Me.grpAttributes.Controls.Add(Me.chkReparse)
-        Me.grpAttributes.Controls.Add(Me.chkOffline)
-        Me.grpAttributes.Controls.Add(Me.chkNotIndexed)
-        Me.grpAttributes.Controls.Add(Me.chkNoScrub)
         Me.grpAttributes.Controls.Add(Me.chkIntegrity)
+        Me.grpAttributes.Controls.Add(Me.chkNoScrub)
         Me.grpAttributes.Controls.Add(Me.chkTemporary)
-        Me.grpAttributes.Controls.Add(Me.chkArchive)
-        Me.grpAttributes.Controls.Add(Me.chkSystem)
+        Me.grpAttributes.Controls.Add(Me.chkOffline)
         Me.grpAttributes.Controls.Add(Me.chkEncrypted)
         Me.grpAttributes.Controls.Add(Me.chkCompressed)
+        Me.grpAttributes.Controls.Add(Me.chkNotIndexed)
+        Me.grpAttributes.Controls.Add(Me.chkArchive)
+        Me.grpAttributes.Controls.Add(Me.chkSystem)
         Me.grpAttributes.Controls.Add(Me.chkHidden)
         Me.grpAttributes.Controls.Add(Me.chkReadOnly)
+        Me.grpAttributes.Controls.Add(Me.btnTakeOwn)
+        Me.grpAttributes.Controls.Add(Me.lnkAttributes)
         Me.grpAttributes.Location = New System.Drawing.Point(2, 243)
         Me.grpAttributes.Name = "grpAttributes"
         Me.grpAttributes.Size = New System.Drawing.Size(411, 221)
@@ -742,9 +742,9 @@ Partial Class PropertiesDotNet
         Me.chkSparse.AutoSize = true
         Me.chkSparse.Location = New System.Drawing.Point(6, 199)
         Me.chkSparse.Name = "chkSparse"
-        Me.chkSparse.Size = New System.Drawing.Size(234, 17)
+        Me.chkSparse.Size = New System.Drawing.Size(89, 17)
         Me.chkSparse.TabIndex = 12
-        Me.chkSparse.Text = "Sparse - large files consisting of mostly zeros"
+        Me.chkSparse.Text = "Is Sparse File"
         Me.chkSparse.UseVisualStyleBackColor = true
         '
         'chkReparse
@@ -752,55 +752,55 @@ Partial Class PropertiesDotNet
         Me.chkReparse.AutoSize = true
         Me.chkReparse.Location = New System.Drawing.Point(6, 184)
         Me.chkReparse.Name = "chkReparse"
-        Me.chkReparse.Size = New System.Drawing.Size(279, 17)
+        Me.chkReparse.Size = New System.Drawing.Size(104, 17)
         Me.chkReparse.TabIndex = 11
-        Me.chkReparse.Text = "Contains Reparse Point - A block of user-defined data"
+        Me.chkReparse.Text = "Is Reparse Point"
         Me.chkReparse.UseVisualStyleBackColor = true
         '
         'chkOffline
         '
         Me.chkOffline.AutoSize = true
-        Me.chkOffline.Location = New System.Drawing.Point(6, 169)
+        Me.chkOffline.Location = New System.Drawing.Point(6, 124)
         Me.chkOffline.Name = "chkOffline"
-        Me.chkOffline.Size = New System.Drawing.Size(211, 17)
+        Me.chkOffline.Size = New System.Drawing.Size(56, 17)
         Me.chkOffline.TabIndex = 10
-        Me.chkOffline.Text = "Offline - File is not immediately available"
+        Me.chkOffline.Text = "Offline"
         Me.chkOffline.UseVisualStyleBackColor = true
         '
         'chkNotIndexed
         '
         Me.chkNotIndexed.AutoSize = true
-        Me.chkNotIndexed.Location = New System.Drawing.Point(6, 154)
+        Me.chkNotIndexed.Location = New System.Drawing.Point(6, 79)
         Me.chkNotIndexed.Name = "chkNotIndexed"
-        Me.chkNotIndexed.Size = New System.Drawing.Size(292, 17)
+        Me.chkNotIndexed.Size = New System.Drawing.Size(84, 17)
         Me.chkNotIndexed.TabIndex = 9
-        Me.chkNotIndexed.Text = "Not Indexed - File will not be indexed by indexing service"
+        Me.chkNotIndexed.Text = "Not Indexed"
         Me.chkNotIndexed.UseVisualStyleBackColor = true
         '
         'chkNoScrub
         '
         Me.chkNoScrub.AutoSize = true
-        Me.chkNoScrub.Location = New System.Drawing.Point(6, 139)
+        Me.chkNoScrub.Location = New System.Drawing.Point(6, 154)
         Me.chkNoScrub.Name = "chkNoScrub"
-        Me.chkNoScrub.Size = New System.Drawing.Size(314, 17)
+        Me.chkNoScrub.Size = New System.Drawing.Size(97, 17)
         Me.chkNoScrub.TabIndex = 8
-        Me.chkNoScrub.Text = "No Scrub Data - Path is excluded from the data integrity scan"
+        Me.chkNoScrub.Text = "No Scrub Data"
         Me.chkNoScrub.UseVisualStyleBackColor = true
         '
         'chkIntegrity
         '
         Me.chkIntegrity.AutoSize = true
-        Me.chkIntegrity.Location = New System.Drawing.Point(6, 124)
+        Me.chkIntegrity.Location = New System.Drawing.Point(6, 169)
         Me.chkIntegrity.Name = "chkIntegrity"
-        Me.chkIntegrity.Size = New System.Drawing.Size(331, 17)
+        Me.chkIntegrity.Size = New System.Drawing.Size(129, 17)
         Me.chkIntegrity.TabIndex = 7
-        Me.chkIntegrity.Text = "Data Integrity - The file or directory includes data integrity support"
+        Me.chkIntegrity.Text = "Data Integrity Support"
         Me.chkIntegrity.UseVisualStyleBackColor = true
         '
         'chkTemporary
         '
         Me.chkTemporary.AutoSize = true
-        Me.chkTemporary.Location = New System.Drawing.Point(6, 109)
+        Me.chkTemporary.Location = New System.Drawing.Point(6, 139)
         Me.chkTemporary.Name = "chkTemporary"
         Me.chkTemporary.Size = New System.Drawing.Size(76, 17)
         Me.chkTemporary.TabIndex = 6
@@ -810,17 +810,17 @@ Partial Class PropertiesDotNet
         'chkArchive
         '
         Me.chkArchive.AutoSize = true
-        Me.chkArchive.Location = New System.Drawing.Point(6, 94)
+        Me.chkArchive.Location = New System.Drawing.Point(6, 64)
         Me.chkArchive.Name = "chkArchive"
-        Me.chkArchive.Size = New System.Drawing.Size(259, 17)
+        Me.chkArchive.Size = New System.Drawing.Size(62, 17)
         Me.chkArchive.TabIndex = 5
-        Me.chkArchive.Text = "Archive - file is a candidate for backup or removal"
+        Me.chkArchive.Text = "Archive"
         Me.chkArchive.UseVisualStyleBackColor = true
         '
         'chkEncrypted
         '
         Me.chkEncrypted.AutoSize = true
-        Me.chkEncrypted.Location = New System.Drawing.Point(6, 64)
+        Me.chkEncrypted.Location = New System.Drawing.Point(6, 109)
         Me.chkEncrypted.Name = "chkEncrypted"
         Me.chkEncrypted.Size = New System.Drawing.Size(74, 17)
         Me.chkEncrypted.TabIndex = 3
@@ -830,7 +830,7 @@ Partial Class PropertiesDotNet
         'chkCompressed
         '
         Me.chkCompressed.AutoSize = true
-        Me.chkCompressed.Location = New System.Drawing.Point(6, 49)
+        Me.chkCompressed.Location = New System.Drawing.Point(6, 94)
         Me.chkCompressed.Name = "chkCompressed"
         Me.chkCompressed.Size = New System.Drawing.Size(84, 17)
         Me.chkCompressed.TabIndex = 2

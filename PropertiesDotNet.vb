@@ -176,6 +176,7 @@ Public Class PropertiesDotNet
             btnStartAssocProgAdmin.Visible = True
             chkTemporary.Enabled = True
             
+            chkTemporary.Text = "Temporary"
             lblOpenWithLbl.Text = "Opens with:"
             btnHashes.Image = My.Resources.Resources.hashx16
             btnHashes.Text = "Compute Hashes"
@@ -194,7 +195,14 @@ Public Class PropertiesDotNet
             lblExtension.Enabled = False
             btnStartAssocProg.Visible = False
             btnStartAssocProgAdmin.Visible = False
-            chkTemporary.Enabled = False
+            
+            If My.Computer.Info.OSFullName.Contains("Windows 10") Then
+                chkTemporary.Enabled = True
+                chkTemporary.Text = "Case Sensitive Contents"
+            Else
+                chkTemporary.Enabled = False
+                chkTemporary.Text = "Temporary"
+            End If
             
             lblOpenWithLbl.Text = "Number of files:"
             btnHashes.Image = My.Resources.Resources.Shell32__326_
@@ -219,7 +227,7 @@ Public Class PropertiesDotNet
             chkEncrypted.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted)
             chkSystem.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.System)
             chkArchive.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Archive)
-            chkTemporary.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Temporary)
+            If Exists(lblFullPath.Text) Then chkTemporary.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Temporary) Else chkTemporary.Checked = QueryCaseSensitiveFlag(lblFullPath.Text)
             chkIntegrity.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.IntegrityStream)
             chkNoScrub.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.NoScrubData)
             chkNotIndexed.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.NotContentIndexed)
@@ -589,7 +597,12 @@ Public Class PropertiesDotNet
         CheckData
     End Sub
     Sub chkTemporary_Click() Handles chkTemporary.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Temporary, chkTemporary.Checked)
+        If Exists(lblFullPath.Text) Then
+            WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Temporary, chkTemporary.Checked)
+        Else ' working on a directory and setting case sensitive
+            MsgBox(SetCaseSensitiveFlag(lblFullPath.Text, chkTemporary.Checked))
+        End If
+        
         CheckData
     End Sub
     Sub chkIntegrity_Click() Handles chkIntegrity.Click
@@ -820,4 +833,25 @@ Public Class PropertiesDotNet
             WalkmanLib.ErrorDialog(ex)
         End If
     End Sub
+    
+    Function QueryCaseSensitiveFlag(path As String) As Boolean
+        Dim fsUtilOutput As String = WalkmanLib.RunAndGetOutput("fsutil.exe", "file queryCaseSensitiveInfo """ & path & """")
+        
+        If fsUtilOutput.EndsWith("enabled.") Then
+            Return True
+        ElseIf fsUtilOutput.EndsWith("disabled.")
+            Return False
+        Else
+            Throw New Exception(fsUtilOutput)
+        End If
+    End Function
+    
+    Function SetCaseSensitiveFlag(path As String, caseSensitive As Boolean) As String
+        Dim caseSensitiveFlag As String
+        If caseSensitive Then caseSensitiveFlag = "enable" Else caseSensitiveFlag = "disable"
+        
+        Dim fsUtilOutput As String = WalkmanLib.RunAndGetOutput("fsutil.exe", "file setCaseSensitiveInfo """ & path & """ " & caseSensitiveFlag)
+        
+        Return fsUtilOutput
+    End Function
 End Class
