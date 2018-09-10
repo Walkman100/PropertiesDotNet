@@ -49,7 +49,7 @@ Public Class PropertiesDotNet
                     Throw New Exception
                 End If
             Catch
-                MsgBox("File or directory """ & lblLocation.Text & """ not found!", MsgBoxStyle.Critical)
+                MsgBox("File, directory or drive """ & lblLocation.Text & """ not found!", MsgBoxStyle.Critical)
                 Application.Exit
             End Try
         End If
@@ -241,6 +241,14 @@ Public Class PropertiesDotNet
         chkIntegrity.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.IntegrityStream)
         chkReparse.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.ReparsePoint)
         chkSparse.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.SparseFile)
+        
+        If chkReparse.Checked Then
+            Try
+                chkReparse.Text = "Is Reparse Point (Target: " & WalkmanLib.GetSymlinkTarget(lblFullPath.Text) & ")"
+            Catch ex As Exception
+                chkReparse.Text = "Is Reparse Point (GetTargetError: " & ex.Message & ")"
+            End Try
+        End If
     End Sub
     
     Sub imgFile_LoadCompleted(sender As Object, e As System.ComponentModel.AsyncCompletedEventArgs) Handles imgFile.LoadCompleted
