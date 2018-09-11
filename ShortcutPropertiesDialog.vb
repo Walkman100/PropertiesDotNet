@@ -34,11 +34,16 @@
         Me.ofdTarget = New System.Windows.Forms.OpenFileDialog()
         Me.ofdIcon = New System.Windows.Forms.OpenFileDialog()
         Me.fbdStartIn = New System.Windows.Forms.FolderBrowserDialog()
+        Me.lblStatus = New System.Windows.Forms.Label()
+        Me.pbxStatus = New System.Windows.Forms.PictureBox()
+        Me.pbxIcon = New System.Windows.Forms.PictureBox()
+        CType(Me.pbxStatus,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.pbxIcon,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         'btnCancel
         Me.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Location = New System.Drawing.Point(169, 247)
+        Me.btnCancel.Location = New System.Drawing.Point(169, 260)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 20
@@ -46,7 +51,7 @@
         Me.btnCancel.UseVisualStyleBackColor = true
         'btnSave
         Me.btnSave.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.btnSave.Location = New System.Drawing.Point(88, 247)
+        Me.btnSave.Location = New System.Drawing.Point(88, 260)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(75, 23)
         Me.btnSave.TabIndex = 19
@@ -108,7 +113,7 @@
         Me.txtShortcutKey.TabIndex = 13
         'txtComment
         Me.txtComment.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.txtComment.Location = New System.Drawing.Point(81, 171)
+        Me.txtComment.Location = New System.Drawing.Point(81, 184)
         Me.txtComment.Name = "txtComment"
         Me.txtComment.Size = New System.Drawing.Size(239, 20)
         Me.txtComment.TabIndex = 15
@@ -117,7 +122,7 @@
         Me.cbxWindow.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbxWindow.FormattingEnabled = true
         Me.cbxWindow.Items.AddRange(New Object() {"Normal Window", "Minimised", "Maximised"})
-        Me.cbxWindow.Location = New System.Drawing.Point(81, 197)
+        Me.cbxWindow.Location = New System.Drawing.Point(81, 210)
         Me.cbxWindow.Name = "cbxWindow"
         Me.cbxWindow.Size = New System.Drawing.Size(239, 21)
         Me.cbxWindow.TabIndex = 17
@@ -158,21 +163,21 @@
         Me.lblShortcutKey.Text = "Shortcut Key:"
         'lblComment
         Me.lblComment.AutoSize = true
-        Me.lblComment.Location = New System.Drawing.Point(6, 174)
+        Me.lblComment.Location = New System.Drawing.Point(6, 187)
         Me.lblComment.Name = "lblComment"
         Me.lblComment.Size = New System.Drawing.Size(54, 13)
         Me.lblComment.TabIndex = 14
         Me.lblComment.Text = "Comment:"
         'lblWindow
         Me.lblWindow.AutoSize = true
-        Me.lblWindow.Location = New System.Drawing.Point(6, 200)
+        Me.lblWindow.Location = New System.Drawing.Point(6, 213)
         Me.lblWindow.Name = "lblWindow"
         Me.lblWindow.Size = New System.Drawing.Size(75, 13)
         Me.lblWindow.TabIndex = 16
         Me.lblWindow.Text = "Window Style:"
         'chkRunAs
         Me.chkRunAs.AutoSize = true
-        Me.chkRunAs.Location = New System.Drawing.Point(81, 224)
+        Me.chkRunAs.Location = New System.Drawing.Point(81, 237)
         Me.chkRunAs.Name = "chkRunAs"
         Me.chkRunAs.Size = New System.Drawing.Size(123, 17)
         Me.chkRunAs.TabIndex = 18
@@ -195,12 +200,35 @@
         Me.ofdIcon.Title = "Select Shortcut Icon File"
         'fbdStartIn
         Me.fbdStartIn.Description = "Select Start In folder for Shortcut:"
+        'lblStatus
+        Me.lblStatus.AutoSize = true
+        Me.lblStatus.Location = New System.Drawing.Point(97, 168)
+        Me.lblStatus.Name = "lblStatus"
+        Me.lblStatus.Size = New System.Drawing.Size(114, 13)
+        Me.lblStatus.TabIndex = 21
+        Me.lblStatus.Text = "Enter a Shortcut Key..."
+        'pbxStatus
+        Me.pbxStatus.Location = New System.Drawing.Point(81, 166)
+        Me.pbxStatus.Name = "pbxStatus"
+        Me.pbxStatus.Size = New System.Drawing.Size(16, 16)
+        Me.pbxStatus.TabIndex = 22
+        Me.pbxStatus.TabStop = false
+        'pbxIcon
+        Me.pbxIcon.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.pbxIcon.Location = New System.Drawing.Point(285, 112)
+        Me.pbxIcon.Name = "pbxIcon"
+        Me.pbxIcon.Size = New System.Drawing.Size(32, 32)
+        Me.pbxIcon.TabIndex = 23
+        Me.pbxIcon.TabStop = false
         'ShortcutPropertiesDialog
         Me.AcceptButton = Me.btnSave
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(332, 282)
+        Me.ClientSize = New System.Drawing.Size(332, 295)
+        Me.Controls.Add(Me.pbxIcon)
+        Me.Controls.Add(Me.lblStatus)
+        Me.Controls.Add(Me.pbxStatus)
         Me.Controls.Add(Me.btnIconPick)
         Me.Controls.Add(Me.chkRunAs)
         Me.Controls.Add(Me.lblWindow)
@@ -225,9 +253,14 @@
         Me.Name = "ShortcutPropertiesDialog"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Shortcut Properties"
+        CType(Me.pbxStatus,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.pbxIcon,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
         Me.PerformLayout
     End Sub
+    Private pbxIcon As System.Windows.Forms.PictureBox
+    Private pbxStatus As System.Windows.Forms.PictureBox
+    Private lblStatus As System.Windows.Forms.Label
     Private fbdStartIn As System.Windows.Forms.FolderBrowserDialog
     Private ofdIcon As System.Windows.Forms.OpenFileDialog
     Private ofdTarget As System.Windows.Forms.OpenFileDialog
@@ -242,9 +275,9 @@
     Private lblTarget As System.Windows.Forms.Label
     Friend cbxWindow As System.Windows.Forms.ComboBox
     Friend txtComment As System.Windows.Forms.TextBox
-    Friend txtShortcutKey As System.Windows.Forms.TextBox
+    Friend WithEvents txtShortcutKey As System.Windows.Forms.TextBox
     Private WithEvents btnIconBrowse As System.Windows.Forms.Button
-    Friend txtIconPath As System.Windows.Forms.TextBox
+    Friend WithEvents txtIconPath As System.Windows.Forms.TextBox
     Private WithEvents btnStartIn As System.Windows.Forms.Button
     Friend txtStartIn As System.Windows.Forms.TextBox
     Friend txtArguments As System.Windows.Forms.TextBox
@@ -302,6 +335,45 @@
         
         If WalkmanLib.PickIconDialogShow(selectedFilePath, selectedIconIndex, Me.Handle) Then
             txtIconPath.Text = selectedFilePath & "," & selectedIconIndex
+        End If
+    End Sub
+    
+    Sub txtIconPath_TextChanged() Handles txtIconPath.TextChanged
+        Dim selectedFilePath As String = txtIconPath.Text
+        Dim selectedIconIndex As Integer = 0
+        
+        If selectedFilePath.Contains(",") Then
+            If IsNumeric(selectedFilePath.Substring( selectedFilePath.LastIndexOf(",") +1 )) Then
+                selectedIconIndex = selectedFilePath.Substring( selectedFilePath.LastIndexOf(",") +1 )
+                
+                selectedFilePath = selectedFilePath.Remove(selectedFilePath.LastIndexOf(","))
+            End If
+        End If
+        
+        Try
+            Dim tmpIcon = WalkmanLib.ExtractIconByIndex(selectedFilePath, selectedIconIndex, pbxIcon.Width)
+            pbxIcon.Image = tmpIcon.ToBitmap
+        Catch
+            pbxIcon.Image = Nothing
+        End Try
+    End Sub
+    
+    Sub txtShortcutKey_TextChanged() Handles txtShortcutKey.TextChanged
+        Dim tmpShortcut = WalkmanLib.GetShortcutInfo("C:\tmp.lnk")
+        Dim isValidHotkey As Boolean = True
+        
+        Try
+            tmpShortcut.Hotkey = txtShortcutKey.Text
+        Catch e As ArgumentException
+            isValidHotkey = False
+        End Try
+        
+        If isValidHotkey Then
+            lblStatus.Text = "Valid Shortcut Key"
+            pbxStatus.Image = My.Resources.Resources.accept
+        Else
+            lblStatus.Text = "Invalid Shortcut Key"
+            pbxStatus.Image = My.Resources.Resources.warning
         End If
     End Sub
     
