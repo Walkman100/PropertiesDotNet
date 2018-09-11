@@ -94,6 +94,9 @@ Partial Class PropertiesDotNet
         Me.btnTakeOwn = New System.Windows.Forms.Button()
         Me.lnkAttributes = New System.Windows.Forms.LinkLabel()
         Me.grpFileLocation = New System.Windows.Forms.GroupBox()
+        Me.btnHardlink = New System.Windows.Forms.Button()
+        Me.btnSymlink = New System.Windows.Forms.Button()
+        Me.btnShortcut = New System.Windows.Forms.Button()
         Me.btnClose = New System.Windows.Forms.Button()
         Me.btnMove = New System.Windows.Forms.Button()
         Me.btnCopy = New System.Windows.Forms.Button()
@@ -102,9 +105,6 @@ Partial Class PropertiesDotNet
         Me.chkUseSystem = New System.Windows.Forms.CheckBox()
         Me.bwCalcSize = New System.ComponentModel.BackgroundWorker()
         Me.timerDelayedBrowse = New System.Windows.Forms.Timer(Me.components)
-        Me.btnShortcut = New System.Windows.Forms.Button()
-        Me.btnSymlink = New System.Windows.Forms.Button()
-        Me.btnHardlink = New System.Windows.Forms.Button()
         Me.grpProperties.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpAttributes.SuspendLayout
@@ -870,6 +870,33 @@ Partial Class PropertiesDotNet
         Me.grpFileLocation.TabStop = false
         Me.grpFileLocation.Text = "File location:"
         '
+        'btnHardlink
+        '
+        Me.btnHardlink.Location = New System.Drawing.Point(222, 48)
+        Me.btnHardlink.Name = "btnHardlink"
+        Me.btnHardlink.Size = New System.Drawing.Size(102, 23)
+        Me.btnHardlink.TabIndex = 7
+        Me.btnHardlink.Text = "Create Hardlink..."
+        Me.btnHardlink.UseVisualStyleBackColor = true
+        '
+        'btnSymlink
+        '
+        Me.btnSymlink.Location = New System.Drawing.Point(114, 48)
+        Me.btnSymlink.Name = "btnSymlink"
+        Me.btnSymlink.Size = New System.Drawing.Size(102, 23)
+        Me.btnSymlink.TabIndex = 6
+        Me.btnSymlink.Text = "Create Symlink..."
+        Me.btnSymlink.UseVisualStyleBackColor = true
+        '
+        'btnShortcut
+        '
+        Me.btnShortcut.Location = New System.Drawing.Point(6, 48)
+        Me.btnShortcut.Name = "btnShortcut"
+        Me.btnShortcut.Size = New System.Drawing.Size(102, 23)
+        Me.btnShortcut.TabIndex = 5
+        Me.btnShortcut.Text = "Create Shortcut..."
+        Me.btnShortcut.UseVisualStyleBackColor = true
+        '
         'btnClose
         '
         Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
@@ -937,33 +964,6 @@ Partial Class PropertiesDotNet
         'timerDelayedBrowse
         '
         Me.timerDelayedBrowse.Interval = 50
-        '
-        'btnShortcut
-        '
-        Me.btnShortcut.Location = New System.Drawing.Point(6, 48)
-        Me.btnShortcut.Name = "btnShortcut"
-        Me.btnShortcut.Size = New System.Drawing.Size(102, 23)
-        Me.btnShortcut.TabIndex = 5
-        Me.btnShortcut.Text = "Create Shortcut..."
-        Me.btnShortcut.UseVisualStyleBackColor = true
-        '
-        'btnSymlink
-        '
-        Me.btnSymlink.Location = New System.Drawing.Point(114, 48)
-        Me.btnSymlink.Name = "btnSymlink"
-        Me.btnSymlink.Size = New System.Drawing.Size(102, 23)
-        Me.btnSymlink.TabIndex = 6
-        Me.btnSymlink.Text = "Create Symlink..."
-        Me.btnSymlink.UseVisualStyleBackColor = true
-        '
-        'btnHardlink
-        '
-        Me.btnHardlink.Location = New System.Drawing.Point(222, 48)
-        Me.btnHardlink.Name = "btnHardlink"
-        Me.btnHardlink.Size = New System.Drawing.Size(102, 23)
-        Me.btnHardlink.TabIndex = 7
-        Me.btnHardlink.Text = "Create Hardlink..."
-        Me.btnHardlink.UseVisualStyleBackColor = true
         '
         'PropertiesDotNet
         '

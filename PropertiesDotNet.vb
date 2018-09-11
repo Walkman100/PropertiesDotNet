@@ -826,13 +826,54 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub btnShortcut_Click() Handles btnShortcut.Click
-        
+        If lblExtension.Text = ".lnk" Then
+            MsgBox("Not Implemented")
+        Else
+            SaveFileDialog.InitialDirectory = lblDirectory.Text
+            SaveFileDialog.FileName = "Shortcut to " & lblName.Text & ".lnk"
+            SaveFileDialog.Title = "Choose where to create a Shortcut to """ & lblName.Text & """:"
+            
+            If SaveFileDialog.ShowDialog() = DialogResult.OK Then
+                WalkmanLib.CreateShortcut(SaveFileDialog.FileName, lblFullPath.Text)
+                
+                If MsgBox("Show properties for created Shortcut?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                    lblLocation.Text = SaveFileDialog.FileName
+                    CheckData(True)
+                End If
+            End If
+        End If
     End Sub
     Sub btnSymlink_Click() Handles btnSymlink.Click
+        SaveFileDialog.InitialDirectory = lblDirectory.Text
+        SaveFileDialog.FileName = lblName.Text
+        SaveFileDialog.Title = "Choose where to create a Symlink to """ & lblName.Text & """:"
         
+        If SaveFileDialog.ShowDialog() = DialogResult.OK Then
+            If Exists(lblFullPath.Text) Then
+                WalkmanLib.CreateSymLink(SaveFileDialog.FileName, lblFullPath.Text, SymbolicLinkType.File)
+            Else
+                WalkmanLib.CreateSymLink(SaveFileDialog.FileName, lblFullPath.Text, SymbolicLinkType.Directory)
+            End If
+            
+            If MsgBox("Show properties for created Symlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                lblLocation.Text = SaveFileDialog.FileName
+                CheckData(True)
+            End If
+        End If
     End Sub
     Sub btnHardlink_Click() Handles btnHardlink.Click
+        SaveFileDialog.InitialDirectory = lblDirectory.Text
+        SaveFileDialog.FileName = lblName.Text
+        SaveFileDialog.Title = "Choose where to create a Hardlink to """ & lblName.Text & """:"
         
+        If SaveFileDialog.ShowDialog() = DialogResult.OK Then
+            WalkmanLib.CreateHardLink(SaveFileDialog.FileName, lblFullPath.Text)
+            
+            If MsgBox("Show properties for created Hardlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                lblLocation.Text = SaveFileDialog.FileName
+                CheckData(True)
+            End If
+        End If
     End Sub
     Sub btnClose_Click() Handles btnClose.Click
         Application.Exit
