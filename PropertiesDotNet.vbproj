@@ -29,7 +29,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <OutputPath>bin\Debug\</OutputPath>
-    <StartArguments>..\Release</StartArguments>
+    <StartArguments>"D:\Media\Disk Images\Untested\HasErrors_WALL_E.ISO"</StartArguments>
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -80,6 +80,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SelectDateDialog.vb" />
+    <Compile Include="ShortcutPropertiesDialog.vb" />
     <Compile Include="WalkmanLib\WalkmanLibDotNet.vb">
       <Link>WalkmanLibDotNet.vb</Link>
     </Compile>
