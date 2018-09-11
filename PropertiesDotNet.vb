@@ -190,6 +190,7 @@ Public Class PropertiesDotNet
             lblOpenWithLbl.Text = "Opens with:"
             btnHashes.Image = My.Resources.Resources.hashx16
             btnHashes.Text = "Compute Hashes"
+            If lblExtension.Text = ".lnk" Then btnShortcut.Text = "Shortcut Properties" Else btnShortcut.Text = "Create Shortcut..."
         ElseIf Directory.Exists(lblFullPath.Text)
             If bwCalcSize.IsBusy = False Then
                 If recalculateFolderSize = True Then
@@ -223,6 +224,7 @@ Public Class PropertiesDotNet
             lblOpenWithLbl.Text = "Number of files:"
             btnHashes.Image = My.Resources.Resources.Shell32__326_
             btnHashes.Text = "DirectoryImage..."
+            btnShortcut.Text = "Create Shortcut..."
         End If
         
         If chkUTC.Checked Then
@@ -827,7 +829,7 @@ Public Class PropertiesDotNet
     
     Sub btnShortcut_Click() Handles btnShortcut.Click
         If lblExtension.Text = ".lnk" Then
-            MsgBox("Not Implemented")
+            ShortcutPropertiesDialog.ShowDialog()
         Else
             SaveFileDialog.InitialDirectory = lblDirectory.Text
             SaveFileDialog.FileName = "Shortcut to " & lblName.Text & ".lnk"

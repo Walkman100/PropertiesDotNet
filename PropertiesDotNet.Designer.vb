@@ -872,18 +872,18 @@ Partial Class PropertiesDotNet
         '
         'btnHardlink
         '
-        Me.btnHardlink.Location = New System.Drawing.Point(222, 48)
+        Me.btnHardlink.Location = New System.Drawing.Point(225, 48)
         Me.btnHardlink.Name = "btnHardlink"
-        Me.btnHardlink.Size = New System.Drawing.Size(102, 23)
+        Me.btnHardlink.Size = New System.Drawing.Size(99, 23)
         Me.btnHardlink.TabIndex = 7
         Me.btnHardlink.Text = "Create Hardlink..."
         Me.btnHardlink.UseVisualStyleBackColor = true
         '
         'btnSymlink
         '
-        Me.btnSymlink.Location = New System.Drawing.Point(114, 48)
+        Me.btnSymlink.Location = New System.Drawing.Point(120, 48)
         Me.btnSymlink.Name = "btnSymlink"
-        Me.btnSymlink.Size = New System.Drawing.Size(102, 23)
+        Me.btnSymlink.Size = New System.Drawing.Size(99, 23)
         Me.btnSymlink.TabIndex = 6
         Me.btnSymlink.Text = "Create Symlink..."
         Me.btnSymlink.UseVisualStyleBackColor = true
@@ -892,7 +892,7 @@ Partial Class PropertiesDotNet
         '
         Me.btnShortcut.Location = New System.Drawing.Point(6, 48)
         Me.btnShortcut.Name = "btnShortcut"
-        Me.btnShortcut.Size = New System.Drawing.Size(102, 23)
+        Me.btnShortcut.Size = New System.Drawing.Size(108, 23)
         Me.btnShortcut.TabIndex = 5
         Me.btnShortcut.Text = "Create Shortcut..."
         Me.btnShortcut.UseVisualStyleBackColor = true
