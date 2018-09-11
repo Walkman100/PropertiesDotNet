@@ -146,12 +146,12 @@ Public Class PropertiesDotNet
                 lblDriveAvailableFreeSpace.Text = "Not Ready"
             End If
             If DriveProperties.Name = FileProperties.FullName Then
-                Me.Height = 674
+                Me.Height = 701
             Else
-                Me.Height = 559
+                Me.Height = 586
             End If
         Catch
-            Me.Height = 559
+            Me.Height = 586
         End Try
         
         If Exists(lblFullPath.Text) Then
@@ -823,7 +823,16 @@ Public Class PropertiesDotNet
                 ErrorParser(ex)
             End Try
         End If
-        CheckData
+    End Sub
+    
+    Sub btnShortcut_Click() Handles btnShortcut.Click
+        
+    End Sub
+    Sub btnSymlink_Click() Handles btnSymlink.Click
+        
+    End Sub
+    Sub btnHardlink_Click() Handles btnHardlink.Click
+        
     End Sub
     Sub btnClose_Click() Handles btnClose.Click
         Application.Exit

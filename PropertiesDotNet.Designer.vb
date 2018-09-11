@@ -102,6 +102,9 @@ Partial Class PropertiesDotNet
         Me.chkUseSystem = New System.Windows.Forms.CheckBox()
         Me.bwCalcSize = New System.ComponentModel.BackgroundWorker()
         Me.timerDelayedBrowse = New System.Windows.Forms.Timer(Me.components)
+        Me.btnShortcut = New System.Windows.Forms.Button()
+        Me.btnSymlink = New System.Windows.Forms.Button()
+        Me.btnHardlink = New System.Windows.Forms.Button()
         Me.grpProperties.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpAttributes.SuspendLayout
@@ -851,6 +854,9 @@ Partial Class PropertiesDotNet
         '
         Me.grpFileLocation.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpFileLocation.Controls.Add(Me.btnHardlink)
+        Me.grpFileLocation.Controls.Add(Me.btnSymlink)
+        Me.grpFileLocation.Controls.Add(Me.btnShortcut)
         Me.grpFileLocation.Controls.Add(Me.btnClose)
         Me.grpFileLocation.Controls.Add(Me.btnMove)
         Me.grpFileLocation.Controls.Add(Me.btnCopy)
@@ -859,7 +865,7 @@ Partial Class PropertiesDotNet
         Me.grpFileLocation.Controls.Add(Me.chkUseSystem)
         Me.grpFileLocation.Location = New System.Drawing.Point(2, 470)
         Me.grpFileLocation.Name = "grpFileLocation"
-        Me.grpFileLocation.Size = New System.Drawing.Size(411, 50)
+        Me.grpFileLocation.Size = New System.Drawing.Size(411, 77)
         Me.grpFileLocation.TabIndex = 2
         Me.grpFileLocation.TabStop = false
         Me.grpFileLocation.Text = "File location:"
@@ -868,10 +874,10 @@ Partial Class PropertiesDotNet
         '
         Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnClose.Location = New System.Drawing.Point(330, 19)
+        Me.btnClose.Location = New System.Drawing.Point(330, 48)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(75, 23)
-        Me.btnClose.TabIndex = 5
+        Me.btnClose.TabIndex = 8
         Me.btnClose.Text = "Close"
         Me.btnClose.UseVisualStyleBackColor = true
         '
@@ -932,6 +938,33 @@ Partial Class PropertiesDotNet
         '
         Me.timerDelayedBrowse.Interval = 50
         '
+        'btnShortcut
+        '
+        Me.btnShortcut.Location = New System.Drawing.Point(6, 48)
+        Me.btnShortcut.Name = "btnShortcut"
+        Me.btnShortcut.Size = New System.Drawing.Size(102, 23)
+        Me.btnShortcut.TabIndex = 5
+        Me.btnShortcut.Text = "Create Shortcut..."
+        Me.btnShortcut.UseVisualStyleBackColor = true
+        '
+        'btnSymlink
+        '
+        Me.btnSymlink.Location = New System.Drawing.Point(114, 48)
+        Me.btnSymlink.Name = "btnSymlink"
+        Me.btnSymlink.Size = New System.Drawing.Size(102, 23)
+        Me.btnSymlink.TabIndex = 6
+        Me.btnSymlink.Text = "Create Symlink..."
+        Me.btnSymlink.UseVisualStyleBackColor = true
+        '
+        'btnHardlink
+        '
+        Me.btnHardlink.Location = New System.Drawing.Point(222, 48)
+        Me.btnHardlink.Name = "btnHardlink"
+        Me.btnHardlink.Size = New System.Drawing.Size(102, 23)
+        Me.btnHardlink.TabIndex = 7
+        Me.btnHardlink.Text = "Create Hardlink..."
+        Me.btnHardlink.UseVisualStyleBackColor = true
+        '
         'PropertiesDotNet
         '
         Me.AcceptButton = Me.btnWindowsProperties
@@ -939,7 +972,7 @@ Partial Class PropertiesDotNet
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnClose
-        Me.ClientSize = New System.Drawing.Size(416, 522)
+        Me.ClientSize = New System.Drawing.Size(416, 549)
         Me.Controls.Add(Me.grpFileLocation)
         Me.Controls.Add(Me.grpAttributes)
         Me.Controls.Add(Me.grpProperties)
@@ -957,6 +990,9 @@ Partial Class PropertiesDotNet
         Me.grpFileLocation.PerformLayout
         Me.ResumeLayout(false)
     End Sub
+    Private WithEvents btnShortcut As System.Windows.Forms.Button
+    Private WithEvents btnSymlink As System.Windows.Forms.Button
+    Private WithEvents btnHardlink As System.Windows.Forms.Button
     Private lblDriveTotalFreeSpace As System.Windows.Forms.Label
     Private lblDriveIsReadyLbl As System.Windows.Forms.Label
     Private lblDriveTypeLbl As System.Windows.Forms.Label
