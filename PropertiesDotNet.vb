@@ -829,6 +829,28 @@ Public Class PropertiesDotNet
     
     Sub btnShortcut_Click() Handles btnShortcut.Click
         If lblExtension.Text = ".lnk" Then
+            Dim shortcutInfo = WalkmanLib.GetShortcutInfo(lblFullPath.Text)
+            
+            ShortcutPropertiesDialog.txtTarget.Text = shortcutInfo.TargetPath
+            ShortcutPropertiesDialog.txtArguments.Text = shortcutInfo.Arguments
+            ShortcutPropertiesDialog.txtStartIn.Text = shortcutInfo.WorkingDirectory
+            ShortcutPropertiesDialog.txtIconPath.Text = shortcutInfo.IconLocation
+            ShortcutPropertiesDialog.txtShortcutKey.Text = shortcutInfo.Hotkey
+            ShortcutPropertiesDialog.txtComment.Text = shortcutInfo.Description
+            
+            Select Case shortcutInfo.WindowStyle
+                Case 1 'Normal
+                    ShortcutPropertiesDialog.cbxWindow.SelectedIndex = 0 'Normal Window
+                Case 7 'Minimised
+                    ShortcutPropertiesDialog.cbxWindow.SelectedIndex = 1 'Minimised
+                Case 3 'Maximised
+                    ShortcutPropertiesDialog.cbxWindow.SelectedIndex = 2 'Maximised
+                Case Else
+                    ShortcutPropertiesDialog.cbxWindow.SelectedIndex = 0 ' set it to default
+            End Select
+            
+            ShortcutPropertiesDialog.chkRunAs.Checked = WalkmanLib.GetShortcutRunAsAdmin(lblFullPath.Text)
+            
             ShortcutPropertiesDialog.ShowDialog()
         Else
             SaveFileDialog.InitialDirectory = lblDirectory.Text

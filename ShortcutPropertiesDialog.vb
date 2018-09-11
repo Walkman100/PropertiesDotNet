@@ -46,7 +46,6 @@
         Me.btnCancel.UseVisualStyleBackColor = true
         'btnSave
         Me.btnSave.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.btnSave.Location = New System.Drawing.Point(88, 247)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(75, 23)
@@ -117,6 +116,7 @@
         Me.cbxWindow.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.cbxWindow.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbxWindow.FormattingEnabled = true
+        Me.cbxWindow.Items.AddRange(New Object() {"Normal Window", "Minimised", "Maximised"})
         Me.cbxWindow.Location = New System.Drawing.Point(81, 197)
         Me.cbxWindow.Name = "cbxWindow"
         Me.cbxWindow.Size = New System.Drawing.Size(239, 21)
@@ -191,7 +191,7 @@
         Me.ofdTarget.Title = "Select Shortcut Target"
         'ofdIcon
         Me.ofdIcon.DefaultExt = "ico"
-        Me.ofdIcon.Filter = "Icon Files|*.ico,*.icl,*.exe,*.dll|All Files|*.*"
+        Me.ofdIcon.Filter = "Icon Files|*.ico;*.icl;*.exe;*.dll|All Files|*.*"
         Me.ofdIcon.Title = "Select Shortcut Icon File"
         'fbdStartIn
         Me.fbdStartIn.Description = "Select Start In folder for Shortcut:"
@@ -232,7 +232,7 @@
     Private ofdIcon As System.Windows.Forms.OpenFileDialog
     Private ofdTarget As System.Windows.Forms.OpenFileDialog
     Private WithEvents btnIconPick As System.Windows.Forms.Button
-    Private chkRunAs As System.Windows.Forms.CheckBox
+    Friend chkRunAs As System.Windows.Forms.CheckBox
     Private lblWindow As System.Windows.Forms.Label
     Private lblComment As System.Windows.Forms.Label
     Private lblShortcutKey As System.Windows.Forms.Label
@@ -240,20 +240,75 @@
     Private lblStartIn As System.Windows.Forms.Label
     Private lblArguments As System.Windows.Forms.Label
     Private lblTarget As System.Windows.Forms.Label
-    Private cbxWindow As System.Windows.Forms.ComboBox
-    Private txtComment As System.Windows.Forms.TextBox
-    Private txtShortcutKey As System.Windows.Forms.TextBox
+    Friend cbxWindow As System.Windows.Forms.ComboBox
+    Friend txtComment As System.Windows.Forms.TextBox
+    Friend txtShortcutKey As System.Windows.Forms.TextBox
     Private WithEvents btnIconBrowse As System.Windows.Forms.Button
-    Private txtIconPath As System.Windows.Forms.TextBox
+    Friend txtIconPath As System.Windows.Forms.TextBox
     Private WithEvents btnStartIn As System.Windows.Forms.Button
-    Private txtStartIn As System.Windows.Forms.TextBox
-    Private txtArguments As System.Windows.Forms.TextBox
-    Private txtTarget As System.Windows.Forms.TextBox
+    Friend txtStartIn As System.Windows.Forms.TextBox
+    Friend txtArguments As System.Windows.Forms.TextBox
+    Friend txtTarget As System.Windows.Forms.TextBox
     Private WithEvents btnTarget As System.Windows.Forms.Button
     Private WithEvents btnSave As System.Windows.Forms.Button
     Private btnCancel As System.Windows.Forms.Button
     
     Public Sub New()
         Me.InitializeComponent()
+        cbxWindow.SelectedIndex = 0
+    End Sub
+    
+    Sub btnTarget_Click() Handles btnTarget.Click
+        ofdTarget.FileName = txtTarget.Text
+        
+        If ofdTarget.ShowDialog() = DialogResult.OK Then
+            txtTarget.Text = ofdTarget.FileName
+        End If
+    End Sub
+    
+    Sub btnStartIn_Click() Handles btnStartIn.Click
+        fbdStartIn.SelectedPath = txtStartIn.Text
+        
+        If fbdStartIn.ShowDialog() = DialogResult.OK Then
+            txtStartIn.Text = fbdStartIn.SelectedPath
+        End If
+    End Sub
+    
+    Sub btnIconBrowse_Click() Handles btnIconBrowse.Click
+        ofdIcon.FileName = txtIconPath.Text
+        
+        If ofdIcon.FileName.Contains(",") Then
+            If IsNumeric(ofdIcon.FileName.Substring( ofdIcon.FileName.LastIndexOf(",") +1 )) Then
+                ofdIcon.FileName = ofdIcon.FileName.Remove(ofdIcon.FileName.LastIndexOf(","))
+            End If
+        End If
+        
+        If ofdIcon.ShowDialog() = DialogResult.OK Then
+            txtIconPath.Text = ofdIcon.FileName
+        End If
+    End Sub
+    
+    Sub btnIconPick_Click() Handles btnIconPick.Click
+        Dim selectedFilePath As String = txtIconPath.Text
+        Dim selectedIconIndex As Integer
+        
+        If selectedFilePath.Contains(",") Then
+            If IsNumeric(selectedFilePath.Substring( selectedFilePath.LastIndexOf(",") +1 )) Then
+                selectedIconIndex = selectedFilePath.Substring( selectedFilePath.LastIndexOf(",") +1 )
+                
+                selectedFilePath = selectedFilePath.Remove(selectedFilePath.LastIndexOf(","))
+            End If
+        End If
+        
+        If WalkmanLib.PickIconDialogShow(selectedFilePath, selectedIconIndex, Me.Handle) Then
+            txtIconPath.Text = selectedFilePath & "," & selectedIconIndex
+        End If
+    End Sub
+    
+    Sub btnSave_Click() Handles btnSave.Click
+        
+        
+        
+        WalkmanLib.CreateShortcut(PropertiesDotNet.lblLocation.Text, txtTarget.Text, txtArguments.Text, txtStartIn.Text, txtIconPath.Text, txtComment.Text, txtShortcutKey.Text, FormWindowState.Parse(GetType(FormWindowState), cbxWindow.SelectedItem.ToString))
     End Sub
 End Class
