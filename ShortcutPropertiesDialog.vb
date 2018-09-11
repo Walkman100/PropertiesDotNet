@@ -306,9 +306,36 @@
     End Sub
     
     Sub btnSave_Click() Handles btnSave.Click
+        Dim windowStyle As FormWindowState
         
+        Select Case cbxWindow.SelectedIndex
+            Case 0 'Normal Window
+                windowStyle = FormWindowState.Normal
+            Case 1 'Minimised
+                windowStyle = FormWindowState.Minimized
+            Case 2 'Maximised
+                windowStyle = FormWindowState.Maximized
+        End Select
         
+        Try
+            WalkmanLib.CreateShortcut(PropertiesDotNet.lblLocation.Text, txtTarget.Text, txtArguments.Text, _
+                    txtStartIn.Text, txtIconPath.Text, txtComment.Text, txtShortcutKey.Text, windowStyle)
+        Catch ex As ArgumentException
+            If ex.Message = "Value does not fall within the expected range." Then
+                ' https://ss64.com/vb/shortcut.html
+                MsgBox("Incorrect Shortcut Key!" & vbNewLine & vbNewLine & _
+                    "HotKey mappings are only usable if the shortcut is on the Desktop or in the Start Menu." & vbNewLine & vbNewLine & _
+                    "Valid hot key-options:" & vbNewLine & vbNewLine & """ALT+"", ""CTRL+"", ""SHIFT+"", and ""EXT+""." & vbNewLine & vbNewLine & _
+                    """A"" .. ""Z"", ""0"" .. ""9"", ""NUMPAD0"" .. ""NUMPAD9"", ""Back"", ""Tab"", ""Clear"", ""Return"", ""Escape"", ""Space"", and ""Prior"".", _
+                    MsgBoxStyle.Critical, "Error saving Shortcut properties")
+                Exit Sub
+            Else
+                Throw
+            End If
+        End Try
         
-        WalkmanLib.CreateShortcut(PropertiesDotNet.lblLocation.Text, txtTarget.Text, txtArguments.Text, txtStartIn.Text, txtIconPath.Text, txtComment.Text, txtShortcutKey.Text, FormWindowState.Parse(GetType(FormWindowState), cbxWindow.SelectedItem.ToString))
+        WalkmanLib.SetShortcutRunAsAdmin(PropertiesDotNet.lblLocation.Text, chkRunAs.Checked)
+        
+        Me.DialogResult = DialogResult.OK
     End Sub
 End Class
