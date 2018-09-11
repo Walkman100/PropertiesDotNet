@@ -64,12 +64,20 @@ Public Class PropertiesDotNet
     End Sub
     Sub PropertiesDotNet_DragDrop(sender As Object, e As DragEventArgs) Handles Me.DragDrop
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
-            If Not Exists(e.Data.GetData(DataFormats.FileDrop)(0)) And Not Directory.Exists(e.Data.GetData(DataFormats.FileDrop)(0))
-                MsgBox("File or directory """ & e.Data.GetData(DataFormats.FileDrop)(0) & """ not found!", MsgBoxStyle.Critical)
-                Exit Sub
+            Dim newFilePath As String = e.Data.GetData(DataFormats.FileDrop)(0)
+            
+            If Not Exists(newFilePath) And Not Directory.Exists(newFilePath) Then
+                Try
+                    If Not New DriveInfo(newFilePath).Name = New FileInfo(newFilePath).FullName Then
+                        Throw New Exception
+                    End If
+                Catch
+                    MsgBox("File, directory or drive """ & newFilePath & """ not found!", MsgBoxStyle.Critical)
+                    Exit Sub
+                End Try
             End If
             
-            lblLocation.Text = e.Data.GetData(DataFormats.FileDrop)(0)
+            lblLocation.Text = newFilePath
             imgFile.Image = My.Resources.Resources.loading4
             ShowImageBox
             CheckData(True)
