@@ -80,19 +80,19 @@ Partial Class PropertiesDotNet
         Me.lblPathLbl = New System.Windows.Forms.Label()
         Me.lblOpenWith = New System.Windows.Forms.Label()
         Me.grpAttributes = New System.Windows.Forms.GroupBox()
-        Me.btnTakeOwn = New System.Windows.Forms.Button()
-        Me.lnkAttributes = New System.Windows.Forms.LinkLabel()
         Me.chkSparse = New System.Windows.Forms.CheckBox()
         Me.chkReparse = New System.Windows.Forms.CheckBox()
-        Me.chkOffline = New System.Windows.Forms.CheckBox()
-        Me.chkNotIndexed = New System.Windows.Forms.CheckBox()
-        Me.chkNoScrub = New System.Windows.Forms.CheckBox()
         Me.chkIntegrity = New System.Windows.Forms.CheckBox()
+        Me.chkNoScrub = New System.Windows.Forms.CheckBox()
         Me.chkTemporary = New System.Windows.Forms.CheckBox()
-        Me.chkArchive = New System.Windows.Forms.CheckBox()
+        Me.chkOffline = New System.Windows.Forms.CheckBox()
         Me.chkEncrypted = New System.Windows.Forms.CheckBox()
         Me.chkCompressed = New System.Windows.Forms.CheckBox()
+        Me.chkNotIndexed = New System.Windows.Forms.CheckBox()
+        Me.chkArchive = New System.Windows.Forms.CheckBox()
         Me.chkReadOnly = New System.Windows.Forms.CheckBox()
+        Me.btnTakeOwn = New System.Windows.Forms.Button()
+        Me.lnkAttributes = New System.Windows.Forms.LinkLabel()
         Me.grpFileLocation = New System.Windows.Forms.GroupBox()
         Me.btnClose = New System.Windows.Forms.Button()
         Me.btnMove = New System.Windows.Forms.Button()
@@ -137,7 +137,7 @@ Partial Class PropertiesDotNet
         Me.chkSystem.Location = New System.Drawing.Point(6, 49)
         Me.chkSystem.Name = "chkSystem"
         Me.chkSystem.Size = New System.Drawing.Size(60, 17)
-        Me.chkSystem.TabIndex = 4
+        Me.chkSystem.TabIndex = 2
         Me.chkSystem.Text = "System"
         Me.chkSystem.UseVisualStyleBackColor = true
         '
@@ -711,6 +711,116 @@ Partial Class PropertiesDotNet
         Me.grpAttributes.TabStop = false
         Me.grpAttributes.Text = "Attributes:"
         '
+        'chkSparse
+        '
+        Me.chkSparse.AutoSize = true
+        Me.chkSparse.Location = New System.Drawing.Point(6, 199)
+        Me.chkSparse.Name = "chkSparse"
+        Me.chkSparse.Size = New System.Drawing.Size(89, 17)
+        Me.chkSparse.TabIndex = 12
+        Me.chkSparse.Text = "Is Sparse File"
+        Me.chkSparse.UseVisualStyleBackColor = true
+        '
+        'chkReparse
+        '
+        Me.chkReparse.AutoSize = true
+        Me.chkReparse.Location = New System.Drawing.Point(6, 184)
+        Me.chkReparse.Name = "chkReparse"
+        Me.chkReparse.Size = New System.Drawing.Size(104, 17)
+        Me.chkReparse.TabIndex = 11
+        Me.chkReparse.Text = "Is Reparse Point"
+        Me.chkReparse.UseVisualStyleBackColor = true
+        '
+        'chkIntegrity
+        '
+        Me.chkIntegrity.AutoSize = true
+        Me.chkIntegrity.Location = New System.Drawing.Point(6, 169)
+        Me.chkIntegrity.Name = "chkIntegrity"
+        Me.chkIntegrity.Size = New System.Drawing.Size(129, 17)
+        Me.chkIntegrity.TabIndex = 10
+        Me.chkIntegrity.Text = "Data Integrity Support"
+        Me.chkIntegrity.UseVisualStyleBackColor = true
+        '
+        'chkNoScrub
+        '
+        Me.chkNoScrub.AutoSize = true
+        Me.chkNoScrub.Location = New System.Drawing.Point(6, 154)
+        Me.chkNoScrub.Name = "chkNoScrub"
+        Me.chkNoScrub.Size = New System.Drawing.Size(97, 17)
+        Me.chkNoScrub.TabIndex = 9
+        Me.chkNoScrub.Text = "No Scrub Data"
+        Me.chkNoScrub.UseVisualStyleBackColor = true
+        '
+        'chkTemporary
+        '
+        Me.chkTemporary.AutoSize = true
+        Me.chkTemporary.Location = New System.Drawing.Point(6, 139)
+        Me.chkTemporary.Name = "chkTemporary"
+        Me.chkTemporary.Size = New System.Drawing.Size(76, 17)
+        Me.chkTemporary.TabIndex = 8
+        Me.chkTemporary.Text = "Temporary"
+        Me.chkTemporary.UseVisualStyleBackColor = true
+        '
+        'chkOffline
+        '
+        Me.chkOffline.AutoSize = true
+        Me.chkOffline.Location = New System.Drawing.Point(6, 124)
+        Me.chkOffline.Name = "chkOffline"
+        Me.chkOffline.Size = New System.Drawing.Size(56, 17)
+        Me.chkOffline.TabIndex = 7
+        Me.chkOffline.Text = "Offline"
+        Me.chkOffline.UseVisualStyleBackColor = true
+        '
+        'chkEncrypted
+        '
+        Me.chkEncrypted.AutoSize = true
+        Me.chkEncrypted.Location = New System.Drawing.Point(6, 109)
+        Me.chkEncrypted.Name = "chkEncrypted"
+        Me.chkEncrypted.Size = New System.Drawing.Size(74, 17)
+        Me.chkEncrypted.TabIndex = 6
+        Me.chkEncrypted.Text = "Encrypted"
+        Me.chkEncrypted.UseVisualStyleBackColor = true
+        '
+        'chkCompressed
+        '
+        Me.chkCompressed.AutoSize = true
+        Me.chkCompressed.Location = New System.Drawing.Point(6, 94)
+        Me.chkCompressed.Name = "chkCompressed"
+        Me.chkCompressed.Size = New System.Drawing.Size(84, 17)
+        Me.chkCompressed.TabIndex = 5
+        Me.chkCompressed.Text = "Compressed"
+        Me.chkCompressed.UseVisualStyleBackColor = true
+        '
+        'chkNotIndexed
+        '
+        Me.chkNotIndexed.AutoSize = true
+        Me.chkNotIndexed.Location = New System.Drawing.Point(6, 79)
+        Me.chkNotIndexed.Name = "chkNotIndexed"
+        Me.chkNotIndexed.Size = New System.Drawing.Size(84, 17)
+        Me.chkNotIndexed.TabIndex = 4
+        Me.chkNotIndexed.Text = "Not Indexed"
+        Me.chkNotIndexed.UseVisualStyleBackColor = true
+        '
+        'chkArchive
+        '
+        Me.chkArchive.AutoSize = true
+        Me.chkArchive.Location = New System.Drawing.Point(6, 64)
+        Me.chkArchive.Name = "chkArchive"
+        Me.chkArchive.Size = New System.Drawing.Size(62, 17)
+        Me.chkArchive.TabIndex = 3
+        Me.chkArchive.Text = "Archive"
+        Me.chkArchive.UseVisualStyleBackColor = true
+        '
+        'chkReadOnly
+        '
+        Me.chkReadOnly.AutoSize = true
+        Me.chkReadOnly.Location = New System.Drawing.Point(6, 19)
+        Me.chkReadOnly.Name = "chkReadOnly"
+        Me.chkReadOnly.Size = New System.Drawing.Size(76, 17)
+        Me.chkReadOnly.TabIndex = 0
+        Me.chkReadOnly.Text = "Read-Only"
+        Me.chkReadOnly.UseVisualStyleBackColor = true
+        '
         'btnTakeOwn
         '
         Me.btnTakeOwn.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
@@ -736,116 +846,6 @@ Partial Class PropertiesDotNet
         Me.lnkAttributes.TabStop = true
         Me.lnkAttributes.Text = "See full description here"
         Me.lnkAttributes.UseCompatibleTextRendering = true
-        '
-        'chkSparse
-        '
-        Me.chkSparse.AutoSize = true
-        Me.chkSparse.Location = New System.Drawing.Point(6, 199)
-        Me.chkSparse.Name = "chkSparse"
-        Me.chkSparse.Size = New System.Drawing.Size(89, 17)
-        Me.chkSparse.TabIndex = 12
-        Me.chkSparse.Text = "Is Sparse File"
-        Me.chkSparse.UseVisualStyleBackColor = true
-        '
-        'chkReparse
-        '
-        Me.chkReparse.AutoSize = true
-        Me.chkReparse.Location = New System.Drawing.Point(6, 184)
-        Me.chkReparse.Name = "chkReparse"
-        Me.chkReparse.Size = New System.Drawing.Size(104, 17)
-        Me.chkReparse.TabIndex = 11
-        Me.chkReparse.Text = "Is Reparse Point"
-        Me.chkReparse.UseVisualStyleBackColor = true
-        '
-        'chkOffline
-        '
-        Me.chkOffline.AutoSize = true
-        Me.chkOffline.Location = New System.Drawing.Point(6, 124)
-        Me.chkOffline.Name = "chkOffline"
-        Me.chkOffline.Size = New System.Drawing.Size(56, 17)
-        Me.chkOffline.TabIndex = 10
-        Me.chkOffline.Text = "Offline"
-        Me.chkOffline.UseVisualStyleBackColor = true
-        '
-        'chkNotIndexed
-        '
-        Me.chkNotIndexed.AutoSize = true
-        Me.chkNotIndexed.Location = New System.Drawing.Point(6, 79)
-        Me.chkNotIndexed.Name = "chkNotIndexed"
-        Me.chkNotIndexed.Size = New System.Drawing.Size(84, 17)
-        Me.chkNotIndexed.TabIndex = 9
-        Me.chkNotIndexed.Text = "Not Indexed"
-        Me.chkNotIndexed.UseVisualStyleBackColor = true
-        '
-        'chkNoScrub
-        '
-        Me.chkNoScrub.AutoSize = true
-        Me.chkNoScrub.Location = New System.Drawing.Point(6, 154)
-        Me.chkNoScrub.Name = "chkNoScrub"
-        Me.chkNoScrub.Size = New System.Drawing.Size(97, 17)
-        Me.chkNoScrub.TabIndex = 8
-        Me.chkNoScrub.Text = "No Scrub Data"
-        Me.chkNoScrub.UseVisualStyleBackColor = true
-        '
-        'chkIntegrity
-        '
-        Me.chkIntegrity.AutoSize = true
-        Me.chkIntegrity.Location = New System.Drawing.Point(6, 169)
-        Me.chkIntegrity.Name = "chkIntegrity"
-        Me.chkIntegrity.Size = New System.Drawing.Size(129, 17)
-        Me.chkIntegrity.TabIndex = 7
-        Me.chkIntegrity.Text = "Data Integrity Support"
-        Me.chkIntegrity.UseVisualStyleBackColor = true
-        '
-        'chkTemporary
-        '
-        Me.chkTemporary.AutoSize = true
-        Me.chkTemporary.Location = New System.Drawing.Point(6, 139)
-        Me.chkTemporary.Name = "chkTemporary"
-        Me.chkTemporary.Size = New System.Drawing.Size(76, 17)
-        Me.chkTemporary.TabIndex = 6
-        Me.chkTemporary.Text = "Temporary"
-        Me.chkTemporary.UseVisualStyleBackColor = true
-        '
-        'chkArchive
-        '
-        Me.chkArchive.AutoSize = true
-        Me.chkArchive.Location = New System.Drawing.Point(6, 64)
-        Me.chkArchive.Name = "chkArchive"
-        Me.chkArchive.Size = New System.Drawing.Size(62, 17)
-        Me.chkArchive.TabIndex = 5
-        Me.chkArchive.Text = "Archive"
-        Me.chkArchive.UseVisualStyleBackColor = true
-        '
-        'chkEncrypted
-        '
-        Me.chkEncrypted.AutoSize = true
-        Me.chkEncrypted.Location = New System.Drawing.Point(6, 109)
-        Me.chkEncrypted.Name = "chkEncrypted"
-        Me.chkEncrypted.Size = New System.Drawing.Size(74, 17)
-        Me.chkEncrypted.TabIndex = 3
-        Me.chkEncrypted.Text = "Encrypted"
-        Me.chkEncrypted.UseVisualStyleBackColor = true
-        '
-        'chkCompressed
-        '
-        Me.chkCompressed.AutoSize = true
-        Me.chkCompressed.Location = New System.Drawing.Point(6, 94)
-        Me.chkCompressed.Name = "chkCompressed"
-        Me.chkCompressed.Size = New System.Drawing.Size(84, 17)
-        Me.chkCompressed.TabIndex = 2
-        Me.chkCompressed.Text = "Compressed"
-        Me.chkCompressed.UseVisualStyleBackColor = true
-        '
-        'chkReadOnly
-        '
-        Me.chkReadOnly.AutoSize = true
-        Me.chkReadOnly.Location = New System.Drawing.Point(6, 19)
-        Me.chkReadOnly.Name = "chkReadOnly"
-        Me.chkReadOnly.Size = New System.Drawing.Size(76, 17)
-        Me.chkReadOnly.TabIndex = 0
-        Me.chkReadOnly.Text = "Read-Only"
-        Me.chkReadOnly.UseVisualStyleBackColor = true
         '
         'grpFileLocation
         '
@@ -877,10 +877,10 @@ Partial Class PropertiesDotNet
         '
         'btnMove
         '
-        Me.btnMove.Location = New System.Drawing.Point(249, 19)
+        Me.btnMove.Location = New System.Drawing.Point(87, 19)
         Me.btnMove.Name = "btnMove"
         Me.btnMove.Size = New System.Drawing.Size(75, 23)
-        Me.btnMove.TabIndex = 3
+        Me.btnMove.TabIndex = 1
         Me.btnMove.Text = "Move To..."
         Me.btnMove.UseVisualStyleBackColor = true
         '
@@ -895,10 +895,10 @@ Partial Class PropertiesDotNet
         '
         'btnDelete
         '
-        Me.btnDelete.Location = New System.Drawing.Point(87, 19)
+        Me.btnDelete.Location = New System.Drawing.Point(249, 19)
         Me.btnDelete.Name = "btnDelete"
         Me.btnDelete.Size = New System.Drawing.Size(75, 23)
-        Me.btnDelete.TabIndex = 1
+        Me.btnDelete.TabIndex = 3
         Me.btnDelete.Text = "Delete"
         Me.btnDelete.UseVisualStyleBackColor = true
         '

@@ -688,29 +688,29 @@ Public Class PropertiesDotNet
         End If
         CheckData
     End Sub
-    Sub btnDelete_Click() Handles btnDelete.Click
+    Sub btnMove_Click() Handles btnMove.Click
         Dim FileProperties As New FileInfo(lblFullPath.Text)
-        If MsgBox("Are you sure you want to delete """ & FileProperties.Name & """?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+        SaveFileDialog.InitialDirectory = FileProperties.DirectoryName
+        SaveFileDialog.FileName = FileProperties.Name
+        SaveFileDialog.Title = "Choose where to move """ & FileProperties.Name & """ to:"
+        If SaveFileDialog.ShowDialog() = DialogResult.OK Then
             Try
                 If chkUseSystem.Checked Then
                     If Exists(lblFullPath.Text) Then
-                        My.Computer.FileSystem.DeleteFile(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
-                    Else
-                        My.Computer.FileSystem.DeleteDirectory(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
+                        My.Computer.FileSystem.MoveFile(lblFullPath.Text, SaveFileDialog.FileName, FileIO.UIOption.AllDialogs)
+                    ElseIf Directory.Exists(lblFullPath.Text)
+                        My.Computer.FileSystem.MoveDirectory(lblFullPath.Text, SaveFileDialog.FileName, FileIO.UIOption.AllDialogs)
                     End If
                 Else
-                    If Exists(lblFullPath.Text) Then
-                        FileProperties.Delete
-                    ElseIf Directory.Exists(lblFullPath.Text)
-                        BackgroundProgress.bwFolderOperations.RunWorkerAsync({"delete", lblFullPath.Text})
-                        BackgroundProgress.ShowDialog
-                    End If
+                    FileProperties.MoveTo(SaveFileDialog.FileName)
                 End If
-                Application.Exit
+                lblLocation.Text = SaveFileDialog.FileName
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    WalkmanLib.RunAsAdmin("cmd", "/k del """ & lblFullPath.Text & """")
+                    WalkmanLib.RunAsAdmin("cmd", "/k move """ & lblFullPath.Text & """ """ & SaveFileDialog.FileName & """")
+                    If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+                      lblLocation.Text = SaveFileDialog.FileName
                 Else
                     ErrorParser(ex)
                 End If
@@ -785,29 +785,29 @@ Public Class PropertiesDotNet
             CheckData
         End If
     End Sub
-    Sub btnMove_Click() Handles btnMove.Click
+    Sub btnDelete_Click() Handles btnDelete.Click
         Dim FileProperties As New FileInfo(lblFullPath.Text)
-        SaveFileDialog.InitialDirectory = FileProperties.DirectoryName
-        SaveFileDialog.FileName = FileProperties.Name
-        SaveFileDialog.Title = "Choose where to move """ & FileProperties.Name & """ to:"
-        If SaveFileDialog.ShowDialog() = DialogResult.OK Then
+        If MsgBox("Are you sure you want to delete """ & FileProperties.Name & """?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
             Try
                 If chkUseSystem.Checked Then
                     If Exists(lblFullPath.Text) Then
-                        My.Computer.FileSystem.MoveFile(lblFullPath.Text, SaveFileDialog.FileName, FileIO.UIOption.AllDialogs)
-                    ElseIf Directory.Exists(lblFullPath.Text)
-                        My.Computer.FileSystem.MoveDirectory(lblFullPath.Text, SaveFileDialog.FileName, FileIO.UIOption.AllDialogs)
+                        My.Computer.FileSystem.DeleteFile(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
+                    Else
+                        My.Computer.FileSystem.DeleteDirectory(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
                     End If
                 Else
-                    FileProperties.MoveTo(SaveFileDialog.FileName)
+                    If Exists(lblFullPath.Text) Then
+                        FileProperties.Delete
+                    ElseIf Directory.Exists(lblFullPath.Text)
+                        BackgroundProgress.bwFolderOperations.RunWorkerAsync({"delete", lblFullPath.Text})
+                        BackgroundProgress.ShowDialog
+                    End If
                 End If
-                lblLocation.Text = SaveFileDialog.FileName
+                Application.Exit
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    WalkmanLib.RunAsAdmin("cmd", "/k move """ & lblFullPath.Text & """ """ & SaveFileDialog.FileName & """")
-                    If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-                      lblLocation.Text = SaveFileDialog.FileName
+                    WalkmanLib.RunAsAdmin("cmd", "/k del """ & lblFullPath.Text & """")
                 Else
                     ErrorParser(ex)
                 End If
