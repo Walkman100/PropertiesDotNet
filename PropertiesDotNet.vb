@@ -849,7 +849,12 @@ Public Class PropertiesDotNet
                     ShortcutPropertiesDialog.cbxWindow.SelectedIndex = 0 ' set it to default
             End Select
             
-            ShortcutPropertiesDialog.chkRunAs.Checked = WalkmanLib.GetShortcutRunAsAdmin(lblFullPath.Text)
+            Try
+                ShortcutPropertiesDialog.chkRunAs.Checked = WalkmanLib.GetShortcutRunAsAdmin(lblFullPath.Text)
+                ShortcutPropertiesDialog.chkRunAs.Enabled = True
+            Catch
+                ShortcutPropertiesDialog.chkRunAs.Enabled = False
+            End Try
             
             ShortcutPropertiesDialog.ShowDialog()
         Else
