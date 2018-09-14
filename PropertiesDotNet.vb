@@ -190,7 +190,7 @@ Public Class PropertiesDotNet
             lblOpenWithLbl.Text = "Opens with:"
             btnHashes.Image = My.Resources.Resources.hashx16
             btnHashes.Text = "Compute Hashes"
-            If lblExtension.Text = ".lnk" Then btnShortcut.Text = "Shortcut Properties" Else btnShortcut.Text = "Create Shortcut..."
+            If lblExtension.Text.ToLower() = ".lnk" Then btnShortcut.Text = "Shortcut Properties" Else btnShortcut.Text = "Create Shortcut..."
         ElseIf Directory.Exists(lblFullPath.Text)
             If bwCalcSize.IsBusy = False Then
                 If recalculateFolderSize = True Then
@@ -828,7 +828,7 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub btnShortcut_Click() Handles btnShortcut.Click
-        If lblExtension.Text = ".lnk" Then
+        If lblExtension.Text.ToLower() = ".lnk" Then
             Dim shortcutInfo = WalkmanLib.GetShortcutInfo(lblFullPath.Text)
             
             ShortcutPropertiesDialog.txtTarget.Text = shortcutInfo.TargetPath
