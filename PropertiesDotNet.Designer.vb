@@ -105,6 +105,7 @@ Partial Class PropertiesDotNet
         Me.chkUseSystem = New System.Windows.Forms.CheckBox()
         Me.bwCalcSize = New System.ComponentModel.BackgroundWorker()
         Me.timerDelayedBrowse = New System.Windows.Forms.Timer(Me.components)
+        Me.lblVersion = New System.Windows.Forms.Label()
         Me.grpProperties.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpAttributes.SuspendLayout
@@ -965,6 +966,18 @@ Partial Class PropertiesDotNet
         '
         Me.timerDelayedBrowse.Interval = 50
         '
+        'lblVersion
+        '
+        Me.lblVersion.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblVersion.AutoSize = true
+        Me.lblVersion.BackColor = System.Drawing.Color.Transparent
+        Me.lblVersion.Font = New System.Drawing.Font("Microsoft Sans Serif", 6!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblVersion.Location = New System.Drawing.Point(382, 540)
+        Me.lblVersion.Name = "lblVersion"
+        Me.lblVersion.Size = New System.Drawing.Size(21, 9)
+        Me.lblVersion.TabIndex = 3
+        Me.lblVersion.Text = "1.0.0"
+        '
         'PropertiesDotNet
         '
         Me.AcceptButton = Me.btnWindowsProperties
@@ -973,6 +986,7 @@ Partial Class PropertiesDotNet
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnClose
         Me.ClientSize = New System.Drawing.Size(416, 549)
+        Me.Controls.Add(Me.lblVersion)
         Me.Controls.Add(Me.grpFileLocation)
         Me.Controls.Add(Me.grpAttributes)
         Me.Controls.Add(Me.grpProperties)
@@ -989,7 +1003,9 @@ Partial Class PropertiesDotNet
         Me.grpFileLocation.ResumeLayout(false)
         Me.grpFileLocation.PerformLayout
         Me.ResumeLayout(false)
+        Me.PerformLayout
     End Sub
+    Private lblVersion As System.Windows.Forms.Label
     Private WithEvents btnShortcut As System.Windows.Forms.Button
     Private WithEvents btnSymlink As System.Windows.Forms.Button
     Private WithEvents btnHardlink As System.Windows.Forms.Button

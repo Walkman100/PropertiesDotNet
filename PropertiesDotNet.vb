@@ -19,6 +19,7 @@ Public Class PropertiesDotNet
     
     Sub timerDelayedBrowse_Tick() Handles timerDelayedBrowse.Tick
         timerDelayedBrowse.Stop
+        lblVersion.Text = My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & "." & My.Application.Info.Version.Build
         If lblLocation.Text = "Checking..." Then
             Dim OpenFileDialog As New OpenFileDialog()
             OpenFileDialog.Filter = "All Files|*.*"
