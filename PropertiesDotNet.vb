@@ -863,10 +863,10 @@ Public Class PropertiesDotNet
             SaveFileDialog.Title = "Choose where to create a Shortcut to """ & lblName.Text & """:"
             
             If SaveFileDialog.ShowDialog() = DialogResult.OK Then
-                WalkmanLib.CreateShortcut(SaveFileDialog.FileName, lblFullPath.Text)
+                Dim newShortcutPath As String = WalkmanLib.CreateShortcut(SaveFileDialog.FileName, lblFullPath.Text)
                 
                 If MsgBox("Show properties for created Shortcut?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                    lblLocation.Text = SaveFileDialog.FileName
+                    lblLocation.Text = newShortcutPath
                     CheckData(True)
                 End If
             End If
