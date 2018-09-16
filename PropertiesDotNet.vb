@@ -636,6 +636,8 @@ Public Class PropertiesDotNet
                 Else
                     ErrorParser(New UnauthorizedAccessException(output))
                 End If
+            ElseIf output = "Error:  The directory is not empty." And chkTemporary.Checked = False Then
+                MsgBox("Error! The directory contains items that cannot be kept in a case-insensitive directory. Either move or rename these items first.", MsgBoxStyle.Exclamation)
             Else
                 MsgBox(output, MsgBoxStyle.Information)
             End If
