@@ -937,9 +937,6 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub ErrorParser(ex As Exception)
-        ''' <summary>
-        ''' Copied from DirectoryImage (see the end of the file)
-        ''' </summary>
         If ex.GetType.ToString = "System.UnauthorizedAccessException" AndAlso Not WalkmanLib.IsAdmin() Then
             If MsgBox(ex.message & vbnewline & vbnewline & "Try launching PropertiesDotNet As Administrator?", _
               MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
@@ -947,7 +944,7 @@ Public Class PropertiesDotNet
                 Application.Exit
             End If
         Else
-            WalkmanLib.ErrorDialog(ex)
+            WalkmanLib.ErrorDialog(ex,,, Me)
         End If
     End Sub
     
