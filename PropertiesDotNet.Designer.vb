@@ -418,6 +418,8 @@ Partial Class PropertiesDotNet
         'btnOpenWith
         '
         Me.btnOpenWith.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnOpenWith.Image = Global.PropertiesDotNet.My.Resources.Resources.mouse_right_click_8x
+        Me.btnOpenWith.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnOpenWith.Location = New System.Drawing.Point(285, 96)
         Me.btnOpenWith.Name = "btnOpenWith"
         Me.btnOpenWith.Size = New System.Drawing.Size(75, 23)
@@ -920,6 +922,8 @@ Partial Class PropertiesDotNet
         '
         'btnCopy
         '
+        Me.btnCopy.Image = Global.PropertiesDotNet.My.Resources.Resources.mouse_right_click_8x
+        Me.btnCopy.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnCopy.Location = New System.Drawing.Point(168, 19)
         Me.btnCopy.Name = "btnCopy"
         Me.btnCopy.Size = New System.Drawing.Size(75, 23)
