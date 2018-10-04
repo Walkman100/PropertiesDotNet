@@ -554,6 +554,18 @@ Public Class PropertiesDotNet
         WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Hidden, chkHidden.Checked)
         CheckData
     End Sub
+    Sub chkSystem_Click() Handles chkSystem.Click
+        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.System, chkSystem.Checked)
+        CheckData
+    End Sub
+    Sub chkArchive_Click() Handles chkArchive.Click
+        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Archive, chkArchive.Checked)
+        CheckData
+    End Sub
+    Sub chkNotIndexed_Click() Handles chkNotIndexed.Click
+        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.NotContentIndexed, chkNotIndexed.Checked)
+        CheckData
+    End Sub
     Sub chkCompressed_Click() Handles chkCompressed.Click
         If WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Compressed, chkCompressed.Checked) Then
             If chkCompressed.Checked Then
@@ -606,12 +618,8 @@ Public Class PropertiesDotNet
         End If
         CheckData
     End Sub
-    Sub chkSystem_Click() Handles chkSystem.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.System, chkSystem.Checked)
-        CheckData
-    End Sub
-    Sub chkArchive_Click() Handles chkArchive.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Archive, chkArchive.Checked)
+    Sub chkOffline_Click() Handles chkOffline.Click
+        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Offline, chkOffline.Checked)
         CheckData
     End Sub
     Sub chkTemporary_Click() Handles chkTemporary.Click
@@ -639,20 +647,12 @@ Public Class PropertiesDotNet
         
         CheckData
     End Sub
-    Sub chkIntegrity_Click() Handles chkIntegrity.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.IntegrityStream, chkIntegrity.Checked)
-        CheckData
-    End Sub
     Sub chkNoScrub_Click() Handles chkNoScrub.Click
         WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.NoScrubData, chkNoScrub.Checked)
         CheckData
     End Sub
-    Sub chkNotIndexed_Click() Handles chkNotIndexed.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.NotContentIndexed, chkNotIndexed.Checked)
-        CheckData
-    End Sub
-    Sub chkOffline_Click() Handles chkOffline.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Offline, chkOffline.Checked)
+    Sub chkIntegrity_Click() Handles chkIntegrity.Click
+        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.IntegrityStream, chkIntegrity.Checked)
         CheckData
     End Sub
     Sub chkReparse_Click() Handles chkReparse.Click
