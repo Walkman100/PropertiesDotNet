@@ -716,7 +716,7 @@ Public Class PropertiesDotNet
         Catch ex As exception
             ErrorParser(ex)
         End Try
-        CheckData
+        CheckData(True)
     End Sub
     Sub btnMove_Click() Handles btnMove.Click
         Dim FileProperties As New FileInfo(lblFullPath.Text)
@@ -747,8 +747,8 @@ Public Class PropertiesDotNet
             Catch ex As exception
                 ErrorParser(ex)
             End Try
+            CheckData(True)
         End If
-        CheckData
     End Sub
     Sub btnCopy_Click() Handles btnCopy.Click
         Dim FileProperties As New FileInfo(lblFullPath.Text)
@@ -774,8 +774,8 @@ Public Class PropertiesDotNet
             
             If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
               lblLocation.Text = sfdSave.FileName
+            CheckData(True)
         End If
-        CheckData
     End Sub
     Sub btnCopy_MouseUp(sender As Object, e As MouseEventArgs) Handles btnCopy.MouseUp
         If e.Button = MouseButtons.Right Then
@@ -823,7 +823,7 @@ Public Class PropertiesDotNet
             Catch ex As exception
                 ErrorParser(ex)
             End Try
-            CheckData
+            CheckData(True)
         End If
     End Sub
     Sub btnDelete_Click() Handles btnDelete.Click
@@ -855,6 +855,7 @@ Public Class PropertiesDotNet
             Catch ex As exception
                 ErrorParser(ex)
             End Try
+            CheckData(True)
         End If
     End Sub
     
