@@ -532,13 +532,25 @@ Public Class PropertiesDotNet
     End Sub
     Sub btnDriveVolumeLabel_Click() Handles btnDriveVolumeLabel.Click
         Dim DriveProperties As New DriveInfo(lblLocation.Text)
-        Dim newName = InputBox("Rename to:", "New volume name", DriveProperties.VolumeLabel)
-        If newName <> "" Then
-            Try
-                DriveProperties.VolumeLabel = newName
-            Catch ex As exception
-                ErrorParser(ex)
-            End Try
+        
+        If OokiiDialogsLoaded() Then
+            Dim newName = DriveProperties.VolumeLabel
+            If OokiiInputBox(newName, "New volume name", "Rename to:") = DialogResult.OK Then
+                Try        ' newName above is ByRef, so OokiiInputBox() updates it
+                    DriveProperties.VolumeLabel = newName
+                Catch ex As Exception
+                    ErrorParser(ex)
+                End Try
+            End If
+        Else
+            Dim newName = InputBox("Rename to:", "New volume name", DriveProperties.VolumeLabel)
+            If newName <> "" Then
+                Try
+                    DriveProperties.VolumeLabel = newName
+                Catch ex As exception
+                    ErrorParser(ex)
+                End Try
+            End If
         End If
         CheckData
     End Sub
@@ -675,24 +687,35 @@ Public Class PropertiesDotNet
     
     Sub btnRename_Click() Handles btnRename.Click
         Dim FileProperties As New FileInfo(lblFullPath.Text)
-        Dim newName = InputBox("Rename to:", "New name", FileProperties.Name)
-        If newName <> "" Then
-            Try
-                FileProperties.MoveTo(FileProperties.DirectoryName & "\" & newName)
-                lblLocation.Text = FileProperties.FullName
-            Catch ex As UnauthorizedAccessException
-                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
-                  MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    WalkmanLib.RunAsAdmin("cmd", "/k ren """ & lblFullPath.Text & """ """ & newName & """")
-                    If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-                      lblLocation.Text = FileProperties.DirectoryName & "\" & newName
-                Else
-                    ErrorParser(ex)
-                End If
-            Catch ex As exception
-                ErrorParser(ex)
-            End Try
+        Dim newName As String
+        
+        If OokiiDialogsLoaded() Then
+            newName = FileProperties.Name
+            If OokiiInputBox(newName, "New name", "Rename to:") <> DialogResult.OK Then
+                Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
+            End If
+        Else
+            newName = InputBox("Rename to:", "New name", FileProperties.Name)
+            If newName = "" Then
+                Exit Sub
+            End If
         End If
+        
+        Try
+            FileProperties.MoveTo(FileProperties.DirectoryName & "\" & newName)
+            lblLocation.Text = FileProperties.FullName
+        Catch ex As UnauthorizedAccessException
+            If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+              MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                WalkmanLib.RunAsAdmin("cmd", "/c ren """ & lblFullPath.Text & """ """ & newName & """ && pause")
+                If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+                  lblLocation.Text = FileProperties.DirectoryName & "\" & newName
+            Else
+                ErrorParser(ex)
+            End If
+        Catch ex As exception
+            ErrorParser(ex)
+        End Try
         CheckData
     End Sub
     Sub btnMove_Click() Handles btnMove.Click
@@ -757,38 +780,49 @@ Public Class PropertiesDotNet
     Sub btnCopy_MouseUp(sender As Object, e As MouseEventArgs) Handles btnCopy.MouseUp
         If e.Button = MouseButtons.Right Then
             Dim FileProperties As New FileInfo(lblFullPath.Text)
-            Dim newName = InputBox("Copy to:", "Copy file", FileProperties.FullName)
-            If newName <> "" Then
-                Try
-                    If chkUseSystem.Checked Then
-                        If Exists(lblFullPath.Text) Then
-                            My.Computer.FileSystem.CopyFile(lblFullPath.Text, newName, FileIO.UIOption.AllDialogs)
-                        Else
-                            My.Computer.FileSystem.CopyDirectory(lblFullPath.Text, newName, FileIO.UIOption.AllDialogs)
-                        End If
-                    Else
-                        If Exists(lblFullPath.Text)
-                            FileProperties.CopyTo(newName)
-                        ElseIf Directory.Exists(lblFullPath.Text)
-                            BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", lblFullPath.Text, newName})
-                            BackgroundProgress.ShowDialog
-                        End If
-                    End If
-                    If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-                      lblLocation.Text = newName
-                Catch ex As UnauthorizedAccessException
-                    If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
-                          MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                            WalkmanLib.RunAsAdmin("xcopy", """" & lblFullPath.Text & """ """ & newName & """")
-                            If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-                              lblLocation.Text = newName
-                        Else
-                            ErrorParser(ex)
-                        End If
-                Catch ex As exception
-                    ErrorParser(ex)
-                End Try
+            Dim newName As String
+            
+            If OokiiDialogsLoaded() Then
+                newName = FileProperties.FullName
+                If OokiiInputBox(newName, "Copy file", "Copy to:") <> DialogResult.OK Then
+                    Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
+                End If
+            Else
+                newName = InputBox("Copy to:", "Copy file", FileProperties.FullName)
+                If newName = "" Then
+                    Exit Sub
+                End If
             End If
+            
+            Try
+                If chkUseSystem.Checked Then
+                    If Exists(lblFullPath.Text) Then
+                        My.Computer.FileSystem.CopyFile(lblFullPath.Text, newName, FileIO.UIOption.AllDialogs)
+                    Else
+                        My.Computer.FileSystem.CopyDirectory(lblFullPath.Text, newName, FileIO.UIOption.AllDialogs)
+                    End If
+                Else
+                    If Exists(lblFullPath.Text)
+                        FileProperties.CopyTo(newName)
+                    ElseIf Directory.Exists(lblFullPath.Text)
+                        BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", lblFullPath.Text, newName})
+                        BackgroundProgress.ShowDialog
+                    End If
+                End If
+                If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+                  lblLocation.Text = newName
+            Catch ex As UnauthorizedAccessException
+                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+                      MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                        WalkmanLib.RunAsAdmin("xcopy", """" & lblFullPath.Text & """ """ & newName & """")
+                        If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+                          lblLocation.Text = newName
+                    Else
+                        ErrorParser(ex)
+                    End If
+            Catch ex As exception
+                ErrorParser(ex)
+            End Try
             CheckData
         End If
     End Sub
@@ -962,4 +996,33 @@ Public Class PropertiesDotNet
         
         Return fsUtilOutput
     End Function
+    
+    Function OokiiInputBox(ByRef input As String, Optional windowTitle As String = Nothing, Optional header As String = Nothing, Optional content As String = Nothing) As DialogResult
+        Dim ooInput = New Ookii.Dialogs.InputDialog
+        ooInput.WindowTitle = windowTitle
+        ooInput.MainInstruction = header
+        ooInput.Content = content
+        ooInput.Input = input
+        
+        Dim returnResult = ooInput.ShowDialog()
+        input = ooInput.Input
+        Return returnResult
+    End Function
+    Function OokiiDialogsLoaded() As Boolean
+        Try
+            OokiiDialogsLoadedDelegate()
+            Return True
+        Catch ex As FileNotFoundException
+            If ex.Message.StartsWith("Could not load file or assembly 'Ookii.Dialogs") = False Then
+                MsgBox("Unexpected error loading Ookii.Dialogs.dll!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
+            End If
+            Return False
+        Catch ex As Exception
+            MsgBox("Unexpected error loading Ookii.Dialogs.dll!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
+            Return False
+        End Try
+    End Function
+    Sub OokiiDialogsLoadedDelegate() ' because calling a not found class will fail the caller of the method not directly in the method
+        Dim test = Ookii.Dialogs.TaskDialogIcon.Information
+    End Sub
 End Class
