@@ -23,7 +23,7 @@ Partial Class PropertiesDotNet
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
+        Me.sfdSave = New System.Windows.Forms.SaveFileDialog()
         Me.lblLocation = New System.Windows.Forms.Label()
         Me.chkHidden = New System.Windows.Forms.CheckBox()
         Me.chkSystem = New System.Windows.Forms.CheckBox()
@@ -106,15 +106,17 @@ Partial Class PropertiesDotNet
         Me.bwCalcSize = New System.ComponentModel.BackgroundWorker()
         Me.timerDelayedBrowse = New System.Windows.Forms.Timer(Me.components)
         Me.lblVersion = New System.Windows.Forms.Label()
+        Me.ofdBrowse = New System.Windows.Forms.OpenFileDialog()
         Me.grpProperties.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpAttributes.SuspendLayout
         Me.grpFileLocation.SuspendLayout
         Me.SuspendLayout
         '
-        'SaveFileDialog
+        'sfdSave
         '
-        Me.SaveFileDialog.AddExtension = false
+        Me.sfdSave.AddExtension = false
+        Me.sfdSave.Filter = "All Files|*.*"
         '
         'lblLocation
         '
@@ -982,6 +984,15 @@ Partial Class PropertiesDotNet
         Me.lblVersion.TabIndex = 3
         Me.lblVersion.Text = "1.0.0"
         '
+        'ofdBrowse
+        '
+        Me.ofdBrowse.AddExtension = false
+        Me.ofdBrowse.CheckFileExists = false
+        Me.ofdBrowse.DereferenceLinks = false
+        Me.ofdBrowse.FileName = "Don't select a file to select folder"
+        Me.ofdBrowse.Filter = "All Files|*.*"
+        Me.ofdBrowse.Title = "Select a file or folder to view properties for:"
+        '
         'PropertiesDotNet
         '
         Me.AcceptButton = Me.btnWindowsProperties
@@ -1009,6 +1020,8 @@ Partial Class PropertiesDotNet
         Me.ResumeLayout(false)
         Me.PerformLayout
     End Sub
+    Private sfdSave As System.Windows.Forms.SaveFileDialog
+    Private ofdBrowse As System.Windows.Forms.OpenFileDialog
     Private lblVersion As System.Windows.Forms.Label
     Private WithEvents btnShortcut As System.Windows.Forms.Button
     Private WithEvents btnSymlink As System.Windows.Forms.Button
@@ -1042,7 +1055,6 @@ Partial Class PropertiesDotNet
     Private WithEvents btnStartAssocProgAdmin As System.Windows.Forms.Button
     Private WithEvents btnStartAssocProg As System.Windows.Forms.Button
     Private WithEvents btnCopyOpenWith As System.Windows.Forms.Button
-    Private SaveFileDialog As System.Windows.Forms.SaveFileDialog
     Private WithEvents btnLaunch As System.Windows.Forms.Button
     Private WithEvents btnOpenDir As System.Windows.Forms.Button
     Friend WithEvents imgFile As System.Windows.Forms.PictureBox

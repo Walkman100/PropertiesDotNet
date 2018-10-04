@@ -21,20 +21,14 @@ Public Class PropertiesDotNet
         timerDelayedBrowse.Stop
         lblVersion.Text = My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & "." & My.Application.Info.Version.Build
         If lblLocation.Text = "Checking..." Then
-            Dim OpenFileDialog As New OpenFileDialog()
-            OpenFileDialog.Filter = "All Files|*.*"
-            OpenFileDialog.Title = "Select a file to view properties for:"
-            OpenFileDialog.DereferenceLinks = False
-            If OpenFileDialog.ShowDialog() = DialogResult.OK Then
-                lblLocation.Text = OpenFileDialog.FileName
-            Else
-                Dim SelectFolderDialog As New FolderBrowserDialog
-                SelectFolderDialog.Description = "Select a folder to view properties for:"
-                If SelectFolderDialog.ShowDialog = DialogResult.OK Then
-                    lblLocation.Text = SelectFolderDialog.SelectedPath
+            If ofdBrowse.ShowDialog() = DialogResult.OK Then
+                If ofdBrowse.FileName.EndsWith("Don't select a file to select folder") Then
+                    lblLocation.Text = ofdBrowse.FileName.Remove(ofdBrowse.FileName.LastIndexOf(Path.DirectorySeparatorChar))
                 Else
-                    Application.Exit
+                    lblLocation.Text = ofdBrowse.FileName
                 End If
+            Else
+                Application.Exit
             End If
         End If
         If lblLocation.Text.StartsWith("\\?\") Then
@@ -703,27 +697,27 @@ Public Class PropertiesDotNet
     End Sub
     Sub btnMove_Click() Handles btnMove.Click
         Dim FileProperties As New FileInfo(lblFullPath.Text)
-        SaveFileDialog.InitialDirectory = FileProperties.DirectoryName
-        SaveFileDialog.FileName = FileProperties.Name
-        SaveFileDialog.Title = "Choose where to move """ & FileProperties.Name & """ to:"
-        If SaveFileDialog.ShowDialog() = DialogResult.OK Then
+        sfdSave.InitialDirectory = FileProperties.DirectoryName
+        sfdSave.FileName = FileProperties.Name
+        sfdSave.Title = "Choose where to move """ & FileProperties.Name & """ to:"
+        If sfdSave.ShowDialog() = DialogResult.OK Then
             Try
                 If chkUseSystem.Checked Then
                     If Exists(lblFullPath.Text) Then
-                        My.Computer.FileSystem.MoveFile(lblFullPath.Text, SaveFileDialog.FileName, FileIO.UIOption.AllDialogs)
+                        My.Computer.FileSystem.MoveFile(lblFullPath.Text, sfdSave.FileName, FileIO.UIOption.AllDialogs)
                     ElseIf Directory.Exists(lblFullPath.Text)
-                        My.Computer.FileSystem.MoveDirectory(lblFullPath.Text, SaveFileDialog.FileName, FileIO.UIOption.AllDialogs)
+                        My.Computer.FileSystem.MoveDirectory(lblFullPath.Text, sfdSave.FileName, FileIO.UIOption.AllDialogs)
                     End If
                 Else
-                    FileProperties.MoveTo(SaveFileDialog.FileName)
+                    FileProperties.MoveTo(sfdSave.FileName)
                 End If
-                lblLocation.Text = SaveFileDialog.FileName
+                lblLocation.Text = sfdSave.FileName
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    WalkmanLib.RunAsAdmin("cmd", "/k move """ & lblFullPath.Text & """ """ & SaveFileDialog.FileName & """")
+                    WalkmanLib.RunAsAdmin("cmd", "/k move """ & lblFullPath.Text & """ """ & sfdSave.FileName & """ && pause")
                     If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-                      lblLocation.Text = SaveFileDialog.FileName
+                      lblLocation.Text = sfdSave.FileName
                 Else
                     ErrorParser(ex)
                 End If
@@ -735,28 +729,28 @@ Public Class PropertiesDotNet
     End Sub
     Sub btnCopy_Click() Handles btnCopy.Click
         Dim FileProperties As New FileInfo(lblFullPath.Text)
-        SaveFileDialog.InitialDirectory = FileProperties.DirectoryName
-        SaveFileDialog.FileName = FileProperties.Name
-        SaveFileDialog.Title = "Choose where to copy """ & FileProperties.Name & """ to:"
-        If SaveFileDialog.ShowDialog() = DialogResult.OK Then
+        sfdSave.InitialDirectory = FileProperties.DirectoryName
+        sfdSave.FileName = FileProperties.Name
+        sfdSave.Title = "Choose where to copy """ & FileProperties.Name & """ to:"
+        If sfdSave.ShowDialog() = DialogResult.OK Then
             ' No point in adding an access denied check here, since the SaveFileDialog doesn't allow you to select a location that needs admin access
             If chkUseSystem.Checked Then
                 If Exists(lblFullPath.Text) Then
-                    My.Computer.FileSystem.CopyFile(lblFullPath.Text, SaveFileDialog.FileName, FileIO.UIOption.AllDialogs)
+                    My.Computer.FileSystem.CopyFile(lblFullPath.Text, sfdSave.FileName, FileIO.UIOption.AllDialogs)
                 Else
-                    My.Computer.FileSystem.CopyDirectory(lblFullPath.Text, SaveFileDialog.FileName, FileIO.UIOption.AllDialogs)
+                    My.Computer.FileSystem.CopyDirectory(lblFullPath.Text, sfdSave.FileName, FileIO.UIOption.AllDialogs)
                 End If
             Else
                 If Exists(lblFullPath.Text) Then
-                    FileProperties.CopyTo(SaveFileDialog.FileName)
+                    FileProperties.CopyTo(sfdSave.FileName)
                 ElseIf Directory.Exists(lblFullPath.Text)
-                    BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", lblFullPath.Text, SaveFileDialog.FileName})
+                    BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", lblFullPath.Text, sfdSave.FileName})
                     BackgroundProgress.ShowDialog
                 End If
             End If
             
             If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-              lblLocation.Text = SaveFileDialog.FileName
+              lblLocation.Text = sfdSave.FileName
         End If
         CheckData
     End Sub
@@ -861,12 +855,12 @@ Public Class PropertiesDotNet
             
             ShortcutPropertiesDialog.ShowDialog()
         Else
-            SaveFileDialog.InitialDirectory = lblDirectory.Text
-            SaveFileDialog.FileName = "Shortcut to " & lblName.Text & ".lnk"
-            SaveFileDialog.Title = "Choose where to create a Shortcut to """ & lblName.Text & """:"
+            sfdSave.InitialDirectory = lblDirectory.Text
+            sfdSave.FileName = "Shortcut to " & lblName.Text & ".lnk"
+            sfdSave.Title = "Choose where to create a Shortcut to """ & lblName.Text & """:"
             
-            If SaveFileDialog.ShowDialog() = DialogResult.OK Then
-                Dim newShortcutPath As String = WalkmanLib.CreateShortcut(SaveFileDialog.FileName, lblFullPath.Text)
+            If sfdSave.ShowDialog() = DialogResult.OK Then
+                Dim newShortcutPath As String = WalkmanLib.CreateShortcut(sfdSave.FileName, lblFullPath.Text)
                 
                 If MsgBox("Show properties for created Shortcut?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
                     lblLocation.Text = newShortcutPath
@@ -876,33 +870,33 @@ Public Class PropertiesDotNet
         End If
     End Sub
     Sub btnSymlink_Click() Handles btnSymlink.Click
-        SaveFileDialog.InitialDirectory = lblDirectory.Text
-        SaveFileDialog.FileName = lblName.Text
-        SaveFileDialog.Title = "Choose where to create a Symlink to """ & lblName.Text & """:"
+        sfdSave.InitialDirectory = lblDirectory.Text
+        sfdSave.FileName = lblName.Text
+        sfdSave.Title = "Choose where to create a Symlink to """ & lblName.Text & """:"
         
-        If SaveFileDialog.ShowDialog() = DialogResult.OK Then
+        If sfdSave.ShowDialog() = DialogResult.OK Then
             If Exists(lblFullPath.Text) Then
-                WalkmanLib.CreateSymLink(SaveFileDialog.FileName, lblFullPath.Text, SymbolicLinkType.File)
+                WalkmanLib.CreateSymLink(sfdSave.FileName, lblFullPath.Text, SymbolicLinkType.File)
             Else
-                WalkmanLib.CreateSymLink(SaveFileDialog.FileName, lblFullPath.Text, SymbolicLinkType.Directory)
+                WalkmanLib.CreateSymLink(sfdSave.FileName, lblFullPath.Text, SymbolicLinkType.Directory)
             End If
             
             If MsgBox("Show properties for created Symlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                lblLocation.Text = SaveFileDialog.FileName
+                lblLocation.Text = sfdSave.FileName
                 CheckData(True)
             End If
         End If
     End Sub
     Sub btnHardlink_Click() Handles btnHardlink.Click
-        SaveFileDialog.InitialDirectory = lblDirectory.Text
-        SaveFileDialog.FileName = lblName.Text
-        SaveFileDialog.Title = "Choose where to create a Hardlink to """ & lblName.Text & """:"
+        sfdSave.InitialDirectory = lblDirectory.Text
+        sfdSave.FileName = lblName.Text
+        sfdSave.Title = "Choose where to create a Hardlink to """ & lblName.Text & """:"
         
-        If SaveFileDialog.ShowDialog() = DialogResult.OK Then
-            WalkmanLib.CreateHardLink(SaveFileDialog.FileName, lblFullPath.Text)
+        If sfdSave.ShowDialog() = DialogResult.OK Then
+            WalkmanLib.CreateHardLink(sfdSave.FileName, lblFullPath.Text)
             
             If MsgBox("Show properties for created Hardlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                lblLocation.Text = SaveFileDialog.FileName
+                lblLocation.Text = sfdSave.FileName
                 CheckData(True)
             End If
         End If
