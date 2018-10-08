@@ -877,6 +877,8 @@ Partial Class PropertiesDotNet
         '
         'btnHardlink
         '
+        Me.btnHardlink.Image = Global.PropertiesDotNet.My.Resources.Resources.mouse_right_click_8x
+        Me.btnHardlink.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnHardlink.Location = New System.Drawing.Point(225, 48)
         Me.btnHardlink.Name = "btnHardlink"
         Me.btnHardlink.Size = New System.Drawing.Size(99, 23)
@@ -886,6 +888,8 @@ Partial Class PropertiesDotNet
         '
         'btnSymlink
         '
+        Me.btnSymlink.Image = Global.PropertiesDotNet.My.Resources.Resources.mouse_right_click_8x
+        Me.btnSymlink.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnSymlink.Location = New System.Drawing.Point(120, 48)
         Me.btnSymlink.Name = "btnSymlink"
         Me.btnSymlink.Size = New System.Drawing.Size(99, 23)
@@ -895,6 +899,8 @@ Partial Class PropertiesDotNet
         '
         'btnShortcut
         '
+        Me.btnShortcut.Image = Global.PropertiesDotNet.My.Resources.Resources.mouse_right_click_8x
+        Me.btnShortcut.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnShortcut.Location = New System.Drawing.Point(6, 48)
         Me.btnShortcut.Name = "btnShortcut"
         Me.btnShortcut.Size = New System.Drawing.Size(108, 23)
@@ -906,6 +912,7 @@ Partial Class PropertiesDotNet
         '
         Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnClose.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnClose.Location = New System.Drawing.Point(330, 48)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(75, 23)
@@ -915,6 +922,8 @@ Partial Class PropertiesDotNet
         '
         'btnMove
         '
+        Me.btnMove.Image = Global.PropertiesDotNet.My.Resources.Resources.mouse_right_click_8x
+        Me.btnMove.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnMove.Location = New System.Drawing.Point(87, 19)
         Me.btnMove.Name = "btnMove"
         Me.btnMove.Size = New System.Drawing.Size(75, 23)
@@ -935,6 +944,7 @@ Partial Class PropertiesDotNet
         '
         'btnDelete
         '
+        Me.btnDelete.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnDelete.Location = New System.Drawing.Point(249, 19)
         Me.btnDelete.Name = "btnDelete"
         Me.btnDelete.Size = New System.Drawing.Size(75, 23)
@@ -944,6 +954,7 @@ Partial Class PropertiesDotNet
         '
         'btnRename
         '
+        Me.btnRename.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnRename.Location = New System.Drawing.Point(6, 19)
         Me.btnRename.Name = "btnRename"
         Me.btnRename.Size = New System.Drawing.Size(75, 23)

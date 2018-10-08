@@ -162,7 +162,6 @@ Public Class PropertiesDotNet
                 imgFile_LoadCompleted(Nothing, New System.ComponentModel.AsyncCompletedEventArgs(New FileLoadException("File too big", lblFullPath.Text), True, Nothing))
             End If
             
-            
             lblOpenWith.Text = WalkmanLib.GetOpenWith(lblFullPath.Text)
             If lblOpenWith.Text = "Filetype not associated!" Then 
                 btnStartAssocProg.Enabled = False
@@ -685,39 +684,8 @@ Public Class PropertiesDotNet
         End Try
     End Sub
     
-    Sub btnRename_Click() Handles btnRename.Click
-        Dim FileProperties As New FileInfo(lblFullPath.Text)
-        Dim newName As String
-        
-        If OokiiDialogsLoaded() Then
-            newName = FileProperties.Name
-            If OokiiInputBox(newName, "New name", "Rename to:") <> DialogResult.OK Then
-                Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
-            End If
-        Else
-            newName = InputBox("Rename to:", "New name", FileProperties.Name)
-            If newName = "" Then
-                Exit Sub
-            End If
-        End If
-        
-        Try
-            FileProperties.MoveTo(FileProperties.DirectoryName & "\" & newName)
-            lblLocation.Text = FileProperties.FullName
-        Catch ex As UnauthorizedAccessException
-            If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
-              MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                WalkmanLib.RunAsAdmin("cmd", "/c ren """ & lblFullPath.Text & """ """ & newName & """ && pause")
-                If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-                  lblLocation.Text = FileProperties.DirectoryName & "\" & newName
-            Else
-                ErrorParser(ex)
-            End If
-        Catch ex As exception
-            ErrorParser(ex)
-        End Try
-        CheckData(True)
-    End Sub
+    ' File Location buttons: SaveFileDialogs (as opposed to InputDialogs)
+    
     Sub btnMove_Click() Handles btnMove.Click
         Dim FileProperties As New FileInfo(lblFullPath.Text)
         sfdSave.InitialDirectory = FileProperties.DirectoryName
@@ -738,7 +706,7 @@ Public Class PropertiesDotNet
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    WalkmanLib.RunAsAdmin("cmd", "/k move """ & lblFullPath.Text & """ """ & sfdSave.FileName & """ && pause")
+                    WalkmanLib.RunAsAdmin("cmd", "/k move """ & lblFullPath.Text & """ """ & sfdSave.FileName & """")
                     If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                       lblLocation.Text = sfdSave.FileName
                 Else
@@ -777,88 +745,6 @@ Public Class PropertiesDotNet
             CheckData(True)
         End If
     End Sub
-    Sub btnCopy_MouseUp(sender As Object, e As MouseEventArgs) Handles btnCopy.MouseUp
-        If e.Button = MouseButtons.Right Then
-            Dim FileProperties As New FileInfo(lblFullPath.Text)
-            Dim newName As String
-            
-            If OokiiDialogsLoaded() Then
-                newName = FileProperties.FullName
-                If OokiiInputBox(newName, "Copy file", "Copy to:") <> DialogResult.OK Then
-                    Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
-                End If
-            Else
-                newName = InputBox("Copy to:", "Copy file", FileProperties.FullName)
-                If newName = "" Then
-                    Exit Sub
-                End If
-            End If
-            
-            Try
-                If chkUseSystem.Checked Then
-                    If Exists(lblFullPath.Text) Then
-                        My.Computer.FileSystem.CopyFile(lblFullPath.Text, newName, FileIO.UIOption.AllDialogs)
-                    Else
-                        My.Computer.FileSystem.CopyDirectory(lblFullPath.Text, newName, FileIO.UIOption.AllDialogs)
-                    End If
-                Else
-                    If Exists(lblFullPath.Text)
-                        FileProperties.CopyTo(newName)
-                    ElseIf Directory.Exists(lblFullPath.Text)
-                        BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", lblFullPath.Text, newName})
-                        BackgroundProgress.ShowDialog
-                    End If
-                End If
-                If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-                  lblLocation.Text = newName
-            Catch ex As UnauthorizedAccessException
-                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
-                      MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                        WalkmanLib.RunAsAdmin("xcopy", """" & lblFullPath.Text & """ """ & newName & """")
-                        If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-                          lblLocation.Text = newName
-                    Else
-                        ErrorParser(ex)
-                    End If
-            Catch ex As exception
-                ErrorParser(ex)
-            End Try
-            CheckData(True)
-        End If
-    End Sub
-    Sub btnDelete_Click() Handles btnDelete.Click
-        Dim FileProperties As New FileInfo(lblFullPath.Text)
-        If MsgBox("Are you sure you want to delete """ & FileProperties.Name & """?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-            Try
-                If chkUseSystem.Checked Then
-                    If Exists(lblFullPath.Text) Then
-                        My.Computer.FileSystem.DeleteFile(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
-                    Else
-                        My.Computer.FileSystem.DeleteDirectory(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
-                    End If
-                Else
-                    If Exists(lblFullPath.Text) Then
-                        FileProperties.Delete
-                    ElseIf Directory.Exists(lblFullPath.Text)
-                        BackgroundProgress.bwFolderOperations.RunWorkerAsync({"delete", lblFullPath.Text})
-                        BackgroundProgress.ShowDialog
-                    End If
-                End If
-                Application.Exit
-            Catch ex As UnauthorizedAccessException
-                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
-                  MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    WalkmanLib.RunAsAdmin("cmd", "/k del """ & lblFullPath.Text & """")
-                Else
-                    ErrorParser(ex)
-                End If
-            Catch ex As exception
-                ErrorParser(ex)
-            End Try
-            CheckData(True)
-        End If
-    End Sub
-    
     Sub btnShortcut_Click() Handles btnShortcut.Click
         If lblExtension.Text.ToLower() = ".lnk" Then
             Dim shortcutInfo = WalkmanLib.GetShortcutInfo(lblFullPath.Text)
@@ -936,6 +822,125 @@ Public Class PropertiesDotNet
             End If
         End If
     End Sub
+    
+    ' File Location buttons: SaveFileDialogs (as opposed to InputDialogs)
+    
+    Sub btnRename_Click() Handles btnRename.Click
+        Dim FileProperties As New FileInfo(lblFullPath.Text)
+        Dim newName As String
+        
+        If OokiiDialogsLoaded() Then
+            newName = FileProperties.Name
+            If OokiiInputBox(newName, "New name", "Rename to:") <> DialogResult.OK Then
+                Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
+            End If
+        Else
+            newName = InputBox("Rename to:", "New name", FileProperties.Name)
+            If newName = "" Then
+                Exit Sub
+            End If
+        End If
+        
+        Try
+            FileProperties.MoveTo(FileProperties.DirectoryName & "\" & newName)
+            lblLocation.Text = FileProperties.FullName
+        Catch ex As UnauthorizedAccessException
+            If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+              MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                WalkmanLib.RunAsAdmin("cmd", "/k ren """ & lblFullPath.Text & """ """ & newName & """")
+                If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+                  lblLocation.Text = FileProperties.DirectoryName & "\" & newName
+            Else
+                ErrorParser(ex)
+            End If
+        Catch ex As exception
+            ErrorParser(ex)
+        End Try
+        CheckData(True)
+    End Sub
+    Sub btnCopy_MouseUp(sender As Object, e As MouseEventArgs) Handles btnCopy.MouseUp
+        If e.Button = MouseButtons.Right Then
+            Dim FileProperties As New FileInfo(lblFullPath.Text)
+            Dim newName As String
+            
+            If OokiiDialogsLoaded() Then
+                newName = FileProperties.FullName
+                If OokiiInputBox(newName, "Copy file", "Copy to:") <> DialogResult.OK Then
+                    Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
+                End If
+            Else
+                newName = InputBox("Copy to:", "Copy file", FileProperties.FullName)
+                If newName = "" Then
+                    Exit Sub
+                End If
+            End If
+            
+            Try
+                If chkUseSystem.Checked Then
+                    If Exists(lblFullPath.Text) Then
+                        My.Computer.FileSystem.CopyFile(lblFullPath.Text, newName, FileIO.UIOption.AllDialogs)
+                    Else
+                        My.Computer.FileSystem.CopyDirectory(lblFullPath.Text, newName, FileIO.UIOption.AllDialogs)
+                    End If
+                Else
+                    If Exists(lblFullPath.Text)
+                        FileProperties.CopyTo(newName)
+                    ElseIf Directory.Exists(lblFullPath.Text)
+                        BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", lblFullPath.Text, newName})
+                        BackgroundProgress.ShowDialog
+                    End If
+                End If
+                If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+                  lblLocation.Text = newName
+            Catch ex As UnauthorizedAccessException
+                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+                      MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                        WalkmanLib.RunAsAdmin("xcopy", """" & lblFullPath.Text & """ """ & newName & """")
+                        If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+                          lblLocation.Text = newName
+                    Else
+                        ErrorParser(ex)
+                    End If
+            Catch ex As exception
+                ErrorParser(ex)
+            End Try
+            CheckData(True)
+        End If
+    End Sub
+    
+    Sub btnDelete_Click() Handles btnDelete.Click
+        Dim FileProperties As New FileInfo(lblFullPath.Text)
+        If MsgBox("Are you sure you want to delete """ & FileProperties.Name & """?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            Try
+                If chkUseSystem.Checked Then
+                    If Exists(lblFullPath.Text) Then
+                        My.Computer.FileSystem.DeleteFile(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
+                    Else
+                        My.Computer.FileSystem.DeleteDirectory(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
+                    End If
+                Else
+                    If Exists(lblFullPath.Text) Then
+                        FileProperties.Delete
+                    ElseIf Directory.Exists(lblFullPath.Text)
+                        BackgroundProgress.bwFolderOperations.RunWorkerAsync({"delete", lblFullPath.Text})
+                        BackgroundProgress.ShowDialog
+                    End If
+                End If
+                Application.Exit
+            Catch ex As UnauthorizedAccessException
+                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+                  MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                    WalkmanLib.RunAsAdmin("cmd", "/k del """ & lblFullPath.Text & """")
+                Else
+                    ErrorParser(ex)
+                End If
+            Catch ex As exception
+                ErrorParser(ex)
+            End Try
+            CheckData(True)
+        End If
+    End Sub
+    
     Sub btnClose_Click() Handles btnClose.Click
         Application.Exit
     End Sub
