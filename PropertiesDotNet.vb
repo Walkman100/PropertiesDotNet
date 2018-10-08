@@ -50,6 +50,8 @@ Public Class PropertiesDotNet
         End If
     End Sub
     
+    ' ======================= Dragging-and-dropping =======================
+    
     Sub PropertiesDotNet_DragEnter(sender As Object, e As DragEventArgs) Handles Me.DragEnter
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
             e.Effect = DragDropEffects.All
@@ -57,6 +59,7 @@ Public Class PropertiesDotNet
             e.Effect = DragDropEffects.None
         End If
     End Sub
+    
     Sub PropertiesDotNet_DragDrop(sender As Object, e As DragEventArgs) Handles Me.DragDrop
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
             Dim newFilePath As String = e.Data.GetData(DataFormats.FileDrop)(0)
@@ -79,16 +82,22 @@ Public Class PropertiesDotNet
         End If
     End Sub
     
+    ' ======================= Loading data =======================
+    
     Sub chkUTC_CheckedChanged() Handles chkUTC.CheckedChanged
         CheckData
     End Sub
-    Sub CheckData(Optional recalculateFolderSize As Boolean = False) 
+    Sub CheckData(Optional recalculateFolderSize As Boolean = False)
+        ' init
         Dim FileProperties As New FileInfo(lblLocation.Text)
         If WalkmanLib.IsAdmin() Then
             Me.Text = "[Admin] Properties: " & FileProperties.Name
         Else
             Me.Text = "Properties: " & FileProperties.Name
         End If
+        
+        ' ======================= Properties section =======================
+        
         lblFullPath.Text = FileProperties.FullName
         If lblFullPath.Width>256 Then Me.Width = lblFullPath.Width+176 Else Me.Width = 432
         lblDirectory.Text = FileProperties.DirectoryName
@@ -96,6 +105,7 @@ Public Class PropertiesDotNet
         lblExtension.Text = FileProperties.Extension
         If lblExtension.Text = "" Then lblExtension.Text = "No extension!"
         
+        ' get compressed size (or error) so it can be applied later
         Try
             compressedSizeOrError = WalkmanLib.GetCompressedSize(lblFullPath.Text)
         Catch ex As Exception
@@ -103,6 +113,7 @@ Public Class PropertiesDotNet
         End Try
         chkCompressed.Text = "Compressed"
         
+        ' check drive properties and if on a drive show them
         Try
             Dim DriveProperties As New DriveInfo(lblLocation.Text)
             lblDriveIsReady.Text = DriveProperties.IsReady
@@ -127,10 +138,14 @@ Public Class PropertiesDotNet
             If DriveProperties.IsReady Then
                 lblDriveVolumeLabel.Text = DriveProperties.VolumeLabel
                 lblDriveFormat.Text = DriveProperties.DriveFormat
+                
+                ' driveSizes(*) is used to store values so size formatting can be applied
                 lblDriveTotalSize.Text = DriveProperties.TotalSize
                 driveSizes(0) = DriveProperties.TotalSize
+                
                 lblDriveTotalFreeSpace.Text = DriveProperties.TotalFreeSpace
                 driveSizes(1) = DriveProperties.TotalFreeSpace
+                
                 lblDriveAvailableFreeSpace.Text = DriveProperties.AvailableFreeSpace
                 driveSizes(2) = DriveProperties.AvailableFreeSpace
             Else
@@ -184,7 +199,14 @@ Public Class PropertiesDotNet
             lblOpenWithLbl.Text = "Opens with:"
             btnHashes.Image = My.Resources.Resources.hashx16
             btnHashes.Text = "Compute Hashes"
-            If lblExtension.Text.ToLower() = ".lnk" Then btnShortcut.Text = "Shortcut Properties" Else btnShortcut.Text = "Create Shortcut..."
+            
+            If lblExtension.Text.ToLower() = ".lnk" Then
+                btnShortcut.Text = "Shortcut Properties"
+                btnShortcut.Image = Nothing
+            Else
+                btnShortcut.Text = "Create Shortcut..."
+                btnShortcut.Image = My.Resources.Resources.mouse_right_click_8x
+            End If
         ElseIf Directory.Exists(lblFullPath.Text)
             If bwCalcSize.IsBusy = False Then
                 If recalculateFolderSize = True Then
@@ -219,6 +241,7 @@ Public Class PropertiesDotNet
             btnHashes.Image = My.Resources.Resources.Shell32__326_
             btnHashes.Text = "DirectoryImage..."
             btnShortcut.Text = "Create Shortcut..."
+            btnShortcut.Image = My.Resources.Resources.mouse_right_click_8x
         End If
         
         If chkUTC.Checked Then
@@ -231,7 +254,9 @@ Public Class PropertiesDotNet
             lblLastWriteTime.Text = GetLastWriteTime(lblFullPath.Text)
         End If
         
-        'Attributes:
+        ' ======================= Attributes section =======================
+        '  (except some checkbox properties are set above depending if on folder or file)
+        
         chkReadOnly.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.ReadOnly)
         chkHidden.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Hidden)
         chkSystem.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.System)
@@ -255,6 +280,8 @@ Public Class PropertiesDotNet
         End If
     End Sub
     
+    ' ======================= imgFile management =======================
+    
     Sub imgFile_LoadCompleted(sender As Object, e As System.ComponentModel.AsyncCompletedEventArgs) Handles imgFile.LoadCompleted
         If IsNothing(e.Error) Then
             ShowImageBox
@@ -276,18 +303,21 @@ Public Class PropertiesDotNet
             End If
         End If
     End Sub
+    
     Sub ShowImageBox
         imgFile.Visible = True
         lblOpenWithLbl.Location = New Point(48, lblOpenWithLbl.Location.Y)
         lblOpenWith.Location = New Point(lblOpenWithLbl.Width +54, lblOpenWith.Location.Y)
         chkUTC.Location = New Point(48, chkUTC.Location.Y)
     End Sub
+    
     Sub HideImageBox
         imgFile.Visible = False
         lblOpenWithLbl.Location = New Point(6, lblOpenWithLbl.Location.Y)
         lblOpenWith.Location = New Point(101, lblOpenWith.Location.Y)
         chkUTC.Location = New Point(10, chkUTC.Location.Y)
     End Sub
+    
     Sub imgFile_Click() Handles imgFile.Click
         ImageViewer.Close
         ImageViewer.fileImage.Image = Nothing
@@ -296,28 +326,38 @@ Public Class PropertiesDotNet
         ImageViewer.fileImage.Image = imgFile.Image
     End Sub
     
+    ' ======================= Copying =======================
+    
     Sub btnCopyFullPath_Click() Handles btnCopyFullPath.Click
         WalkmanLib.SafeSetText(lblFullPath.Text)
     End Sub
+    
     Sub btnCopyDirectory_Click() Handles btnCopyDirectory.Click
         WalkmanLib.SafeSetText(lblDirectory.Text)
     End Sub
+    
     Sub btnCopyName_Click() Handles btnCopyName.Click
         WalkmanLib.SafeSetText(lblName.Text)
     End Sub
+    
     Sub btnCopyExtension_Click() Handles btnCopyExtension.Click
         WalkmanLib.SafeSetText(lblExtension.Text)
     End Sub
+    
     Sub btnCopyOpenWith_Click() Handles btnCopyOpenWith.Click
         WalkmanLib.SafeSetText(lblOpenWith.Text)
     End Sub
     
+    ' ======================= Properties section buttons =======================
+    
     Sub btnOpenDir_Click() Handles btnOpenDir.Click
         Process.Start("explorer.exe", "/select, " & lblFullPath.Text)
     End Sub
+    
     Sub btnLaunch_Click() Handles btnLaunch.Click
         Process.Start(lblFullPath.Text)
     End Sub
+    
     Sub btnLaunchAdmin_Click() Handles btnLaunchAdmin.Click
         If lblOpenWith.Text = Environment.GetEnvironmentVariable("ProgramFiles") & "\Windows Photo Viewer\PhotoViewer.dll" Then
             ' rundll32 "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen FilePath
@@ -340,6 +380,7 @@ Public Class PropertiesDotNet
             End If
         End If
     End Sub
+    
     Sub btnOpenWith_Click() Handles btnOpenWith.Click
         Dim isDangerousExtension As New Boolean
         Dim dangerousExtensions() As String = {".exe", ".bat", ".cmd", ".lnk", ".com", ".scr"}
@@ -367,6 +408,7 @@ Public Class PropertiesDotNet
             WalkmanLib.OpenWith(lblFullPath.Text)
         End If
     End Sub
+    
     Sub btnOpenWith_MouseUp(sender As Object, e As MouseEventArgs) Handles btnOpenWith.MouseUp
         If e.Button = MouseButtons.Right Then
             Try
@@ -376,6 +418,8 @@ Public Class PropertiesDotNet
             End Try
         End If
     End Sub
+    
+    ' cbxSize handling
     Sub AutoDetectSize()
         If byteSize > 1000^5 Then
             cbxSize.SelectedIndex = 9
@@ -464,10 +508,12 @@ Public Class PropertiesDotNet
     Sub btnStartAssocProg_Click() Handles btnStartAssocProg.Click
         Process.Start(lblOpenWith.Text)
     End Sub
+    
     Sub btnStartAssocProgAdmin_Click() Handles btnStartAssocProgAdmin.Click
         WalkmanLib.RunAsAdmin(lblOpenWith.Text)
     End Sub
     
+    ' ----------------------- date/time manipulation -----------------------
     Sub lblCreationTime_DoubleClick(sender As Object, e As EventArgs) Handles lblCreationTime.DoubleClick
         If chkUTC.Checked Then
             SelectDateDialog.dateTimePicker.Value = GetCreationTimeUtc(lblFullPath.Text)
@@ -516,6 +562,7 @@ Public Class PropertiesDotNet
             MsgBox("Could not open properties window!", MsgBoxStyle.Exclamation)
         End If
     End Sub
+    
     Sub btnHashes_Click() Handles btnHashes.Click
         If btnHashes.Text = "Compute Hashes" Then
             Hashes.Show
@@ -529,6 +576,7 @@ Public Class PropertiesDotNet
             End Try
         End If
     End Sub
+    
     Sub btnDriveVolumeLabel_Click() Handles btnDriveVolumeLabel.Click
         Dim DriveProperties As New DriveInfo(lblLocation.Text)
         
@@ -553,6 +601,18 @@ Public Class PropertiesDotNet
         End If
         CheckData
     End Sub
+    
+    ' ======================= Attributes =======================
+    
+    Sub lnkAttributes_LinkClicked() Handles lnkAttributes.LinkClicked
+        Try
+            Process.Start("https://msdn.microsoft.com/en-us/library/system.io.fileattributes%28v=vs.110%29.aspx#Anchor_1")
+        Catch ex As Exception
+            If MsgBox("Unable to launch URL, copy to clipboard instead?", MsgBoxStyle.YesNo + MsgBoxStyle.Information) = MsgBoxResult.Yes Then _
+              WalkmanLib.SafeSetText("https://msdn.microsoft.com/en-us/library/system.io.fileattributes%28v=vs.110%29.aspx#Anchor_1")
+        End Try
+    End Sub
+    
     Sub btnTakeOwn_Click() Handles btnTakeOwn.Click
         WalkmanLib.TakeOwnership(lblFullPath.Text)
     End Sub
@@ -561,22 +621,27 @@ Public Class PropertiesDotNet
         WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.ReadOnly, chkReadOnly.Checked)
         CheckData
     End Sub
+    
     Sub chkHidden_Click() Handles chkHidden.Click
         WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Hidden, chkHidden.Checked)
         CheckData
     End Sub
+    
     Sub chkSystem_Click() Handles chkSystem.Click
         WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.System, chkSystem.Checked)
         CheckData
     End Sub
+    
     Sub chkArchive_Click() Handles chkArchive.Click
         WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Archive, chkArchive.Checked)
         CheckData
     End Sub
+    
     Sub chkNotIndexed_Click() Handles chkNotIndexed.Click
         WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.NotContentIndexed, chkNotIndexed.Checked)
         CheckData
     End Sub
+    
     Sub chkCompressed_Click() Handles chkCompressed.Click
         If WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Compressed, chkCompressed.Checked) Then
             If chkCompressed.Checked Then
@@ -601,6 +666,7 @@ Public Class PropertiesDotNet
         End If
         CheckData
     End Sub
+    
     Sub chkEncrypted_Click() Handles chkEncrypted.Click
         If WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Encrypted, chkEncrypted.Checked) Then
             If chkEncrypted.Checked Then
@@ -629,10 +695,12 @@ Public Class PropertiesDotNet
         End If
         CheckData
     End Sub
+    
     Sub chkOffline_Click() Handles chkOffline.Click
         WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Offline, chkOffline.Checked)
         CheckData
     End Sub
+    
     Sub chkTemporary_Click() Handles chkTemporary.Click
         If Exists(lblFullPath.Text) Then
             WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Temporary, chkTemporary.Checked)
@@ -658,34 +726,30 @@ Public Class PropertiesDotNet
         
         CheckData
     End Sub
+    
     Sub chkNoScrub_Click() Handles chkNoScrub.Click
         WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.NoScrubData, chkNoScrub.Checked)
         CheckData
     End Sub
+    
     Sub chkIntegrity_Click() Handles chkIntegrity.Click
         WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.IntegrityStream, chkIntegrity.Checked)
         CheckData
     End Sub
+    
     Sub chkReparse_Click() Handles chkReparse.Click
         WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.ReparsePoint, chkReparse.Checked)
         CheckData
     End Sub
+    
     Sub chkSparse_Click() Handles chkSparse.Click
         WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.SparseFile, chkSparse.Checked)
         CheckData
     End Sub
     
-    Sub lnkAttributes_LinkClicked() Handles lnkAttributes.LinkClicked
-        Try
-            Process.Start("https://msdn.microsoft.com/en-us/library/system.io.fileattributes%28v=vs.110%29.aspx#Anchor_1")
-        Catch ex As Exception
-            If MsgBox("Unable to launch URL, copy to clipboard instead?", MsgBoxStyle.YesNo + MsgBoxStyle.Information) = MsgBoxResult.Yes Then _
-              WalkmanLib.SafeSetText("https://msdn.microsoft.com/en-us/library/system.io.fileattributes%28v=vs.110%29.aspx#Anchor_1")
-        End Try
-    End Sub
+    ' ======================= File Location =======================
     
-    ' File Location buttons: SaveFileDialogs (as opposed to InputDialogs)
-    
+    ' SaveFileDialog buttons (as opposed to InputDialogs)
     Sub btnMove_Click() Handles btnMove.Click
         Dim FileProperties As New FileInfo(lblFullPath.Text)
         sfdSave.InitialDirectory = FileProperties.DirectoryName
@@ -823,8 +887,7 @@ Public Class PropertiesDotNet
         End If
     End Sub
     
-    ' File Location buttons: SaveFileDialogs (as opposed to InputDialogs)
-    
+    ' InputDialog buttons (as opposed to SaveFileDialogs)
     Sub btnRename_Click() Handles btnRename.Click
         Dim FileProperties As New FileInfo(lblFullPath.Text)
         Dim newName As String
@@ -944,6 +1007,8 @@ Public Class PropertiesDotNet
     Sub btnClose_Click() Handles btnClose.Click
         Application.Exit
     End Sub
+    
+    ' ======================= other methods =======================
     
     Sub bwCalcSize_DoWork() Handles bwCalcSize.DoWork
         Try
