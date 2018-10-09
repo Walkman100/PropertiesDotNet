@@ -251,7 +251,9 @@
         Me.Controls.Add(Me.btnTarget)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.btnCancel)
+        Me.Icon = Global.PropertiesDotNet.My.Resources.Resources.document_properties_shortcut
         Me.Name = "ShortcutPropertiesDialog"
+        Me.ShowInTaskbar = false
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Shortcut Properties"
         CType(Me.pbxStatus,System.ComponentModel.ISupportInitialize).EndInit
