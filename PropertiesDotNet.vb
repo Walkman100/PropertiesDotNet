@@ -894,11 +894,11 @@ Public Class PropertiesDotNet
         
         If OokiiDialogsLoaded() Then
             newName = FileProperties.Name
-            If OokiiInputBox(newName, "New name", "Rename to:") <> DialogResult.OK Then
+            If OokiiInputBox(newName, "New name", "Rename """ & FileProperties.Name & """ to:") <> DialogResult.OK Then
                 Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
             End If
         Else
-            newName = InputBox("Rename to:", "New name", FileProperties.Name)
+            newName = InputBox("Rename """ & FileProperties.Name & """ to:", "New name", FileProperties.Name)
             If newName = "" Then
                 Exit Sub
             End If
@@ -921,6 +921,49 @@ Public Class PropertiesDotNet
         End Try
         CheckData(True)
     End Sub
+    Sub btnMove_MouseUp(sender As Object, e As MouseEventArgs) Handles btnMove.MouseUp
+        If e.Button = MouseButtons.Right Then
+            Dim FileProperties As New FileInfo(lblFullPath.Text)
+            Dim newName As String
+            
+            If OokiiDialogsLoaded() Then
+                newName = FileProperties.FullName
+                If OokiiInputBox(newName, "Move file/folder", "Move """ & FileProperties.Name & """ to:") <> DialogResult.OK Then
+                    Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
+                End If
+            Else
+                newName = InputBox("Move """ & FileProperties.Name & """ to:", "Move file/folder", FileProperties.FullName)
+                If newName = "" Then
+                    Exit Sub
+                End If
+            End If
+            
+            Try
+                If chkUseSystem.Checked Then
+                    If Exists(lblFullPath.Text) Then
+                        My.Computer.FileSystem.MoveFile(lblFullPath.Text, newName, FileIO.UIOption.AllDialogs)
+                    ElseIf Directory.Exists(lblFullPath.Text)
+                        My.Computer.FileSystem.MoveDirectory(lblFullPath.Text, newName, FileIO.UIOption.AllDialogs)
+                    End If
+                Else
+                    FileProperties.MoveTo(newName)
+                End If
+                lblLocation.Text = newName
+            Catch ex As UnauthorizedAccessException
+                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+                  MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                    WalkmanLib.RunAsAdmin("cmd", "/k move """ & lblFullPath.Text & """ """ & newName & """")
+                    If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
+                      lblLocation.Text = newName
+                Else
+                    ErrorParser(ex)
+                End If
+            Catch ex As exception
+                ErrorParser(ex)
+            End Try
+            CheckData(True)
+        End If
+    End Sub
     Sub btnCopy_MouseUp(sender As Object, e As MouseEventArgs) Handles btnCopy.MouseUp
         If e.Button = MouseButtons.Right Then
             Dim FileProperties As New FileInfo(lblFullPath.Text)
@@ -928,11 +971,11 @@ Public Class PropertiesDotNet
             
             If OokiiDialogsLoaded() Then
                 newName = FileProperties.FullName
-                If OokiiInputBox(newName, "Copy file", "Copy to:") <> DialogResult.OK Then
+                If OokiiInputBox(newName, "Copy file/folder", "Copy """ & FileProperties.Name & """ to:") <> DialogResult.OK Then
                     Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
                 End If
             Else
-                newName = InputBox("Copy to:", "Copy file", FileProperties.FullName)
+                newName = InputBox("Copy """ & FileProperties.Name & """ to:", "Copy file/folder", FileProperties.FullName)
                 If newName = "" Then
                     Exit Sub
                 End If
@@ -968,6 +1011,83 @@ Public Class PropertiesDotNet
                 ErrorParser(ex)
             End Try
             CheckData(True)
+        End If
+    End Sub
+    Sub btnShortcut_MouseUp(sender As Object, e As MouseEventArgs) Handles btnShortcut.MouseUp
+        If e.Button = MouseButtons.Right AndAlso lblExtension.Text.ToLower() <> ".lnk" Then
+            
+            Dim newName As String
+            newName = lblDirectory.Text & Path.DirectorySeparatorChar & "Shortcut to " & lblName.Text & ".lnk"
+            
+            If OokiiDialogsLoaded() Then
+                If OokiiInputBox(newName, "Create Shortcut", "Create shortcut to """ & lblName.Text & """:") <> DialogResult.OK Then
+                    Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
+                End If
+            Else
+                newName = InputBox("Create shortcut to """ & lblName.Text & """:", "Create Shortcut", newName)
+                If newName = "" Then
+                    Exit Sub
+                End If
+            End If
+            
+            Dim newShortcutPath As String = WalkmanLib.CreateShortcut(newName, lblFullPath.Text)
+            
+            If MsgBox("Show properties for created Shortcut?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                lblLocation.Text = newShortcutPath
+                CheckData(True)
+            End If
+        End If
+    End Sub
+    Sub btnSymlink_MouseUp(sender As Object, e As MouseEventArgs) Handles btnSymlink.MouseUp
+        If e.Button = MouseButtons.Right Then
+            Dim newName As String
+            
+            If OokiiDialogsLoaded() Then
+                newName = lblFullPath.Text
+                If OokiiInputBox(newName, "Create Symlink", "Create symlink to """ & lblName.Text & """:") <> DialogResult.OK Then
+                    Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
+                End If
+            Else
+                newName = InputBox("Create symlink to """ & lblName.Text & """:", "Create Symlink", lblFullPath.Text)
+                If newName = "" Then
+                    Exit Sub
+                End If
+            End If
+            
+            If Exists(lblFullPath.Text) Then
+                WalkmanLib.CreateSymLink(newName, lblFullPath.Text, SymbolicLinkType.File)
+            Else
+                WalkmanLib.CreateSymLink(newName, lblFullPath.Text, SymbolicLinkType.Directory)
+            End If
+            
+            If MsgBox("Show properties for created Symlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                lblLocation.Text = newName
+                CheckData(True)
+            End If
+        End If
+    End Sub
+    Sub btnHardlink_MouseUp(sender As Object, e As MouseEventArgs) Handles btnHardlink.MouseUp
+        If e.Button = MouseButtons.Right Then
+            Dim newName As String
+            
+            If OokiiDialogsLoaded() Then
+                newName = lblFullPath.Text
+                If OokiiInputBox(newName, "Create Hardlink", "Create hardlink to """ & lblName.Text & """:") <> DialogResult.OK Then
+                    Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
+                End If
+            Else
+                newName = InputBox("Create hardlink to """ & lblName.Text & """:", "Create Hardlink", lblFullPath.Text)
+                If newName = "" Then
+                    Exit Sub
+                End If
+            End If
+            
+            WalkmanLib.CreateHardLink(newName, lblFullPath.Text)
+            
+            If MsgBox("Show properties for created Hardlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                lblLocation.Text = newName
+                CheckData(True)
+            End If
         End If
     End Sub
     
