@@ -277,6 +277,8 @@ Public Class PropertiesDotNet
             Catch ex As Exception
                 chkReparse.Text = "Is Reparse Point (GetTargetError: " & ex.Message & ")"
             End Try
+        Else
+            chkReparse.Text = "Is Reparse Point"
         End If
     End Sub
     
@@ -813,12 +815,35 @@ Public Class PropertiesDotNet
         If lblExtension.Text.ToLower() = ".lnk" Then
             Dim shortcutInfo = WalkmanLib.GetShortcutInfo(lblFullPath.Text)
             
-            ShortcutPropertiesDialog.txtTarget.Text = shortcutInfo.TargetPath
-            ShortcutPropertiesDialog.txtArguments.Text = shortcutInfo.Arguments
-            ShortcutPropertiesDialog.txtStartIn.Text = shortcutInfo.WorkingDirectory
-            ShortcutPropertiesDialog.txtIconPath.Text = shortcutInfo.IconLocation
-            ShortcutPropertiesDialog.txtShortcutKey.Text = shortcutInfo.Hotkey
-            ShortcutPropertiesDialog.txtComment.Text = shortcutInfo.Description
+            Try: ShortcutPropertiesDialog.txtTarget.Text = shortcutInfo.TargetPath
+            Catch: MsgBox("Error getting shortcut target!", MsgBoxStyle.Exclamation)
+                ShortcutPropertiesDialog.txtTarget.Text = ""
+            End Try
+            
+            Try: ShortcutPropertiesDialog.txtArguments.Text = shortcutInfo.Arguments
+            Catch: MsgBox("Error getting shortcut arguments!", MsgBoxStyle.Exclamation)
+                ShortcutPropertiesDialog.txtArguments.Text = ""
+            End Try
+            
+            Try: ShortcutPropertiesDialog.txtStartIn.Text = shortcutInfo.WorkingDirectory
+            Catch: MsgBox("Error getting shortcut working directory!", MsgBoxStyle.Exclamation)
+                ShortcutPropertiesDialog.txtStartIn.Text = ""
+            End Try
+            
+            Try: ShortcutPropertiesDialog.txtIconPath.Text = shortcutInfo.IconLocation
+            Catch: MsgBox("Error getting shortcut icon path!", MsgBoxStyle.Exclamation)
+                ShortcutPropertiesDialog.txtIconPath.Text = ""
+            End Try
+            
+            Try: ShortcutPropertiesDialog.txtShortcutKey.Text = shortcutInfo.Hotkey
+            Catch: MsgBox("Error getting shortcut hotkey!", MsgBoxStyle.Exclamation)
+                ShortcutPropertiesDialog.txtShortcutKey.Text = ""
+            End Try
+            
+            Try: ShortcutPropertiesDialog.txtComment.Text = shortcutInfo.Description
+            Catch: MsgBox("Error getting shortcut comment!", MsgBoxStyle.Exclamation)
+                ShortcutPropertiesDialog.txtComment.Text = ""
+            End Try
             
             Select Case shortcutInfo.WindowStyle
                 Case 1 'Normal
