@@ -33,7 +33,7 @@
         Me.btnIconPick = New System.Windows.Forms.Button()
         Me.ofdTarget = New System.Windows.Forms.OpenFileDialog()
         Me.ofdIcon = New System.Windows.Forms.OpenFileDialog()
-        Me.fbdStartIn = New System.Windows.Forms.FolderBrowserDialog()
+        Me.fbdStartIn = New Ookii.Dialogs.VistaFolderBrowserDialog()
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.pbxStatus = New System.Windows.Forms.PictureBox()
         Me.pbxIcon = New System.Windows.Forms.PictureBox()
@@ -200,6 +200,7 @@
         Me.ofdIcon.Title = "Select Shortcut Icon File"
         'fbdStartIn
         Me.fbdStartIn.Description = "Select Start In folder for Shortcut:"
+        Me.fbdStartIn.UseDescriptionForTitle = true
         'lblStatus
         Me.lblStatus.AutoSize = true
         Me.lblStatus.Location = New System.Drawing.Point(97, 168)
@@ -261,7 +262,7 @@
     Private pbxIcon As System.Windows.Forms.PictureBox
     Private pbxStatus As System.Windows.Forms.PictureBox
     Private lblStatus As System.Windows.Forms.Label
-    Private fbdStartIn As System.Windows.Forms.FolderBrowserDialog
+    Private fbdStartIn As Ookii.Dialogs.VistaFolderBrowserDialog
     Private ofdIcon As System.Windows.Forms.OpenFileDialog
     Private ofdTarget As System.Windows.Forms.OpenFileDialog
     Private WithEvents btnIconPick As System.Windows.Forms.Button
