@@ -1170,6 +1170,7 @@ Public Class PropertiesDotNet
                 lblSize.Text = byteSize
             Next
             
+            lblSize.Text = byteSize
             lblOpenWith.Text = SubFiles.Count.ToString("N0")
             AutoDetectSize
         Catch ex As Exception
