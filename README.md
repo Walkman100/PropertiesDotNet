@@ -21,6 +21,8 @@ Get the latest version [here](https://github.com/Walkman100/PropertiesDotNet/rel
 [here](https://ci.appveyor.com/project/Walkman100/PropertiesDotNet/build/artifacts)
 (note that these builds are built for the Debug config and so are not optimised)
 
+If getting the latest build from commit, download [PropertiesDotNet-Ookii.Dialogs.dll](https://github.com/Walkman100/PropertiesDotNet/raw/master/Ookii.Dialogs/PropertiesDotNet-Ookii.Dialogs.dll) for full functionality.
+
 ## Credits/Acknowledgements
 ### Icons
 - Program Icon:

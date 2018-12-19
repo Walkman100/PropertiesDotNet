@@ -36,7 +36,7 @@ Section "Executable, Uninstaller & Ookii.Dialogs"
   SetOutPath $INSTDIR
   File "bin\Release\${ProgramName}.exe"
   File "bin\Release\${ProgramName}.exe.config"
-  File "bin\Release\Ookii.Dialogs.dll"
+  File "bin\Release\${ProgramName}-Ookii.Dialogs.dll"
   WriteUninstaller "${ProgramName}-Uninst.exe"
 SectionEnd
 
@@ -153,7 +153,7 @@ Section "Uninstall"
   Delete "$INSTDIR\${ProgramName}-Uninst.exe" ; Remove Application Files
   Delete "$INSTDIR\${ProgramName}.exe"
   Delete "$INSTDIR\${ProgramName}.exe.config"
-  Delete "$INSTDIR\Ookii.Dialogs.dll"
+  Delete "$INSTDIR\${ProgramName}-Ookii.Dialogs.dll"
   RMDir "$INSTDIR"
   
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ProgramName}" ; Remove Windows Programs & Features integration (uninstall info)
