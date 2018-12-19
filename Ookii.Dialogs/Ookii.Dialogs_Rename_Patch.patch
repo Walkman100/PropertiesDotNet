@@ -1,0 +1,13 @@
+diff --git a/Ookii.Dialogs.csproj b/Ookii.Dialogs.csproj
+index 7bc8c31..799c4a4 100644
+--- a/Ookii.Dialogs.csproj
++++ b/Ookii.Dialogs.csproj
+@@ -9,7 +9,7 @@
+     <OutputType>Library</OutputType>
+     <AppDesignerFolder>Properties</AppDesignerFolder>
+     <RootNamespace>Ookii.Dialogs</RootNamespace>
+-    <AssemblyName>Ookii.Dialogs</AssemblyName>
++    <AssemblyName>PropertiesDotNet-Ookii.Dialogs</AssemblyName>
+     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+     <FileAlignment>512</FileAlignment>
+     <SignAssembly>true</SignAssembly>

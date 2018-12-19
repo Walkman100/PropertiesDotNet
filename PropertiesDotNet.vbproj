@@ -46,8 +46,8 @@
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ookii.Dialogs">
-      <HintPath>Ookii.Dialogs\Ookii.Dialogs.dll</HintPath>
+    <Reference Include="PropertiesDotNet-Ookii.Dialogs">
+      <HintPath>Ookii.Dialogs\PropertiesDotNet-Ookii.Dialogs.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
