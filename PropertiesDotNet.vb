@@ -620,32 +620,32 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub chkReadOnly_Click() Handles chkReadOnly.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.ReadOnly, chkReadOnly.Checked)
+        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.ReadOnly, chkReadOnly.Checked, AddressOf ErrorParser)
         CheckData
     End Sub
     
     Sub chkHidden_Click() Handles chkHidden.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Hidden, chkHidden.Checked)
+        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Hidden, chkHidden.Checked, AddressOf ErrorParser)
         CheckData
     End Sub
     
     Sub chkSystem_Click() Handles chkSystem.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.System, chkSystem.Checked)
+        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.System, chkSystem.Checked, AddressOf ErrorParser)
         CheckData
     End Sub
     
     Sub chkArchive_Click() Handles chkArchive.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Archive, chkArchive.Checked)
+        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Archive, chkArchive.Checked, AddressOf ErrorParser)
         CheckData
     End Sub
     
     Sub chkNotIndexed_Click() Handles chkNotIndexed.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.NotContentIndexed, chkNotIndexed.Checked)
+        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.NotContentIndexed, chkNotIndexed.Checked, AddressOf ErrorParser)
         CheckData
     End Sub
     
     Sub chkCompressed_Click() Handles chkCompressed.Click
-        If WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Compressed, chkCompressed.Checked) Then
+        If WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Compressed, chkCompressed.Checked, AddressOf ErrorParser) Then
             If chkCompressed.Checked Then
                 If Not GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
                     Dim oneGB = 1000000000 '1 GB
@@ -670,7 +670,7 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub chkEncrypted_Click() Handles chkEncrypted.Click
-        If WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Encrypted, chkEncrypted.Checked) Then
+        If WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Encrypted, chkEncrypted.Checked, AddressOf ErrorParser) Then
             If chkEncrypted.Checked Then
                 If Not GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted) Then
                     Dim FileProperties As New FileInfo(lblFullPath.Text)
@@ -699,13 +699,13 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub chkOffline_Click() Handles chkOffline.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Offline, chkOffline.Checked)
+        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Offline, chkOffline.Checked, AddressOf ErrorParser)
         CheckData
     End Sub
     
     Sub chkTemporary_Click() Handles chkTemporary.Click
         If Exists(lblFullPath.Text) Then
-            WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Temporary, chkTemporary.Checked)
+            WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Temporary, chkTemporary.Checked, AddressOf ErrorParser)
         Else ' working on a directory and setting case sensitive
             Dim output As String = SetCaseSensitiveFlag(lblFullPath.Text, chkTemporary.Checked)
             
@@ -730,22 +730,22 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub chkNoScrub_Click() Handles chkNoScrub.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.NoScrubData, chkNoScrub.Checked)
+        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.NoScrubData, chkNoScrub.Checked, AddressOf ErrorParser)
         CheckData
     End Sub
     
     Sub chkIntegrity_Click() Handles chkIntegrity.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.IntegrityStream, chkIntegrity.Checked)
+        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.IntegrityStream, chkIntegrity.Checked, AddressOf ErrorParser)
         CheckData
     End Sub
     
     Sub chkReparse_Click() Handles chkReparse.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.ReparsePoint, chkReparse.Checked)
+        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.ReparsePoint, chkReparse.Checked, AddressOf ErrorParser)
         CheckData
     End Sub
     
     Sub chkSparse_Click() Handles chkSparse.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.SparseFile, chkSparse.Checked)
+        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.SparseFile, chkSparse.Checked, AddressOf ErrorParser)
         CheckData
     End Sub
     
@@ -1230,7 +1230,7 @@ Public Class PropertiesDotNet
             OokiiDialogsLoadedDelegate()
             Return True
         Catch ex As FileNotFoundException
-            If ex.Message.StartsWith("Could not load file or assembly 'Ookii.Dialogs") = False Then
+            If ex.Message.StartsWith("Could not load file or assembly 'PropertiesDotNet-Ookii.Dialogs") = False Then
                 MsgBox("Unexpected error loading Ookii.Dialogs.dll!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
             End If
             Return False
