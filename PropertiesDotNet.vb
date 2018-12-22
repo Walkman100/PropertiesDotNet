@@ -31,9 +31,6 @@ Public Class PropertiesDotNet
                 Application.Exit
             End If
         End If
-        If lblLocation.Text.StartsWith("\\?\") Then
-            lblLocation.Text = lblLocation.Text.Substring(4)
-        End If
         If Not Exists(lblLocation.Text) And Not Directory.Exists(lblLocation.Text) Then
             Try
                 If Not New DriveInfo(lblLocation.Text).Name = New FileInfo(lblLocation.Text).FullName Then
@@ -86,7 +83,12 @@ Public Class PropertiesDotNet
     End Sub
     Sub CheckData(Optional recalculateFolderSize As Boolean = False)
         ' init
-        Dim FileProperties As New FileInfo(lblLocation.Text)
+        Dim FileProperties As FileInfo
+        If lblLocation.Text.StartsWith("\\?\") AndAlso Not lblLocation.Text.StartsWith("\\?\Volume{") Then
+            FileProperties = New FileInfo(lblLocation.Text.Substring(4))
+        Else
+            FileProperties = New FileInfo(lblLocation.Text)
+        End If
         If WalkmanLib.IsAdmin() Then
             Me.Text = "[Admin] Properties: " & FileProperties.Name
         Else
