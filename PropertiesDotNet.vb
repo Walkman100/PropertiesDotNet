@@ -34,13 +34,9 @@ Public Class PropertiesDotNet
         If lblLocation.Text.StartsWith("\\?\") Then
             lblLocation.Text = lblLocation.Text.Substring(4)
         End If
-        If Exists(lblLocation.Text) Or Directory.Exists(lblLocation.Text) Then
-            CheckData(True)
-        Else
+        If Not Exists(lblLocation.Text) And Not Directory.Exists(lblLocation.Text) Then
             Try
-                If New DriveInfo(lblLocation.Text).Name = New FileInfo(lblLocation.Text).FullName Then
-                    CheckData(True)
-                Else
+                If Not New DriveInfo(lblLocation.Text).Name = New FileInfo(lblLocation.Text).FullName Then
                     Throw New Exception
                 End If
             Catch
@@ -48,6 +44,7 @@ Public Class PropertiesDotNet
                 Application.Exit
             End Try
         End If
+        CheckData(True)
     End Sub
     
     ' ======================= Dragging-and-dropping =======================
