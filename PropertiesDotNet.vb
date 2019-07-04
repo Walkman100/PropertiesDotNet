@@ -517,12 +517,20 @@ Public Class PropertiesDotNet
     ' ----------------------- date/time manipulation -----------------------
     Sub lblCreationTime_DoubleClick(sender As Object, e As EventArgs) Handles lblCreationTime.DoubleClick
         If chkUTC.Checked Then
-            SelectDateDialog.dateTimePicker.Value = GetCreationTimeUtc(lblFullPath.Text)
+            Try
+                SelectDateDialog.dateTimePicker.Value = GetCreationTimeUtc(lblFullPath.Text)
+            Catch ex As Exception
+                ErrorParser(ex)
+            End Try
             If SelectDateDialog.ShowDialog() = DialogResult.OK Then
                 SetCreationTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
             End If
         Else
-            SelectDateDialog.dateTimePicker.Value = GetCreationTime(lblFullPath.Text)
+            Try
+                SelectDateDialog.dateTimePicker.Value = GetCreationTime(lblFullPath.Text)
+            Catch ex As Exception
+                ErrorParser(ex)
+            End Try
             If SelectDateDialog.ShowDialog() = DialogResult.OK Then
                 SetCreationTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
             End If
@@ -531,12 +539,20 @@ Public Class PropertiesDotNet
     End Sub
     Sub lblLastAccessTime_DoubleClick(sender As Object, e As EventArgs) Handles lblLastAccessTime.DoubleClick
         If chkUTC.Checked Then
-            SelectDateDialog.dateTimePicker.Value = GetLastAccessTimeUtc(lblFullPath.Text)
+            Try
+                SelectDateDialog.dateTimePicker.Value = GetLastAccessTimeUtc(lblFullPath.Text)
+            Catch ex As Exception
+                ErrorParser(ex)
+            End Try
             If SelectDateDialog.ShowDialog() = DialogResult.OK Then
                 SetLastAccessTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
             End If
         Else
-            SelectDateDialog.dateTimePicker.Value = GetLastAccessTime(lblFullPath.Text)
+            Try
+                SelectDateDialog.dateTimePicker.Value = GetLastAccessTime(lblFullPath.Text)
+            Catch ex As Exception
+                ErrorParser(ex)
+            End Try
             If SelectDateDialog.ShowDialog() = DialogResult.OK Then
                 SetLastAccessTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
             End If
@@ -545,12 +561,20 @@ Public Class PropertiesDotNet
     End Sub
     Sub lblLastWriteTime_DoubleClick(sender As Object, e As EventArgs) Handles lblLastWriteTime.DoubleClick
         If chkUTC.Checked Then
-            SelectDateDialog.dateTimePicker.Value = GetLastWriteTimeUtc(lblFullPath.Text)
+            Try
+                SelectDateDialog.dateTimePicker.Value = GetLastWriteTimeUtc(lblFullPath.Text)
+            Catch ex As Exception
+                ErrorParser(ex)
+            End Try
             If SelectDateDialog.ShowDialog() = DialogResult.OK Then
                 SetLastWriteTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
             End If
         Else
-            SelectDateDialog.dateTimePicker.Value = GetLastWriteTime(lblFullPath.Text)
+            Try
+                SelectDateDialog.dateTimePicker.Value = GetLastWriteTime(lblFullPath.Text)
+            Catch ex As Exception
+                ErrorParser(ex)
+            End Try
             If SelectDateDialog.ShowDialog() = DialogResult.OK Then
                 SetLastWriteTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
             End If
