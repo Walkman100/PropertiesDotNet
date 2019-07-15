@@ -28,6 +28,8 @@ Partial Class PropertiesDotNet
         Me.chkHidden = New System.Windows.Forms.CheckBox()
         Me.chkSystem = New System.Windows.Forms.CheckBox()
         Me.grpProperties = New System.Windows.Forms.GroupBox()
+        Me.lblDriveTotalUsedSpace = New System.Windows.Forms.Label()
+        Me.lblDriveTotalUsedSpaceLbl = New System.Windows.Forms.Label()
         Me.lblDriveAvailableFreeSpaceInfo = New System.Windows.Forms.Label()
         Me.btnDriveVolumeLabel = New System.Windows.Forms.Button()
         Me.lblDriveAvailableFreeSpace = New System.Windows.Forms.Label()
@@ -152,6 +154,8 @@ Partial Class PropertiesDotNet
         Me.grpProperties.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
                         Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpProperties.Controls.Add(Me.lblDriveTotalUsedSpace)
+        Me.grpProperties.Controls.Add(Me.lblDriveTotalUsedSpaceLbl)
         Me.grpProperties.Controls.Add(Me.lblDriveAvailableFreeSpaceInfo)
         Me.grpProperties.Controls.Add(Me.btnDriveVolumeLabel)
         Me.grpProperties.Controls.Add(Me.lblDriveAvailableFreeSpace)
@@ -211,13 +215,31 @@ Partial Class PropertiesDotNet
         Me.grpProperties.TabStop = false
         Me.grpProperties.Text = "Properties:"
         '
+        'lblDriveTotalUsedSpace
+        '
+        Me.lblDriveTotalUsedSpace.AutoSize = true
+        Me.lblDriveTotalUsedSpace.Location = New System.Drawing.Point(101, 298)
+        Me.lblDriveTotalUsedSpace.Name = "lblDriveTotalUsedSpace"
+        Me.lblDriveTotalUsedSpace.Size = New System.Drawing.Size(61, 13)
+        Me.lblDriveTotalUsedSpace.TabIndex = 48
+        Me.lblDriveTotalUsedSpace.Text = "Checking..."
+        '
+        'lblDriveTotalUsedSpaceLbl
+        '
+        Me.lblDriveTotalUsedSpaceLbl.AutoSize = true
+        Me.lblDriveTotalUsedSpaceLbl.Location = New System.Drawing.Point(6, 298)
+        Me.lblDriveTotalUsedSpaceLbl.Name = "lblDriveTotalUsedSpaceLbl"
+        Me.lblDriveTotalUsedSpaceLbl.Size = New System.Drawing.Size(69, 13)
+        Me.lblDriveTotalUsedSpaceLbl.TabIndex = 40
+        Me.lblDriveTotalUsedSpaceLbl.Text = "Used Space:"
+        '
         'lblDriveAvailableFreeSpaceInfo
         '
         Me.lblDriveAvailableFreeSpaceInfo.AutoSize = true
-        Me.lblDriveAvailableFreeSpaceInfo.Location = New System.Drawing.Point(22, 324)
+        Me.lblDriveAvailableFreeSpaceInfo.Location = New System.Drawing.Point(22, 337)
         Me.lblDriveAvailableFreeSpaceInfo.Name = "lblDriveAvailableFreeSpaceInfo"
         Me.lblDriveAvailableFreeSpaceInfo.Size = New System.Drawing.Size(268, 13)
-        Me.lblDriveAvailableFreeSpaceInfo.TabIndex = 50
+        Me.lblDriveAvailableFreeSpaceInfo.TabIndex = 52
         Me.lblDriveAvailableFreeSpaceInfo.Text = "(Available space takes into account user quotas, if any)"
         '
         'btnDriveVolumeLabel
@@ -226,26 +248,26 @@ Partial Class PropertiesDotNet
         Me.btnDriveVolumeLabel.Location = New System.Drawing.Point(330, 254)
         Me.btnDriveVolumeLabel.Name = "btnDriveVolumeLabel"
         Me.btnDriveVolumeLabel.Size = New System.Drawing.Size(75, 23)
-        Me.btnDriveVolumeLabel.TabIndex = 49
+        Me.btnDriveVolumeLabel.TabIndex = 51
         Me.btnDriveVolumeLabel.Text = "Rename..."
         Me.btnDriveVolumeLabel.UseVisualStyleBackColor = true
         '
         'lblDriveAvailableFreeSpace
         '
         Me.lblDriveAvailableFreeSpace.AutoSize = true
-        Me.lblDriveAvailableFreeSpace.Location = New System.Drawing.Point(101, 311)
+        Me.lblDriveAvailableFreeSpace.Location = New System.Drawing.Point(101, 324)
         Me.lblDriveAvailableFreeSpace.Name = "lblDriveAvailableFreeSpace"
         Me.lblDriveAvailableFreeSpace.Size = New System.Drawing.Size(61, 13)
-        Me.lblDriveAvailableFreeSpace.TabIndex = 48
+        Me.lblDriveAvailableFreeSpace.TabIndex = 50
         Me.lblDriveAvailableFreeSpace.Text = "Checking..."
         '
         'lblDriveTotalFreeSpace
         '
         Me.lblDriveTotalFreeSpace.AutoSize = true
-        Me.lblDriveTotalFreeSpace.Location = New System.Drawing.Point(101, 298)
+        Me.lblDriveTotalFreeSpace.Location = New System.Drawing.Point(101, 311)
         Me.lblDriveTotalFreeSpace.Name = "lblDriveTotalFreeSpace"
         Me.lblDriveTotalFreeSpace.Size = New System.Drawing.Size(61, 13)
-        Me.lblDriveTotalFreeSpace.TabIndex = 47
+        Me.lblDriveTotalFreeSpace.TabIndex = 49
         Me.lblDriveTotalFreeSpace.Text = "Checking..."
         '
         'lblDriveTotalSize
@@ -254,7 +276,7 @@ Partial Class PropertiesDotNet
         Me.lblDriveTotalSize.Location = New System.Drawing.Point(101, 285)
         Me.lblDriveTotalSize.Name = "lblDriveTotalSize"
         Me.lblDriveTotalSize.Size = New System.Drawing.Size(61, 13)
-        Me.lblDriveTotalSize.TabIndex = 46
+        Me.lblDriveTotalSize.TabIndex = 47
         Me.lblDriveTotalSize.Text = "Checking..."
         '
         'lblDriveFormat
@@ -263,7 +285,7 @@ Partial Class PropertiesDotNet
         Me.lblDriveFormat.Location = New System.Drawing.Point(101, 272)
         Me.lblDriveFormat.Name = "lblDriveFormat"
         Me.lblDriveFormat.Size = New System.Drawing.Size(61, 13)
-        Me.lblDriveFormat.TabIndex = 45
+        Me.lblDriveFormat.TabIndex = 46
         Me.lblDriveFormat.Text = "Checking..."
         '
         'lblDriveVolumeLabel
@@ -272,7 +294,7 @@ Partial Class PropertiesDotNet
         Me.lblDriveVolumeLabel.Location = New System.Drawing.Point(101, 259)
         Me.lblDriveVolumeLabel.Name = "lblDriveVolumeLabel"
         Me.lblDriveVolumeLabel.Size = New System.Drawing.Size(61, 13)
-        Me.lblDriveVolumeLabel.TabIndex = 44
+        Me.lblDriveVolumeLabel.TabIndex = 45
         Me.lblDriveVolumeLabel.Text = "Checking..."
         '
         'lblDriveType
@@ -281,7 +303,7 @@ Partial Class PropertiesDotNet
         Me.lblDriveType.Location = New System.Drawing.Point(101, 246)
         Me.lblDriveType.Name = "lblDriveType"
         Me.lblDriveType.Size = New System.Drawing.Size(61, 13)
-        Me.lblDriveType.TabIndex = 43
+        Me.lblDriveType.TabIndex = 44
         Me.lblDriveType.Text = "Checking..."
         '
         'lblDriveIsReady
@@ -290,25 +312,25 @@ Partial Class PropertiesDotNet
         Me.lblDriveIsReady.Location = New System.Drawing.Point(101, 233)
         Me.lblDriveIsReady.Name = "lblDriveIsReady"
         Me.lblDriveIsReady.Size = New System.Drawing.Size(61, 13)
-        Me.lblDriveIsReady.TabIndex = 42
+        Me.lblDriveIsReady.TabIndex = 43
         Me.lblDriveIsReady.Text = "Checking..."
         '
         'lblDriveAvailableFreeSpaceLbl
         '
         Me.lblDriveAvailableFreeSpaceLbl.AutoSize = true
-        Me.lblDriveAvailableFreeSpaceLbl.Location = New System.Drawing.Point(6, 311)
+        Me.lblDriveAvailableFreeSpaceLbl.Location = New System.Drawing.Point(6, 324)
         Me.lblDriveAvailableFreeSpaceLbl.Name = "lblDriveAvailableFreeSpaceLbl"
         Me.lblDriveAvailableFreeSpaceLbl.Size = New System.Drawing.Size(87, 13)
-        Me.lblDriveAvailableFreeSpaceLbl.TabIndex = 41
+        Me.lblDriveAvailableFreeSpaceLbl.TabIndex = 42
         Me.lblDriveAvailableFreeSpaceLbl.Text = "Available Space:"
         '
         'lblDriveTotalFreeSpaceLbl
         '
         Me.lblDriveTotalFreeSpaceLbl.AutoSize = true
-        Me.lblDriveTotalFreeSpaceLbl.Location = New System.Drawing.Point(6, 298)
+        Me.lblDriveTotalFreeSpaceLbl.Location = New System.Drawing.Point(6, 311)
         Me.lblDriveTotalFreeSpaceLbl.Name = "lblDriveTotalFreeSpaceLbl"
         Me.lblDriveTotalFreeSpaceLbl.Size = New System.Drawing.Size(65, 13)
-        Me.lblDriveTotalFreeSpaceLbl.TabIndex = 40
+        Me.lblDriveTotalFreeSpaceLbl.TabIndex = 41
         Me.lblDriveTotalFreeSpaceLbl.Text = "Free Space:"
         '
         'lblDriveTotalSizeLbl
@@ -1031,6 +1053,8 @@ Partial Class PropertiesDotNet
         Me.ResumeLayout(false)
         Me.PerformLayout
     End Sub
+    Private lblDriveTotalUsedSpaceLbl As System.Windows.Forms.Label
+    Private lblDriveTotalUsedSpace As System.Windows.Forms.Label
     Private sfdSave As System.Windows.Forms.SaveFileDialog
     Private ofdBrowse As System.Windows.Forms.OpenFileDialog
     Private lblVersion As System.Windows.Forms.Label

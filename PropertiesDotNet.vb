@@ -145,6 +145,8 @@ Public Class PropertiesDotNet
                 lblDriveTotalFreeSpace.Text = DriveProperties.TotalFreeSpace
                 driveSizes(1) = DriveProperties.TotalFreeSpace
                 
+                lblDriveTotalUsedSpace.Text = driveSizes(0) - driveSizes(1)
+                
                 lblDriveAvailableFreeSpace.Text = DriveProperties.AvailableFreeSpace
                 driveSizes(2) = DriveProperties.AvailableFreeSpace
             Else
@@ -155,7 +157,7 @@ Public Class PropertiesDotNet
                 lblDriveAvailableFreeSpace.Text = "Not Ready"
             End If
             If DriveProperties.Name = FileProperties.FullName Then
-                Me.Height = 701
+                Me.Height = 714
             Else
                 Me.Height = 586
             End If
@@ -455,6 +457,7 @@ Public Class PropertiesDotNet
         End If
         
         lblDriveTotalSize.Text = FormatNumber(driveSizes(0))
+        lblDriveTotalUsedSpace.Text = FormatNumber(driveSizes(0) - driveSizes(1))
         lblDriveTotalFreeSpace.Text = FormatNumber(driveSizes(1))
         lblDriveAvailableFreeSpace.Text = FormatNumber(driveSizes(2))
     End Sub
