@@ -463,6 +463,7 @@ Public Class PropertiesDotNet
     End Sub
     Function FormatNumber(number As Decimal) As String
         Dim postString As String = ""
+        ' These Decimal.Truncate(...) ... below are horrible
         Select Case cbxSize.SelectedIndex
             Case 0 'bytes (8 bits)
                 number = number
@@ -472,30 +473,35 @@ Public Class PropertiesDotNet
                 postString = " kB"
             Case 2 'KiB (Binary - 1024)
                 number = number / 1024
+                number = Decimal.Truncate(number * 1000) / 1000
                 postString = " KiB"
             Case 3 'MB (Decimal - 1000)
                 number = number / 1000^2
                 postString = " MB"
             Case 4 'MiB (Binary - 1024)
                 number = number / 1024^2
+                number = Decimal.Truncate(number * 1000^2) / 1000^2
                 postString = " MiB"
             Case 5 'GB  (Decimal - 1000)
                 number = number / 1000^3
                 postString = " GB"
             Case 6 'GiB (Binary - 1024)
                 number = number / 1024^3
+                number = Decimal.Truncate(number * 1000^3) / 1000^3
                 postString = " GiB"
             Case 7 'TB  (Decimal - 1000)
                 number = number / 1000^4
                 postString = " TB"
             Case 8 'TiB (Binary - 1024)
                 number = number / 1024^4
+                number = Decimal.Truncate(number * 1000^4) / 1000^4
                 postString = " TiB"
             Case 9 'PB  (Decimal - 1000)
                 number = number / 1000^5
                 postString = " PB"
             Case 10 'PiB (Binary - 1024)
                 number = number / 1024^5
+                number = Decimal.Truncate(number * 1000^5) / 1000^5
                 postString = " PiB"
             Case 11 '(Click to read more)
                 postString = " bytes"
