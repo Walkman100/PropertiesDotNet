@@ -613,26 +613,25 @@ Public Class PropertiesDotNet
     
     Sub btnDriveVolumeLabel_Click() Handles btnDriveVolumeLabel.Click
         Dim DriveProperties As New DriveInfo(lblLocation.Text)
+        Dim newName As String
         
         If OokiiDialogsLoaded() Then
-            Dim newName = DriveProperties.VolumeLabel
-            If OokiiInputBox(newName, "New volume name", "Rename to:") = DialogResult.OK Then
-                Try        ' newName above is ByRef, so OokiiInputBox() updates it
-                    DriveProperties.VolumeLabel = newName
-                Catch ex As Exception
-                    ErrorParser(ex)
-                End Try
+            newName = DriveProperties.VolumeLabel
+            If OokiiInputBox(newName, "New volume name", "Rename to:") <> DialogResult.OK Then
+                Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
             End If
         Else
-            Dim newName = InputBox("Rename to:", "New volume name", DriveProperties.VolumeLabel)
-            If newName <> "" Then
-                Try
-                    DriveProperties.VolumeLabel = newName
-                Catch ex As exception
-                    ErrorParser(ex)
-                End Try
+            newName = InputBox("Rename to:", "New volume name", DriveProperties.VolumeLabel)
+            If newName = "" Then
+                Exit Sub
             End If
         End If
+        
+        Try
+            DriveProperties.VolumeLabel = newName
+        Catch ex As Exception
+            ErrorParser(ex)
+        End Try
         CheckData
     End Sub
     
