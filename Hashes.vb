@@ -484,7 +484,7 @@ Public Class Hashes
     Dim totalBytesRead As Long = 0
     
     Sub bwCalcHashes_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs)
-        Dim FilePropertiesStream As FileStream
+        Dim FilePropertiesStream As FileStream = Nothing
         Try
             ' Set up GUI
             btnAllCalculate.Enabled = False
@@ -552,7 +552,9 @@ Public Class Hashes
             bwCalcHashes.ReportProgress(100)
         Catch ex As OperationCanceledException
             HashGeneratorOutput("Closing streams...")
-            FilePropertiesStream.Close()
+            If Not IsNothing(FilePropertiesStream) Then
+                FilePropertiesStream.Close()
+            End If
             hashObject.Clear
             
             HashGeneratorOutput(ex.Message)
