@@ -617,11 +617,11 @@ Public Class PropertiesDotNet
         
         If OokiiDialogsLoaded() Then
             newName = DriveProperties.VolumeLabel
-            If OokiiInputBox(newName, "New volume name", "Rename to:") <> DialogResult.OK Then
+            If OokiiInputBox(newName, "New volume name (Max 32 chars)", "Rename to:") <> DialogResult.OK Then
                 Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
             End If
         Else
-            newName = InputBox("Rename to:", "New volume name", DriveProperties.VolumeLabel)
+            newName = InputBox("Rename to:", "New volume name (Max 32 chars)", DriveProperties.VolumeLabel)
             If newName = "" Then
                 Exit Sub
             End If
@@ -629,6 +629,13 @@ Public Class PropertiesDotNet
         
         Try
             DriveProperties.VolumeLabel = newName
+        Catch ex As UnauthorizedAccessException
+            If MsgBox("Access denied! Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                WalkmanLib.RunAsAdmin("label.exe", DriveProperties.Name.Remove(2) & " " & newName)
+                Threading.Thread.Sleep(500)
+            Else
+                ErrorParser(ex)
+            End If
         Catch ex As Exception
             ErrorParser(ex)
         End Try
