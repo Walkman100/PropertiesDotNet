@@ -1161,7 +1161,7 @@ Public Class PropertiesDotNet
                 If chkUseSystem.Checked Then
                     If Exists(lblFullPath.Text) Then
                         My.Computer.FileSystem.DeleteFile(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
-                    Else
+                    ElseIf Directory.Exists(lblFullPath.Text)
                         My.Computer.FileSystem.DeleteDirectory(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
                     End If
                 Else
@@ -1203,9 +1203,13 @@ Public Class PropertiesDotNet
             
             lblOpenWith.Text = SubFiles.Count.ToString("N0")
             byteSize = 0
+            Dim countInterval As ULong = 0
             For Each SubFile As FileInfo In SubFiles
                 byteSize += SubFile.Length
-                lblSize.Text = byteSize
+                countInterval += 1
+                If countInterval Mod 100 = 0 Then
+                    lblSize.Text = byteSize
+                End If
             Next
             
             lblSize.Text = byteSize
