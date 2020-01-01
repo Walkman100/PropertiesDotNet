@@ -44,7 +44,7 @@ Public Class PropertiesDotNet
                 Application.Exit
             End Try
         End If
-        CheckData(True)
+        CheckData(True, True)
     End Sub
     
     ' ======================= Dragging-and-dropping =======================
@@ -84,7 +84,7 @@ Public Class PropertiesDotNet
     Sub chkUTC_CheckedChanged() Handles chkUTC.CheckedChanged
         CheckData
     End Sub
-    Sub CheckData(Optional recalculateFolderSize As Boolean = False)
+    Sub CheckData(Optional recalculateFolderSize As Boolean = False, Optional firstStart As Boolean = False)
         ' init
         Dim FileProperties As FileInfo
         If lblLocation.Text.StartsWith("\\?\") AndAlso Not lblLocation.Text.StartsWith("\\?\Volume{") Then
@@ -102,6 +102,7 @@ Public Class PropertiesDotNet
         
         lblFullPath.Text = FileProperties.FullName
         If lblFullPath.Width>256 Then Me.Width = lblFullPath.Width+176 Else Me.Width = 432
+        If firstStart Then Me.CenterToScreen()
         lblDirectory.Text = FileProperties.DirectoryName
         lblName.Text = FileProperties.Name
         lblExtension.Text = FileProperties.Extension
