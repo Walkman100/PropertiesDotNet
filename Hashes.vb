@@ -258,9 +258,10 @@ Public Class Hashes
         Me.Controls.Add(Me.grpMD5)
         Me.Icon = My.Resources.Resources.hashx64
         Me.Name = "Hashes"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
-        Me.Location = New System.Drawing.Size((My.Computer.Screen.WorkingArea.Width/2) - 257.5, (My.Computer.Screen.WorkingArea.Height/2) - 146.5)
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
+        'Me.Location = New System.Drawing.Size((My.Computer.Screen.WorkingArea.Width/2) - 257.5, (My.Computer.Screen.WorkingArea.Height/2) - 146.5)
         Me.Text = "Generate Hashes: <filename>"
+        AddHandler VisibleChanged, AddressOf Me.Hashes_VisibleChanged
         Me.grpMD5.ResumeLayout(false)
         Me.grpMD5.PerformLayout
         Me.grpSHA1.ResumeLayout(false)
@@ -311,6 +312,12 @@ Public Class Hashes
         btnSHA1.Text = "Queue"
         btnSHA256.Text = "Queue"
         btnSHA512.Text = "Queue"
+    End Sub
+    
+    Sub Hashes_VisibleChanged(sender As Object, e As EventArgs)
+        If Me.Visible Then
+            Me.CenterToParent()
+        End If
     End Sub
     
     ' Starting & stopping

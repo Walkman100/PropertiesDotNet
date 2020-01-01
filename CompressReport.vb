@@ -41,7 +41,7 @@ Public Class CompressReport
         Me.MaximizeBox = false
         Me.MinimizeBox = false
         Me.ShowInTaskbar = false
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Compressing..."
         CType(Me.imgLoading,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)

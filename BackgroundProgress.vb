@@ -50,8 +50,8 @@ Public Class BackgroundProgress
         Me.MaximizeBox = false
         Me.MinimizeBox = false
         Me.Name = "BackgroundProgress"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
-        Me.Location = New System.Drawing.Size((My.Computer.Screen.WorkingArea.Width/2) - 167, (My.Computer.Screen.WorkingArea.Height/2) - 35.5)
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
+        'Me.Location = New System.Drawing.Size((My.Computer.Screen.WorkingArea.Width/2) - 167, (My.Computer.Screen.WorkingArea.Height/2) - 35.5)
         CType(Me.imgLoading,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
         Me.PerformLayout

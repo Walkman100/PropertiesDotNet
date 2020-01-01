@@ -14,6 +14,9 @@ Public Class PropertiesDotNet
         If lblLocation.Text.EndsWith("""") Then
             lblLocation.Text = lblLocation.Text.Remove(lblLocation.Text.Length - 1) & "\"
         End If
+        ' In order to center a form to it's parent, it needs to be .ShowDialog() or have the owner set if using .Show()
+        ' ImageViewer.Owner is set when it is shown, as it is destroyed and re-created every time
+        Hashes.Owner = Me
         timerDelayedBrowse.Start
     End Sub
     
@@ -325,6 +328,7 @@ Public Class PropertiesDotNet
         ImageViewer.Close
         ImageViewer.fileImage.Image = Nothing
         ImageViewer.Text = lblName.Text
+        ImageViewer.Owner = Me
         ImageViewer.Show
         ImageViewer.fileImage.Image = imgFile.Image
     End Sub

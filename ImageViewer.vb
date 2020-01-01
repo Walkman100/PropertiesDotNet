@@ -50,13 +50,20 @@ Public Class ImageViewer
         Me.Controls.Add(Me.fileImage)
         Me.Name = "ImageViewer"
         Me.ShowIcon = false
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
+        AddHandler VisibleChanged, AddressOf Me.ImageViewer_VisibleChanged
         CType(Me.fileImage,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
     End Sub
     Private btnClose As System.Windows.Forms.Button
     Private btnSave As System.Windows.Forms.Button
     Friend fileImage As System.Windows.Forms.PictureBox
+    
+    Sub ImageViewer_VisibleChanged(sender As Object, e As EventArgs)
+        If Me.Visible Then
+            Me.CenterToParent()
+        End If
+    End Sub
     
     Sub ImageViewer_Resize() Handles Me.Resize
         fileImage.Size = New System.Drawing.Size(fileImage.Width, (Me.Height - 60))
