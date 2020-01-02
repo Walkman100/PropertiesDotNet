@@ -73,18 +73,18 @@ SectionEnd
 
 SubSection "Context menu entry"
   Section "Add to context menu for all files"
-    WriteRegStr HKCR "*\shell\${ProgramName}" "" "Properties..."
+    WriteRegStr HKCR "*\shell\${ProgramName}" "" "P&roperties..."
     WriteRegStr HKCR "*\shell\${ProgramName}" "Icon" "$INSTDIR\${ProgramName}.exe"
       WriteRegStr HKCR "*\shell\${ProgramName}\command" "" "$\"$INSTDIR\${ProgramName}.exe$\" $\"%1$\""
   SectionEnd
   Section "Add to context menu for .url files"
-    WriteRegStr HKCR "IE.AssocFile.URL\shell\${ProgramName}" "" "Properties..."
+    WriteRegStr HKCR "IE.AssocFile.URL\shell\${ProgramName}" "" "P&roperties..."
     WriteRegStr HKCR "IE.AssocFile.URL\shell\${ProgramName}" "Icon" "$INSTDIR\${ProgramName}.exe"
       WriteRegStr HKCR "IE.AssocFile.URL\shell\${ProgramName}\command" "" "$\"$INSTDIR\${ProgramName}.exe$\" $\"%1$\""
   SectionEnd
   Section "Add to context menu for folders"
     DeleteRegKey HKCR "Directory\shell\${ProgramName}" ; Remove old context menu item, 'Folder' also covers drives
-    WriteRegStr HKCR "Folder\shell\${ProgramName}" "" "Properties..."
+    WriteRegStr HKCR "Folder\shell\${ProgramName}" "" "P&roperties..."
     WriteRegStr HKCR "Folder\shell\${ProgramName}" "Icon" "$INSTDIR\${ProgramName}.exe"
       WriteRegStr HKCR "Folder\shell\${ProgramName}\command" "" "$\"$INSTDIR\${ProgramName}.exe$\" $\"%1$\""
   SectionEnd
