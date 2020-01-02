@@ -136,7 +136,7 @@ Partial Class PropertiesDotNet
         Me.chkHidden.Name = "chkHidden"
         Me.chkHidden.Size = New System.Drawing.Size(60, 17)
         Me.chkHidden.TabIndex = 1
-        Me.chkHidden.Text = "Hidden"
+        Me.chkHidden.Text = "H&idden"
         Me.chkHidden.UseVisualStyleBackColor = true
         '
         'chkSystem
@@ -146,7 +146,7 @@ Partial Class PropertiesDotNet
         Me.chkSystem.Name = "chkSystem"
         Me.chkSystem.Size = New System.Drawing.Size(60, 17)
         Me.chkSystem.TabIndex = 2
-        Me.chkSystem.Text = "System"
+        Me.chkSystem.Text = "S&ystem"
         Me.chkSystem.UseVisualStyleBackColor = true
         '
         'grpProperties
@@ -385,7 +385,7 @@ Partial Class PropertiesDotNet
         Me.btnWindowsProperties.Name = "btnWindowsProperties"
         Me.btnWindowsProperties.Size = New System.Drawing.Size(114, 23)
         Me.btnWindowsProperties.TabIndex = 33
-        Me.btnWindowsProperties.Text = "Windows Properties"
+        Me.btnWindowsProperties.Text = "Windows &Properties"
         Me.btnWindowsProperties.UseVisualStyleBackColor = true
         '
         'cbxSize
@@ -426,7 +426,7 @@ Partial Class PropertiesDotNet
         Me.btnStartAssocProg.Name = "btnStartAssocProg"
         Me.btnStartAssocProg.Size = New System.Drawing.Size(62, 23)
         Me.btnStartAssocProg.TabIndex = 23
-        Me.btnStartAssocProg.Text = "Launch..."
+        Me.btnStartAssocProg.Text = "L&aunch..."
         Me.btnStartAssocProg.UseVisualStyleBackColor = true
         '
         'btnCopyOpenWith
@@ -448,7 +448,7 @@ Partial Class PropertiesDotNet
         Me.btnOpenWith.Name = "btnOpenWith"
         Me.btnOpenWith.Size = New System.Drawing.Size(75, 23)
         Me.btnOpenWith.TabIndex = 16
-        Me.btnOpenWith.Text = "Open with..."
+        Me.btnOpenWith.Text = "Open &with..."
         Me.btnOpenWith.UseVisualStyleBackColor = true
         '
         'lblOpenWithLbl
@@ -488,7 +488,7 @@ Partial Class PropertiesDotNet
         Me.btnLaunch.Name = "btnLaunch"
         Me.btnLaunch.Size = New System.Drawing.Size(62, 23)
         Me.btnLaunch.TabIndex = 11
-        Me.btnLaunch.Text = "Launch..."
+        Me.btnLaunch.Text = "&Launch..."
         Me.btnLaunch.UseVisualStyleBackColor = true
         '
         'btnHashes
@@ -499,7 +499,7 @@ Partial Class PropertiesDotNet
         Me.btnHashes.Name = "btnHashes"
         Me.btnHashes.Size = New System.Drawing.Size(114, 23)
         Me.btnHashes.TabIndex = 34
-        Me.btnHashes.Text = "Compute Hashes"
+        Me.btnHashes.Text = "Compute &Hashes"
         Me.btnHashes.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.btnHashes.UseVisualStyleBackColor = true
         '
@@ -568,7 +568,7 @@ Partial Class PropertiesDotNet
         Me.chkUTC.Name = "chkUTC"
         Me.chkUTC.Size = New System.Drawing.Size(120, 17)
         Me.chkUTC.TabIndex = 26
-        Me.chkUTC.Text = "Show Times in UTC"
+        Me.chkUTC.Text = "Show Times in &UTC"
         Me.chkUTC.UseVisualStyleBackColor = true
         '
         'lblLastWriteTime
@@ -788,7 +788,7 @@ Partial Class PropertiesDotNet
         Me.chkTemporary.Name = "chkTemporary"
         Me.chkTemporary.Size = New System.Drawing.Size(76, 17)
         Me.chkTemporary.TabIndex = 8
-        Me.chkTemporary.Text = "Temporary"
+        Me.chkTemporary.Text = "&Temporary"
         Me.chkTemporary.UseVisualStyleBackColor = true
         '
         'chkOffline
@@ -808,7 +808,7 @@ Partial Class PropertiesDotNet
         Me.chkEncrypted.Name = "chkEncrypted"
         Me.chkEncrypted.Size = New System.Drawing.Size(74, 17)
         Me.chkEncrypted.TabIndex = 6
-        Me.chkEncrypted.Text = "Encrypted"
+        Me.chkEncrypted.Text = "E&ncrypted"
         Me.chkEncrypted.UseVisualStyleBackColor = true
         '
         'chkCompressed
@@ -818,7 +818,7 @@ Partial Class PropertiesDotNet
         Me.chkCompressed.Name = "chkCompressed"
         Me.chkCompressed.Size = New System.Drawing.Size(84, 17)
         Me.chkCompressed.TabIndex = 5
-        Me.chkCompressed.Text = "Compressed"
+        Me.chkCompressed.Text = "Compr&essed"
         Me.chkCompressed.UseVisualStyleBackColor = true
         '
         'chkNotIndexed
@@ -859,7 +859,7 @@ Partial Class PropertiesDotNet
         Me.btnTakeOwn.Name = "btnTakeOwn"
         Me.btnTakeOwn.Size = New System.Drawing.Size(118, 24)
         Me.btnTakeOwn.TabIndex = 14
-        Me.btnTakeOwn.Text = "Take Ownership..."
+        Me.btnTakeOwn.Text = "Take &Ownership..."
         Me.btnTakeOwn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.btnTakeOwn.UseVisualStyleBackColor = true
         '
@@ -905,7 +905,7 @@ Partial Class PropertiesDotNet
         Me.btnHardlink.Name = "btnHardlink"
         Me.btnHardlink.Size = New System.Drawing.Size(99, 23)
         Me.btnHardlink.TabIndex = 7
-        Me.btnHardlink.Text = "Create Hardlink..."
+        Me.btnHardlink.Text = "Create Hardlin&k..."
         Me.btnHardlink.UseVisualStyleBackColor = true
         '
         'btnSymlink
@@ -916,7 +916,7 @@ Partial Class PropertiesDotNet
         Me.btnSymlink.Name = "btnSymlink"
         Me.btnSymlink.Size = New System.Drawing.Size(99, 23)
         Me.btnSymlink.TabIndex = 6
-        Me.btnSymlink.Text = "Create Symlink..."
+        Me.btnSymlink.Text = "Create Sym&link..."
         Me.btnSymlink.UseVisualStyleBackColor = true
         '
         'btnShortcut
@@ -927,7 +927,7 @@ Partial Class PropertiesDotNet
         Me.btnShortcut.Name = "btnShortcut"
         Me.btnShortcut.Size = New System.Drawing.Size(108, 23)
         Me.btnShortcut.TabIndex = 5
-        Me.btnShortcut.Text = "Create Shortcut..."
+        Me.btnShortcut.Text = "Create &Shortcut..."
         Me.btnShortcut.UseVisualStyleBackColor = true
         '
         'btnClose
@@ -950,7 +950,7 @@ Partial Class PropertiesDotNet
         Me.btnMove.Name = "btnMove"
         Me.btnMove.Size = New System.Drawing.Size(75, 23)
         Me.btnMove.TabIndex = 1
-        Me.btnMove.Text = "Move To..."
+        Me.btnMove.Text = "&Move To..."
         Me.btnMove.UseVisualStyleBackColor = true
         '
         'btnCopy
@@ -961,7 +961,7 @@ Partial Class PropertiesDotNet
         Me.btnCopy.Name = "btnCopy"
         Me.btnCopy.Size = New System.Drawing.Size(75, 23)
         Me.btnCopy.TabIndex = 2
-        Me.btnCopy.Text = "Copy To..."
+        Me.btnCopy.Text = "&Copy To..."
         Me.btnCopy.UseVisualStyleBackColor = true
         '
         'btnDelete
@@ -971,7 +971,7 @@ Partial Class PropertiesDotNet
         Me.btnDelete.Name = "btnDelete"
         Me.btnDelete.Size = New System.Drawing.Size(75, 23)
         Me.btnDelete.TabIndex = 3
-        Me.btnDelete.Text = "Delete"
+        Me.btnDelete.Text = "&Delete"
         Me.btnDelete.UseVisualStyleBackColor = true
         '
         'btnRename
@@ -981,7 +981,7 @@ Partial Class PropertiesDotNet
         Me.btnRename.Name = "btnRename"
         Me.btnRename.Size = New System.Drawing.Size(75, 23)
         Me.btnRename.TabIndex = 0
-        Me.btnRename.Text = "Rename..."
+        Me.btnRename.Text = "&Rename..."
         Me.btnRename.UseVisualStyleBackColor = true
         '
         'chkUseSystem
@@ -993,7 +993,7 @@ Partial Class PropertiesDotNet
         Me.chkUseSystem.Name = "chkUseSystem"
         Me.chkUseSystem.Size = New System.Drawing.Size(133, 17)
         Me.chkUseSystem.TabIndex = 4
-        Me.chkUseSystem.Text = "Use Windows Explorer"
+        Me.chkUseSystem.Text = "Use Windows E&xplorer"
         Me.chkUseSystem.UseVisualStyleBackColor = true
         '
         'bwCalcSize

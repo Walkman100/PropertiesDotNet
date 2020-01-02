@@ -114,7 +114,7 @@ Public Class PropertiesDotNet
         Catch ex As Exception
             compressedSizeOrError = ex.Message
         End Try
-        chkCompressed.Text = "Compressed"
+        chkCompressed.Text = "Compr&essed"
         
         ' check drive properties and if on a drive show them
         Try
@@ -198,18 +198,18 @@ Public Class PropertiesDotNet
             btnStartAssocProgAdmin.Visible = True
             
             chkTemporary.Enabled = True
-            chkTemporary.Text = "Temporary"
+            chkTemporary.Text = "&Temporary"
             chkTemporary.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Temporary)
             
             lblOpenWithLbl.Text = "Opens with:"
             btnHashes.Image = My.Resources.Resources.hashx16
-            btnHashes.Text = "Compute Hashes"
+            btnHashes.Text = "Compute &Hashes"
             
             If lblExtension.Text.ToLower() = ".lnk" Then
-                btnShortcut.Text = "Shortcut Properties"
+                btnShortcut.Text = "&Shortcut Properties"
                 btnShortcut.Image = Nothing
             Else
-                btnShortcut.Text = "Create Shortcut..."
+                btnShortcut.Text = "Create &Shortcut..."
                 btnShortcut.Image = My.Resources.Resources.mouse_right_click_8x
             End If
         ElseIf Directory.Exists(lblFullPath.Text)
@@ -230,22 +230,22 @@ Public Class PropertiesDotNet
             
             If My.Computer.Info.OSFullName.Contains("Windows 10") Then
                 chkTemporary.Enabled = True
-                chkTemporary.Text = "Case Sensitive Contents"
+                chkTemporary.Text = "Case Sensi&tive Contents"
                 Try
                     chkTemporary.Checked = QueryCaseSensitiveFlag(lblFullPath.Text)
                 Catch ex As Exception
                     chkTemporary.Enabled = False
-                    chkTemporary.Text = "Case Sensitive Contents (" & ex.Message & ")"
+                    chkTemporary.Text = "Case Sensi&tive Contents (" & ex.Message & ")"
                 End Try
             Else
                 chkTemporary.Enabled = False
-                chkTemporary.Text = "Temporary"
+                chkTemporary.Text = "&Temporary"
             End If
             
             lblOpenWithLbl.Text = "Number of files:"
             btnHashes.Image = My.Resources.Resources.Shell32__326_
-            btnHashes.Text = "DirectoryImage..."
-            btnShortcut.Text = "Create Shortcut..."
+            btnHashes.Text = "DirectoryIma&ge..."
+            btnShortcut.Text = "Create &Shortcut..."
             btnShortcut.Image = My.Resources.Resources.mouse_right_click_8x
         End If
         
@@ -450,15 +450,15 @@ Public Class PropertiesDotNet
         
         If IsNumeric(compressedSizeOrError) Then
             If compressedSizeOrError = 0 Then
-                chkCompressed.Text = "Compressed"
+                chkCompressed.Text = "Compr&essed"
             ElseIf compressedSizeOrError = byteSize Then
-                chkCompressed.Text = "Compressed (Size on disk is either 0 or bigger than size)"
+                chkCompressed.Text = "Compr&essed (Size on disk is either 0 or bigger than size)"
             Else
-                chkCompressed.Text = "Compressed (Size on disk: "
+                chkCompressed.Text = "Compr&essed (Size on disk: "
                 chkCompressed.Text &= FormatNumber(compressedSizeOrError) & ")"
             End If
         Else
-            chkCompressed.Text = "Compressed (GetSizeError: " & compressedSizeOrError & ")"
+            chkCompressed.Text = "Compr&essed (GetSizeError: " & compressedSizeOrError & ")"
         End If
         
         lblDriveTotalSize.Text = FormatNumber(driveSizes(0))
@@ -514,7 +514,7 @@ Public Class PropertiesDotNet
                     Process.Start("https://en.wikipedia.org/wiki/Byte#Unit_symbol")
                 Catch ex As Exception
                     If MsgBox("Unable to launch URL, copy to clipboard instead?", MsgBoxStyle.YesNo + MsgBoxStyle.Information) = MsgBoxResult.Yes Then _
-                      Clipboard.SetText("https://en.wikipedia.org/wiki/Byte#Unit_symbol")
+                      WalkmanLib.SafeSetText("https://en.wikipedia.org/wiki/Byte#Unit_symbol")
                 End Try
         End Select
         Return number.ToString("#,##0.### ### ### ### ### ### ###").Trim & postString
@@ -603,11 +603,11 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub btnHashes_Click() Handles btnHashes.Click
-        If btnHashes.Text = "Compute Hashes" Then
+        If btnHashes.Text = "Compute &Hashes" Then
             Hashes.Show
             Hashes.Text = "Generate Hashes: " & lblName.Text
             Hashes.Activate
-        ElseIf btnHashes.Text = "DirectoryImage..."
+        ElseIf btnHashes.Text = "DirectoryIma&ge..."
             Try
                 Process.Start(Application.StartupPath & "\DirectoryImage", """" & lblFullPath.Text & """")
             Catch ex As Exception
