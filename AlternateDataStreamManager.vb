@@ -108,6 +108,46 @@ Public Partial Class AlternateDataStreamManager
     End Sub
     
     Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
+        Dim streamInfo As String = ""
         
+        If PropertiesDotNet.OokiiDialogsLoaded() Then
+            If PropertiesDotNet.OokiiInputBox(streamInfo, "Create Stream", "Type a name for the stream:") <> DialogResult.OK Then
+                Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
+            End If
+        Else
+            streamInfo = InputBox("Type a name for the stream:", "Create Stream")
+            If streamInfo = "" Then
+                Exit Sub
+            End If
+        End If
+        
+        Dim ads As AlternateDataStreamInfo
+        Try
+            ads = FileSystem.GetAlternateDataStream(PropertiesDotNet.lblLocation.Text, streamInfo, FileMode.CreateNew)
+        Catch ex As IOException
+            MsgBox("Stream """ & streamInfo & """ already exists on file """ & PropertiesDotNet.lblLocation.Text & """!", MsgBoxStyle.Critical, "Error Creating Stream")
+            Exit Sub
+        Catch ex As ArgumentException
+            MsgBox("Stream name """ & streamInfo & """ contains invalid characters!", MsgBoxStyle.Critical, "Error Creating Stream")
+            Exit Sub
+        End Try
+        
+        If PropertiesDotNet.OokiiDialogsLoaded() Then
+            streamInfo = ""
+            If PropertiesDotNet.OokiiInputBox(streamInfo, "Create Stream", "Enter stream contents:") <> DialogResult.OK Then
+                Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
+            End If
+        Else
+            streamInfo = InputBox("Enter stream contents:", "Create Stream")
+            If streamInfo = "" Then
+                Exit Sub
+            End If
+        End If
+        
+        Using stream As StreamWriter = New StreamWriter(ads.OpenWrite())
+            stream.Write(streamInfo)
+        End Using
+        
+        LoadStreams()
     End Sub
 End Class

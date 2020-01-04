@@ -129,6 +129,7 @@ Partial Class PropertiesDotNet
         Me.lblLocation.Size = New System.Drawing.Size(61, 13)
         Me.lblLocation.TabIndex = 1
         Me.lblLocation.Text = "Checking..."
+        Me.lblLocation.UseMnemonic = false
         '
         'chkHidden
         '
@@ -224,6 +225,7 @@ Partial Class PropertiesDotNet
         Me.lblDriveTotalUsedSpace.Size = New System.Drawing.Size(61, 13)
         Me.lblDriveTotalUsedSpace.TabIndex = 48
         Me.lblDriveTotalUsedSpace.Text = "Checking..."
+        Me.lblDriveTotalUsedSpace.UseMnemonic = false
         '
         'lblDriveTotalUsedSpaceLbl
         '
@@ -261,6 +263,7 @@ Partial Class PropertiesDotNet
         Me.lblDriveAvailableFreeSpace.Size = New System.Drawing.Size(61, 13)
         Me.lblDriveAvailableFreeSpace.TabIndex = 50
         Me.lblDriveAvailableFreeSpace.Text = "Checking..."
+        Me.lblDriveAvailableFreeSpace.UseMnemonic = false
         '
         'lblDriveTotalFreeSpace
         '
@@ -270,6 +273,7 @@ Partial Class PropertiesDotNet
         Me.lblDriveTotalFreeSpace.Size = New System.Drawing.Size(61, 13)
         Me.lblDriveTotalFreeSpace.TabIndex = 49
         Me.lblDriveTotalFreeSpace.Text = "Checking..."
+        Me.lblDriveTotalFreeSpace.UseMnemonic = false
         '
         'lblDriveTotalSize
         '
@@ -279,6 +283,7 @@ Partial Class PropertiesDotNet
         Me.lblDriveTotalSize.Size = New System.Drawing.Size(61, 13)
         Me.lblDriveTotalSize.TabIndex = 47
         Me.lblDriveTotalSize.Text = "Checking..."
+        Me.lblDriveTotalSize.UseMnemonic = false
         '
         'lblDriveFormat
         '
@@ -288,6 +293,7 @@ Partial Class PropertiesDotNet
         Me.lblDriveFormat.Size = New System.Drawing.Size(61, 13)
         Me.lblDriveFormat.TabIndex = 46
         Me.lblDriveFormat.Text = "Checking..."
+        Me.lblDriveFormat.UseMnemonic = false
         '
         'lblDriveVolumeLabel
         '
@@ -297,6 +303,7 @@ Partial Class PropertiesDotNet
         Me.lblDriveVolumeLabel.Size = New System.Drawing.Size(61, 13)
         Me.lblDriveVolumeLabel.TabIndex = 45
         Me.lblDriveVolumeLabel.Text = "Checking..."
+        Me.lblDriveVolumeLabel.UseMnemonic = false
         '
         'lblDriveType
         '
@@ -306,6 +313,7 @@ Partial Class PropertiesDotNet
         Me.lblDriveType.Size = New System.Drawing.Size(61, 13)
         Me.lblDriveType.TabIndex = 44
         Me.lblDriveType.Text = "Checking..."
+        Me.lblDriveType.UseMnemonic = false
         '
         'lblDriveIsReady
         '
@@ -315,6 +323,7 @@ Partial Class PropertiesDotNet
         Me.lblDriveIsReady.Size = New System.Drawing.Size(61, 13)
         Me.lblDriveIsReady.TabIndex = 43
         Me.lblDriveIsReady.Text = "Checking..."
+        Me.lblDriveIsReady.UseMnemonic = false
         '
         'lblDriveAvailableFreeSpaceLbl
         '
@@ -552,6 +561,7 @@ Partial Class PropertiesDotNet
         Me.lblSize.Size = New System.Drawing.Size(61, 13)
         Me.lblSize.TabIndex = 19
         Me.lblSize.Text = "Checking..."
+        Me.lblSize.UseMnemonic = false
         '
         'lblSizeLbl
         '
@@ -580,6 +590,7 @@ Partial Class PropertiesDotNet
         Me.lblLastWriteTime.Size = New System.Drawing.Size(61, 13)
         Me.lblLastWriteTime.TabIndex = 32
         Me.lblLastWriteTime.Text = "Checking..."
+        Me.lblLastWriteTime.UseMnemonic = false
         '
         'lblLastWriteTimeLbl
         '
@@ -598,6 +609,7 @@ Partial Class PropertiesDotNet
         Me.lblLastAccessTime.Size = New System.Drawing.Size(61, 13)
         Me.lblLastAccessTime.TabIndex = 30
         Me.lblLastAccessTime.Text = "Checking..."
+        Me.lblLastAccessTime.UseMnemonic = false
         '
         'lblLastAccessTimeLbl
         '
@@ -616,6 +628,7 @@ Partial Class PropertiesDotNet
         Me.lblCreationTime.Size = New System.Drawing.Size(61, 13)
         Me.lblCreationTime.TabIndex = 28
         Me.lblCreationTime.Text = "Checking..."
+        Me.lblCreationTime.UseMnemonic = false
         '
         'lblCreationTimeLbl
         '
@@ -634,6 +647,7 @@ Partial Class PropertiesDotNet
         Me.lblFullPath.Size = New System.Drawing.Size(61, 13)
         Me.lblFullPath.TabIndex = 3
         Me.lblFullPath.Text = "Checking..."
+        Me.lblFullPath.UseMnemonic = false
         '
         'lblDirectory
         '
@@ -643,6 +657,7 @@ Partial Class PropertiesDotNet
         Me.lblDirectory.Size = New System.Drawing.Size(61, 13)
         Me.lblDirectory.TabIndex = 6
         Me.lblDirectory.Text = "Checking..."
+        Me.lblDirectory.UseMnemonic = false
         '
         'lblExtension
         '
@@ -652,6 +667,7 @@ Partial Class PropertiesDotNet
         Me.lblExtension.Size = New System.Drawing.Size(61, 13)
         Me.lblExtension.TabIndex = 15
         Me.lblExtension.Text = "Checking..."
+        Me.lblExtension.UseMnemonic = false
         '
         'lblName
         '
@@ -661,6 +677,7 @@ Partial Class PropertiesDotNet
         Me.lblName.Size = New System.Drawing.Size(61, 13)
         Me.lblName.TabIndex = 10
         Me.lblName.Text = "Checking..."
+        Me.lblName.UseMnemonic = false
         '
         'lblDirectoryLbl
         '
@@ -715,6 +732,7 @@ Partial Class PropertiesDotNet
         Me.lblOpenWith.Size = New System.Drawing.Size(61, 13)
         Me.lblOpenWith.TabIndex = 22
         Me.lblOpenWith.Text = "Checking..."
+        Me.lblOpenWith.UseMnemonic = false
         '
         'grpAttributes
         '
