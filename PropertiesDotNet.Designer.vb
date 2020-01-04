@@ -403,7 +403,7 @@ Partial Class PropertiesDotNet
         'btnLaunchAdmin
         '
         Me.btnLaunchAdmin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnLaunchAdmin.Image = Global.PropertiesDotNet.My.Resources.Resources.admin
+        Me.btnLaunchAdmin.Image = Global.PropertiesDotNet.Resources.admin
         Me.btnLaunchAdmin.Location = New System.Drawing.Point(337, 71)
         Me.btnLaunchAdmin.Name = "btnLaunchAdmin"
         Me.btnLaunchAdmin.Size = New System.Drawing.Size(23, 25)
@@ -413,7 +413,7 @@ Partial Class PropertiesDotNet
         'btnStartAssocProgAdmin
         '
         Me.btnStartAssocProgAdmin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnStartAssocProgAdmin.Image = Global.PropertiesDotNet.My.Resources.Resources.admin
+        Me.btnStartAssocProgAdmin.Image = Global.PropertiesDotNet.Resources.admin
         Me.btnStartAssocProgAdmin.Location = New System.Drawing.Point(337, 141)
         Me.btnStartAssocProgAdmin.Name = "btnStartAssocProgAdmin"
         Me.btnStartAssocProgAdmin.Size = New System.Drawing.Size(23, 25)
@@ -443,7 +443,7 @@ Partial Class PropertiesDotNet
         'btnOpenWith
         '
         Me.btnOpenWith.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnOpenWith.Image = Global.PropertiesDotNet.My.Resources.Resources.mouse_right_click_8x
+        Me.btnOpenWith.Image = Global.PropertiesDotNet.Resources.mouse_right_click_8x
         Me.btnOpenWith.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnOpenWith.Location = New System.Drawing.Point(285, 96)
         Me.btnOpenWith.Name = "btnOpenWith"
@@ -464,7 +464,7 @@ Partial Class PropertiesDotNet
         'imgFile
         '
         Me.imgFile.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.imgFile.Image = Global.PropertiesDotNet.My.Resources.Resources.loading4
+        Me.imgFile.Image = Global.PropertiesDotNet.Resources.loading4
         Me.imgFile.Location = New System.Drawing.Point(10, 147)
         Me.imgFile.Name = "imgFile"
         Me.imgFile.Size = New System.Drawing.Size(32, 32)
@@ -495,7 +495,7 @@ Partial Class PropertiesDotNet
         'btnHashes
         '
         Me.btnHashes.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnHashes.Image = Global.PropertiesDotNet.My.Resources.Resources.hashx16
+        Me.btnHashes.Image = Global.PropertiesDotNet.Resources.hashx16
         Me.btnHashes.Location = New System.Drawing.Point(291, 204)
         Me.btnHashes.Name = "btnHashes"
         Me.btnHashes.Size = New System.Drawing.Size(114, 23)
@@ -866,7 +866,7 @@ Partial Class PropertiesDotNet
         'btnTakeOwn
         '
         Me.btnTakeOwn.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnTakeOwn.Image = Global.PropertiesDotNet.My.Resources.Resources.admin
+        Me.btnTakeOwn.Image = Global.PropertiesDotNet.Resources.admin
         Me.btnTakeOwn.Location = New System.Drawing.Point(287, 36)
         Me.btnTakeOwn.Name = "btnTakeOwn"
         Me.btnTakeOwn.Size = New System.Drawing.Size(118, 24)
@@ -911,7 +911,7 @@ Partial Class PropertiesDotNet
         '
         'btnHardlink
         '
-        Me.btnHardlink.Image = Global.PropertiesDotNet.My.Resources.Resources.mouse_right_click_8x
+        Me.btnHardlink.Image = Global.PropertiesDotNet.Resources.mouse_right_click_8x
         Me.btnHardlink.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnHardlink.Location = New System.Drawing.Point(225, 48)
         Me.btnHardlink.Name = "btnHardlink"
@@ -922,7 +922,7 @@ Partial Class PropertiesDotNet
         '
         'btnSymlink
         '
-        Me.btnSymlink.Image = Global.PropertiesDotNet.My.Resources.Resources.mouse_right_click_8x
+        Me.btnSymlink.Image = Global.PropertiesDotNet.Resources.mouse_right_click_8x
         Me.btnSymlink.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnSymlink.Location = New System.Drawing.Point(120, 48)
         Me.btnSymlink.Name = "btnSymlink"
@@ -933,7 +933,7 @@ Partial Class PropertiesDotNet
         '
         'btnShortcut
         '
-        Me.btnShortcut.Image = Global.PropertiesDotNet.My.Resources.Resources.mouse_right_click_8x
+        Me.btnShortcut.Image = Global.PropertiesDotNet.Resources.mouse_right_click_8x
         Me.btnShortcut.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnShortcut.Location = New System.Drawing.Point(6, 48)
         Me.btnShortcut.Name = "btnShortcut"
@@ -956,7 +956,7 @@ Partial Class PropertiesDotNet
         '
         'btnMove
         '
-        Me.btnMove.Image = Global.PropertiesDotNet.My.Resources.Resources.mouse_right_click_8x
+        Me.btnMove.Image = Global.PropertiesDotNet.Resources.mouse_right_click_8x
         Me.btnMove.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnMove.Location = New System.Drawing.Point(87, 19)
         Me.btnMove.Name = "btnMove"
@@ -967,7 +967,7 @@ Partial Class PropertiesDotNet
         '
         'btnCopy
         '
-        Me.btnCopy.Image = Global.PropertiesDotNet.My.Resources.Resources.mouse_right_click_8x
+        Me.btnCopy.Image = Global.PropertiesDotNet.Resources.mouse_right_click_8x
         Me.btnCopy.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnCopy.Location = New System.Drawing.Point(168, 19)
         Me.btnCopy.Name = "btnCopy"
@@ -1050,7 +1050,7 @@ Partial Class PropertiesDotNet
         Me.Controls.Add(Me.grpFileLocation)
         Me.Controls.Add(Me.grpAttributes)
         Me.Controls.Add(Me.grpProperties)
-        Me.Icon = Global.PropertiesDotNet.My.Resources.Resources.document_properties
+        Me.Icon = Global.PropertiesDotNet.Resources.document_properties
         Me.MaximizeBox = false
         Me.Name = "PropertiesDotNet"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

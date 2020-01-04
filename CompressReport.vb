@@ -23,7 +23,7 @@ Public Class CompressReport
         Me.lblStatus.Text = "Starting compression..."
         'imgLoading
         Me.imgLoading.Name = "imgLoading"
-        Me.imgLoading.Image = My.Resources.Resources.loading4
+        Me.imgLoading.Image = Resources.loading4
         Me.imgLoading.Location = New System.Drawing.Point(12, 12)
         Me.imgLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.imgLoading.TabStop = False
@@ -37,7 +37,7 @@ Public Class CompressReport
         Me.Controls.Add(Me.imgLoading)
         Me.Controls.Add(Me.lblStatus)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Icon = My.Resources.Resources.compress
+        Me.Icon = Resources.compress
         Me.MaximizeBox = false
         Me.MinimizeBox = false
         Me.ShowInTaskbar = false
