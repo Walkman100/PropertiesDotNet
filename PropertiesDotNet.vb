@@ -534,6 +534,7 @@ Public Class PropertiesDotNet
     
     ' ----------------------- date/time manipulation -----------------------
     Sub lblCreationTime_Click(sender As Object, e As EventArgs) Handles lblCreationTime.Click
+        SelectDateDialog.Text = "Choose a date to set Creation time to:"
         If chkUTC.Checked Then
             Try
                 SelectDateDialog.dateTimePicker.Value = GetCreationTimeUtc(lblFullPath.Text)
@@ -556,6 +557,7 @@ Public Class PropertiesDotNet
         CheckData
     End Sub
     Sub lblLastAccessTime_Click(sender As Object, e As EventArgs) Handles lblLastAccessTime.Click
+        SelectDateDialog.Text = "Choose a date to set Last access time to:"
         If chkUTC.Checked Then
             Try
                 SelectDateDialog.dateTimePicker.Value = GetLastAccessTimeUtc(lblFullPath.Text)
@@ -578,6 +580,7 @@ Public Class PropertiesDotNet
         CheckData
     End Sub
     Sub lblLastWriteTime_Click(sender As Object, e As EventArgs) Handles lblLastWriteTime.Click
+        SelectDateDialog.Text = "Choose a date to set Last write time to:"
         If chkUTC.Checked Then
             Try
                 SelectDateDialog.dateTimePicker.Value = GetLastWriteTimeUtc(lblFullPath.Text)
@@ -1277,7 +1280,7 @@ Public Class PropertiesDotNet
         ooInput.Content = content
         ooInput.Input = input
         
-        Dim returnResult = ooInput.ShowDialog()
+        Dim returnResult = ooInput.ShowDialog(Me)
         input = ooInput.Input
         Return returnResult
     End Function

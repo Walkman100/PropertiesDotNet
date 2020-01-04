@@ -30,7 +30,7 @@
         Me.monthCalendar.Name = "monthCalendar"
         Me.monthCalendar.TabIndex = 1
         'btnCancel
-        Me.btnCancel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Location = New System.Drawing.Point(134, 206)
         Me.btnCancel.Name = "btnCancel"
@@ -39,7 +39,7 @@
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = true
         'btnSave
-        Me.btnSave.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnSave.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.btnSave.Location = New System.Drawing.Point(53, 206)
         Me.btnSave.Name = "btnSave"
