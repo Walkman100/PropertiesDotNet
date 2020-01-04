@@ -668,6 +668,7 @@ Public Class PropertiesDotNet
     
     Sub btnADS_Click() Handles btnADS.Click
         AlternateDataStreamManager.ShowDialog()
+        CheckData()
     End Sub
     
     Sub chkReadOnly_Click() Handles chkReadOnly.Click
