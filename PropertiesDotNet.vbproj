@@ -65,6 +65,14 @@
     <Compile Include="ImageViewer.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="NTFS-Streams\AlternateDataStreamInfo.vb" />
+    <Compile Include="NTFS-Streams\FileStreamAttributes.vb" />
+    <Compile Include="NTFS-Streams\FileStreamType.vb" />
+    <Compile Include="NTFS-Streams\FileSystem.vb" />
+    <Compile Include="NTFS-Streams\Resources.vb" />
+    <Compile Include="NTFS-Streams\SafeHGlobalHandle.vb" />
+    <Compile Include="NTFS-Streams\SafeNativeMethods.vb" />
+    <Compile Include="NTFS-Streams\StreamName.vb" />
     <Compile Include="PropertiesDotNet.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -84,12 +92,8 @@
     </Compile>
     <Compile Include="SelectDateDialog.vb" />
     <Compile Include="ShortcutPropertiesDialog.vb" />
-    <Compile Include="WalkmanLib\WalkmanLibDotNet.vb">
-      <Link>WalkmanLibDotNet.vb</Link>
-    </Compile>
-    <Compile Include="WalkmanLib\WalkmanLibWin32.vb">
-      <Link>WalkmanLibWin32.vb</Link>
-    </Compile>
+    <Compile Include="WalkmanLib\WalkmanLibDotNet.vb" />
+    <Compile Include="WalkmanLib\WalkmanLibWin32.vb" />
     <Compile Include="Windows7ProgressBar.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +127,10 @@
     <Import Include="System.Threading.Tasks" />
     <Import Include="System.Threading.Thread" />
     <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NTFS-Streams" />
+    <Folder Include="WalkmanLib" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
