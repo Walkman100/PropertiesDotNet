@@ -53,6 +53,10 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlternateDataStreamManager.Designer.vb">
+      <DependentUpon>AlternateDataStreamManager.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AlternateDataStreamManager.vb" />
     <Compile Include="BackgroundProgress.vb">
       <SubType>Form</SubType>
     </Compile>

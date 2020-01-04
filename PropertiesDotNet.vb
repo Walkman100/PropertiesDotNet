@@ -285,6 +285,10 @@ Public Class PropertiesDotNet
         Else
             chkReparse.Text = "Is Reparse Point"
         End If
+        
+        Dim tmpADSCount As Integer = Trinet.Core.IO.Ntfs.ListAlternateDataStreams(FileProperties).Count
+        If File.Exists(lblFullPath.Text) Then tmpADSCount += 1
+        btnADS.Text = "Data Streams: " & tmpADSCount.ToString()
     End Sub
     
     ' ======================= imgFile management =======================
@@ -660,6 +664,10 @@ Public Class PropertiesDotNet
     
     Sub btnTakeOwn_Click() Handles btnTakeOwn.Click
         WalkmanLib.TakeOwnership(lblFullPath.Text)
+    End Sub
+    
+    Sub btnADS_Click() Handles btnADS.Click
+        AlternateDataStreamManager.ShowDialog()
     End Sub
     
     Sub chkReadOnly_Click() Handles chkReadOnly.Click

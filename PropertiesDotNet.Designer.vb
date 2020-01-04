@@ -82,6 +82,7 @@ Partial Class PropertiesDotNet
         Me.lblPathLbl = New System.Windows.Forms.Label()
         Me.lblOpenWith = New System.Windows.Forms.Label()
         Me.grpAttributes = New System.Windows.Forms.GroupBox()
+        Me.btnADS = New System.Windows.Forms.Button()
         Me.chkSparse = New System.Windows.Forms.CheckBox()
         Me.chkReparse = New System.Windows.Forms.CheckBox()
         Me.chkIntegrity = New System.Windows.Forms.CheckBox()
@@ -719,6 +720,7 @@ Partial Class PropertiesDotNet
         '
         Me.grpAttributes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpAttributes.Controls.Add(Me.btnADS)
         Me.grpAttributes.Controls.Add(Me.chkSparse)
         Me.grpAttributes.Controls.Add(Me.chkReparse)
         Me.grpAttributes.Controls.Add(Me.chkIntegrity)
@@ -740,6 +742,16 @@ Partial Class PropertiesDotNet
         Me.grpAttributes.TabIndex = 1
         Me.grpAttributes.TabStop = false
         Me.grpAttributes.Text = "Attributes:"
+        '
+        'btnADS
+        '
+        Me.btnADS.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnADS.Location = New System.Drawing.Point(287, 63)
+        Me.btnADS.Name = "btnADS"
+        Me.btnADS.Size = New System.Drawing.Size(118, 23)
+        Me.btnADS.TabIndex = 15
+        Me.btnADS.Text = "Streams: Checking..."
+        Me.btnADS.UseVisualStyleBackColor = true
         '
         'chkSparse
         '
@@ -1053,6 +1065,7 @@ Partial Class PropertiesDotNet
         Me.ResumeLayout(false)
         Me.PerformLayout
     End Sub
+    Private WithEvents btnADS As System.Windows.Forms.Button
     Private lblDriveTotalUsedSpaceLbl As System.Windows.Forms.Label
     Private lblDriveTotalUsedSpace As System.Windows.Forms.Label
     Private sfdSave As System.Windows.Forms.SaveFileDialog
