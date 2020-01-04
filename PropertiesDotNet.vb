@@ -533,7 +533,7 @@ Public Class PropertiesDotNet
     End Sub
     
     ' ----------------------- date/time manipulation -----------------------
-    Sub lblCreationTime_DoubleClick(sender As Object, e As EventArgs) Handles lblCreationTime.DoubleClick
+    Sub lblCreationTime_Click(sender As Object, e As EventArgs) Handles lblCreationTime.Click
         If chkUTC.Checked Then
             Try
                 SelectDateDialog.dateTimePicker.Value = GetCreationTimeUtc(lblFullPath.Text)
@@ -555,7 +555,7 @@ Public Class PropertiesDotNet
         End If
         CheckData
     End Sub
-    Sub lblLastAccessTime_DoubleClick(sender As Object, e As EventArgs) Handles lblLastAccessTime.DoubleClick
+    Sub lblLastAccessTime_Click(sender As Object, e As EventArgs) Handles lblLastAccessTime.Click
         If chkUTC.Checked Then
             Try
                 SelectDateDialog.dateTimePicker.Value = GetLastAccessTimeUtc(lblFullPath.Text)
@@ -577,7 +577,7 @@ Public Class PropertiesDotNet
         End If
         CheckData
     End Sub
-    Sub lblLastWriteTime_DoubleClick(sender As Object, e As EventArgs) Handles lblLastWriteTime.DoubleClick
+    Sub lblLastWriteTime_Click(sender As Object, e As EventArgs) Handles lblLastWriteTime.Click
         If chkUTC.Checked Then
             Try
                 SelectDateDialog.dateTimePicker.Value = GetLastWriteTimeUtc(lblFullPath.Text)

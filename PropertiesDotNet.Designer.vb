@@ -585,6 +585,7 @@ Partial Class PropertiesDotNet
         'lblLastWriteTime
         '
         Me.lblLastWriteTime.AutoSize = true
+        Me.lblLastWriteTime.Cursor = System.Windows.Forms.Cursors.Hand
         Me.lblLastWriteTime.Location = New System.Drawing.Point(101, 209)
         Me.lblLastWriteTime.Name = "lblLastWriteTime"
         Me.lblLastWriteTime.Size = New System.Drawing.Size(61, 13)
@@ -604,6 +605,7 @@ Partial Class PropertiesDotNet
         'lblLastAccessTime
         '
         Me.lblLastAccessTime.AutoSize = true
+        Me.lblLastAccessTime.Cursor = System.Windows.Forms.Cursors.Hand
         Me.lblLastAccessTime.Location = New System.Drawing.Point(101, 196)
         Me.lblLastAccessTime.Name = "lblLastAccessTime"
         Me.lblLastAccessTime.Size = New System.Drawing.Size(61, 13)
@@ -623,6 +625,7 @@ Partial Class PropertiesDotNet
         'lblCreationTime
         '
         Me.lblCreationTime.AutoSize = true
+        Me.lblCreationTime.Cursor = System.Windows.Forms.Cursors.Hand
         Me.lblCreationTime.Location = New System.Drawing.Point(101, 183)
         Me.lblCreationTime.Name = "lblCreationTime"
         Me.lblCreationTime.Size = New System.Drawing.Size(61, 13)
