@@ -161,12 +161,12 @@ Public Partial Class AlternateDataStreamManager
             ' Copying FROM AlternateDataStream TO file
             If targetStreamName = ":$DATA" Then
                 Using sourceStream As FileStream = adsSource.OpenRead()
-                    Using targetStream As FileStream = Open(targetFile, FileMode.Create)
+                    Using targetStream As FileStream = Open(targetFile, FileMode.Truncate)
                         sourceStream.CopyTo(targetStream)
                     End Using
                 End Using
                 
-            Else ' Copying FROM AlternateDataStream TO AlternateDataStream
+            Else
                 Try
                     adsTarget  = GetAlternateDataStream(targetFile, targetStreamName, FileMode.CreateNew)
                 Catch ex As IOException
@@ -177,11 +177,21 @@ Public Partial Class AlternateDataStreamManager
                     Continue For
                 End Try
                 
-                Using sourceStream As FileStream = adsSource.OpenRead()
-                    Using targetStream As FileStream = adsTarget.OpenWrite()
-                        sourceStream.CopyTo(targetStream)
+                ' Copying FROM file TO AlternateDataStream
+                If adsSource.Name = ":$DATA" Then
+                    Using sourceStream As FileStream = OpenRead(adsSource.FilePath)
+                        Using targetStream As FileStream = adsTarget.OpenWrite()
+                            sourceStream.CopyTo(targetStream)
+                        End Using
                     End Using
-                End Using
+                    
+                Else ' Copying FROM AlternateDataStream TO AlternateDataStream
+                    Using sourceStream As FileStream = adsSource.OpenRead()
+                        Using targetStream As FileStream = adsTarget.OpenWrite()
+                            sourceStream.CopyTo(targetStream)
+                        End Using
+                    End Using
+                End If
             End If
         Next
         
