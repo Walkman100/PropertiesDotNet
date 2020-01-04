@@ -33,12 +33,13 @@ Partial Class AlternateDataStreamManager
         Me.colStreamsAttributes = New System.Windows.Forms.ColumnHeader()
         Me.btnOpen = New System.Windows.Forms.Button()
         Me.btnView = New System.Windows.Forms.Button()
-        Me.btnRename = New System.Windows.Forms.Button()
+        Me.btnCopy = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnAdd = New System.Windows.Forms.Button()
         Me.btnClose = New System.Windows.Forms.Button()
         Me.btnType = New System.Windows.Forms.Button()
         Me.btnAttributes = New System.Windows.Forms.Button()
+        Me.sfdSelectCopyTarget = New System.Windows.Forms.SaveFileDialog()
         Me.SuspendLayout
         '
         'lstStreams
@@ -56,7 +57,7 @@ Partial Class AlternateDataStreamManager
         Me.lstStreams.Name = "lstStreams"
         Me.lstStreams.Size = New System.Drawing.Size(419, 226)
         Me.lstStreams.Sorting = System.Windows.Forms.SortOrder.Ascending
-        Me.lstStreams.TabIndex = 1
+        Me.lstStreams.TabIndex = 0
         Me.lstStreams.UseCompatibleStateImageBehavior = false
         Me.lstStreams.View = System.Windows.Forms.View.Details
         '
@@ -84,8 +85,8 @@ Partial Class AlternateDataStreamManager
         Me.btnOpen.Location = New System.Drawing.Point(437, 12)
         Me.btnOpen.Name = "btnOpen"
         Me.btnOpen.Size = New System.Drawing.Size(100, 23)
-        Me.btnOpen.TabIndex = 2
-        Me.btnOpen.Text = "Open"
+        Me.btnOpen.TabIndex = 1
+        Me.btnOpen.Text = "Open in Notepad"
         Me.btnOpen.UseVisualStyleBackColor = true
         '
         'btnView
@@ -94,28 +95,28 @@ Partial Class AlternateDataStreamManager
         Me.btnView.Location = New System.Drawing.Point(437, 41)
         Me.btnView.Name = "btnView"
         Me.btnView.Size = New System.Drawing.Size(100, 23)
-        Me.btnView.TabIndex = 3
+        Me.btnView.TabIndex = 2
         Me.btnView.Text = "View Contents"
         Me.btnView.UseVisualStyleBackColor = true
         '
-        'btnRename
+        'btnCopy
         '
-        Me.btnRename.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnRename.Location = New System.Drawing.Point(437, 128)
-        Me.btnRename.Name = "btnRename"
-        Me.btnRename.Size = New System.Drawing.Size(100, 23)
-        Me.btnRename.TabIndex = 4
-        Me.btnRename.Text = "Rename"
-        Me.btnRename.UseVisualStyleBackColor = true
+        Me.btnCopy.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnCopy.Location = New System.Drawing.Point(437, 157)
+        Me.btnCopy.Name = "btnCopy"
+        Me.btnCopy.Size = New System.Drawing.Size(100, 23)
+        Me.btnCopy.TabIndex = 6
+        Me.btnCopy.Text = "Copy Stream"
+        Me.btnCopy.UseVisualStyleBackColor = true
         '
         'btnDelete
         '
         Me.btnDelete.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnDelete.Location = New System.Drawing.Point(437, 157)
+        Me.btnDelete.Location = New System.Drawing.Point(437, 128)
         Me.btnDelete.Name = "btnDelete"
         Me.btnDelete.Size = New System.Drawing.Size(100, 23)
         Me.btnDelete.TabIndex = 5
-        Me.btnDelete.Text = "Delete"
+        Me.btnDelete.Text = "Delete Stream"
         Me.btnDelete.UseVisualStyleBackColor = true
         '
         'btnAdd
@@ -124,8 +125,8 @@ Partial Class AlternateDataStreamManager
         Me.btnAdd.Location = New System.Drawing.Point(437, 186)
         Me.btnAdd.Name = "btnAdd"
         Me.btnAdd.Size = New System.Drawing.Size(100, 23)
-        Me.btnAdd.TabIndex = 6
-        Me.btnAdd.Text = "Add"
+        Me.btnAdd.TabIndex = 7
+        Me.btnAdd.Text = "Add New"
         Me.btnAdd.UseVisualStyleBackColor = true
         '
         'btnClose
@@ -135,7 +136,7 @@ Partial Class AlternateDataStreamManager
         Me.btnClose.Location = New System.Drawing.Point(437, 215)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(100, 23)
-        Me.btnClose.TabIndex = 7
+        Me.btnClose.TabIndex = 8
         Me.btnClose.Text = "Close"
         Me.btnClose.UseVisualStyleBackColor = true
         '
@@ -145,7 +146,7 @@ Partial Class AlternateDataStreamManager
         Me.btnType.Location = New System.Drawing.Point(437, 70)
         Me.btnType.Name = "btnType"
         Me.btnType.Size = New System.Drawing.Size(100, 23)
-        Me.btnType.TabIndex = 8
+        Me.btnType.TabIndex = 3
         Me.btnType.Text = "Change Type"
         Me.btnType.UseVisualStyleBackColor = true
         '
@@ -155,9 +156,14 @@ Partial Class AlternateDataStreamManager
         Me.btnAttributes.Location = New System.Drawing.Point(437, 99)
         Me.btnAttributes.Name = "btnAttributes"
         Me.btnAttributes.Size = New System.Drawing.Size(100, 23)
-        Me.btnAttributes.TabIndex = 9
+        Me.btnAttributes.TabIndex = 4
         Me.btnAttributes.Text = "Change Attributes"
         Me.btnAttributes.UseVisualStyleBackColor = true
+        '
+        'sfdSelectCopyTarget
+        '
+        Me.sfdSelectCopyTarget.CheckFileExists = true
+        Me.sfdSelectCopyTarget.OverwritePrompt = false
         '
         'AlternateDataStreamManager
         '
@@ -171,7 +177,7 @@ Partial Class AlternateDataStreamManager
         Me.Controls.Add(Me.btnClose)
         Me.Controls.Add(Me.btnAdd)
         Me.Controls.Add(Me.btnDelete)
-        Me.Controls.Add(Me.btnRename)
+        Me.Controls.Add(Me.btnCopy)
         Me.Controls.Add(Me.btnView)
         Me.Controls.Add(Me.btnOpen)
         Me.Controls.Add(Me.lstStreams)
@@ -182,12 +188,13 @@ Partial Class AlternateDataStreamManager
         Me.Text = "Data Stream Manager"
         Me.ResumeLayout(false)
     End Sub
+    Private sfdSelectCopyTarget As System.Windows.Forms.SaveFileDialog
+    Private WithEvents btnCopy As System.Windows.Forms.Button
     Private WithEvents btnAttributes As System.Windows.Forms.Button
     Private WithEvents btnType As System.Windows.Forms.Button
     Private WithEvents btnClose As System.Windows.Forms.Button
     Private WithEvents btnAdd As System.Windows.Forms.Button
     Private WithEvents btnDelete As System.Windows.Forms.Button
-    Private WithEvents btnRename As System.Windows.Forms.Button
     Private WithEvents btnView As System.Windows.Forms.Button
     Private WithEvents btnOpen As System.Windows.Forms.Button
     Private colStreamsAttributes As System.Windows.Forms.ColumnHeader

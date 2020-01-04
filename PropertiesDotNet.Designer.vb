@@ -1155,7 +1155,7 @@ Partial Class PropertiesDotNet
     Private WithEvents chkUTC As System.Windows.Forms.CheckBox
     Private lblName As System.Windows.Forms.Label
     Private lblExtension As System.Windows.Forms.Label
-    Private lblDirectory As System.Windows.Forms.Label
+    Friend lblDirectory As System.Windows.Forms.Label
     Private lblFullPath As System.Windows.Forms.Label
     Private lblCreationTimeLbl As System.Windows.Forms.Label
     Private WithEvents lblCreationTime As System.Windows.Forms.Label

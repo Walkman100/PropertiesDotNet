@@ -12,7 +12,6 @@ Public Partial Class AlternateDataStreamManager
         
         For Each s As AlternateDataStreamInfo In file.ListAlternateDataStreams
             Dim tmpListViewItem As New ListViewItem(New String() {s.Name, s.Size.ToString(), s.StreamType.ToString, s.Attributes.ToString})
-            lstStreams.SelectedItems.Clear() ' deselect existing items
             lstStreams.Items.Add(tmpListViewItem)
         Next
         
@@ -26,15 +25,15 @@ Public Partial Class AlternateDataStreamManager
             btnView.Enabled = False
             btnType.Enabled = False
             btnAttributes.Enabled = False
-            btnRename.Enabled = False
             btnDelete.Enabled = False
+            btnCopy.Enabled = False
         Else
             btnOpen.Enabled = True
             btnView.Enabled = True
             btnType.Enabled = True
             btnAttributes.Enabled = True
-            btnRename.Enabled = True
             btnDelete.Enabled = True
+            btnCopy.Enabled = True
         End If
     End Sub
     
@@ -95,13 +94,68 @@ Public Partial Class AlternateDataStreamManager
         
     End Sub
     
-    Sub btnRename_Click(sender As Object, e As EventArgs) Handles btnRename.Click
-        
-    End Sub
-    
     Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         For Each item As ListViewItem In lstStreams.SelectedItems
             DeleteAlternateDataStream(PropertiesDotNet.lblLocation.Text, item.Text)
+        Next
+        
+        LoadStreams()
+    End Sub
+    
+    Sub btnCopy_Click(sender As Object, e As EventArgs) Handles btnCopy.Click
+        Dim targetFile As String
+        Dim result As MsgBoxResult
+        Dim newName As String
+        Dim adsSource As AlternateDataStreamInfo
+        Dim adsTarget As AlternateDataStreamInfo
+        
+        For Each item As ListViewItem In lstStreams.SelectedItems
+            
+            targetFile = PropertiesDotNet.lblLocation.Text
+            
+            result = MsgBox("Copy stream """ & item.Text & """ to same file?", MsgBoxStyle.YesNoCancel, "Copy Stream Target")
+            If result = MsgBoxResult.Cancel Then
+                Continue For
+            ElseIf result = MsgBoxResult.No
+                sfdSelectCopyTarget.InitialDirectory = PropertiesDotNet.lblDirectory.Text
+                sfdSelectCopyTarget.FileName = targetFile
+                sfdSelectCopyTarget.Title = "Select file to copy stream """ & item.Text & """ to:"
+                If sfdSelectCopyTarget.ShowDialog() = DialogResult.OK Then
+                    targetFile = sfdSelectCopyTarget.FileName
+                Else
+                    Continue For
+                End If
+            End If
+            
+            adsSource = New AlternateDataStreamInfo(PropertiesDotNet.lblLocation.Text, item.Text, Nothing, True)
+            newName = adsSource.Name
+            
+            If PropertiesDotNet.OokiiDialogsLoaded() Then
+                If PropertiesDotNet.OokiiInputBox(newName, "Copy Stream", "Type a name to copy stream """ & newName & """ to:") <> DialogResult.OK Then
+                    Continue For                  ' newName above is ByRef, so OokiiInputBox() updates it
+                End If
+            Else
+                newName = InputBox("Type a name to copy stream """ & newName & """ to:", "Copy Stream", newName)
+                If newName = "" Then
+                    Continue For
+                End If
+            End If
+            
+            Try
+                adsTarget  = GetAlternateDataStream(targetFile, newName, FileMode.CreateNew)
+            Catch ex As IOException
+                MsgBox("Stream """ & newName & """ already exists on file """ & targetFile & """!", MsgBoxStyle.Critical, "Error Creating Stream")
+                Continue For
+            Catch ex As ArgumentException
+                MsgBox("Stream name """ & newName & """ contains invalid characters!", MsgBoxStyle.Critical, "Error Creating Stream")
+                Continue For
+            End Try
+            
+            Using sourceStream As FileStream = adsSource.OpenRead()
+                Using targetStream As FileStream = adsTarget.OpenWrite()
+                    sourceStream.CopyTo(targetStream)
+                End Using
+            End Using
         Next
         
         LoadStreams()
@@ -112,7 +166,7 @@ Public Partial Class AlternateDataStreamManager
         
         If PropertiesDotNet.OokiiDialogsLoaded() Then
             If PropertiesDotNet.OokiiInputBox(streamInfo, "Create Stream", "Type a name for the stream:") <> DialogResult.OK Then
-                Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
+                Exit Sub                      ' streamInfo above is ByRef, so OokiiInputBox() updates it
             End If
         Else
             streamInfo = InputBox("Type a name for the stream:", "Create Stream")
@@ -123,7 +177,7 @@ Public Partial Class AlternateDataStreamManager
         
         Dim ads As AlternateDataStreamInfo
         Try
-            ads = FileSystem.GetAlternateDataStream(PropertiesDotNet.lblLocation.Text, streamInfo, FileMode.CreateNew)
+            ads = GetAlternateDataStream(PropertiesDotNet.lblLocation.Text, streamInfo, FileMode.CreateNew)
         Catch ex As IOException
             MsgBox("Stream """ & streamInfo & """ already exists on file """ & PropertiesDotNet.lblLocation.Text & """!", MsgBoxStyle.Critical, "Error Creating Stream")
             Exit Sub
@@ -135,7 +189,7 @@ Public Partial Class AlternateDataStreamManager
         If PropertiesDotNet.OokiiDialogsLoaded() Then
             streamInfo = ""
             If PropertiesDotNet.OokiiInputBox(streamInfo, "Create Stream", "Enter stream contents:") <> DialogResult.OK Then
-                Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
+                Exit Sub                      ' streamInfo above is ByRef, so OokiiInputBox() updates it
             End If
         Else
             streamInfo = InputBox("Enter stream contents:", "Create Stream")
