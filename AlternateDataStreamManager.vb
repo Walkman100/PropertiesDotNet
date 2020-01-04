@@ -10,6 +10,11 @@ Public Partial Class AlternateDataStreamManager
         
         Dim file As FileInfo = New FileInfo(PropertiesDotNet.lblLocation.Text)
         
+        If file.Exists Then
+            Dim tmpListViewItem As New ListViewItem(New String() {":$DATA", file.Length, "Main Stream", "(see base file attributes)"})
+            lstStreams.Items.Add(tmpListViewItem)
+        End If
+        
         For Each s As AlternateDataStreamInfo In file.ListAlternateDataStreams
             Dim tmpListViewItem As New ListViewItem(New String() {s.Name, s.Size.ToString(), s.StreamType.ToString, s.Attributes.ToString})
             lstStreams.Items.Add(tmpListViewItem)
@@ -34,6 +39,17 @@ Public Partial Class AlternateDataStreamManager
             btnAttributes.Enabled = True
             btnDelete.Enabled = True
             btnCopy.Enabled = True
+            
+            ' stream :$DATA is the base file, we don't want to open that within the program,
+            '   it's type can't be changed, attributes are changeable and the file is deletable in the main window
+            For Each item As ListViewItem In lstStreams.SelectedItems
+                If item.Text = ":$DATA" Then
+                    btnView.Enabled = False
+                    btnType.Enabled = False
+                    btnAttributes.Enabled = False
+                    btnDelete.Enabled = False
+                End If
+            Next
         End If
     End Sub
     
@@ -70,7 +86,7 @@ Public Partial Class AlternateDataStreamManager
         frmShowStream.StartPosition = FormStartPosition.CenterParent
         frmShowStream.WindowState = FormWindowState.Normal
         frmShowStream.ShowIcon = False
-        frmShowStream.ShowInTaskbar = True
+        frmShowStream.ShowInTaskbar = False
         Dim txtShowStream As New TextBox()
         txtShowStream.Multiline = True
         txtShowStream.ReadOnly = True
@@ -103,16 +119,16 @@ Public Partial Class AlternateDataStreamManager
     End Sub
     
     Sub btnCopy_Click(sender As Object, e As EventArgs) Handles btnCopy.Click
-        Dim targetFile As String
         Dim result As MsgBoxResult
-        Dim newName As String
+        Dim targetFile As String
+        Dim targetStreamName As String
         Dim adsSource As AlternateDataStreamInfo
         Dim adsTarget As AlternateDataStreamInfo
         
         For Each item As ListViewItem In lstStreams.SelectedItems
             
+            ' get target file from user input
             targetFile = PropertiesDotNet.lblLocation.Text
-            
             result = MsgBox("Copy stream """ & item.Text & """ to same file?", MsgBoxStyle.YesNoCancel, "Copy Stream Target")
             If result = MsgBoxResult.Cancel Then
                 Continue For
@@ -128,34 +144,45 @@ Public Partial Class AlternateDataStreamManager
             End If
             
             adsSource = New AlternateDataStreamInfo(PropertiesDotNet.lblLocation.Text, item.Text, Nothing, True)
-            newName = adsSource.Name
             
+            ' get target stream from user input
+            targetStreamName = adsSource.Name
             If PropertiesDotNet.OokiiDialogsLoaded() Then
-                If PropertiesDotNet.OokiiInputBox(newName, "Copy Stream", "Type a name to copy stream """ & newName & """ to:") <> DialogResult.OK Then
+                If PropertiesDotNet.OokiiInputBox(targetStreamName, "Copy Stream", "Enter name to copy stream """ & targetStreamName & """ to:") <> DialogResult.OK Then
                     Continue For                  ' newName above is ByRef, so OokiiInputBox() updates it
                 End If
             Else
-                newName = InputBox("Type a name to copy stream """ & newName & """ to:", "Copy Stream", newName)
-                If newName = "" Then
+                targetStreamName = InputBox("Enter name to copy stream """ & targetStreamName & """ to:", "Copy Stream", targetStreamName)
+                If targetStreamName = "" Then
                     Continue For
                 End If
             End If
             
-            Try
-                adsTarget  = GetAlternateDataStream(targetFile, newName, FileMode.CreateNew)
-            Catch ex As IOException
-                MsgBox("Stream """ & newName & """ already exists on file """ & targetFile & """!", MsgBoxStyle.Critical, "Error Creating Stream")
-                Continue For
-            Catch ex As ArgumentException
-                MsgBox("Stream name """ & newName & """ contains invalid characters!", MsgBoxStyle.Critical, "Error Creating Stream")
-                Continue For
-            End Try
-            
-            Using sourceStream As FileStream = adsSource.OpenRead()
-                Using targetStream As FileStream = adsTarget.OpenWrite()
-                    sourceStream.CopyTo(targetStream)
+            ' Copying FROM AlternateDataStream TO file
+            If targetStreamName = ":$DATA" Then
+                Using sourceStream As FileStream = adsSource.OpenRead()
+                    Using targetStream As FileStream = Open(targetFile, FileMode.Create)
+                        sourceStream.CopyTo(targetStream)
+                    End Using
                 End Using
-            End Using
+                
+            Else ' Copying FROM AlternateDataStream TO AlternateDataStream
+                Try
+                    adsTarget  = GetAlternateDataStream(targetFile, targetStreamName, FileMode.CreateNew)
+                Catch ex As IOException
+                    MsgBox("Stream """ & targetStreamName & """ already exists on file """ & targetFile & """!", MsgBoxStyle.Critical, "Error Creating Stream")
+                    Continue For
+                Catch ex As ArgumentException
+                    MsgBox("Stream name """ & targetStreamName & """ contains invalid characters!", MsgBoxStyle.Critical, "Error Creating Stream")
+                    Continue For
+                End Try
+                
+                Using sourceStream As FileStream = adsSource.OpenRead()
+                    Using targetStream As FileStream = adsTarget.OpenWrite()
+                        sourceStream.CopyTo(targetStream)
+                    End Using
+                End Using
+            End If
         Next
         
         LoadStreams()
