@@ -15,7 +15,7 @@ Public Partial Class AlternateDataStreamManager
             lstStreams.Items.Add(tmpListViewItem)
         End If
         
-        For Each s As AlternateDataStreamInfo In file.ListAlternateDataStreams
+        For Each s As AlternateDataStreamInfo In ListAlternateDataStreams(file.FullName)
             Dim tmpListViewItem As New ListViewItem(New String() {s.Name, s.Size.ToString(), s.StreamType.ToString, s.Attributes.ToString})
             lstStreams.Items.Add(tmpListViewItem)
         Next
@@ -48,6 +48,7 @@ Public Partial Class AlternateDataStreamManager
                     btnType.Enabled = False
                     btnAttributes.Enabled = False
                     btnDelete.Enabled = False
+                    Exit For
                 End If
             Next
         End If
@@ -96,7 +97,9 @@ Public Partial Class AlternateDataStreamManager
         
         For Each item As ListViewItem In lstStreams.SelectedItems
             frmShowStream.Text = PropertiesDotNet.lblLocation.Text & ":" & item.Text
-            txtShowStream.Text = GetAlternateDataStream(PropertiesDotNet.lblLocation.Text, item.Text).OpenText.ReadToEnd
+            Using stream As StreamReader = GetAlternateDataStream(PropertiesDotNet.lblLocation.Text, item.Text).OpenText
+                txtShowStream.Text = stream.ReadToEnd()
+            End Using
             txtShowStream.SelectionStart = txtShowStream.Text.Length
             frmShowStream.ShowDialog()
         Next

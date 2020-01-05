@@ -286,7 +286,7 @@ Public Class PropertiesDotNet
             chkReparse.Text = "Is Reparse Point"
         End If
         
-        Dim tmpADSCount As Integer = Trinet.Core.IO.Ntfs.ListAlternateDataStreams(FileProperties).Count
+        Dim tmpADSCount As Integer = Trinet.Core.IO.Ntfs.ListAlternateDataStreams(lblFullPath.Text).Count
         If File.Exists(lblFullPath.Text) Then tmpADSCount += 1
         btnADS.Text = "Data Streams: " & tmpADSCount.ToString()
     End Sub
