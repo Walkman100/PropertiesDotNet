@@ -162,7 +162,9 @@ Partial Class AlternateDataStreamManager
         '
         'sfdSelectCopyTarget
         '
-        Me.sfdSelectCopyTarget.CheckFileExists = true
+        Me.sfdSelectCopyTarget.AddExtension = false
+        Me.sfdSelectCopyTarget.DereferenceLinks = false
+        Me.sfdSelectCopyTarget.Filter = "All Files|*.*"
         Me.sfdSelectCopyTarget.OverwritePrompt = false
         '
         'AlternateDataStreamManager

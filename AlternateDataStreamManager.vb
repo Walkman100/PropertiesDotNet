@@ -137,10 +137,14 @@ Public Partial Class AlternateDataStreamManager
                 Continue For
             ElseIf result = MsgBoxResult.No
                 sfdSelectCopyTarget.InitialDirectory = PropertiesDotNet.lblDirectory.Text
-                sfdSelectCopyTarget.FileName = targetFile
+                sfdSelectCopyTarget.FileName = "Don't select a file to select folder"
                 sfdSelectCopyTarget.Title = "Select file to copy stream """ & item.Text & """ to:"
                 If sfdSelectCopyTarget.ShowDialog() = DialogResult.OK Then
-                    targetFile = sfdSelectCopyTarget.FileName
+                    If sfdSelectCopyTarget.FileName.EndsWith("Don't select a file to select folder") Then
+                        targetFile = sfdSelectCopyTarget.FileName.Remove(sfdSelectCopyTarget.FileName.LastIndexOf(Path.DirectorySeparatorChar))
+                    Else
+                        targetFile = sfdSelectCopyTarget.FileName
+                    End If
                 Else
                     Continue For
                 End If
@@ -159,6 +163,10 @@ Public Partial Class AlternateDataStreamManager
                 If targetStreamName = "" Then
                     Continue For
                 End If
+            End If
+            
+            If Not File.Exists(targetFile) And Not Directory.Exists(targetFile) Then
+                File.Create(targetFile).Close()
             End If
             
             ' Copying FROM AlternateDataStream TO file
