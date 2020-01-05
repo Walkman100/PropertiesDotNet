@@ -28,25 +28,18 @@ Public Partial Class AlternateDataStreamManager
         If lstStreams.SelectedItems.Count = 0 Then
             btnOpen.Enabled = False
             btnView.Enabled = False
-            btnType.Enabled = False
-            btnAttributes.Enabled = False
             btnDelete.Enabled = False
             btnCopy.Enabled = False
         Else
             btnOpen.Enabled = True
             btnView.Enabled = True
-            btnType.Enabled = True
-            btnAttributes.Enabled = True
             btnDelete.Enabled = True
             btnCopy.Enabled = True
             
-            ' stream :$DATA is the base file, we don't want to open that within the program,
-            '   it's type can't be changed, attributes are changeable and the file is deletable in the main window
+            ' stream :$DATA is the base file, we don't want to open that within the program and the file is deletable in the main window
             For Each item As ListViewItem In lstStreams.SelectedItems
                 If item.Text = ":$DATA" Then
                     btnView.Enabled = False
-                    btnType.Enabled = False
-                    btnAttributes.Enabled = False
                     btnDelete.Enabled = False
                     Exit For
                 End If
@@ -58,7 +51,7 @@ Public Partial Class AlternateDataStreamManager
         If e.Column = 0 Then
             lstStreams.Sorting = IIf(lstStreams.Sorting = SortOrder.Ascending, SortOrder.Descending, SortOrder.Ascending)
         Else
-            'lstPrograms.Sort(e.Column)
+            'lstStreams.Sort(e.Column)
         End If
     End Sub
     
@@ -105,14 +98,6 @@ Public Partial Class AlternateDataStreamManager
         Next
     End Sub
     
-    Sub btnType_Click(sender As Object, e As EventArgs) Handles btnType.Click
-        
-    End Sub
-    
-    Sub btnAttributes_Click(sender As Object, e As EventArgs) Handles btnAttributes.Click
-        
-    End Sub
-    
     Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         For Each item As ListViewItem In lstStreams.SelectedItems
             DeleteAlternateDataStream(PropertiesDotNet.lblLocation.Text, item.Text)
@@ -153,13 +138,17 @@ Public Partial Class AlternateDataStreamManager
             adsSource = New AlternateDataStreamInfo(PropertiesDotNet.lblLocation.Text, item.Text, Nothing, True)
             
             ' get target stream from user input
-            targetStreamName = adsSource.Name
+            If adsSource.Name = ":$DATA" Then
+                targetStreamName = ""
+            Else
+                targetStreamName = adsSource.Name
+            End If
             If PropertiesDotNet.OokiiDialogsLoaded() Then
-                If PropertiesDotNet.OokiiInputBox(targetStreamName, "Copy Stream", "Enter name to copy stream """ & targetStreamName & """ to:") <> DialogResult.OK Then
+                If PropertiesDotNet.OokiiInputBox(targetStreamName, "Copy Stream", "Enter name to copy stream """ & adsSource.Name & """ to:") <> DialogResult.OK Then
                     Continue For                  ' newName above is ByRef, so OokiiInputBox() updates it
                 End If
             Else
-                targetStreamName = InputBox("Enter name to copy stream """ & targetStreamName & """ to:", "Copy Stream", targetStreamName)
+                targetStreamName = InputBox("Enter name to copy stream """ & adsSource.Name & """ to:", "Copy Stream", targetStreamName)
                 If targetStreamName = "" Then
                     Continue For
                 End If

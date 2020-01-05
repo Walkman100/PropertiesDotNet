@@ -37,8 +37,6 @@ Partial Class AlternateDataStreamManager
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnAdd = New System.Windows.Forms.Button()
         Me.btnClose = New System.Windows.Forms.Button()
-        Me.btnType = New System.Windows.Forms.Button()
-        Me.btnAttributes = New System.Windows.Forms.Button()
         Me.sfdSelectCopyTarget = New System.Windows.Forms.SaveFileDialog()
         Me.SuspendLayout
         '
@@ -55,7 +53,7 @@ Partial Class AlternateDataStreamManager
         Me.lstStreams.LabelWrap = false
         Me.lstStreams.Location = New System.Drawing.Point(12, 12)
         Me.lstStreams.Name = "lstStreams"
-        Me.lstStreams.Size = New System.Drawing.Size(419, 226)
+        Me.lstStreams.Size = New System.Drawing.Size(419, 168)
         Me.lstStreams.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lstStreams.TabIndex = 0
         Me.lstStreams.UseCompatibleStateImageBehavior = false
@@ -102,7 +100,7 @@ Partial Class AlternateDataStreamManager
         'btnCopy
         '
         Me.btnCopy.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnCopy.Location = New System.Drawing.Point(437, 157)
+        Me.btnCopy.Location = New System.Drawing.Point(437, 99)
         Me.btnCopy.Name = "btnCopy"
         Me.btnCopy.Size = New System.Drawing.Size(100, 23)
         Me.btnCopy.TabIndex = 6
@@ -112,7 +110,7 @@ Partial Class AlternateDataStreamManager
         'btnDelete
         '
         Me.btnDelete.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnDelete.Location = New System.Drawing.Point(437, 128)
+        Me.btnDelete.Location = New System.Drawing.Point(437, 70)
         Me.btnDelete.Name = "btnDelete"
         Me.btnDelete.Size = New System.Drawing.Size(100, 23)
         Me.btnDelete.TabIndex = 5
@@ -122,7 +120,7 @@ Partial Class AlternateDataStreamManager
         'btnAdd
         '
         Me.btnAdd.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnAdd.Location = New System.Drawing.Point(437, 186)
+        Me.btnAdd.Location = New System.Drawing.Point(437, 128)
         Me.btnAdd.Name = "btnAdd"
         Me.btnAdd.Size = New System.Drawing.Size(100, 23)
         Me.btnAdd.TabIndex = 7
@@ -133,32 +131,12 @@ Partial Class AlternateDataStreamManager
         '
         Me.btnClose.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnClose.Location = New System.Drawing.Point(437, 215)
+        Me.btnClose.Location = New System.Drawing.Point(437, 157)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(100, 23)
         Me.btnClose.TabIndex = 8
         Me.btnClose.Text = "Close"
         Me.btnClose.UseVisualStyleBackColor = true
-        '
-        'btnType
-        '
-        Me.btnType.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnType.Location = New System.Drawing.Point(437, 70)
-        Me.btnType.Name = "btnType"
-        Me.btnType.Size = New System.Drawing.Size(100, 23)
-        Me.btnType.TabIndex = 3
-        Me.btnType.Text = "Change Type"
-        Me.btnType.UseVisualStyleBackColor = true
-        '
-        'btnAttributes
-        '
-        Me.btnAttributes.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnAttributes.Location = New System.Drawing.Point(437, 99)
-        Me.btnAttributes.Name = "btnAttributes"
-        Me.btnAttributes.Size = New System.Drawing.Size(100, 23)
-        Me.btnAttributes.TabIndex = 4
-        Me.btnAttributes.Text = "Change Attributes"
-        Me.btnAttributes.UseVisualStyleBackColor = true
         '
         'sfdSelectCopyTarget
         '
@@ -173,9 +151,7 @@ Partial Class AlternateDataStreamManager
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnClose
-        Me.ClientSize = New System.Drawing.Size(549, 250)
-        Me.Controls.Add(Me.btnAttributes)
-        Me.Controls.Add(Me.btnType)
+        Me.ClientSize = New System.Drawing.Size(549, 192)
         Me.Controls.Add(Me.btnClose)
         Me.Controls.Add(Me.btnAdd)
         Me.Controls.Add(Me.btnDelete)
@@ -192,8 +168,6 @@ Partial Class AlternateDataStreamManager
     End Sub
     Private sfdSelectCopyTarget As System.Windows.Forms.SaveFileDialog
     Private WithEvents btnCopy As System.Windows.Forms.Button
-    Private WithEvents btnAttributes As System.Windows.Forms.Button
-    Private WithEvents btnType As System.Windows.Forms.Button
     Private WithEvents btnClose As System.Windows.Forms.Button
     Private WithEvents btnAdd As System.Windows.Forms.Button
     Private WithEvents btnDelete As System.Windows.Forms.Button
