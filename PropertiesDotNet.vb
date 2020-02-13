@@ -379,11 +379,11 @@ Public Class PropertiesDotNet
         ElseIf lblOpenWith.Text = Environment.GetEnvironmentVariable("ProgramFiles(x86)") & "\Windows Photo Viewer\PhotoViewer.dll" Then
             WalkmanLib.RunAsAdmin("rundll32", """" & Environment.GetEnvironmentVariable("ProgramFiles(x86)") & "\Windows Photo Viewer\PhotoViewer.dll"", " & _
               "ImageView_Fullscreen " & lblFullPath.Text)
-              
+            
         ElseIf lblOpenWith.Text = Environment.GetEnvironmentVariable("ProgramW6432") & "\Windows Photo Viewer\PhotoViewer.dll" Then
             WalkmanLib.RunAsAdmin("rundll32", """" & Environment.GetEnvironmentVariable("ProgramW6432") & "\Windows Photo Viewer\PhotoViewer.dll"", " & _
               "ImageView_Fullscreen " & lblFullPath.Text)
-              
+            
         Else
             If lblOpenWith.Text = "Filetype not associated!" Then
                 WalkmanLib.RunAsAdmin(lblFullPath.Text)
@@ -827,7 +827,7 @@ Public Class PropertiesDotNet
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    WalkmanLib.RunAsAdmin("cmd", "/k move """ & lblFullPath.Text & """ """ & sfdSave.FileName & """")
+                    WalkmanLib.RunAsAdmin("cmd", "/c move """ & lblFullPath.Text & """ """ & sfdSave.FileName & """ & pause")
                     If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                       lblLocation.Text = sfdSave.FileName
                 Else
@@ -990,7 +990,7 @@ Public Class PropertiesDotNet
         Catch ex As UnauthorizedAccessException
             If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
               MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                WalkmanLib.RunAsAdmin("cmd", "/k ren """ & lblFullPath.Text & """ """ & newName & """")
+                WalkmanLib.RunAsAdmin("cmd", "/c ren """ & lblFullPath.Text & """ """ & newName & """ & pause")
                 If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                   lblLocation.Text = FileProperties.DirectoryName & "\" & newName
             Else
@@ -1032,7 +1032,7 @@ Public Class PropertiesDotNet
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    WalkmanLib.RunAsAdmin("cmd", "/k move """ & lblFullPath.Text & """ """ & newName & """")
+                    WalkmanLib.RunAsAdmin("cmd", "/c move """ & lblFullPath.Text & """ """ & newName & """ & pause")
                     If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                       lblLocation.Text = newName
                 Else
@@ -1081,7 +1081,7 @@ Public Class PropertiesDotNet
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                       MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                        WalkmanLib.RunAsAdmin("xcopy", """" & lblFullPath.Text & """ """ & newName & """")
+                        WalkmanLib.RunAsAdmin("xcopy", "/F /H /K """ & lblFullPath.Text & """ """ & newName & "*""")
                         If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                           lblLocation.Text = newName
                     Else
@@ -1193,7 +1193,7 @@ Public Class PropertiesDotNet
             Catch ex As UnauthorizedAccessException
                 If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    WalkmanLib.RunAsAdmin("cmd", "/k del """ & lblFullPath.Text & """")
+                    WalkmanLib.RunAsAdmin("cmd", "/c del """ & lblFullPath.Text & """ & pause")
                 Else
                     ErrorParser(ex)
                 End If
