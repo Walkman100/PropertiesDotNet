@@ -407,6 +407,34 @@
             Else
                 Throw
             End If
+        Catch ex As UnauthorizedAccessException
+            If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                Using writer As StreamWriter = New StreamWriter(File.OpenWrite(Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs"))
+                    writer.WriteLine("Set lnk = WScript.CreateObject(""WScript.Shell"").CreateShortcut(""" & PropertiesDotNet.lblLocation.Text & """)")
+                    writer.WriteLine("lnk.TargetPath = """ & txtTarget.Text & """")
+                    writer.WriteLine("lnk.Arguments = """ & txtArguments.Text & """")
+                    writer.WriteLine("lnk.WorkingDirectory = """ & txtStartIn.Text & """")
+                    writer.WriteLine("lnk.IconLocation = """ & txtIconPath.Text & """")
+                    writer.WriteLine("lnk.Description = """ & txtComment.Text & """")
+                    writer.WriteLine("lnk.HotKey = """ & txtShortcutKey.Text & """")
+                    If windowStyle = Windows.Forms.FormWindowState.Normal Then
+                        writer.WriteLine("lnk.WindowStyle = 1")
+                    ElseIf windowStyle = Windows.Forms.FormWindowState.Minimized Then
+                        writer.WriteLine("lnk.WindowStyle = 7")
+                    ElseIf windowStyle = Windows.Forms.FormWindowState.Maximized Then
+                        writer.WriteLine("lnk.WindowStyle = 3")
+                    End If
+                    writer.WriteLine("lnk.Save")
+                End Using
+
+                WalkmanLib.RunAsAdmin("wscript", Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs")
+            Else
+                PropertiesDotNet.ErrorParser(ex)
+                Exit Sub
+            End If
+        Catch ex As Exception
+            PropertiesDotNet.ErrorParser(ex)
+            Exit Sub
         End Try
         
         WalkmanLib.SetShortcutRunAsAdmin(PropertiesDotNet.lblLocation.Text, chkRunAs.Checked)
