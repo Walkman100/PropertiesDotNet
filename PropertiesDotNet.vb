@@ -183,7 +183,7 @@ Public Class PropertiesDotNet
             End If
             
             lblOpenWith.Text = WalkmanLib.GetOpenWith(lblFullPath.Text)
-            If lblOpenWith.Text = "Filetype not associated!" Then 
+            If lblOpenWith.Text = "Filetype not associated!" Then
                 btnStartAssocProg.Enabled = False
                 btnStartAssocProgAdmin.Enabled = False
             Else
@@ -675,27 +675,87 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub chkReadOnly_Click() Handles chkReadOnly.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.ReadOnly, chkReadOnly.Checked, AddressOf ErrorParser)
+        Try
+            If chkReadOnly.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.ReadOnly) _
+            Else                        SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) And Not FileAttributes.ReadOnly)
+        Catch ex As UnauthorizedAccessException
+            If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                WalkmanLib.RunAsAdmin("attrib", IIf(chkReadOnly.Checked, "+", "-") & "r """ & lblFullPath.Text & """")
+                Threading.Thread.Sleep(100)
+            Else
+                ErrorParser(ex)
+            End If
+        Catch ex As Exception
+            ErrorParser(ex)
+        End Try
         CheckData
     End Sub
     
     Sub chkHidden_Click() Handles chkHidden.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Hidden, chkHidden.Checked, AddressOf ErrorParser)
+        Try
+            If chkHidden.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.Hidden) _
+            Else                      SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) And Not FileAttributes.Hidden)
+        Catch ex As UnauthorizedAccessException
+            If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                WalkmanLib.RunAsAdmin("attrib", IIf(chkHidden.Checked, "+", "-") & "h """ & lblFullPath.Text & """")
+                Threading.Thread.Sleep(100)
+            Else
+                ErrorParser(ex)
+            End If
+        Catch ex As Exception
+            ErrorParser(ex)
+        End Try
         CheckData
     End Sub
     
     Sub chkSystem_Click() Handles chkSystem.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.System, chkSystem.Checked, AddressOf ErrorParser)
+        Try
+            If chkSystem.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.System) _
+            Else                      SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) And Not FileAttributes.System)
+        Catch ex As UnauthorizedAccessException
+            If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                WalkmanLib.RunAsAdmin("attrib", IIf(chkSystem.Checked, "+", "-") & "s """ & lblFullPath.Text & """")
+                Threading.Thread.Sleep(100)
+            Else
+                ErrorParser(ex)
+            End If
+        Catch ex As Exception
+            ErrorParser(ex)
+        End Try
         CheckData
     End Sub
     
     Sub chkArchive_Click() Handles chkArchive.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Archive, chkArchive.Checked, AddressOf ErrorParser)
+        Try
+            If chkArchive.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.Archive) _
+            Else                       SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) And Not FileAttributes.Archive)
+        Catch ex As UnauthorizedAccessException
+            If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                WalkmanLib.RunAsAdmin("attrib", IIf(chkArchive.Checked, "+", "-") & "a """ & lblFullPath.Text & """")
+                Threading.Thread.Sleep(100)
+            Else
+                ErrorParser(ex)
+            End If
+        Catch ex As Exception
+            ErrorParser(ex)
+        End Try
         CheckData
     End Sub
     
     Sub chkNotIndexed_Click() Handles chkNotIndexed.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.NotContentIndexed, chkNotIndexed.Checked, AddressOf ErrorParser)
+        Try
+            If chkNotIndexed.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.NotContentIndexed) _
+            Else                          SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) And Not FileAttributes.NotContentIndexed)
+        Catch ex As UnauthorizedAccessException
+            If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                WalkmanLib.RunAsAdmin("attrib", IIf(chkNotIndexed.Checked, "+", "-") & "i """ & lblFullPath.Text & """")
+                Threading.Thread.Sleep(100)
+            Else
+                ErrorParser(ex)
+            End If
+        Catch ex As Exception
+            ErrorParser(ex)
+        End Try
         CheckData
     End Sub
     
@@ -754,7 +814,19 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub chkOffline_Click() Handles chkOffline.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Offline, chkOffline.Checked, AddressOf ErrorParser)
+        Try
+            If chkOffline.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.Offline) _
+            Else                       SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) And Not FileAttributes.Offline)
+        Catch ex As UnauthorizedAccessException
+            If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                WalkmanLib.RunAsAdmin("attrib", IIf(chkOffline.Checked, "+", "-") & "o """ & lblFullPath.Text & """")
+                Threading.Thread.Sleep(100)
+            Else
+                ErrorParser(ex)
+            End If
+        Catch ex As Exception
+            ErrorParser(ex)
+        End Try
         CheckData
     End Sub
     
@@ -785,12 +857,36 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub chkNoScrub_Click() Handles chkNoScrub.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.NoScrubData, chkNoScrub.Checked, AddressOf ErrorParser)
+        Try
+            If chkNoScrub.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.NoScrubData) _
+            Else                       SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) And Not FileAttributes.NoScrubData)
+        Catch ex As UnauthorizedAccessException
+            If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                WalkmanLib.RunAsAdmin("attrib", IIf(chkNoScrub.Checked, "+", "-") & "x """ & lblFullPath.Text & """")
+                Threading.Thread.Sleep(100)
+            Else
+                ErrorParser(ex)
+            End If
+        Catch ex As Exception
+            ErrorParser(ex)
+        End Try
         CheckData
     End Sub
     
     Sub chkIntegrity_Click() Handles chkIntegrity.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.IntegrityStream, chkIntegrity.Checked, AddressOf ErrorParser)
+        Try
+            If chkIntegrity.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.IntegrityStream) _
+            Else                         SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) And Not FileAttributes.IntegrityStream)
+        Catch ex As UnauthorizedAccessException
+            If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                WalkmanLib.RunAsAdmin("attrib", IIf(chkIntegrity.Checked, "+", "-") & "v """ & lblFullPath.Text & """")
+                Threading.Thread.Sleep(100)
+            Else
+                ErrorParser(ex)
+            End If
+        Catch ex As Exception
+            ErrorParser(ex)
+        End Try
         CheckData
     End Sub
     
@@ -825,7 +921,7 @@ Public Class PropertiesDotNet
                 End If
                 lblLocation.Text = sfdSave.FileName
             Catch ex As UnauthorizedAccessException
-                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+                If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                     WalkmanLib.RunAsAdmin("cmd", "/c move """ & lblFullPath.Text & """ """ & sfdSave.FileName & """ & pause")
                     If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
@@ -833,7 +929,7 @@ Public Class PropertiesDotNet
                 Else
                     ErrorParser(ex)
                 End If
-            Catch ex As exception
+            Catch ex As Exception
                 ErrorParser(ex)
             End Try
             CheckData(True)
@@ -988,7 +1084,7 @@ Public Class PropertiesDotNet
             FileProperties.MoveTo(FileProperties.DirectoryName & "\" & newName)
             lblLocation.Text = FileProperties.FullName
         Catch ex As UnauthorizedAccessException
-            If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+            If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", _
               MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                 WalkmanLib.RunAsAdmin("cmd", "/c ren """ & lblFullPath.Text & """ """ & newName & """ & pause")
                 If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
@@ -996,7 +1092,7 @@ Public Class PropertiesDotNet
             Else
                 ErrorParser(ex)
             End If
-        Catch ex As exception
+        Catch ex As Exception
             ErrorParser(ex)
         End Try
         CheckData(True)
@@ -1030,7 +1126,7 @@ Public Class PropertiesDotNet
                 End If
                 lblLocation.Text = newName
             Catch ex As UnauthorizedAccessException
-                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+                If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                     WalkmanLib.RunAsAdmin("cmd", "/c move """ & lblFullPath.Text & """ """ & newName & """ & pause")
                     If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
@@ -1038,7 +1134,7 @@ Public Class PropertiesDotNet
                 Else
                     ErrorParser(ex)
                 End If
-            Catch ex As exception
+            Catch ex As Exception
                 ErrorParser(ex)
             End Try
             CheckData(True)
@@ -1079,7 +1175,7 @@ Public Class PropertiesDotNet
                 If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
                   lblLocation.Text = newName
             Catch ex As UnauthorizedAccessException
-                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+                If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", _
                       MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                         WalkmanLib.RunAsAdmin("xcopy", "/F /H /K """ & lblFullPath.Text & """ """ & newName & "*""")
                         If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
@@ -1087,7 +1183,7 @@ Public Class PropertiesDotNet
                     Else
                         ErrorParser(ex)
                     End If
-            Catch ex As exception
+            Catch ex As Exception
                 ErrorParser(ex)
             End Try
             CheckData(True)
@@ -1191,13 +1287,13 @@ Public Class PropertiesDotNet
                 End If
                 Application.Exit
             Catch ex As UnauthorizedAccessException
-                If MsgBox(ex.message & vbnewline & vbnewline & "Try launching a system tool as admin?", _
+                If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", _
                   MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                     WalkmanLib.RunAsAdmin("cmd", "/c del """ & lblFullPath.Text & """ & pause")
                 Else
                     ErrorParser(ex)
                 End If
-            Catch ex As exception
+            Catch ex As Exception
                 ErrorParser(ex)
             End Try
             CheckData(True)
@@ -1242,7 +1338,7 @@ Public Class PropertiesDotNet
     
     Sub ErrorParser(ex As Exception)
         If ex.GetType.ToString = "System.UnauthorizedAccessException" AndAlso Not WalkmanLib.IsAdmin() Then
-            If MsgBox(ex.message & vbnewline & vbnewline & "Try launching PropertiesDotNet As Administrator?", _
+            If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching PropertiesDotNet As Administrator?", _
               MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                 WalkmanLib.RunAsAdmin(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", """" & lblFullPath.Text & """")
                 Application.Exit
