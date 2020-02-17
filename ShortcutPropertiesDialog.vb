@@ -310,14 +310,23 @@
         End If
     End Sub
     
-    Sub btnIconBrowse_Click() Handles btnIconBrowse.Click
-        ofdIcon.FileName = txtIconPath.Text
-        
-        If ofdIcon.FileName.Contains(",") Then
-            If IsNumeric(ofdIcon.FileName.Substring( ofdIcon.FileName.LastIndexOf(",") +1 )) Then
-                ofdIcon.FileName = ofdIcon.FileName.Remove(ofdIcon.FileName.LastIndexOf(","))
+    Function TransformResourcePath(iconResource As String, Optional ByRef iconIndex As Integer = 0) As String
+        If iconResource.Contains(",") Then
+            If IsNumeric(iconResource.Substring(iconResource.LastIndexOf(",") + 1)) Then
+                iconIndex = iconResource.Substring(iconResource.LastIndexOf(",") + 1)
+                
+                iconResource = iconResource.Remove(iconResource.LastIndexOf(","))
             End If
         End If
+        
+        If iconResource = "" Then
+            iconResource = txtTarget.Text
+        End If
+        Return iconResource
+    End Function
+    
+    Sub btnIconBrowse_Click() Handles btnIconBrowse.Click
+        ofdIcon.FileName = TransformResourcePath(txtIconPath.Text)
         
         If ofdIcon.ShowDialog() = DialogResult.OK Then
             txtIconPath.Text = ofdIcon.FileName
@@ -325,16 +334,8 @@
     End Sub
     
     Sub btnIconPick_Click() Handles btnIconPick.Click
-        Dim selectedFilePath As String = txtIconPath.Text
         Dim selectedIconIndex As Integer
-        
-        If selectedFilePath.Contains(",") Then
-            If IsNumeric(selectedFilePath.Substring( selectedFilePath.LastIndexOf(",") +1 )) Then
-                selectedIconIndex = selectedFilePath.Substring( selectedFilePath.LastIndexOf(",") +1 )
-                
-                selectedFilePath = selectedFilePath.Remove(selectedFilePath.LastIndexOf(","))
-            End If
-        End If
+        Dim selectedFilePath As String = TransformResourcePath(txtIconPath.Text, selectedIconIndex)
         
         If WalkmanLib.PickIconDialogShow(selectedFilePath, selectedIconIndex, Me.Handle) Then
             txtIconPath.Text = selectedFilePath & "," & selectedIconIndex
@@ -342,16 +343,8 @@
     End Sub
     
     Sub txtIconPath_TextChanged() Handles txtIconPath.TextChanged
-        Dim selectedFilePath As String = txtIconPath.Text
-        Dim selectedIconIndex As Integer = 0
-        
-        If selectedFilePath.Contains(",") Then
-            If IsNumeric(selectedFilePath.Substring( selectedFilePath.LastIndexOf(",") +1 )) Then
-                selectedIconIndex = selectedFilePath.Substring( selectedFilePath.LastIndexOf(",") +1 )
-                
-                selectedFilePath = selectedFilePath.Remove(selectedFilePath.LastIndexOf(","))
-            End If
-        End If
+        Dim selectedIconIndex As Integer
+        Dim selectedFilePath As String = TransformResourcePath(txtIconPath.Text, selectedIconIndex)
         
         Try
             Dim tmpIcon = WalkmanLib.ExtractIconByIndex(selectedFilePath, selectedIconIndex, pbxIcon.Width)
