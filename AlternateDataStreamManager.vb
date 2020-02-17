@@ -91,7 +91,7 @@ Public Partial Class AlternateDataStreamManager
         For Each item As ListViewItem In lstStreams.SelectedItems
             frmShowStream.Text = PropertiesDotNet.lblLocation.Text & ":" & item.Text
             Using stream As StreamReader = GetAlternateDataStream(PropertiesDotNet.lblLocation.Text, item.Text).OpenText
-                txtShowStream.Text = stream.ReadToEnd()
+                txtShowStream.Text = stream.ReadToEnd().Replace(vbNullChar, "")
             End Using
             txtShowStream.SelectionStart = txtShowStream.Text.Length
             frmShowStream.ShowDialog()
