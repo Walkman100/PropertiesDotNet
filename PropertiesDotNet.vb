@@ -966,19 +966,23 @@ Public Class PropertiesDotNet
         If lblExtension.Text.ToLower() = ".lnk" Then
             Dim shortcutInfo = WalkmanLib.GetShortcutInfo(lblFullPath.Text)
             
-            Try: ShortcutPropertiesDialog.txtTarget.Text = shortcutInfo.TargetPath
+            Try: ShortcutPropertiesDialog.lblTargetSize.Text = shortcutInfo.TargetPath
             Catch: MsgBox("Error getting shortcut target!", MsgBoxStyle.Exclamation)
                 ShortcutPropertiesDialog.txtTarget.Text = ""
             End Try
             
+            Try: ShortcutPropertiesDialog.lblStartInSize.Text = shortcutInfo.WorkingDirectory
+            Catch: MsgBox("Error getting shortcut working directory!", MsgBoxStyle.Exclamation)
+                ShortcutPropertiesDialog.txtStartIn.Text = ""
+            End Try
+            
+            ShortcutPropertiesDialog.PerformResize()
+            ShortcutPropertiesDialog.txtTarget.Text = ShortcutPropertiesDialog.lblTargetSize.Text
+            ShortcutPropertiesDialog.txtStartIn.Text = ShortcutPropertiesDialog.lblStartInSize.Text
+            
             Try: ShortcutPropertiesDialog.txtArguments.Text = shortcutInfo.Arguments
             Catch: MsgBox("Error getting shortcut arguments!", MsgBoxStyle.Exclamation)
                 ShortcutPropertiesDialog.txtArguments.Text = ""
-            End Try
-            
-            Try: ShortcutPropertiesDialog.txtStartIn.Text = shortcutInfo.WorkingDirectory
-            Catch: MsgBox("Error getting shortcut working directory!", MsgBoxStyle.Exclamation)
-                ShortcutPropertiesDialog.txtStartIn.Text = ""
             End Try
             
             Try: ShortcutPropertiesDialog.txtIconPath.Text = shortcutInfo.IconLocation

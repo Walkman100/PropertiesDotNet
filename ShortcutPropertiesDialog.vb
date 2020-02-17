@@ -37,6 +37,8 @@
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.pbxStatus = New System.Windows.Forms.PictureBox()
         Me.pbxIcon = New System.Windows.Forms.PictureBox()
+        Me.lblTargetSize = New System.Windows.Forms.Label()
+        Me.lblStartInSize = New System.Windows.Forms.Label()
         CType(Me.pbxStatus,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.pbxIcon,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
@@ -221,12 +223,28 @@
         Me.pbxIcon.Size = New System.Drawing.Size(32, 32)
         Me.pbxIcon.TabIndex = 23
         Me.pbxIcon.TabStop = false
+        'lblTargetSize
+        Me.lblTargetSize.AutoSize = true
+        Me.lblTargetSize.Location = New System.Drawing.Point(8, -20)
+        Me.lblTargetSize.Name = "lblTargetSize"
+        Me.lblTargetSize.Size = New System.Drawing.Size(16, 13)
+        Me.lblTargetSize.TabIndex = 24
+        Me.lblTargetSize.Text = "..."
+        'lblStartInSize
+        Me.lblStartInSize.AutoSize = true
+        Me.lblStartInSize.Location = New System.Drawing.Point(8, -20)
+        Me.lblStartInSize.Name = "lblStartInSize"
+        Me.lblStartInSize.Size = New System.Drawing.Size(16, 13)
+        Me.lblStartInSize.TabIndex = 25
+        Me.lblStartInSize.Text = "..."
         'ShortcutPropertiesDialog
         Me.AcceptButton = Me.btnSave
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(332, 295)
+        Me.Controls.Add(Me.lblStartInSize)
+        Me.Controls.Add(Me.lblTargetSize)
         Me.Controls.Add(Me.pbxIcon)
         Me.Controls.Add(Me.lblStatus)
         Me.Controls.Add(Me.pbxStatus)
@@ -261,6 +279,8 @@
         Me.ResumeLayout(false)
         Me.PerformLayout
     End Sub
+    Friend lblStartInSize As System.Windows.Forms.Label
+    Friend lblTargetSize As System.Windows.Forms.Label
     Private pbxIcon As System.Windows.Forms.PictureBox
     Private pbxStatus As System.Windows.Forms.PictureBox
     Private lblStatus As System.Windows.Forms.Label
@@ -292,6 +312,10 @@
     Public Sub New()
         Me.InitializeComponent()
         cbxWindow.SelectedIndex = 0
+    End Sub
+    
+    Sub PerformResize()
+        Me.Width = Math.Max(Math.Max(lblTargetSize.Width, lblStartInSize.Width) + 190, 348)
     End Sub
     
     Sub btnTarget_Click() Handles btnTarget.Click
@@ -419,7 +443,7 @@
                     End If
                     writer.WriteLine("lnk.Save")
                 End Using
-
+                
                 WalkmanLib.RunAsAdmin("wscript", Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs")
             Else
                 PropertiesDotNet.ErrorParser(ex)
