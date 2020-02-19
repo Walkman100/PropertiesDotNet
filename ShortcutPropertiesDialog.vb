@@ -369,6 +369,7 @@
     Sub txtIconPath_TextChanged() Handles txtIconPath.TextChanged
         Dim selectedIconIndex As Integer
         Dim selectedFilePath As String = TransformResourcePath(txtIconPath.Text, selectedIconIndex)
+        selectedFilePath = Environment.ExpandEnvironmentVariables(selectedFilePath)
         
         Try
             Dim tmpIcon = WalkmanLib.ExtractIconByIndex(selectedFilePath, selectedIconIndex, pbxIcon.Width)

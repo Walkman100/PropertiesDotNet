@@ -286,30 +286,42 @@ Public Class PropertiesDotNet
             chkReparse.Text = "Is Reparse Point"
         End If
         
-        Dim tmpADSCount As Integer = Trinet.Core.IO.Ntfs.ListAlternateDataStreams(lblFullPath.Text).Count
-        If File.Exists(lblFullPath.Text) Then tmpADSCount += 1
-        btnADS.Text = "Data Streams: " & tmpADSCount.ToString()
+        Try
+            Dim tmpADSCount As Integer = Trinet.Core.IO.Ntfs.ListAlternateDataStreams(lblFullPath.Text).Count
+            If File.Exists(lblFullPath.Text) Then tmpADSCount += 1
+            btnADS.Text = "Data Streams: " & tmpADSCount.ToString()
+        Catch
+            btnADS.Text = "Data Streams: " & "Error"
+        End Try
     End Sub
     
     ' ======================= imgFile management =======================
     
     Sub imgFile_LoadCompleted(sender As Object, e As System.ComponentModel.AsyncCompletedEventArgs) Handles imgFile.LoadCompleted
         If IsNothing(e.Error) Then
-            ShowImageBox
+            ShowImageBox()
         Else
             If Exists(lblFullPath.Text) Then
                 Try
                     imgFile.Image = Icon.ExtractAssociatedIcon(lblFullPath.Text).ToBitmap
-                    ShowImageBox
+                    ShowImageBox()
                 Catch
-                    HideImageBox
+                    HideImageBox()
                 End Try
-            ElseIf Directory.Exists(lblFullPath.Text)
+            ElseIf Directory.Exists(lblFullPath.Text) Then
                 Try
-                    imgFile.Image = Icon.ExtractAssociatedIcon(WalkmanLib.GetFolderIconPath(lblFullPath.Text)).ToBitmap
-                    ShowImageBox
-                Catch
-                    HideImageBox
+                    Dim resourceFile = WalkmanLib.GetFolderIconPath(lblFullPath.Text)
+                    If resourceFile.Contains(",") Then
+                        Dim resourceIndex = resourceFile.Substring(resourceFile.LastIndexOf(","))
+                        resourceFile = resourceFile.Remove(resourceFile.LastIndexOf(",") + 1)
+                        imgFile.Image = WalkmanLib.ExtractIconByIndex(resourceFile, resourceIndex, imgFile.Width).ToBitmap()
+                    Else
+                        imgFile.Image = Icon.ExtractAssociatedIcon(resourceFile).ToBitmap()
+                    End If
+                    ShowImageBox()
+                Catch ex As Exception
+                    ErrorParser(ex)
+                    HideImageBox()
                 End Try
             End If
         End If
