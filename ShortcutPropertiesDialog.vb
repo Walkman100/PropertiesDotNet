@@ -427,7 +427,7 @@
             End If
         Catch ex As UnauthorizedAccessException
             If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                Using writer As StreamWriter = New StreamWriter(File.OpenWrite(Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs"))
+                Using writer As StreamWriter = New StreamWriter(File.Open(Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs", FileMode.Create))
                     writer.WriteLine("Set lnk = WScript.CreateObject(""WScript.Shell"").CreateShortcut(""" & PropertiesDotNet.lblLocation.Text & """)")
                     writer.WriteLine("lnk.TargetPath = """ & txtTarget.Text & """")
                     writer.WriteLine("lnk.Arguments = """ & txtArguments.Text & """")
