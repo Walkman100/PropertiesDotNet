@@ -100,7 +100,18 @@ Public Partial Class AlternateDataStreamManager
     
     Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         For Each item As ListViewItem In lstStreams.SelectedItems
-            DeleteAlternateDataStream(PropertiesDotNet.lblLocation.Text, item.Text)
+            Try
+                DeleteAlternateDataStream(PropertiesDotNet.lblLocation.Text, item.Text)
+            Catch ex As UnauthorizedAccessException
+                If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                    WalkmanLib.RunAsAdmin("powershell", "-Command Remove-Item -Path '" & PropertiesDotNet.lblLocation.Text & "' -Stream '" & item.Text & "'; pause")
+                    Threading.Thread.Sleep(500)
+                Else
+                    PropertiesDotNet.ErrorParser(ex)
+                End If
+            Catch ex As Exception
+                PropertiesDotNet.ErrorParser(ex)
+            End Try
         Next
         
         LoadStreams()
@@ -154,45 +165,49 @@ Public Partial Class AlternateDataStreamManager
                 End If
             End If
             
-            If Not File.Exists(targetFile) And Not Directory.Exists(targetFile) Then
-                File.Create(targetFile).Close()
-            End If
-            
-            ' Copying FROM AlternateDataStream TO file
-            If targetStreamName = ":$DATA" Then
-                Using sourceStream As FileStream = adsSource.OpenRead()
-                    Using targetStream As FileStream = Open(targetFile, FileMode.Truncate)
-                        sourceStream.CopyTo(targetStream)
-                    End Using
-                End Using
+            Try
+                If Not File.Exists(targetFile) And Not Directory.Exists(targetFile) Then
+                    File.Create(targetFile).Close()
+                End If
                 
-            Else
-                Try
-                    adsTarget  = GetAlternateDataStream(targetFile, targetStreamName, FileMode.CreateNew)
-                Catch ex As IOException
-                    MsgBox("Stream """ & targetStreamName & """ already exists on file """ & targetFile & """!", MsgBoxStyle.Critical, "Error Creating Stream")
-                    Continue For
-                Catch ex As ArgumentException
-                    MsgBox("Stream name """ & targetStreamName & """ contains invalid characters!", MsgBoxStyle.Critical, "Error Creating Stream")
-                    Continue For
-                End Try
-                
-                ' Copying FROM file TO AlternateDataStream
-                If adsSource.Name = ":$DATA" Then
-                    Using sourceStream As FileStream = OpenRead(adsSource.FilePath)
-                        Using targetStream As FileStream = adsTarget.OpenWrite()
+                ' Copying FROM AlternateDataStream TO file
+                If targetStreamName = ":$DATA" Then
+                    Using sourceStream As FileStream = adsSource.OpenRead()
+                        Using targetStream As FileStream = Open(targetFile, FileMode.Truncate)
                             sourceStream.CopyTo(targetStream)
                         End Using
                     End Using
                     
-                Else ' Copying FROM AlternateDataStream TO AlternateDataStream
-                    Using sourceStream As FileStream = adsSource.OpenRead()
-                        Using targetStream As FileStream = adsTarget.OpenWrite()
-                            sourceStream.CopyTo(targetStream)
+                Else
+                    Try
+                        adsTarget = GetAlternateDataStream(targetFile, targetStreamName, FileMode.CreateNew)
+                    Catch ex2 As IOException
+                        MsgBox("Stream """ & targetStreamName & """ already exists on file """ & targetFile & """!", MsgBoxStyle.Critical, "Error Creating Stream")
+                        Continue For
+                    Catch ex2 As ArgumentException
+                        MsgBox("Stream name """ & targetStreamName & """ contains invalid characters!", MsgBoxStyle.Critical, "Error Creating Stream")
+                        Continue For
+                    End Try
+                    
+                    ' Copying FROM file TO AlternateDataStream
+                    If adsSource.Name = ":$DATA" Then
+                        Using sourceStream As FileStream = OpenRead(adsSource.FilePath)
+                            Using targetStream As FileStream = adsTarget.OpenWrite()
+                                sourceStream.CopyTo(targetStream)
+                            End Using
                         End Using
-                    End Using
+                        
+                    Else ' Copying FROM AlternateDataStream TO AlternateDataStream
+                        Using sourceStream As FileStream = adsSource.OpenRead()
+                            Using targetStream As FileStream = adsTarget.OpenWrite()
+                                sourceStream.CopyTo(targetStream)
+                            End Using
+                        End Using
+                    End If
                 End If
-            End If
+            Catch ex As Exception
+                PropertiesDotNet.ErrorParser(ex)
+            End Try
         Next
         
         LoadStreams()
@@ -235,9 +250,24 @@ Public Partial Class AlternateDataStreamManager
             End If
         End If
         
-        Using stream As StreamWriter = New StreamWriter(ads.OpenWrite())
-            stream.Write(streamInfo)
-        End Using
+        Try
+            Using stream As StreamWriter = New StreamWriter(ads.OpenWrite())
+                stream.Write(streamInfo)
+            End Using
+        Catch ex As UnauthorizedAccessException
+            If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+                WalkmanLib.RunAsAdmin("powershell", "-Command Set-Content " &
+                                        "-Path '" & ads.FilePath &
+                                      "' -Stream '" & ads.Name &
+                                      "' -Value '" & streamInfo &
+                                      "'; pause")
+                Threading.Thread.Sleep(500)
+            Else
+                PropertiesDotNet.ErrorParser(ex)
+            End If
+        Catch ex As Exception
+            PropertiesDotNet.ErrorParser(ex)
+        End Try
         
         LoadStreams()
     End Sub
