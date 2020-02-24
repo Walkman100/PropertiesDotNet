@@ -102,13 +102,10 @@ Public Partial Class AlternateDataStreamManager
         For Each item As ListViewItem In lstStreams.SelectedItems
             Try
                 DeleteAlternateDataStream(PropertiesDotNet.lblLocation.Text, item.Text)
-            Catch ex As UnauthorizedAccessException
-                If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    WalkmanLib.RunAsAdmin("powershell", "-Command Remove-Item -Path '" & PropertiesDotNet.lblLocation.Text & "' -Stream '" & item.Text & "'; pause")
-                    Threading.Thread.Sleep(500)
-                Else
-                    PropertiesDotNet.ErrorParser(ex)
-                End If
+            Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
+              "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+                WalkmanLib.RunAsAdmin("powershell", "-Command Remove-Item -Path '" & PropertiesDotNet.lblLocation.Text & "' -Stream '" & item.Text & "'; pause")
+                Threading.Thread.Sleep(500)
             Catch ex As Exception
                 PropertiesDotNet.ErrorParser(ex)
             End Try
@@ -254,17 +251,10 @@ Public Partial Class AlternateDataStreamManager
             Using stream As StreamWriter = New StreamWriter(ads.OpenWrite())
                 stream.Write(streamInfo)
             End Using
-        Catch ex As UnauthorizedAccessException
-            If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                WalkmanLib.RunAsAdmin("powershell", "-Command Set-Content " &
-                                        "-Path '" & ads.FilePath &
-                                      "' -Stream '" & ads.Name &
-                                      "' -Value '" & streamInfo &
-                                      "'; pause")
-                Threading.Thread.Sleep(500)
-            Else
-                PropertiesDotNet.ErrorParser(ex)
-            End If
+        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
+          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+            WalkmanLib.RunAsAdmin("powershell", "-Command Set-Content -Path '" & ads.FilePath & "' -Stream '" & ads.Name & "' -Value '" & streamInfo & "'; pause")
+            Threading.Thread.Sleep(500)
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try

@@ -413,43 +413,35 @@
         Try
             WalkmanLib.CreateShortcut(PropertiesDotNet.lblLocation.Text, txtTarget.Text, txtArguments.Text, _
                     txtStartIn.Text, txtIconPath.Text, txtComment.Text, txtShortcutKey.Text, windowStyle)
-        Catch ex As ArgumentException
-            If ex.Message = "Value does not fall within the expected range." Then
-                ' https://ss64.com/vb/shortcut.html
-                MsgBox("Incorrect Shortcut Key!" & vbNewLine & vbNewLine & _
-                    "HotKey mappings are only usable if the shortcut is on the Desktop or in the Start Menu." & vbNewLine & vbNewLine & _
-                    "Valid hot key-options:" & vbNewLine & vbNewLine & """ALT+"", ""CTRL+"", ""SHIFT+"", and ""EXT+""." & vbNewLine & vbNewLine & _
-                    """A"" .. ""Z"", ""0"" .. ""9"", ""NUMPAD0"" .. ""NUMPAD9"", ""Back"", ""Tab"", ""Clear"", ""Return"", ""Escape"", ""Space"", and ""Prior"".", _
-                    MsgBoxStyle.Critical, "Error saving Shortcut properties")
-                Exit Sub
-            Else
-                Throw
-            End If
-        Catch ex As UnauthorizedAccessException
-            If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                Using writer As StreamWriter = New StreamWriter(File.Open(Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs", FileMode.Create))
-                    writer.WriteLine("Set lnk = WScript.CreateObject(""WScript.Shell"").CreateShortcut(""" & PropertiesDotNet.lblLocation.Text & """)")
-                    writer.WriteLine("lnk.TargetPath = """ & txtTarget.Text & """")
-                    writer.WriteLine("lnk.Arguments = """ & txtArguments.Text & """")
-                    writer.WriteLine("lnk.WorkingDirectory = """ & txtStartIn.Text & """")
-                    writer.WriteLine("lnk.IconLocation = """ & txtIconPath.Text & """")
-                    writer.WriteLine("lnk.Description = """ & txtComment.Text & """")
-                    writer.WriteLine("lnk.HotKey = """ & txtShortcutKey.Text & """")
-                    If windowStyle = Windows.Forms.FormWindowState.Normal Then
-                        writer.WriteLine("lnk.WindowStyle = 1")
-                    ElseIf windowStyle = Windows.Forms.FormWindowState.Minimized Then
-                        writer.WriteLine("lnk.WindowStyle = 7")
-                    ElseIf windowStyle = Windows.Forms.FormWindowState.Maximized Then
-                        writer.WriteLine("lnk.WindowStyle = 3")
-                    End If
-                    writer.WriteLine("lnk.Save")
-                End Using
-                
-                WalkmanLib.RunAsAdmin("wscript", Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs")
-            Else
-                PropertiesDotNet.ErrorParser(ex)
-                Exit Sub
-            End If
+        Catch ex As ArgumentException When ex.Message = "Value does not fall within the expected range."
+            ' https://ss64.com/vb/shortcut.html
+            MsgBox("Incorrect Shortcut Key!" & vbNewLine & vbNewLine &
+                "HotKey mappings are only usable if the shortcut is on the Desktop or in the Start Menu." & vbNewLine & vbNewLine &
+                "Valid hot key-options:" & vbNewLine & vbNewLine & """ALT+"", ""CTRL+"", ""SHIFT+"", and ""EXT+""." & vbNewLine & vbNewLine &
+                """A"" .. ""Z"", ""0"" .. ""9"", ""NUMPAD0"" .. ""NUMPAD9"", ""Back"", ""Tab"", ""Clear"", ""Return"", ""Escape"", ""Space"", and ""Prior"".",
+                MsgBoxStyle.Critical, "Error saving Shortcut properties")
+            Exit Sub
+        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
+          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+            Using writer As StreamWriter = New StreamWriter(File.Open(Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs", FileMode.Create))
+                writer.WriteLine("Set lnk = WScript.CreateObject(""WScript.Shell"").CreateShortcut(""" & PropertiesDotNet.lblLocation.Text & """)")
+                writer.WriteLine("lnk.TargetPath = """ & txtTarget.Text & """")
+                writer.WriteLine("lnk.Arguments = """ & txtArguments.Text & """")
+                writer.WriteLine("lnk.WorkingDirectory = """ & txtStartIn.Text & """")
+                writer.WriteLine("lnk.IconLocation = """ & txtIconPath.Text & """")
+                writer.WriteLine("lnk.Description = """ & txtComment.Text & """")
+                writer.WriteLine("lnk.HotKey = """ & txtShortcutKey.Text & """")
+                If windowStyle = Windows.Forms.FormWindowState.Normal Then
+                    writer.WriteLine("lnk.WindowStyle = 1")
+                ElseIf windowStyle = Windows.Forms.FormWindowState.Minimized Then
+                    writer.WriteLine("lnk.WindowStyle = 7")
+                ElseIf windowStyle = Windows.Forms.FormWindowState.Maximized Then
+                    writer.WriteLine("lnk.WindowStyle = 3")
+                End If
+                writer.WriteLine("lnk.Save")
+            End Using
+            
+            WalkmanLib.RunAsAdmin("wscript", Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs")
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
             Exit Sub

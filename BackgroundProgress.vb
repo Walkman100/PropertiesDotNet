@@ -85,23 +85,24 @@ Public Class BackgroundProgress
                     Try
                         SubFile.Delete
                     Catch ex As Exception
-                        Dim answer = MsgBox("There was an error deleting """ & SubFile.FullName & """!" & _
-                          vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.AbortRetryIgnore + MsgBoxStyle.Exclamation, "Error!")
-                        If answer = MsgBoxResult.Abort Then
-                            Exit For
-                        ElseIf answer = MsgBoxResult.Retry Then
-                            Try
-                                SubFile.Delete
-                            Catch ex2 As Exception
-                                Dim answer2 = MsgBox("Error retrying delete for """ & SubFile.FullName & """:" & _
-                                  ex.Message, MsgBoxStyle.AbortRetryIgnore + MsgBoxStyle.Exclamation, "Error!")
-                                If answer2 = MsgBoxResult.Abort Then
-                                    Exit For
-                                ElseIf answer2 = MsgBoxResult.Retry Then
-                                    MsgBox("Already retried!", MsgBoxStyle.Exclamation)
-                                End If
-                            End Try
-                        End If
+                        Select Case MsgBox("There was an error deleting """ & SubFile.FullName & """!" & vbNewLine & vbNewLine & ex.Message,
+                                           MsgBoxStyle.AbortRetryIgnore + MsgBoxStyle.Exclamation, "Error!")
+                            Case MsgBoxResult.Abort
+                                Exit For
+                            Case MsgBoxResult.Retry
+                                Try
+                                    SubFile.Delete()
+                                Catch ex2 As Exception
+                                    Select Case MsgBox("Error retrying delete for """ & SubFile.FullName & """:" & ex.Message,
+                                                       MsgBoxStyle.AbortRetryIgnore + MsgBoxStyle.Exclamation, "Error!")
+                                        Case MsgBoxResult.Abort
+                                            Exit For
+                                        Case MsgBoxResult.Retry
+                                            MsgBox("Already retried!", MsgBoxStyle.Exclamation)
+                                        Case Else
+                                    End Select
+                                End Try
+                        End Select
                     End Try
                     i += 1
                 Next
@@ -176,24 +177,24 @@ Public Class BackgroundProgress
                     Try
                         SubFile.CopyTo(e.Argument(2) & SubFile.FullName.Substring(DirectoryProperties.FullName.Length))
                     Catch ex As Exception
-                        Dim answer = MsgBox("There was an error copying """ & SubFile.FullName & """ to """ & _
-                          e.Argument(2) & SubFile.FullName.Substring(DirectoryProperties.FullName.Length) & """!" & _
-                          vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.AbortRetryIgnore + MsgBoxStyle.Exclamation, "Error!")
-                        If answer = MsgBoxResult.Abort Then
-                            Exit For
-                        ElseIf answer = MsgBoxResult.Retry Then
-                            Try
-                                SubFile.CopyTo(e.Argument(2) & SubFile.FullName.Substring(DirectoryProperties.FullName.Length))
-                            Catch ex2 As Exception
-                                Dim answer2 = MsgBox("Error retrying copy for """ & SubFile.FullName & """:" & _
-                                  ex.Message, MsgBoxStyle.AbortRetryIgnore + MsgBoxStyle.Exclamation, "Error!")
-                                If answer2 = MsgBoxResult.Abort Then
-                                    Exit For
-                                ElseIf answer2 = MsgBoxResult.Retry Then
-                                    MsgBox("Already retried!", MsgBoxStyle.Exclamation)
-                                End If
-                            End Try
-                        End If
+                        Select Case MsgBox("There was an error copying """ & SubFile.FullName & """ to """ & e.Argument(2) &
+                                           SubFile.FullName.Substring(DirectoryProperties.FullName.Length) & """!" & vbNewLine & vbNewLine & ex.Message,
+                                           MsgBoxStyle.AbortRetryIgnore + MsgBoxStyle.Exclamation, "Error!")
+                            Case MsgBoxResult.Abort
+                                Exit For
+                            Case MsgBoxResult.Retry
+                                Try
+                                    SubFile.CopyTo(e.Argument(2) & SubFile.FullName.Substring(DirectoryProperties.FullName.Length))
+                                Catch ex2 As Exception
+                                    Select Case MsgBox("Error retrying copy for """ & SubFile.FullName & """:" & ex.Message,
+                                                       MsgBoxStyle.AbortRetryIgnore + MsgBoxStyle.Exclamation, "Error!")
+                                        Case MsgBoxResult.Abort
+                                            Exit For
+                                        Case MsgBoxResult.Retry
+                                            MsgBox("Already retried!", MsgBoxStyle.Exclamation)
+                                    End Select
+                                End Try
+                        End Select
                     End Try
                     i += 1
                 Next
