@@ -1006,7 +1006,23 @@ Public Class PropertiesDotNet
             sfdSave.Title = "Choose where to create a Shortcut to """ & lblName.Text & """:"
             
             If sfdSave.ShowDialog() = DialogResult.OK Then
-                Dim newShortcutPath As String = WalkmanLib.CreateShortcut(sfdSave.FileName, lblFullPath.Text)
+                Dim newShortcutPath As String = ""
+                Try
+                    newShortcutPath = WalkmanLib.CreateShortcut(sfdSave.FileName, lblFullPath.Text)
+                Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
+                  "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+                    Using writer As StreamWriter = New StreamWriter(File.Open(Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs", FileMode.Create))
+                        writer.WriteLine("Set lnk = WScript.CreateObject(""WScript.Shell"").CreateShortcut(""" & sfdSave.FileName & """)")
+                        writer.WriteLine("lnk.TargetPath = """ & lblFullPath.Text & """")
+                        writer.WriteLine("lnk.Save")
+                    End Using
+                    
+                    WalkmanLib.RunAsAdmin("wscript", Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs")
+                    newShortcutPath = sfdSave.FileName
+                Catch ex As Exception
+                    ErrorParser(ex)
+                    newShortcutPath = sfdSave.FileName
+                End Try
                 
                 If MsgBox("Show properties for created Shortcut?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
                     lblLocation.Text = newShortcutPath
@@ -1021,11 +1037,22 @@ Public Class PropertiesDotNet
         sfdSave.Title = "Choose where to create a Symlink to """ & lblName.Text & """:"
         
         If sfdSave.ShowDialog() = DialogResult.OK Then
-            If Exists(lblFullPath.Text) Then
-                WalkmanLib.CreateSymLink(sfdSave.FileName, lblFullPath.Text, SymbolicLinkType.File)
-            Else
-                WalkmanLib.CreateSymLink(sfdSave.FileName, lblFullPath.Text, SymbolicLinkType.Directory)
-            End If
+            Try
+                If Exists(lblFullPath.Text) Then
+                    WalkmanLib.CreateSymLink(sfdSave.FileName, lblFullPath.Text, SymbolicLinkType.File)
+                Else
+                    WalkmanLib.CreateSymLink(sfdSave.FileName, lblFullPath.Text, SymbolicLinkType.Directory)
+                End If
+            Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
+              "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+                If Exists(lblFullPath.Text) Then
+                    WalkmanLib.RunAsAdmin("cmd", "/c mklink """ & sfdSave.FileName & """ """ & lblFullPath.Text & """ & pause")
+                Else
+                    WalkmanLib.RunAsAdmin("cmd", "/c mklink /d """ & sfdSave.FileName & """ """ & lblFullPath.Text & """ & pause")
+                End If
+            Catch ex As Exception
+                ErrorParser(ex)
+            End Try
             
             If MsgBox("Show properties for created Symlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
                 lblLocation.Text = sfdSave.FileName
@@ -1039,7 +1066,14 @@ Public Class PropertiesDotNet
         sfdSave.Title = "Choose where to create a Hardlink to """ & lblName.Text & """:"
         
         If sfdSave.ShowDialog() = DialogResult.OK Then
-            WalkmanLib.CreateHardLink(sfdSave.FileName, lblFullPath.Text)
+            Try
+                WalkmanLib.CreateHardLink(sfdSave.FileName, lblFullPath.Text)
+            Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
+              "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+                WalkmanLib.RunAsAdmin("cmd", "/c mklink /h """ & lblFullPath.Text & """ """ & sfdSave.FileName & """ & pause")
+            Catch ex As Exception
+                ErrorParser(ex)
+            End Try
             
             If MsgBox("Show properties for created Hardlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
                 lblLocation.Text = sfdSave.FileName
@@ -1179,7 +1213,23 @@ Public Class PropertiesDotNet
                 End If
             End If
             
-            Dim newShortcutPath As String = WalkmanLib.CreateShortcut(newName, lblFullPath.Text)
+            Dim newShortcutPath As String = ""
+            Try
+                newShortcutPath = WalkmanLib.CreateShortcut(newName, lblFullPath.Text)
+            Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
+              "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+                Using writer As StreamWriter = New StreamWriter(File.Open(Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs", FileMode.Create))
+                    writer.WriteLine("Set lnk = WScript.CreateObject(""WScript.Shell"").CreateShortcut(""" & newName & """)")
+                    writer.WriteLine("lnk.TargetPath = """ & lblFullPath.Text & """")
+                    writer.WriteLine("lnk.Save")
+                End Using
+                
+                WalkmanLib.RunAsAdmin("wscript", Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs")
+                newShortcutPath = newName
+            Catch ex As Exception
+                ErrorParser(ex)
+                newShortcutPath = newName
+            End Try
             
             If MsgBox("Show properties for created Shortcut?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
                 lblLocation.Text = newShortcutPath
@@ -1203,11 +1253,22 @@ Public Class PropertiesDotNet
                 End If
             End If
             
-            If Exists(lblFullPath.Text) Then
-                WalkmanLib.CreateSymLink(newName, lblFullPath.Text, SymbolicLinkType.File)
-            Else
-                WalkmanLib.CreateSymLink(newName, lblFullPath.Text, SymbolicLinkType.Directory)
-            End If
+            Try
+                If Exists(lblFullPath.Text) Then
+                    WalkmanLib.CreateSymLink(newName, lblFullPath.Text, SymbolicLinkType.File)
+                Else
+                    WalkmanLib.CreateSymLink(newName, lblFullPath.Text, SymbolicLinkType.Directory)
+                End If
+            Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
+              "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+                If Exists(lblFullPath.Text) Then
+                    WalkmanLib.RunAsAdmin("cmd", "/c mklink """ & newName & """ """ & lblFullPath.Text & """ & pause")
+                Else
+                    WalkmanLib.RunAsAdmin("cmd", "/c mklink /d """ & newName & """ """ & lblFullPath.Text & """ & pause")
+                End If
+            Catch ex As Exception
+                ErrorParser(ex)
+            End Try
             
             If MsgBox("Show properties for created Symlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
                 lblLocation.Text = newName
@@ -1231,7 +1292,14 @@ Public Class PropertiesDotNet
                 End If
             End If
             
-            WalkmanLib.CreateHardLink(newName, lblFullPath.Text)
+            Try
+                WalkmanLib.CreateHardLink(newName, lblFullPath.Text)
+            Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
+              "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+                WalkmanLib.RunAsAdmin("cmd", "/c mklink /h """ & newName & """ """ & lblFullPath.Text & """ & pause")
+            Catch ex As Exception
+                ErrorParser(ex)
+            End Try
             
             If MsgBox("Show properties for created Hardlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
                 lblLocation.Text = newName
