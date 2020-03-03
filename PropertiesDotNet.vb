@@ -320,7 +320,6 @@ Public Class PropertiesDotNet
                     End If
                     ShowImageBox()
                 Catch ex As Exception
-                    ErrorParser(ex)
                     HideImageBox()
                 End Try
             End If
