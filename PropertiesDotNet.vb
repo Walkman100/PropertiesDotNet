@@ -311,9 +311,10 @@ Public Class PropertiesDotNet
             ElseIf Directory.Exists(lblFullPath.Text) Then
                 Try
                     Dim resourceFile = WalkmanLib.GetFolderIconPath(lblFullPath.Text)
+                    resourceFile = Environment.ExpandEnvironmentVariables(resourceFile)
                     If resourceFile.Contains(",") Then
-                        Dim resourceIndex = resourceFile.Substring(resourceFile.LastIndexOf(","))
-                        resourceFile = resourceFile.Remove(resourceFile.LastIndexOf(",") + 1)
+                        Dim resourceIndex = resourceFile.Substring(resourceFile.LastIndexOf(",") + 1)
+                        resourceFile = resourceFile.Remove(resourceFile.LastIndexOf(","))
                         imgFile.Image = WalkmanLib.ExtractIconByIndex(resourceFile, resourceIndex, imgFile.Width).ToBitmap()
                     Else
                         imgFile.Image = Icon.ExtractAssociatedIcon(resourceFile).ToBitmap()
