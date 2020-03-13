@@ -1374,7 +1374,7 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub ErrorParser(ex As Exception)
-        If ex.GetType.ToString = "System.UnauthorizedAccessException" AndAlso Not WalkmanLib.IsAdmin() Then
+        If TypeOf ex Is UnauthorizedAccessException AndAlso Not WalkmanLib.IsAdmin() Then
             If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching PropertiesDotNet As Administrator?", _
               MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
                 WalkmanLib.RunAsAdmin(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", """" & lblFullPath.Text & """")
@@ -1421,10 +1421,10 @@ Public Class PropertiesDotNet
         Try
             OokiiDialogsLoadedDelegate()
             Return True
-        Catch ex As FileNotFoundException When ex.Message.StartsWith("Could not load file or assembly 'PropertiesDotNet-Ookii.Dialogs")
+        Catch ex As FileNotFoundException When ex.FileName.StartsWith("PropertiesDotNet-Ookii.Dialogs")
             Return False
         Catch ex As Exception
-            MsgBox("Unexpected error loading Ookii.Dialogs.dll!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
+            MsgBox("Unexpected error loading PropertiesDotNet-Ookii.Dialogs.dll!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
             Return False
         End Try
     End Function
