@@ -28,11 +28,13 @@ Public Partial Class AlternateDataStreamManager
         If lstStreams.SelectedItems.Count = 0 Then
             btnOpen.Enabled = False
             btnView.Enabled = False
+            btnExecute.Enabled = False
             btnDelete.Enabled = False
             btnCopy.Enabled = False
         Else
             btnOpen.Enabled = True
             btnView.Enabled = True
+            btnExecute.Enabled = True
             btnDelete.Enabled = True
             btnCopy.Enabled = True
             
@@ -95,6 +97,26 @@ Public Partial Class AlternateDataStreamManager
             End Using
             txtShowStream.SelectionStart = txtShowStream.Text.Length
             frmShowStream.ShowDialog()
+        Next
+    End Sub
+    
+    Sub btnExecute_Click(sender As Object, e As EventArgs) Handles btnExecute.Click
+        For Each item As ListViewItem In lstStreams.SelectedItems
+            Try
+                Dim info As New ProcessStartInfo
+                If item.Text = ":$DATA" Then
+                    info.FileName = PropertiesDotNet.lblLocation.Text
+                Else
+                    info.FileName = PropertiesDotNet.lblLocation.Text & ":" & item.Text
+                End If
+                info.UseShellExecute = False
+                Process.Start(info)
+            Catch ex As ComponentModel.Win32Exception When ex.NativeErrorCode = 740
+                'ERROR_ELEVATION_REQUIRED: The requested operation requires elevation.
+                PropertiesDotNet.ErrorParser(New UnauthorizedAccessException(ex.Message, ex))
+            Catch ex As Exception
+                PropertiesDotNet.ErrorParser(ex)
+            End Try
         Next
     End Sub
     
