@@ -1310,31 +1310,42 @@ Public Class PropertiesDotNet
     
     Sub btnDelete_Click() Handles btnDelete.Click
         Dim FileProperties As New FileInfo(lblFullPath.Text)
-        If MsgBox("Are you sure you want to delete """ & FileProperties.Name & """?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-            Try
-                If chkUseSystem.Checked Then
+        Try
+            If chkUseSystem.Checked Then
+                Select Case MsgBox("Send """ & FileProperties.Name & """ to Recycle Bin? (No to delete permanently)", MsgBoxStyle.Question + MsgBoxStyle.YesNoCancel)
+                    Case MsgBoxResult.Yes
+                        If Exists(lblFullPath.Text) Then
+                            My.Computer.FileSystem.DeleteFile(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.SendToRecycleBin)
+                        ElseIf Directory.Exists(lblFullPath.Text) Then
+                            My.Computer.FileSystem.DeleteDirectory(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.SendToRecycleBin)
+                        End If
+                        Application.Exit()
+                    Case MsgBoxResult.No
+                        If Exists(lblFullPath.Text) Then
+                            My.Computer.FileSystem.DeleteFile(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
+                        ElseIf Directory.Exists(lblFullPath.Text) Then
+                            My.Computer.FileSystem.DeleteDirectory(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
+                        End If
+                        Application.Exit()
+                End Select
+            Else
+                If MsgBox("Are you sure you want to delete """ & FileProperties.Name & """?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                     If Exists(lblFullPath.Text) Then
-                        My.Computer.FileSystem.DeleteFile(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
-                    ElseIf Directory.Exists(lblFullPath.Text)
-                        My.Computer.FileSystem.DeleteDirectory(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
-                    End If
-                Else
-                    If Exists(lblFullPath.Text) Then
-                        FileProperties.Delete
-                    ElseIf Directory.Exists(lblFullPath.Text)
+                        FileProperties.Delete()
+                    ElseIf Directory.Exists(lblFullPath.Text) Then
                         BackgroundProgress.bwFolderOperations.RunWorkerAsync({"delete", lblFullPath.Text})
-                        BackgroundProgress.ShowDialog
+                        BackgroundProgress.ShowDialog()
                     End If
+                    Application.Exit()
                 End If
-                Application.Exit
-            Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-              "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-                WalkmanLib.RunAsAdmin("cmd", "/c del """ & lblFullPath.Text & """ & pause")
-            Catch ex As Exception
-                ErrorParser(ex)
-            End Try
-            CheckData(True)
-        End If
+            End If
+        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
+          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+            WalkmanLib.RunAsAdmin("cmd", "/c del """ & lblFullPath.Text & """ & pause")
+        Catch ex As Exception
+            ErrorParser(ex)
+        End Try
+        CheckData(True)
     End Sub
     
     Sub btnClose_Click() Handles btnClose.Click
