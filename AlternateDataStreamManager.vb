@@ -15,10 +15,14 @@ Public Partial Class AlternateDataStreamManager
             lstStreams.Items.Add(tmpListViewItem)
         End If
         
-        For Each s As AlternateDataStreamInfo In ListAlternateDataStreams(file.FullName)
-            Dim tmpListViewItem As New ListViewItem(New String() {s.Name, s.Size.ToString(), s.StreamType.ToString, s.Attributes.ToString})
-            lstStreams.Items.Add(tmpListViewItem)
-        Next
+        Try
+            For Each s As AlternateDataStreamInfo In ListAlternateDataStreams(file.FullName)
+                Dim tmpListViewItem As New ListViewItem(New String() {s.Name, s.Size.ToString(), s.StreamType.ToString, s.Attributes.ToString})
+                lstStreams.Items.Add(tmpListViewItem)
+            Next
+        Catch ex As Exception
+            PropertiesDotNet.ErrorParser(ex)
+        End Try
         
         lstStreams.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
         lstStreams_SelectedIndexChanged()
