@@ -1070,7 +1070,7 @@ Public Class PropertiesDotNet
                 WalkmanLib.CreateHardLink(sfdSave.FileName, lblFullPath.Text)
             Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
               "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-                WalkmanLib.RunAsAdmin("cmd", "/c mklink /h """ & lblFullPath.Text & """ """ & sfdSave.FileName & """ & pause")
+                WalkmanLib.RunAsAdmin("cmd", "/c mklink /h """ & sfdSave.FileName & """ """ & lblFullPath.Text & """ & pause")
             Catch ex As Exception
                 ErrorParser(ex)
             End Try
