@@ -829,11 +829,7 @@ Public Class PropertiesDotNet
             
             If output = "Error:  Access is denied." Then
                 If MsgBox("Access denied! Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    Dim caseSensitiveFlag As String
-                    If chkTemporary.Checked Then caseSensitiveFlag = "enable" Else caseSensitiveFlag = "disable"
-                    
-                    WalkmanLib.RunAsAdmin("fsutil.exe", "file setCaseSensitiveInfo """ & lblFullPath.Text & """ " & caseSensitiveFlag)
-                    Threading.Thread.Sleep(500)
+                    SetCaseSensitiveFlag(lblFullPath.Text, chkTemporary.Checked, True)
                 Else
                     ErrorParser(New UnauthorizedAccessException(output))
                 End If
@@ -1408,13 +1404,16 @@ Public Class PropertiesDotNet
         End If
     End Function
     
-    Function SetCaseSensitiveFlag(path As String, caseSensitive As Boolean) As String
-        Dim caseSensitiveFlag As String
-        If caseSensitive Then caseSensitiveFlag = "enable" Else caseSensitiveFlag = "disable"
+    Function SetCaseSensitiveFlag(path As String, caseSensitive As Boolean, Optional runAsAdmin As Boolean = False) As String
+        Dim caseSensitiveFlag As String = IIf(caseSensitive, "enable", "disable")
         
-        Dim fsUtilOutput As String = WalkmanLib.RunAndGetOutput("fsutil.exe", "file setCaseSensitiveInfo """ & path & """ " & caseSensitiveFlag)
-        
-        Return fsUtilOutput
+        If runAsAdmin Then
+            WalkmanLib.RunAsAdmin("fsutil.exe", "file setCaseSensitiveInfo """ & path & """ " & caseSensitiveFlag)
+            Threading.Thread.Sleep(500)
+            Return "See Admin output"
+        Else
+            Return WalkmanLib.RunAndGetOutput("fsutil.exe", "file setCaseSensitiveInfo """ & path & """ " & caseSensitiveFlag)
+        End If
     End Function
     
     Function OokiiInputBox(ByRef input As String, Optional windowTitle As String = Nothing, Optional header As String = Nothing, Optional content As String = Nothing) As DialogResult
