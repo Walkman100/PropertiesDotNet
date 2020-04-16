@@ -1,4 +1,4 @@
-﻿Public Class SelectDateDialog
+Public Class SelectDateDialog
     Inherits System.Windows.Forms.Form
     Private components As System.ComponentModel.IContainer
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)

@@ -1,4 +1,3 @@
-﻿
 Partial Class AlternateDataStreamManager
     Inherits System.Windows.Forms.Form
     

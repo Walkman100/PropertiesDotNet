@@ -1,4 +1,4 @@
-﻿Imports PropertiesDotNet.Trinet.Core.IO.Ntfs
+Imports PropertiesDotNet.Trinet.Core.IO.Ntfs
 
 Public Partial Class AlternateDataStreamManager
     Public Sub New()
