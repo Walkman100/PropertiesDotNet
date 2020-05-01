@@ -115,7 +115,7 @@ Public Partial Class AlternateDataStreamManager
                 End If
                 info.UseShellExecute = False
                 Process.Start(info)
-            Catch ex As ComponentModel.Win32Exception When ex.NativeErrorCode = 740
+            Catch ex As System.ComponentModel.Win32Exception When ex.NativeErrorCode = 740
                 'ERROR_ELEVATION_REQUIRED: The requested operation requires elevation.
                 PropertiesDotNet.ErrorParser(New UnauthorizedAccessException(ex.Message, ex))
             Catch ex As Exception

@@ -110,6 +110,7 @@ Partial Class PropertiesDotNet
         Me.timerDelayedBrowse = New System.Windows.Forms.Timer(Me.components)
         Me.lblVersion = New System.Windows.Forms.Label()
         Me.ofdBrowse = New System.Windows.Forms.OpenFileDialog()
+        Me.myToolTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.grpProperties.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpAttributes.SuspendLayout
@@ -396,6 +397,7 @@ Partial Class PropertiesDotNet
         Me.btnWindowsProperties.Size = New System.Drawing.Size(114, 23)
         Me.btnWindowsProperties.TabIndex = 33
         Me.btnWindowsProperties.Text = "Windows &Properties"
+        Me.myToolTip.SetToolTip(Me.btnWindowsProperties, "Opens the Windows Properties pane for the current item")
         Me.btnWindowsProperties.UseVisualStyleBackColor = true
         '
         'cbxSize
@@ -408,6 +410,7 @@ Partial Class PropertiesDotNet
         Me.cbxSize.Name = "cbxSize"
         Me.cbxSize.Size = New System.Drawing.Size(122, 21)
         Me.cbxSize.TabIndex = 20
+        Me.myToolTip.SetToolTip(Me.cbxSize, "Changes the display factor for sizes. Also affects Drive sizes")
         '
         'btnLaunchAdmin
         '
@@ -417,6 +420,8 @@ Partial Class PropertiesDotNet
         Me.btnLaunchAdmin.Name = "btnLaunchAdmin"
         Me.btnLaunchAdmin.Size = New System.Drawing.Size(23, 25)
         Me.btnLaunchAdmin.TabIndex = 12
+        Me.myToolTip.SetToolTip(Me.btnLaunchAdmin, "Launches the associated program as administrator, with the current item as argume"& _ 
+                "nt")
         Me.btnLaunchAdmin.UseVisualStyleBackColor = true
         '
         'btnStartAssocProgAdmin
@@ -427,6 +432,7 @@ Partial Class PropertiesDotNet
         Me.btnStartAssocProgAdmin.Name = "btnStartAssocProgAdmin"
         Me.btnStartAssocProgAdmin.Size = New System.Drawing.Size(23, 25)
         Me.btnStartAssocProgAdmin.TabIndex = 24
+        Me.myToolTip.SetToolTip(Me.btnStartAssocProgAdmin, "Runs the program associated with the current item as Administrator")
         Me.btnStartAssocProgAdmin.UseVisualStyleBackColor = true
         '
         'btnStartAssocProg
@@ -437,6 +443,7 @@ Partial Class PropertiesDotNet
         Me.btnStartAssocProg.Size = New System.Drawing.Size(62, 23)
         Me.btnStartAssocProg.TabIndex = 23
         Me.btnStartAssocProg.Text = "L&aunch..."
+        Me.myToolTip.SetToolTip(Me.btnStartAssocProg, "Launches the program associated with the current item")
         Me.btnStartAssocProg.UseVisualStyleBackColor = true
         '
         'btnCopyOpenWith
@@ -447,6 +454,7 @@ Partial Class PropertiesDotNet
         Me.btnCopyOpenWith.Size = New System.Drawing.Size(44, 23)
         Me.btnCopyOpenWith.TabIndex = 25
         Me.btnCopyOpenWith.Text = "Copy"
+        Me.myToolTip.SetToolTip(Me.btnCopyOpenWith, "Copies the path to the program associated with the file type to the clipboard")
         Me.btnCopyOpenWith.UseVisualStyleBackColor = true
         '
         'btnOpenWith
@@ -459,6 +467,7 @@ Partial Class PropertiesDotNet
         Me.btnOpenWith.Size = New System.Drawing.Size(75, 23)
         Me.btnOpenWith.TabIndex = 16
         Me.btnOpenWith.Text = "Open &with..."
+        Me.myToolTip.SetToolTip(Me.btnOpenWith, "Launches Windows' ""Open With"" dialog. Right-Click to launch ProgramLauncher.")
         Me.btnOpenWith.UseVisualStyleBackColor = true
         '
         'lblOpenWithLbl
@@ -489,6 +498,7 @@ Partial Class PropertiesDotNet
         Me.btnOpenDir.Size = New System.Drawing.Size(62, 23)
         Me.btnOpenDir.TabIndex = 7
         Me.btnOpenDir.Text = "Open..."
+        Me.myToolTip.SetToolTip(Me.btnOpenDir, "Opens the containing directory and selects the current item in Windows Explorer")
         Me.btnOpenDir.UseVisualStyleBackColor = true
         '
         'btnLaunch
@@ -499,6 +509,8 @@ Partial Class PropertiesDotNet
         Me.btnLaunch.Size = New System.Drawing.Size(62, 23)
         Me.btnLaunch.TabIndex = 11
         Me.btnLaunch.Text = "&Launch..."
+        Me.myToolTip.SetToolTip(Me.btnLaunch, "Launches the current item. This will either run the program, or open it with it's"& _ 
+                " associated program")
         Me.btnLaunch.UseVisualStyleBackColor = true
         '
         'btnHashes
@@ -511,6 +523,8 @@ Partial Class PropertiesDotNet
         Me.btnHashes.TabIndex = 34
         Me.btnHashes.Text = "Compute &Hashes"
         Me.btnHashes.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.myToolTip.SetToolTip(Me.btnHashes, "Opens the Hashing window if the current item is a file, or opens DirectoryImage i"& _ 
+                "f the current item is a folder")
         Me.btnHashes.UseVisualStyleBackColor = true
         '
         'btnCopyFullPath
@@ -521,6 +535,7 @@ Partial Class PropertiesDotNet
         Me.btnCopyFullPath.Size = New System.Drawing.Size(44, 23)
         Me.btnCopyFullPath.TabIndex = 4
         Me.btnCopyFullPath.Text = "Copy"
+        Me.myToolTip.SetToolTip(Me.btnCopyFullPath, "Copies the full path to the clipboard")
         Me.btnCopyFullPath.UseVisualStyleBackColor = true
         '
         'btnCopyDirectory
@@ -531,6 +546,7 @@ Partial Class PropertiesDotNet
         Me.btnCopyDirectory.Size = New System.Drawing.Size(44, 23)
         Me.btnCopyDirectory.TabIndex = 8
         Me.btnCopyDirectory.Text = "Copy"
+        Me.myToolTip.SetToolTip(Me.btnCopyDirectory, "Copies the containing directory path to the clipboard")
         Me.btnCopyDirectory.UseVisualStyleBackColor = true
         '
         'btnCopyName
@@ -541,6 +557,7 @@ Partial Class PropertiesDotNet
         Me.btnCopyName.Size = New System.Drawing.Size(44, 23)
         Me.btnCopyName.TabIndex = 13
         Me.btnCopyName.Text = "Copy"
+        Me.myToolTip.SetToolTip(Me.btnCopyName, "Copies the current item name to the clipboard")
         Me.btnCopyName.UseVisualStyleBackColor = true
         '
         'btnCopyExtension
@@ -551,6 +568,7 @@ Partial Class PropertiesDotNet
         Me.btnCopyExtension.Size = New System.Drawing.Size(44, 23)
         Me.btnCopyExtension.TabIndex = 17
         Me.btnCopyExtension.Text = "Copy"
+        Me.myToolTip.SetToolTip(Me.btnCopyExtension, "Copies the current item extension to the clipboard")
         Me.btnCopyExtension.UseVisualStyleBackColor = true
         '
         'lblSize
@@ -772,6 +790,7 @@ Partial Class PropertiesDotNet
         Me.btnADS.Size = New System.Drawing.Size(118, 23)
         Me.btnADS.TabIndex = 15
         Me.btnADS.Text = "Streams: Checking..."
+        Me.myToolTip.SetToolTip(Me.btnADS, "Opens the Alternate Data Streams (ADS) Manager")
         Me.btnADS.UseVisualStyleBackColor = true
         '
         'chkSparse
@@ -894,6 +913,8 @@ Partial Class PropertiesDotNet
         Me.btnTakeOwn.TabIndex = 14
         Me.btnTakeOwn.Text = "Take &Ownership..."
         Me.btnTakeOwn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.myToolTip.SetToolTip(Me.btnTakeOwn, "Launches system tools to change the Owner of the current item to the current user"& _ 
+                ", and grant administators permissions. Runs recursively on a folder")
         Me.btnTakeOwn.UseVisualStyleBackColor = true
         '
         'lnkAttributes
@@ -1086,6 +1107,7 @@ Partial Class PropertiesDotNet
         Me.ResumeLayout(false)
         Me.PerformLayout
     End Sub
+    Private myToolTip As System.Windows.Forms.ToolTip
     Private WithEvents btnADS As System.Windows.Forms.Button
     Private lblDriveTotalUsedSpaceLbl As System.Windows.Forms.Label
     Private lblDriveTotalUsedSpace As System.Windows.Forms.Label
