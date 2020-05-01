@@ -254,6 +254,7 @@ Partial Class PropertiesDotNet
         Me.btnDriveVolumeLabel.Size = New System.Drawing.Size(75, 23)
         Me.btnDriveVolumeLabel.TabIndex = 51
         Me.btnDriveVolumeLabel.Text = "Rename..."
+        Me.myToolTip.SetToolTip(Me.btnDriveVolumeLabel, "Allows renaming the drive containing the current item")
         Me.btnDriveVolumeLabel.UseVisualStyleBackColor = true
         '
         'lblDriveAvailableFreeSpace
@@ -489,6 +490,7 @@ Partial Class PropertiesDotNet
         Me.imgFile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.imgFile.TabIndex = 26
         Me.imgFile.TabStop = false
+        Me.myToolTip.SetToolTip(Me.imgFile, "Image contents, or File Icon. Click to enlarge")
         '
         'btnOpenDir
         '
@@ -598,6 +600,7 @@ Partial Class PropertiesDotNet
         Me.chkUTC.Size = New System.Drawing.Size(120, 17)
         Me.chkUTC.TabIndex = 26
         Me.chkUTC.Text = "Show Times in &UTC"
+        Me.myToolTip.SetToolTip(Me.chkUTC, "Toggles times between UTC and local time. Also refreshes most info")
         Me.chkUTC.UseVisualStyleBackColor = true
         '
         'lblLastWriteTime
@@ -609,6 +612,7 @@ Partial Class PropertiesDotNet
         Me.lblLastWriteTime.Size = New System.Drawing.Size(61, 13)
         Me.lblLastWriteTime.TabIndex = 32
         Me.lblLastWriteTime.Text = "Checking..."
+        Me.myToolTip.SetToolTip(Me.lblLastWriteTime, "Date and Time file was last written to. Click to choose time to set to")
         Me.lblLastWriteTime.UseMnemonic = false
         '
         'lblLastWriteTimeLbl
@@ -629,6 +633,7 @@ Partial Class PropertiesDotNet
         Me.lblLastAccessTime.Size = New System.Drawing.Size(61, 13)
         Me.lblLastAccessTime.TabIndex = 30
         Me.lblLastAccessTime.Text = "Checking..."
+        Me.myToolTip.SetToolTip(Me.lblLastAccessTime, "Date and Time file was last accessed. Click to choose time to set to")
         Me.lblLastAccessTime.UseMnemonic = false
         '
         'lblLastAccessTimeLbl
@@ -649,6 +654,7 @@ Partial Class PropertiesDotNet
         Me.lblCreationTime.Size = New System.Drawing.Size(61, 13)
         Me.lblCreationTime.TabIndex = 28
         Me.lblCreationTime.Text = "Checking..."
+        Me.myToolTip.SetToolTip(Me.lblCreationTime, "Date and Time of file creation. Click to choose time to set to")
         Me.lblCreationTime.UseMnemonic = false
         '
         'lblCreationTimeLbl
@@ -841,6 +847,9 @@ Partial Class PropertiesDotNet
         Me.chkTemporary.Size = New System.Drawing.Size(76, 17)
         Me.chkTemporary.TabIndex = 8
         Me.chkTemporary.Text = "&Temporary"
+        Me.myToolTip.SetToolTip(Me.chkTemporary, "If on a file, toggles the Temporary attribute. If on a folder, allows toggling"& _ 
+                "the Case Sensitive flag, which is meant for WSL but works with Win32 programs. Uses the ""fsutil"" command to c"& _ 
+                "hange Case Sensitivity")
         Me.chkTemporary.UseVisualStyleBackColor = true
         '
         'chkOffline
@@ -960,6 +969,8 @@ Partial Class PropertiesDotNet
         Me.btnHardlink.Size = New System.Drawing.Size(99, 23)
         Me.btnHardlink.TabIndex = 7
         Me.btnHardlink.Text = "Create Hardlin&k..."
+        Me.myToolTip.SetToolTip(Me.btnHardlink, "Allows creating a Hardlink to the current item. Right-Click to use a plain text i"& _ 
+                "nput instead of Windows Explorer's window")
         Me.btnHardlink.UseVisualStyleBackColor = true
         '
         'btnSymlink
@@ -971,6 +982,8 @@ Partial Class PropertiesDotNet
         Me.btnSymlink.Size = New System.Drawing.Size(99, 23)
         Me.btnSymlink.TabIndex = 6
         Me.btnSymlink.Text = "Create Sym&link..."
+        Me.myToolTip.SetToolTip(Me.btnSymlink, "Allows creating a symbolic link to the current item. Right-Click to use a plain t"& _ 
+                "ext input instead of Windows Explorer's window")
         Me.btnSymlink.UseVisualStyleBackColor = true
         '
         'btnShortcut
@@ -982,6 +995,8 @@ Partial Class PropertiesDotNet
         Me.btnShortcut.Size = New System.Drawing.Size(108, 23)
         Me.btnShortcut.TabIndex = 5
         Me.btnShortcut.Text = "Create &Shortcut..."
+        Me.myToolTip.SetToolTip(Me.btnShortcut, "Allows creating a shortcut to the current item. Right-Click to use a plain text i"& _ 
+                "nput instead of Windows Explorer's window")
         Me.btnShortcut.UseVisualStyleBackColor = true
         '
         'btnClose
@@ -994,6 +1009,7 @@ Partial Class PropertiesDotNet
         Me.btnClose.Size = New System.Drawing.Size(75, 23)
         Me.btnClose.TabIndex = 8
         Me.btnClose.Text = "Close"
+        Me.myToolTip.SetToolTip(Me.btnClose, "Exits PropertiesDotNet")
         Me.btnClose.UseVisualStyleBackColor = true
         '
         'btnMove
@@ -1005,6 +1021,8 @@ Partial Class PropertiesDotNet
         Me.btnMove.Size = New System.Drawing.Size(75, 23)
         Me.btnMove.TabIndex = 1
         Me.btnMove.Text = "&Move To..."
+        Me.myToolTip.SetToolTip(Me.btnMove, "Allows moving the current item to an absolute path. Right-Click to use a plain te"& _ 
+                "xt input instead of Windows Explorer's window")
         Me.btnMove.UseVisualStyleBackColor = true
         '
         'btnCopy
@@ -1016,6 +1034,8 @@ Partial Class PropertiesDotNet
         Me.btnCopy.Size = New System.Drawing.Size(75, 23)
         Me.btnCopy.TabIndex = 2
         Me.btnCopy.Text = "&Copy To..."
+        Me.myToolTip.SetToolTip(Me.btnCopy, "Allows copying the currrent item. Right-Click to use a plain text input instead o"& _ 
+                "f Windows Explorer's window")
         Me.btnCopy.UseVisualStyleBackColor = true
         '
         'btnDelete
@@ -1026,6 +1046,8 @@ Partial Class PropertiesDotNet
         Me.btnDelete.Size = New System.Drawing.Size(75, 23)
         Me.btnDelete.TabIndex = 3
         Me.btnDelete.Text = "&Delete"
+        Me.myToolTip.SetToolTip(Me.btnDelete, "Allows deleting the current item. If Use Windows Explorer is checked, can send to"& _ 
+                " recycle bin")
         Me.btnDelete.UseVisualStyleBackColor = true
         '
         'btnRename
@@ -1036,6 +1058,8 @@ Partial Class PropertiesDotNet
         Me.btnRename.Size = New System.Drawing.Size(75, 23)
         Me.btnRename.TabIndex = 0
         Me.btnRename.Text = "&Rename..."
+        Me.myToolTip.SetToolTip(Me.btnRename, "Allows renaming the current item. Works relative to containing folder, can use <R"& _ 
+                "elativeFolderPath>\<FileName>")
         Me.btnRename.UseVisualStyleBackColor = true
         '
         'chkUseSystem
@@ -1048,6 +1072,10 @@ Partial Class PropertiesDotNet
         Me.chkUseSystem.Size = New System.Drawing.Size(133, 17)
         Me.chkUseSystem.TabIndex = 4
         Me.chkUseSystem.Text = "Use Windows E&xplorer"
+        Me.myToolTip.SetToolTip(Me.chkUseSystem, "If checked, uses the Windows Shell methods to Move/Copy/Delete files. If unche"& _ 
+                "cked, uses .Net's file management methods instead. Note that Copying and Deleting folders using .Net uses a cus"& _ 
+                "tom process, and Copying and moving large files across volumes using .Net will freeze up the window while the o"& _ 
+                "peration is in progress.")
         Me.chkUseSystem.UseVisualStyleBackColor = true
         '
         'bwCalcSize
