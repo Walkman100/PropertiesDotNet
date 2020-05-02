@@ -25,11 +25,146 @@
     ''' not be able to load this method if it was changed manually.
     ''' </summary>
     Private Sub InitializeComponent()
+        Me.btnScan = New System.Windows.Forms.Button()
+        Me.btnClose = New System.Windows.Forms.Button()
+        Me.btnKillProcess = New System.Windows.Forms.Button()
+        Me.btnCloseHandle = New System.Windows.Forms.Button()
+        Me.lstHandles = New System.Windows.Forms.ListView()
+        Me.colHeadProcessID = New System.Windows.Forms.ColumnHeader()
+        Me.colHeadProcessName = New System.Windows.Forms.ColumnHeader()
+        Me.colHeadHandleID = New System.Windows.Forms.ColumnHeader()
+        Me.colHeadHandleName = New System.Windows.Forms.ColumnHeader()
+        Me.lblStatus = New System.Windows.Forms.Label()
+        Me.bwHandleScan = New System.ComponentModel.BackgroundWorker()
+        Me.SuspendLayout
+        '
+        'btnScan
+        '
+        Me.btnScan.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnScan.Location = New System.Drawing.Point(426, 12)
+        Me.btnScan.Name = "btnScan"
+        Me.btnScan.Size = New System.Drawing.Size(100, 23)
+        Me.btnScan.TabIndex = 11
+        Me.btnScan.Text = "Start Scanning"
+        Me.btnScan.UseVisualStyleBackColor = true
+        '
+        'btnClose
+        '
+        Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnClose.Location = New System.Drawing.Point(426, 99)
+        Me.btnClose.Name = "btnClose"
+        Me.btnClose.Size = New System.Drawing.Size(100, 23)
+        Me.btnClose.TabIndex = 15
+        Me.btnClose.Text = "Close"
+        Me.btnClose.UseVisualStyleBackColor = true
+        '
+        'btnKillProcess
+        '
+        Me.btnKillProcess.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnKillProcess.Enabled = false
+        Me.btnKillProcess.Location = New System.Drawing.Point(426, 41)
+        Me.btnKillProcess.Name = "btnKillProcess"
+        Me.btnKillProcess.Size = New System.Drawing.Size(100, 23)
+        Me.btnKillProcess.TabIndex = 12
+        Me.btnKillProcess.Text = "Kill Process"
+        Me.btnKillProcess.UseVisualStyleBackColor = true
+        '
+        'btnCloseHandle
+        '
+        Me.btnCloseHandle.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnCloseHandle.Enabled = false
+        Me.btnCloseHandle.Location = New System.Drawing.Point(426, 70)
+        Me.btnCloseHandle.Name = "btnCloseHandle"
+        Me.btnCloseHandle.Size = New System.Drawing.Size(100, 23)
+        Me.btnCloseHandle.TabIndex = 13
+        Me.btnCloseHandle.Text = "Close Handle"
+        Me.btnCloseHandle.UseVisualStyleBackColor = true
+        '
+        'lstHandles
+        '
+        Me.lstHandles.AllowColumnReorder = true
+        Me.lstHandles.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+                        Or System.Windows.Forms.AnchorStyles.Left)  _
+                        Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lstHandles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colHeadProcessID, Me.colHeadProcessName, Me.colHeadHandleID, Me.colHeadHandleName})
+        Me.lstHandles.FullRowSelect = true
+        Me.lstHandles.GridLines = true
+        Me.lstHandles.HideSelection = false
+        Me.lstHandles.LabelWrap = false
+        Me.lstHandles.Location = New System.Drawing.Point(12, 12)
+        Me.lstHandles.Name = "lstHandles"
+        Me.lstHandles.Size = New System.Drawing.Size(408, 249)
+        Me.lstHandles.Sorting = System.Windows.Forms.SortOrder.Ascending
+        Me.lstHandles.TabIndex = 8
+        Me.lstHandles.UseCompatibleStateImageBehavior = false
+        Me.lstHandles.View = System.Windows.Forms.View.Details
+        '
+        'colHeadProcessID
+        '
+        Me.colHeadProcessID.Text = "Process ID"
+        Me.colHeadProcessID.Width = 100
+        '
+        'colHeadProcessName
+        '
+        Me.colHeadProcessName.Text = "Process Name"
+        Me.colHeadProcessName.Width = 100
+        '
+        'colHeadHandleID
+        '
+        Me.colHeadHandleID.Text = "Handle ID"
+        Me.colHeadHandleID.Width = 100
+        '
+        'colHeadHandleName
+        '
+        Me.colHeadHandleName.Text = "Handle Name"
+        Me.colHeadHandleName.Width = 100
+        '
+        'lblStatus
+        '
+        Me.lblStatus.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.lblStatus.AutoSize = true
+        Me.lblStatus.Location = New System.Drawing.Point(12, 264)
+        Me.lblStatus.Name = "lblStatus"
+        Me.lblStatus.Size = New System.Drawing.Size(88, 13)
+        Me.lblStatus.TabIndex = 16
+        Me.lblStatus.Text = "Status: Starting..."
+        '
+        'bwHandleScan
+        '
+        Me.bwHandleScan.WorkerReportsProgress = true
+        Me.bwHandleScan.WorkerSupportsCancellation = true
         '
         'HandleManager
         '
+        Me.AcceptButton = Me.btnScan
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CancelButton = Me.btnClose
+        Me.ClientSize = New System.Drawing.Size(538, 286)
+        Me.Controls.Add(Me.lblStatus)
+        Me.Controls.Add(Me.btnScan)
+        Me.Controls.Add(Me.btnClose)
+        Me.Controls.Add(Me.btnKillProcess)
+        Me.Controls.Add(Me.btnCloseHandle)
+        Me.Controls.Add(Me.lstHandles)
         Me.Name = "HandleManager"
-        Me.Text = "HandleManager"
+        Me.ShowIcon = false
+        Me.ShowInTaskbar = false
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
+        Me.Text = "Processes using file: Checking..."
+        Me.ResumeLayout(false)
+        Me.PerformLayout
     End Sub
+    Private WithEvents bwHandleScan As System.ComponentModel.BackgroundWorker
+    Private lblStatus As System.Windows.Forms.Label
+    Private colHeadHandleName As System.Windows.Forms.ColumnHeader
+    Private colHeadHandleID As System.Windows.Forms.ColumnHeader
+    Private colHeadProcessName As System.Windows.Forms.ColumnHeader
+    Private colHeadProcessID As System.Windows.Forms.ColumnHeader
+    Private lstHandles As System.Windows.Forms.ListView
+    Private WithEvents btnCloseHandle As System.Windows.Forms.Button
+    Private WithEvents btnKillProcess As System.Windows.Forms.Button
+    Private btnClose As System.Windows.Forms.Button
+    Private WithEvents btnScan As System.Windows.Forms.Button
 End Class
