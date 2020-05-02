@@ -28,6 +28,7 @@ Partial Class PropertiesDotNet
         Me.chkHidden = New System.Windows.Forms.CheckBox()
         Me.chkSystem = New System.Windows.Forms.CheckBox()
         Me.grpProperties = New System.Windows.Forms.GroupBox()
+        Me.btnRelaunchAsAdmin = New System.Windows.Forms.Button()
         Me.lblDriveTotalUsedSpace = New System.Windows.Forms.Label()
         Me.lblDriveTotalUsedSpaceLbl = New System.Windows.Forms.Label()
         Me.lblDriveAvailableFreeSpaceInfo = New System.Windows.Forms.Label()
@@ -214,9 +215,20 @@ Partial Class PropertiesDotNet
         Me.grpProperties.Location = New System.Drawing.Point(2, 4)
         Me.grpProperties.Name = "grpProperties"
         Me.grpProperties.Size = New System.Drawing.Size(411, 233)
-        Me.grpProperties.TabIndex = 0
+        Me.grpProperties.TabIndex = 1
         Me.grpProperties.TabStop = false
         Me.grpProperties.Text = "Properties:"
+        '
+        'btnRelaunchAsAdmin
+        '
+        Me.btnRelaunchAsAdmin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnRelaunchAsAdmin.Image = Global.PropertiesDotNet.Resources.admin
+        Me.btnRelaunchAsAdmin.Location = New System.Drawing.Point(384, 2)
+        Me.btnRelaunchAsAdmin.Name = "btnRelaunchAsAdmin"
+        Me.btnRelaunchAsAdmin.Size = New System.Drawing.Size(23, 25)
+        Me.btnRelaunchAsAdmin.TabIndex = 0
+        Me.myToolTip.SetToolTip(Me.btnRelaunchAsAdmin, "Relaunch PropertiesDotNet as Administrator")
+        Me.btnRelaunchAsAdmin.UseVisualStyleBackColor = true
         '
         'lblDriveTotalUsedSpace
         '
@@ -784,7 +796,7 @@ Partial Class PropertiesDotNet
         Me.grpAttributes.Location = New System.Drawing.Point(2, 243)
         Me.grpAttributes.Name = "grpAttributes"
         Me.grpAttributes.Size = New System.Drawing.Size(411, 221)
-        Me.grpAttributes.TabIndex = 1
+        Me.grpAttributes.TabIndex = 2
         Me.grpAttributes.TabStop = false
         Me.grpAttributes.Text = "Attributes:"
         '
@@ -956,7 +968,7 @@ Partial Class PropertiesDotNet
         Me.grpFileLocation.Location = New System.Drawing.Point(2, 470)
         Me.grpFileLocation.Name = "grpFileLocation"
         Me.grpFileLocation.Size = New System.Drawing.Size(411, 77)
-        Me.grpFileLocation.TabIndex = 2
+        Me.grpFileLocation.TabIndex = 3
         Me.grpFileLocation.TabStop = false
         Me.grpFileLocation.Text = "File location:"
         '
@@ -1116,6 +1128,7 @@ Partial Class PropertiesDotNet
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnClose
         Me.ClientSize = New System.Drawing.Size(416, 549)
+        Me.Controls.Add(Me.btnRelaunchAsAdmin)
         Me.Controls.Add(Me.lblVersion)
         Me.Controls.Add(Me.grpFileLocation)
         Me.Controls.Add(Me.grpAttributes)
@@ -1135,6 +1148,7 @@ Partial Class PropertiesDotNet
         Me.ResumeLayout(false)
         Me.PerformLayout
     End Sub
+    Private WithEvents btnRelaunchAsAdmin As System.Windows.Forms.Button
     Private myToolTip As System.Windows.Forms.ToolTip
     Private WithEvents btnADS As System.Windows.Forms.Button
     Private lblDriveTotalUsedSpaceLbl As System.Windows.Forms.Label

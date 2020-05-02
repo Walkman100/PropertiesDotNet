@@ -17,6 +17,7 @@ Public Class PropertiesDotNet
         ' In order to center a form to it's parent, it needs to be .ShowDialog() or have the owner set if using .Show()
         ' ImageViewer.Owner is set when it is shown, as it is destroyed and re-created every time
         Hashes.Owner = Me
+        If WalkmanLib.IsAdmin() Then btnRelaunchAsAdmin.Visible = False
         timerDelayedBrowse.Start
     End Sub
     
@@ -375,6 +376,11 @@ Public Class PropertiesDotNet
     End Sub
     
     ' ======================= Properties section buttons =======================
+    
+    Sub btnRelaunchAsAdmin_Click() Handles btnRelaunchAsAdmin.Click
+        WalkmanLib.RunAsAdmin(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", """" & lblFullPath.Text & """")
+        Application.Exit
+    End Sub
     
     Sub btnOpenDir_Click() Handles btnOpenDir.Click
         Process.Start("explorer.exe", "/select, " & lblFullPath.Text)
