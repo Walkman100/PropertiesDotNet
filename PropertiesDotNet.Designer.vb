@@ -1085,7 +1085,7 @@ Partial Class PropertiesDotNet
         '
         'timerDelayedBrowse
         '
-        Me.timerDelayedBrowse.Interval = 50
+        Me.timerDelayedBrowse.Interval = 1
         '
         'lblVersion
         '

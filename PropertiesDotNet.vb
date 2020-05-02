@@ -532,6 +532,8 @@ Public Class PropertiesDotNet
                     If MsgBox("Unable to launch URL, copy to clipboard instead?", MsgBoxStyle.YesNo + MsgBoxStyle.Information) = MsgBoxResult.Yes Then _
                       WalkmanLib.SafeSetText("https://en.wikipedia.org/wiki/Byte#Unit_symbol")
                 End Try
+                ' otherwise every call to FormatNumber opens the URL...
+                cbxSize.SelectedIndex = 0
         End Select
         Return number.ToString("#,##0.### ### ### ### ### ### ###").Trim & postString
     End Function
