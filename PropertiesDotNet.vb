@@ -32,6 +32,7 @@ Public Class PropertiesDotNet
                 End If
             Else
                 Application.Exit
+                End ' make sure nothing else can be processed
             End If
         End If
         If Not Exists(lblLocation.Text) And Not Directory.Exists(lblLocation.Text) Then
@@ -42,6 +43,7 @@ Public Class PropertiesDotNet
             Catch
                 MsgBox("File, directory or drive """ & lblLocation.Text & """ not found!", MsgBoxStyle.Critical)
                 Application.Exit
+                End
             End Try
         End If
         CheckData(True, True)
@@ -550,22 +552,22 @@ Public Class PropertiesDotNet
     Sub lblCreationTime_Click(sender As Object, e As EventArgs) Handles lblCreationTime.Click
         SelectDateDialog.Text = "Choose a date to set Creation time to:"
         If chkUTC.Checked Then
-            Try
-                SelectDateDialog.dateTimePicker.Value = GetCreationTimeUtc(lblFullPath.Text)
-            Catch ex As Exception
-                ErrorParser(ex)
+            Try : SelectDateDialog.dateTimePicker.Value = GetCreationTimeUtc(lblFullPath.Text)
+            Catch ex As Exception : ErrorParser(ex)
             End Try
             If SelectDateDialog.ShowDialog() = DialogResult.OK Then
-                SetCreationTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+                Try : SetCreationTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+                Catch ex As Exception : ErrorParser(ex)
+                End Try
             End If
         Else
-            Try
-                SelectDateDialog.dateTimePicker.Value = GetCreationTime(lblFullPath.Text)
-            Catch ex As Exception
-                ErrorParser(ex)
+            Try : SelectDateDialog.dateTimePicker.Value = GetCreationTime(lblFullPath.Text)
+            Catch ex As Exception : ErrorParser(ex)
             End Try
             If SelectDateDialog.ShowDialog() = DialogResult.OK Then
-                SetCreationTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+                Try : SetCreationTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+                Catch ex As Exception : ErrorParser(ex)
+                End Try
             End If
         End If
         CheckData
@@ -573,22 +575,22 @@ Public Class PropertiesDotNet
     Sub lblLastAccessTime_Click(sender As Object, e As EventArgs) Handles lblLastAccessTime.Click
         SelectDateDialog.Text = "Choose a date to set Last access time to:"
         If chkUTC.Checked Then
-            Try
-                SelectDateDialog.dateTimePicker.Value = GetLastAccessTimeUtc(lblFullPath.Text)
-            Catch ex As Exception
-                ErrorParser(ex)
+            Try : SelectDateDialog.dateTimePicker.Value = GetLastAccessTimeUtc(lblFullPath.Text)
+            Catch ex As Exception : ErrorParser(ex)
             End Try
             If SelectDateDialog.ShowDialog() = DialogResult.OK Then
-                SetLastAccessTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+                Try : SetLastAccessTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+                Catch ex As Exception : ErrorParser(ex)
+                End Try
             End If
         Else
-            Try
-                SelectDateDialog.dateTimePicker.Value = GetLastAccessTime(lblFullPath.Text)
-            Catch ex As Exception
-                ErrorParser(ex)
+            Try : SelectDateDialog.dateTimePicker.Value = GetLastAccessTime(lblFullPath.Text)
+            Catch ex As Exception : ErrorParser(ex)
             End Try
             If SelectDateDialog.ShowDialog() = DialogResult.OK Then
-                SetLastAccessTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+                Try : SetLastAccessTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+                Catch ex As Exception : ErrorParser(ex)
+                End Try
             End If
         End If
         CheckData
@@ -596,22 +598,22 @@ Public Class PropertiesDotNet
     Sub lblLastWriteTime_Click(sender As Object, e As EventArgs) Handles lblLastWriteTime.Click
         SelectDateDialog.Text = "Choose a date to set Last write time to:"
         If chkUTC.Checked Then
-            Try
-                SelectDateDialog.dateTimePicker.Value = GetLastWriteTimeUtc(lblFullPath.Text)
-            Catch ex As Exception
-                ErrorParser(ex)
+            Try : SelectDateDialog.dateTimePicker.Value = GetLastWriteTimeUtc(lblFullPath.Text)
+            Catch ex As Exception : ErrorParser(ex)
             End Try
             If SelectDateDialog.ShowDialog() = DialogResult.OK Then
-                SetLastWriteTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+                Try : SetLastWriteTimeUtc(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+                Catch ex As Exception : ErrorParser(ex)
+                End Try
             End If
         Else
-            Try
-                SelectDateDialog.dateTimePicker.Value = GetLastWriteTime(lblFullPath.Text)
-            Catch ex As Exception
-                ErrorParser(ex)
+            Try : SelectDateDialog.dateTimePicker.Value = GetLastWriteTime(lblFullPath.Text)
+            Catch ex As Exception : ErrorParser(ex)
             End Try
             If SelectDateDialog.ShowDialog() = DialogResult.OK Then
-                SetLastWriteTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+                Try : SetLastWriteTime(lblFullPath.Text, SelectDateDialog.dateTimePicker.Value)
+                Catch ex As Exception : ErrorParser(ex)
+                End Try
             End If
         End If
         CheckData
