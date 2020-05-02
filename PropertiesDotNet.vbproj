@@ -11,7 +11,7 @@
     <AssemblyName>PropertiesDotNet</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <ApplicationIcon>My Project\document-properties.ico</ApplicationIcon>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>Full</DebugType>
@@ -96,6 +96,8 @@
     <Compile Include="SelectDateDialog.vb" />
     <Compile Include="ShortcutPropertiesDialog.vb" />
     <Compile Include="WalkmanLib\WalkmanLibDotNet.vb" />
+    <Compile Include="WalkmanLib\WalkmanLibRestartManager.vb" />
+    <Compile Include="WalkmanLib\WalkmanLibSystemHandles.vb" />
     <Compile Include="WalkmanLib\WalkmanLibWin32.vb" />
     <Compile Include="Windows7ProgressBar.vb" />
   </ItemGroup>
