@@ -46,4 +46,20 @@
             PropertiesDotNet.ErrorParser(ex)
         End Try
     End Sub
+    
+    Shared Sub Rename(sourcePath As String, targetName As String)
+        Dim fileProperties As New FileInfo(sourcePath)
+        Try
+            fileProperties.MoveTo(targetName)
+            PropertiesDotNet.lblLocation.Text = fileProperties.FullName
+        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
+          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+            WalkmanLib.RunAsAdmin("cmd", "/c ren """ & sourcePath & """ """ & targetName & """ && pause")
+            If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                PropertiesDotNet.lblLocation.Text = fileProperties.DirectoryName & "\" & targetName
+            End If
+        Catch ex As Exception
+            PropertiesDotNet.ErrorParser(ex)
+        End Try
+    End Sub
 End Class

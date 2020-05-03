@@ -1050,32 +1050,21 @@ Public Class PropertiesDotNet
     
     ' InputDialog buttons (as opposed to SaveFileDialogs)
     Sub btnRename_Click() Handles btnRename.Click
-        Dim FileProperties As New FileInfo(lblFullPath.Text)
         Dim newName As String
         
         If OokiiDialogsLoaded() Then
-            newName = FileProperties.Name
-            If OokiiInputBox(newName, "New name", "Rename """ & FileProperties.Name & """ to:") <> DialogResult.OK Then
+            newName = lblName.Text
+            If OokiiInputBox(newName, "New name", "Rename """ & lblName.Text & """ to:") <> DialogResult.OK Then
                 Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
             End If
         Else
-            newName = InputBox("Rename """ & FileProperties.Name & """ to:", "New name", FileProperties.Name)
+            newName = InputBox("Rename """ & lblName.Text & """ to:", "New name", lblName.Text)
             If newName = "" Then
                 Exit Sub
             End If
         End If
         
-        Try
-            FileProperties.MoveTo(FileProperties.DirectoryName & "\" & newName)
-            lblLocation.Text = FileProperties.FullName
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("cmd", "/c ren """ & lblFullPath.Text & """ """ & newName & """ & pause")
-            If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-              lblLocation.Text = FileProperties.DirectoryName & "\" & newName
-        Catch ex As Exception
-            ErrorParser(ex)
-        End Try
+        Operations.Rename(lblFullPath.Text, newName)
         CheckData(True)
     End Sub
     Sub btnMove_MouseUp(sender As Object, e As MouseEventArgs) Handles btnMove.MouseUp
@@ -1350,15 +1339,15 @@ Public Class PropertiesDotNet
         ApplySizeFormatting
     End Sub
     
-    Sub ErrorParser(ex As Exception)
+    Shared Sub ErrorParser(ex As Exception)
         If TypeOf ex Is UnauthorizedAccessException AndAlso Not WalkmanLib.IsAdmin() Then
             If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching PropertiesDotNet As Administrator?", _
               MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                WalkmanLib.RunAsAdmin(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", """" & lblFullPath.Text & """")
+                WalkmanLib.RunAsAdmin(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", """" & PropertiesDotNet.lblFullPath.Text & """")
                 Application.Exit
             End If
         Else
-            WalkmanLib.ErrorDialog(ex,,, Me)
+            WalkmanLib.ErrorDialog(ex, messagePumpForm:=PropertiesDotNet)
         End If
     End Sub
     
