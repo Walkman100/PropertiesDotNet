@@ -162,7 +162,7 @@
     Private colHeadHandleID As System.Windows.Forms.ColumnHeader
     Private colHeadProcessName As System.Windows.Forms.ColumnHeader
     Private colHeadProcessID As System.Windows.Forms.ColumnHeader
-    Private lstHandles As System.Windows.Forms.ListView
+    Private WithEvents lstHandles As System.Windows.Forms.ListView
     Private WithEvents btnCloseHandle As System.Windows.Forms.Button
     Private WithEvents btnKillProcess As System.Windows.Forms.Button
     Private btnClose As System.Windows.Forms.Button
