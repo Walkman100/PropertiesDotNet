@@ -958,19 +958,8 @@ Public Class PropertiesDotNet
         sfdSave.Title = "Choose where to create a Hardlink to """ & lblName.Text & """:"
         
         If sfdSave.ShowDialog() = DialogResult.OK Then
-            Try
-                WalkmanLib.CreateHardLink(sfdSave.FileName, lblFullPath.Text)
-            Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-              "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-                WalkmanLib.RunAsAdmin("cmd", "/c mklink /h """ & sfdSave.FileName & """ """ & lblFullPath.Text & """ & pause")
-            Catch ex As Exception
-                ErrorParser(ex)
-            End Try
-            
-            If MsgBox("Show properties for created Hardlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                lblLocation.Text = sfdSave.FileName
-                CheckData(True)
-            End If
+            Operations.CreateHardlink(lblFullPath.Text, sfdSave.FileName)
+            CheckData(True)
         End If
     End Sub
     
@@ -1088,19 +1077,8 @@ Public Class PropertiesDotNet
                 End If
             End If
             
-            Try
-                WalkmanLib.CreateHardLink(newName, lblFullPath.Text)
-            Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-              "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-                WalkmanLib.RunAsAdmin("cmd", "/c mklink /h """ & newName & """ """ & lblFullPath.Text & """ & pause")
-            Catch ex As Exception
-                ErrorParser(ex)
-            End Try
-            
-            If MsgBox("Show properties for created Hardlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                lblLocation.Text = newName
-                CheckData(True)
-            End If
+            Operations.CreateHardlink(lblFullPath.Text, newName)
+            CheckData(True)
         End If
     End Sub
     

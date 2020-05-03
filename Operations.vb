@@ -228,4 +228,23 @@
             PropertiesDotNet.ErrorParser(ex)
         End Try
     End Sub
+    
+    Shared Sub CreateHardlink(sourcePath As String, targetPath As String)
+        Try
+            WalkmanLib.CreateHardLink(targetPath, sourcePath)
+            
+            If MsgBox("Show properties for created Hardlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                PropertiesDotNet.lblLocation.Text = targetPath
+            End If
+        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
+          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+            WalkmanLib.RunAsAdmin("cmd", "/c mklink /h """ & targetPath & """ """ & sourcePath & """ & pause")
+            
+            If MsgBox("Show properties for created Hardlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                PropertiesDotNet.lblLocation.Text = targetPath
+            End If
+        Catch ex As Exception
+            PropertiesDotNet.ErrorParser(ex)
+        End Try
+    End Sub
 End Class
