@@ -90,6 +90,20 @@ Public Partial Class HandleManager
         filePath = New FileInfo(filePath).FullName
         Dim taskList As New List(Of Task)
         
+        bwHandleScan.ReportProgress(0, "Status: Getting Processes from Restart Manager...")
+        
+        Try
+            For Each process As Diagnostics.Process In RestartManager.GetLockingProcesses(filePath)
+                Dim tmpListViewItem As New ListViewItem({process.Id, process.ProcessName, "", ""})
+                lstHandles.Items.Add(tmpListViewItem)
+            Next
+        Catch ex As System.Exception When TypeOf(ex.InnerException) Is System.ComponentModel.Win32Exception
+            ' ignore exceptions on folders - restart manager doesn't allow getting folder locks
+        End Try
+        
+        lstHandles.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
+        lstHandles_ItemSelectionChanged()
+        
         bwHandleScan.ReportProgress(0, "Status: Getting System Handles...")
         
         For Each systemHandle As SystemHandles.SYSTEM_HANDLE In SystemHandles.GetSystemHandles()
@@ -136,7 +150,7 @@ Public Partial Class HandleManager
         Catch ex As InvalidOperationException : processName = ""
         End Try
         
-        Dim tmpListViewItem As ListViewItem = New ListViewItem({handleInfo.ProcessID, processName, handleInfo.HandleID, handleInfo.Name})
+        Dim tmpListViewItem As New ListViewItem({handleInfo.ProcessID, processName, handleInfo.HandleID, handleInfo.Name})
         lstHandles.Items.Add(tmpListViewItem)
         
         lstHandles.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)

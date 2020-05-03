@@ -693,6 +693,11 @@ Public Class PropertiesDotNet
         CheckData()
     End Sub
     
+    Sub btnHandles_Click() Handles btnHandles.Click
+        HandleManager.ShowDialog()
+        CheckData()
+    End Sub
+    
     Sub chkReadOnly_Click() Handles chkReadOnly.Click
         Try
             If chkReadOnly.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.ReadOnly) _
