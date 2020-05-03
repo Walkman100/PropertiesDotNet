@@ -42,7 +42,8 @@ Public Partial Class HandleManager
         If bwHandleScan.IsBusy Then
             bwHandleScan.CancelAsync()
         Else
-            bwHandleScan.RunWorkerAsync()
+            lstHandles.Items.Clear()
+            bwHandleScan.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
         End If
     End Sub
     
@@ -55,7 +56,11 @@ Public Partial Class HandleManager
     Sub btnCloseHandle_Click() Handles btnCloseHandle.Click
         For Each item As ListViewItem In lstHandles.SelectedItems
             If Not String.IsNullOrWhiteSpace(item.SubItems(0).Text) AndAlso Not String.IsNullOrWhiteSpace(item.SubItems(2).Text) Then
-                SystemHandles.CloseSystemHandle(UInteger.Parse(item.SubItems(0).Text), UShort.Parse(item.SubItems(2).Text))
+                Try
+                    SystemHandles.CloseSystemHandle(UInteger.Parse(item.SubItems(0).Text), UShort.Parse(item.SubItems(2).Text))
+                Catch ex As Exception
+                    PropertiesDotNet.ErrorParser(ex)
+                End Try
             End If
         Next
     End Sub
@@ -81,8 +86,8 @@ Public Partial Class HandleManager
         btnScan.Enabled = True
         btnScan.Text = "Cancel Waiting"
         
-        Dim filePath As String = New FileInfo(PropertiesDotNet.lblLocation.Text).FullName
-        MsgBox(filePath)
+        Dim filePath As String = DirectCast(e.Argument, String)
+        filePath = New FileInfo(filePath).FullName
         Dim taskList As New List(Of Task)
         
         bwHandleScan.ReportProgress(0, "Status: Getting System Handles...")
