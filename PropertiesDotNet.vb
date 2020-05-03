@@ -937,28 +937,8 @@ Public Class PropertiesDotNet
             sfdSave.Title = "Choose where to create a Shortcut to """ & lblName.Text & """:"
             
             If sfdSave.ShowDialog() = DialogResult.OK Then
-                Dim newShortcutPath As String = ""
-                Try
-                    newShortcutPath = WalkmanLib.CreateShortcut(sfdSave.FileName, lblFullPath.Text)
-                Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-                  "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-                    Using writer As StreamWriter = New StreamWriter(File.Open(Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs", FileMode.Create))
-                        writer.WriteLine("Set lnk = WScript.CreateObject(""WScript.Shell"").CreateShortcut(""" & sfdSave.FileName & """)")
-                        writer.WriteLine("lnk.TargetPath = """ & lblFullPath.Text & """")
-                        writer.WriteLine("lnk.Save")
-                    End Using
-                    
-                    WalkmanLib.RunAsAdmin("wscript", Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs")
-                    newShortcutPath = sfdSave.FileName
-                Catch ex As Exception
-                    ErrorParser(ex)
-                    newShortcutPath = sfdSave.FileName
-                End Try
-                
-                If MsgBox("Show properties for created Shortcut?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                    lblLocation.Text = newShortcutPath
-                    CheckData(True)
-                End If
+                Operations.CreateShortcut(lblFullPath.Text, sfdSave.FileName)
+                CheckData(True)
             End If
         End If
     End Sub
@@ -1074,9 +1054,7 @@ Public Class PropertiesDotNet
     End Sub
     Sub btnShortcut_MouseUp(sender As Object, e As MouseEventArgs) Handles btnShortcut.MouseUp
         If e.Button = MouseButtons.Right AndAlso lblExtension.Text.ToLower() <> ".lnk" Then
-            
-            Dim newName As String
-            newName = lblDirectory.Text & Path.DirectorySeparatorChar & "Shortcut to " & lblName.Text & ".lnk"
+            Dim newName As String = lblDirectory.Text & Path.DirectorySeparatorChar & "Shortcut to " & lblName.Text & ".lnk"
             
             If OokiiDialogsLoaded() Then
                 If OokiiInputBox(newName, "Create Shortcut", "Create shortcut to """ & lblName.Text & """:") <> DialogResult.OK Then
@@ -1089,28 +1067,8 @@ Public Class PropertiesDotNet
                 End If
             End If
             
-            Dim newShortcutPath As String = ""
-            Try
-                newShortcutPath = WalkmanLib.CreateShortcut(newName, lblFullPath.Text)
-            Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-              "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-                Using writer As StreamWriter = New StreamWriter(File.Open(Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs", FileMode.Create))
-                    writer.WriteLine("Set lnk = WScript.CreateObject(""WScript.Shell"").CreateShortcut(""" & newName & """)")
-                    writer.WriteLine("lnk.TargetPath = """ & lblFullPath.Text & """")
-                    writer.WriteLine("lnk.Save")
-                End Using
-                
-                WalkmanLib.RunAsAdmin("wscript", Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs")
-                newShortcutPath = newName
-            Catch ex As Exception
-                ErrorParser(ex)
-                newShortcutPath = newName
-            End Try
-            
-            If MsgBox("Show properties for created Shortcut?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                lblLocation.Text = newShortcutPath
-                CheckData(True)
-            End If
+            Operations.CreateShortcut(lblFullPath.Text, newName)
+            CheckData(True)
         End If
     End Sub
     Sub btnSymlink_MouseUp(sender As Object, e As MouseEventArgs) Handles btnSymlink.MouseUp

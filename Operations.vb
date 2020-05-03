@@ -174,4 +174,29 @@
             PropertiesDotNet.ErrorParser(ex)
         End Try
     End Sub
+    
+    Shared Sub CreateShortcut(sourcePath As String, targetPath As String)
+        Try
+            Dim newShortcutPath As String = WalkmanLib.CreateShortcut(targetPath, sourcePath)
+            
+            If MsgBox("Show properties for created Shortcut?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                PropertiesDotNet.lblLocation.Text = newShortcutPath
+            End If
+        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
+          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+            Dim scriptPath As String = Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs"
+            Using writer As StreamWriter = New StreamWriter(File.Open(scriptPath, FileMode.Create))
+                writer.WriteLine("Set lnk = WScript.CreateObject(""WScript.Shell"").CreateShortcut(""" & targetPath & """)")
+                writer.WriteLine("lnk.TargetPath = """ & sourcePath & """")
+                writer.WriteLine("lnk.Save")
+            End Using
+            
+            WalkmanLib.RunAsAdmin("wscript", scriptPath)
+            If MsgBox("Show properties for created Shortcut?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                PropertiesDotNet.lblLocation.Text = targetPath
+            End If
+        Catch ex As Exception
+            PropertiesDotNet.ErrorParser(ex)
+        End Try
+    End Sub
 End Class
