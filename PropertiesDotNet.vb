@@ -378,8 +378,7 @@ Public Class PropertiesDotNet
     ' ======================= Properties section buttons =======================
     
     Sub btnRelaunchAsAdmin_Click() Handles btnRelaunchAsAdmin.Click
-        WalkmanLib.RunAsAdmin(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", """" & lblFullPath.Text & """")
-        Application.Exit
+        RestartAsAdmin()
     End Sub
     
     Sub btnOpenDir_Click() Handles btnOpenDir.Click
@@ -1137,12 +1136,16 @@ Public Class PropertiesDotNet
         ApplySizeFormatting
     End Sub
     
+    Shared Sub RestartAsAdmin()
+        WalkmanLib.RunAsAdmin(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", """" & PropertiesDotNet.lblFullPath.Text & """")
+        Application.Exit()
+    End Sub
+    
     Shared Sub ErrorParser(ex As Exception)
         If TypeOf ex Is UnauthorizedAccessException AndAlso Not WalkmanLib.IsAdmin() Then
             If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching PropertiesDotNet As Administrator?", _
               MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                WalkmanLib.RunAsAdmin(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", """" & PropertiesDotNet.lblFullPath.Text & """")
-                Application.Exit
+                RestartAsAdmin()
             End If
         Else
             WalkmanLib.ErrorDialog(ex, messagePumpForm:=PropertiesDotNet)

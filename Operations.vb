@@ -78,12 +78,16 @@
             fileProperties.MoveTo(targetName)
             
             PropertiesDotNet.lblLocation.Text = fileProperties.FullName
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("cmd", "/c ren """ & sourcePath & """ """ & targetName & """ && pause")
-            If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                PropertiesDotNet.lblLocation.Text = fileProperties.DirectoryName & "\" & targetName
-            End If
+        Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, "Relaunch as Admin", "Run System Tool as Admin", "Cancel", MsgBoxStyle.Exclamation, "Access denied!", ownerForm:=PropertiesDotNet)
+                Case "Run System Tool as Admin"
+                    WalkmanLib.RunAsAdmin("cmd", "/c ren """ & sourcePath & """ """ & targetName & """ && pause")
+                    If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                        PropertiesDotNet.lblLocation.Text = fileProperties.DirectoryName & "\" & targetName
+                    End If
+                Case "Relaunch as Admin"
+                    PropertiesDotNet.RestartAsAdmin()
+            End Select
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try
@@ -104,12 +108,17 @@
             End If
             
             PropertiesDotNet.lblLocation.Text = targetPath
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("cmd", "/c move """ & sourcePath & """ """ & targetPath & """ & pause")
-            If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                PropertiesDotNet.lblLocation.Text = targetPath
-            End If
+        Catch ex As OperationCanceledException ' ignore user cancellation
+        Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, "Relaunch as Admin", "Run System Tool as Admin", "Cancel", MsgBoxStyle.Exclamation, "Access denied!", ownerForm:=PropertiesDotNet)
+                Case "Run System Tool as Admin"
+                    WalkmanLib.RunAsAdmin("cmd", "/c move """ & sourcePath & """ """ & targetPath & """ & pause")
+                    If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                        PropertiesDotNet.lblLocation.Text = targetPath
+                    End If
+                Case "Relaunch as Admin"
+                    PropertiesDotNet.RestartAsAdmin()
+            End Select
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try
@@ -137,12 +146,17 @@
             If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
                 PropertiesDotNet.lblLocation.Text = targetPath
             End If
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("xcopy", "/F /H /K """ & sourcePath & """ """ & targetPath & "*""")
-            If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                PropertiesDotNet.lblLocation.Text = targetPath
-            End If
+        Catch ex As OperationCanceledException ' ignore user cancellation
+        Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, "Relaunch as Admin", "Run System Tool as Admin", "Cancel", MsgBoxStyle.Exclamation, "Access denied!", ownerForm:=PropertiesDotNet)
+                Case "Run System Tool as Admin"
+                    WalkmanLib.RunAsAdmin("xcopy", "/F /H /K """ & sourcePath & """ """ & targetPath & "*""")
+                    If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                        PropertiesDotNet.lblLocation.Text = targetPath
+                    End If
+                Case "Relaunch as Admin"
+                    PropertiesDotNet.RestartAsAdmin()
+            End Select
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try
@@ -167,9 +181,14 @@
                 End If
             End If
             Application.Exit()
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("cmd", "/c del """ & path & """ & pause")
+        Catch ex As OperationCanceledException ' ignore user cancellation
+        Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, "Relaunch as Admin", "Run System Tool as Admin", "Cancel", MsgBoxStyle.Exclamation, "Access denied!", ownerForm:=PropertiesDotNet)
+                Case "Run System Tool as Admin"
+                    WalkmanLib.RunAsAdmin("cmd", "/c del """ & path & """ & pause")
+                Case "Relaunch as Admin"
+                    PropertiesDotNet.RestartAsAdmin()
+            End Select
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try
@@ -182,19 +201,23 @@
             If MsgBox("Show properties for created Shortcut?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
                 PropertiesDotNet.lblLocation.Text = newShortcutPath
             End If
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            Dim scriptPath As String = Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs"
-            Using writer As StreamWriter = New StreamWriter(File.Open(scriptPath, FileMode.Create))
-                writer.WriteLine("Set lnk = WScript.CreateObject(""WScript.Shell"").CreateShortcut(""" & targetPath & """)")
-                writer.WriteLine("lnk.TargetPath = """ & sourcePath & """")
-                writer.WriteLine("lnk.Save")
-            End Using
-            
-            WalkmanLib.RunAsAdmin("wscript", scriptPath)
-            If MsgBox("Show properties for created Shortcut?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                PropertiesDotNet.lblLocation.Text = targetPath
-            End If
+        Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, "Relaunch as Admin", "Run System Tool as Admin", "Cancel", MsgBoxStyle.Exclamation, "Access denied!", ownerForm:=PropertiesDotNet)
+                Case "Run System Tool as Admin"
+                    Dim scriptPath As String = Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs"
+                    Using writer As StreamWriter = New StreamWriter(File.Open(scriptPath, FileMode.Create))
+                        writer.WriteLine("Set lnk = WScript.CreateObject(""WScript.Shell"").CreateShortcut(""" & targetPath & """)")
+                        writer.WriteLine("lnk.TargetPath = """ & sourcePath & """")
+                        writer.WriteLine("lnk.Save")
+                    End Using
+                    
+                    WalkmanLib.RunAsAdmin("wscript", scriptPath)
+                    If MsgBox("Show properties for created Shortcut?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                        PropertiesDotNet.lblLocation.Text = targetPath
+                    End If
+                Case "Relaunch as Admin"
+                    PropertiesDotNet.RestartAsAdmin()
+            End Select
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try
@@ -212,18 +235,22 @@
             If MsgBox("Show properties for created Symlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
                 PropertiesDotNet.lblLocation.Text = targetPath
             End If
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            Dim pathInfo = IsFileOrDirectory(sourcePath)
-            If pathInfo.HasFlag(PathEnum.IsFile) Then
-                WalkmanLib.RunAsAdmin("cmd", "/c mklink """ & targetPath & """ """ & sourcePath & """ & pause")
-            ElseIf pathInfo.HasFlag(PathEnum.IsDirectory)
-                WalkmanLib.RunAsAdmin("cmd", "/c mklink /d """ & targetPath & """ """ & sourcePath & """ & pause")
-            End If
-            
-            If MsgBox("Show properties for created Symlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                PropertiesDotNet.lblLocation.Text = targetPath
-            End If
+        Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, "Relaunch as Admin", "Run System Tool as Admin", "Cancel", MsgBoxStyle.Exclamation, "Access denied!", ownerForm:=PropertiesDotNet)
+                Case "Run System Tool as Admin"
+                    Dim pathInfo = IsFileOrDirectory(sourcePath)
+                    If pathInfo.HasFlag(PathEnum.IsFile) Then
+                        WalkmanLib.RunAsAdmin("cmd", "/c mklink """ & targetPath & """ """ & sourcePath & """ & pause")
+                    ElseIf pathInfo.HasFlag(PathEnum.IsDirectory)
+                        WalkmanLib.RunAsAdmin("cmd", "/c mklink /d """ & targetPath & """ """ & sourcePath & """ & pause")
+                    End If
+                    
+                    If MsgBox("Show properties for created Symlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                        PropertiesDotNet.lblLocation.Text = targetPath
+                    End If
+                Case "Relaunch as Admin"
+                    PropertiesDotNet.RestartAsAdmin()
+            End Select
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try
@@ -236,13 +263,17 @@
             If MsgBox("Show properties for created Hardlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
                 PropertiesDotNet.lblLocation.Text = targetPath
             End If
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("cmd", "/c mklink /h """ & targetPath & """ """ & sourcePath & """ & pause")
-            
-            If MsgBox("Show properties for created Hardlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                PropertiesDotNet.lblLocation.Text = targetPath
-            End If
+        Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, "Relaunch as Admin", "Run System Tool as Admin", "Cancel", MsgBoxStyle.Exclamation, "Access denied!", ownerForm:=PropertiesDotNet)
+                Case "Run System Tool as Admin"
+                    WalkmanLib.RunAsAdmin("cmd", "/c mklink /h """ & targetPath & """ """ & sourcePath & """ & pause")
+                    
+                    If MsgBox("Show properties for created Hardlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                        PropertiesDotNet.lblLocation.Text = targetPath
+                    End If
+                Case "Relaunch as Admin"
+                    PropertiesDotNet.RestartAsAdmin()
+            End Select
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try
