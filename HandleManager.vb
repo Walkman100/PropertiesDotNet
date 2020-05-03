@@ -48,8 +48,15 @@ Public Partial Class HandleManager
     End Sub
     
     Sub btnKillProcess_Click() Handles btnKillProcess.Click
+        If Not MsgBox("Are you sure you want to kill the selected program(s)?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Kill Process(es)") = MsgBoxResult.Yes Then
+            Exit Sub
+        End If
         For Each item As ListViewItem In lstHandles.SelectedItems
-            
+            Try
+                Diagnostics.Process.GetProcessById(Integer.Parse(item.SubItems(0).Text)).Kill()
+            Catch ex As Exception
+                PropertiesDotNet.ErrorParser(ex)
+            End Try
         Next
     End Sub
     
