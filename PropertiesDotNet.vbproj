@@ -85,6 +85,7 @@
     <Compile Include="NTFS-Streams\SafeHGlobalHandle.vb" />
     <Compile Include="NTFS-Streams\SafeNativeMethods.vb" />
     <Compile Include="NTFS-Streams\StreamName.vb" />
+    <Compile Include="Operations.vb" />
     <Compile Include="PropertiesDotNet.vb">
       <SubType>Form</SubType>
     </Compile>
