@@ -855,30 +855,12 @@ Public Class PropertiesDotNet
     
     ' SaveFileDialog buttons (as opposed to InputDialogs)
     Sub btnMove_Click() Handles btnMove.Click
-        Dim FileProperties As New FileInfo(lblFullPath.Text)
-        sfdSave.InitialDirectory = FileProperties.DirectoryName
-        sfdSave.FileName = FileProperties.Name
-        sfdSave.Title = "Choose where to move """ & FileProperties.Name & """ to:"
+        sfdSave.InitialDirectory = lblDirectory.Text
+        sfdSave.FileName = lblName.Text
+        sfdSave.Title = "Choose where to move """ & lblName.Text & """ to:"
+        
         If sfdSave.ShowDialog() = DialogResult.OK Then
-            Try
-                If chkUseSystem.Checked Then
-                    If Exists(lblFullPath.Text) Then
-                        My.Computer.FileSystem.MoveFile(lblFullPath.Text, sfdSave.FileName, FileIO.UIOption.AllDialogs)
-                    ElseIf Directory.Exists(lblFullPath.Text)
-                        My.Computer.FileSystem.MoveDirectory(lblFullPath.Text, sfdSave.FileName, FileIO.UIOption.AllDialogs)
-                    End If
-                Else
-                    FileProperties.MoveTo(sfdSave.FileName)
-                End If
-                lblLocation.Text = sfdSave.FileName
-            Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-              "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-                WalkmanLib.RunAsAdmin("cmd", "/c move """ & lblFullPath.Text & """ """ & sfdSave.FileName & """ & pause")
-                If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-                  lblLocation.Text = sfdSave.FileName
-            Catch ex As Exception
-                ErrorParser(ex)
-            End Try
+            Operations.Move(lblFullPath.Text, sfdSave.FileName, chkUseSystem.Checked)
             CheckData(True)
         End If
     End Sub
@@ -1069,40 +1051,21 @@ Public Class PropertiesDotNet
     End Sub
     Sub btnMove_MouseUp(sender As Object, e As MouseEventArgs) Handles btnMove.MouseUp
         If e.Button = MouseButtons.Right Then
-            Dim FileProperties As New FileInfo(lblFullPath.Text)
             Dim newName As String
             
             If OokiiDialogsLoaded() Then
-                newName = FileProperties.FullName
-                If OokiiInputBox(newName, "Move file/folder", "Move """ & FileProperties.Name & """ to:") <> DialogResult.OK Then
+                newName = lblName.Text
+                If OokiiInputBox(newName, "Move file/folder", "Move """ & lblName.Text & """ to:") <> DialogResult.OK Then
                     Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
                 End If
             Else
-                newName = InputBox("Move """ & FileProperties.Name & """ to:", "Move file/folder", FileProperties.FullName)
+                newName = InputBox("Move """ & lblName.Text & """ to:", "Move file/folder", lblName.Text)
                 If newName = "" Then
                     Exit Sub
                 End If
             End If
             
-            Try
-                If chkUseSystem.Checked Then
-                    If Exists(lblFullPath.Text) Then
-                        My.Computer.FileSystem.MoveFile(lblFullPath.Text, newName, FileIO.UIOption.AllDialogs)
-                    ElseIf Directory.Exists(lblFullPath.Text)
-                        My.Computer.FileSystem.MoveDirectory(lblFullPath.Text, newName, FileIO.UIOption.AllDialogs)
-                    End If
-                Else
-                    FileProperties.MoveTo(newName)
-                End If
-                lblLocation.Text = newName
-            Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-              "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-                WalkmanLib.RunAsAdmin("cmd", "/c move """ & lblFullPath.Text & """ """ & newName & """ & pause")
-                If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then _
-                  lblLocation.Text = newName
-            Catch ex As Exception
-                ErrorParser(ex)
-            End Try
+            Operations.Move(lblFullPath.Text, newName, chkUseSystem.Checked)
             CheckData(True)
         End If
     End Sub
