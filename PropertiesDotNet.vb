@@ -1037,12 +1037,12 @@ Public Class PropertiesDotNet
             Dim newName As String
             
             If OokiiDialogsLoaded() Then
-                newName = lblName.Text
+                newName = lblFullPath.Text
                 If OokiiInputBox(newName, "Move file/folder", "Move """ & lblName.Text & """ to:") <> DialogResult.OK Then
                     Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
                 End If
             Else
-                newName = InputBox("Move """ & lblName.Text & """ to:", "Move file/folder", lblName.Text)
+                newName = InputBox("Move """ & lblName.Text & """ to:", "Move file/folder", lblFullPath.Text)
                 If newName = "" Then
                     Exit Sub
                 End If
@@ -1057,12 +1057,12 @@ Public Class PropertiesDotNet
             Dim newName As String
             
             If OokiiDialogsLoaded() Then
-                newName = lblName.Text
+                newName = lblFullPath.Text
                 If OokiiInputBox(newName, "Copy file/folder", "Copy """ & lblName.Text & """ to:") <> DialogResult.OK Then
                     Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
                 End If
             Else
-                newName = InputBox("Copy """ & lblName.Text & """ to:", "Copy file/folder", lblName.Text)
+                newName = InputBox("Copy """ & lblName.Text & """ to:", "Copy file/folder", lblFullPath.Text)
                 If newName = "" Then
                     Exit Sub
                 End If
@@ -1185,42 +1185,21 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub btnDelete_Click() Handles btnDelete.Click
-        Dim FileProperties As New FileInfo(lblFullPath.Text)
-        Try
-            If chkUseSystem.Checked Then
-                Select Case MsgBox("Send """ & FileProperties.Name & """ to Recycle Bin? (No to delete permanently)", MsgBoxStyle.Question + MsgBoxStyle.YesNoCancel)
-                    Case MsgBoxResult.Yes
-                        If Exists(lblFullPath.Text) Then
-                            My.Computer.FileSystem.DeleteFile(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.SendToRecycleBin)
-                        ElseIf Directory.Exists(lblFullPath.Text) Then
-                            My.Computer.FileSystem.DeleteDirectory(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.SendToRecycleBin)
-                        End If
-                        Application.Exit()
-                    Case MsgBoxResult.No
-                        If Exists(lblFullPath.Text) Then
-                            My.Computer.FileSystem.DeleteFile(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
-                        ElseIf Directory.Exists(lblFullPath.Text) Then
-                            My.Computer.FileSystem.DeleteDirectory(lblFullPath.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.DeletePermanently)
-                        End If
-                        Application.Exit()
-                End Select
-            Else
-                If MsgBox("Are you sure you want to delete """ & FileProperties.Name & """?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                    If Exists(lblFullPath.Text) Then
-                        FileProperties.Delete()
-                    ElseIf Directory.Exists(lblFullPath.Text) Then
-                        BackgroundProgress.bwFolderOperations.RunWorkerAsync({"delete", lblFullPath.Text})
-                        BackgroundProgress.ShowDialog()
-                    End If
-                    Application.Exit()
-                End If
-            End If
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("cmd", "/c del """ & lblFullPath.Text & """ & pause")
-        Catch ex As Exception
-            ErrorParser(ex)
-        End Try
+        Dim recycleOption As FileIO.RecycleOption
+        If chkUseSystem.Checked Then
+            Select Case MsgBox("Send """ & lblName.Text & """ to Recycle Bin? (No to delete permanently)", MsgBoxStyle.Question + MsgBoxStyle.YesNoCancel)
+                Case MsgBoxResult.Yes
+                    recycleOption = FileIO.RecycleOption.SendToRecycleBin
+                Case MsgBoxResult.No
+                    recycleOption = FileIO.RecycleOption.DeletePermanently
+                Case MsgBoxResult.Cancel
+                    Exit Sub
+            End Select
+        ElseIf MsgBox("Are you sure you want to delete """ & lblName.Text & """?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) <> MsgBoxResult.Yes Then
+            Exit Sub
+        End If
+        
+        Operations.Delete(lblFullPath.Text, chkUseSystem.Checked, recycleOption)
         CheckData(True)
     End Sub
     

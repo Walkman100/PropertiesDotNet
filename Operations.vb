@@ -138,11 +138,38 @@
                 PropertiesDotNet.lblLocation.Text = targetPath
             End If
         Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system toll as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
             WalkmanLib.RunAsAdmin("xcopy", "/F /H /K """ & sourcePath & """ """ & targetPath & "*""")
             If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
                 PropertiesDotNet.lblLocation.Text = targetPath
             End If
+        Catch ex As Exception
+            PropertiesDotNet.ErrorParser(ex)
+        End Try
+    End Sub
+    
+    Shared Sub Delete(path As String, useShell As String, Optional recycleOption As FileIO.RecycleOption = Nothing)
+        Try
+            Dim pathInfo = IsFileOrDirectory(path)
+            If useShell Then
+                If pathInfo.HasFlag(PathEnum.IsFile) Then
+                    My.Computer.FileSystem.DeleteFile(path, FileIO.UIOption.AllDialogs, recycleOption)
+                ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
+                    My.Computer.FileSystem.DeleteDirectory(path, FileIO.UIOption.AllDialogs, recycleOption)
+                End If
+            Else
+                If pathInfo.HasFlag(PathEnum.IsFile) Then
+                    Dim fileProperties As New FileInfo(path)
+                    fileProperties.Delete()
+                ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
+                    BackgroundProgress.bwFolderOperations.RunWorkerAsync({"delete", path})
+                    BackgroundProgress.ShowDialog()
+                End If
+            End If
+            Application.Exit()
+        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
+          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+            WalkmanLib.RunAsAdmin("cmd", "/c del """ & path & """ & pause")
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try
