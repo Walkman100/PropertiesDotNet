@@ -76,6 +76,7 @@
         Dim fileProperties As New FileInfo(sourcePath)
         Try
             fileProperties.MoveTo(targetName)
+            
             PropertiesDotNet.lblLocation.Text = fileProperties.FullName
         Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
           "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
@@ -101,11 +102,45 @@
                 Dim fileProperties As New FileInfo(sourcePath)
                 fileProperties.MoveTo(targetPath)
             End If
+            
             PropertiesDotNet.lblLocation.Text = targetPath
         Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
           "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
             WalkmanLib.RunAsAdmin("cmd", "/c move """ & sourcePath & """ """ & targetPath & """ & pause")
-            If MsgBox("Read now location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+            If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                PropertiesDotNet.lblLocation.Text = targetPath
+            End If
+        Catch ex As Exception
+            PropertiesDotNet.ErrorParser(ex)
+        End Try
+    End Sub
+    
+    Shared Sub Copy(sourcePath As String, targetPath As String, useShell As Boolean)
+        Try
+            Dim pathInfo = IsFileOrDirectory(sourcePath)
+            If useShell Then
+                If pathInfo.HasFlag(PathEnum.IsFile) Then
+                    My.Computer.FileSystem.CopyFile(sourcePath, targetPath, FileIO.UIOption.AllDialogs)
+                ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
+                    My.Computer.FileSystem.CopyDirectory(sourcePath, targetPath, FileIO.UIOption.AllDialogs)
+                End If
+            Else
+                If pathInfo.HasFlag(PathEnum.IsFile) Then
+                    Dim fileProperties As New FileInfo(sourcePath)
+                    fileProperties.CopyTo(targetPath)
+                ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
+                    BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", sourcePath, targetPath})
+                    BackgroundProgress.ShowDialog()
+                End If
+            End If
+            
+            If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                PropertiesDotNet.lblLocation.Text = targetPath
+            End If
+        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
+          "Try launching a system toll as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+            WalkmanLib.RunAsAdmin("xcopy", "/F /H /K """ & sourcePath & """ """ & targetPath & "*""")
+            If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
                 PropertiesDotNet.lblLocation.Text = targetPath
             End If
         Catch ex As Exception
