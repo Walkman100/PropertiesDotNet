@@ -54,6 +54,8 @@ Public Partial Class HandleManager
         For Each item As ListViewItem In lstHandles.SelectedItems
             Try
                 Diagnostics.Process.GetProcessById(Integer.Parse(item.SubItems(0).Text)).Kill()
+                item.Selected = False
+                item.ForeColor = SystemColors.GrayText
             Catch ex As Exception
                 PropertiesDotNet.ErrorParser(ex)
             End Try
@@ -65,6 +67,8 @@ Public Partial Class HandleManager
             If Not String.IsNullOrWhiteSpace(item.SubItems(0).Text) AndAlso Not String.IsNullOrWhiteSpace(item.SubItems(2).Text) Then
                 Try
                     SystemHandles.CloseSystemHandle(UInteger.Parse(item.SubItems(0).Text), UShort.Parse(item.SubItems(2).Text))
+                    item.Selected = False
+                    item.ForeColor = SystemColors.GrayText
                 Catch ex As Exception
                     PropertiesDotNet.ErrorParser(ex)
                 End Try
