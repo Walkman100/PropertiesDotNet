@@ -94,7 +94,7 @@ Public Partial Class HandleManager
         
         Try
             For Each process As Diagnostics.Process In RestartManager.GetLockingProcesses(filePath)
-                Dim tmpListViewItem As New ListViewItem({process.Id, process.ProcessName, "", ""})
+                Dim tmpListViewItem As New ListViewItem({process.Id, process.MainModule.FileName, "", ""})
                 lstHandles.Items.Add(tmpListViewItem)
             Next
         Catch ex As System.Exception When TypeOf(ex.InnerException) Is System.ComponentModel.Win32Exception
@@ -145,12 +145,12 @@ Public Partial Class HandleManager
     End Sub
     
     Private Sub addHandle(handleInfo As SystemHandles.HandleInfo)
-        Dim processName As String
-        Try : processName = Diagnostics.Process.GetProcessById(handleInfo.ProcessID).ProcessName
-        Catch ex As InvalidOperationException : processName = ""
+        Dim processPath As String
+        Try : processPath = Diagnostics.Process.GetProcessById(handleInfo.ProcessID).MainModule.FileName
+        Catch ex As InvalidOperationException : processPath = ""
         End Try
         
-        Dim tmpListViewItem As New ListViewItem({handleInfo.ProcessID, processName, handleInfo.HandleID, handleInfo.Name})
+        Dim tmpListViewItem As New ListViewItem({handleInfo.ProcessID, processPath, handleInfo.HandleID, handleInfo.Name})
         lstHandles.Items.Add(tmpListViewItem)
         
         lstHandles.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)

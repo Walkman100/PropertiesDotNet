@@ -31,7 +31,7 @@
         Me.btnCloseHandle = New System.Windows.Forms.Button()
         Me.lstHandles = New System.Windows.Forms.ListView()
         Me.colHeadProcessID = New System.Windows.Forms.ColumnHeader()
-        Me.colHeadProcessName = New System.Windows.Forms.ColumnHeader()
+        Me.colHeadProcessPath = New System.Windows.Forms.ColumnHeader()
         Me.colHeadHandleID = New System.Windows.Forms.ColumnHeader()
         Me.colHeadHandleName = New System.Windows.Forms.ColumnHeader()
         Me.lblStatus = New System.Windows.Forms.Label()
@@ -40,8 +40,8 @@
         '
         'btnScan
         '
-        Me.btnScan.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnScan.Location = New System.Drawing.Point(426, 12)
+        Me.btnScan.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnScan.Location = New System.Drawing.Point(822, 75)
         Me.btnScan.Name = "btnScan"
         Me.btnScan.Size = New System.Drawing.Size(100, 23)
         Me.btnScan.TabIndex = 11
@@ -50,9 +50,9 @@
         '
         'btnClose
         '
-        Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnClose.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnClose.Location = New System.Drawing.Point(426, 99)
+        Me.btnClose.Location = New System.Drawing.Point(822, 162)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(100, 23)
         Me.btnClose.TabIndex = 15
@@ -61,9 +61,9 @@
         '
         'btnKillProcess
         '
-        Me.btnKillProcess.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnKillProcess.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnKillProcess.Enabled = false
-        Me.btnKillProcess.Location = New System.Drawing.Point(426, 41)
+        Me.btnKillProcess.Location = New System.Drawing.Point(822, 104)
         Me.btnKillProcess.Name = "btnKillProcess"
         Me.btnKillProcess.Size = New System.Drawing.Size(100, 23)
         Me.btnKillProcess.TabIndex = 12
@@ -72,9 +72,9 @@
         '
         'btnCloseHandle
         '
-        Me.btnCloseHandle.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnCloseHandle.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnCloseHandle.Enabled = false
-        Me.btnCloseHandle.Location = New System.Drawing.Point(426, 70)
+        Me.btnCloseHandle.Location = New System.Drawing.Point(822, 133)
         Me.btnCloseHandle.Name = "btnCloseHandle"
         Me.btnCloseHandle.Size = New System.Drawing.Size(100, 23)
         Me.btnCloseHandle.TabIndex = 13
@@ -87,14 +87,14 @@
         Me.lstHandles.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
                         Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lstHandles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colHeadProcessID, Me.colHeadProcessName, Me.colHeadHandleID, Me.colHeadHandleName})
+        Me.lstHandles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colHeadProcessID, Me.colHeadProcessPath, Me.colHeadHandleID, Me.colHeadHandleName})
         Me.lstHandles.FullRowSelect = true
         Me.lstHandles.GridLines = true
         Me.lstHandles.HideSelection = false
         Me.lstHandles.LabelWrap = false
         Me.lstHandles.Location = New System.Drawing.Point(12, 12)
         Me.lstHandles.Name = "lstHandles"
-        Me.lstHandles.Size = New System.Drawing.Size(408, 249)
+        Me.lstHandles.Size = New System.Drawing.Size(804, 223)
         Me.lstHandles.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lstHandles.TabIndex = 8
         Me.lstHandles.UseCompatibleStateImageBehavior = false
@@ -103,28 +103,28 @@
         'colHeadProcessID
         '
         Me.colHeadProcessID.Text = "Process ID"
-        Me.colHeadProcessID.Width = 100
+        Me.colHeadProcessID.Width = 200
         '
-        'colHeadProcessName
+        'colHeadProcessPath
         '
-        Me.colHeadProcessName.Text = "Process Name"
-        Me.colHeadProcessName.Width = 100
+        Me.colHeadProcessPath.Text = "Process Path"
+        Me.colHeadProcessPath.Width = 200
         '
         'colHeadHandleID
         '
         Me.colHeadHandleID.Text = "Handle ID"
-        Me.colHeadHandleID.Width = 100
+        Me.colHeadHandleID.Width = 200
         '
         'colHeadHandleName
         '
         Me.colHeadHandleName.Text = "Handle Name"
-        Me.colHeadHandleName.Width = 100
+        Me.colHeadHandleName.Width = 200
         '
         'lblStatus
         '
         Me.lblStatus.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.lblStatus.AutoSize = true
-        Me.lblStatus.Location = New System.Drawing.Point(12, 264)
+        Me.lblStatus.Location = New System.Drawing.Point(12, 238)
         Me.lblStatus.Name = "lblStatus"
         Me.lblStatus.Size = New System.Drawing.Size(88, 13)
         Me.lblStatus.TabIndex = 16
@@ -141,7 +141,7 @@
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnClose
-        Me.ClientSize = New System.Drawing.Size(538, 286)
+        Me.ClientSize = New System.Drawing.Size(934, 260)
         Me.Controls.Add(Me.lblStatus)
         Me.Controls.Add(Me.btnScan)
         Me.Controls.Add(Me.btnClose)
@@ -160,7 +160,7 @@
     Private lblStatus As System.Windows.Forms.Label
     Private colHeadHandleName As System.Windows.Forms.ColumnHeader
     Private colHeadHandleID As System.Windows.Forms.ColumnHeader
-    Private colHeadProcessName As System.Windows.Forms.ColumnHeader
+    Private colHeadProcessPath As System.Windows.Forms.ColumnHeader
     Private colHeadProcessID As System.Windows.Forms.ColumnHeader
     Private WithEvents lstHandles As System.Windows.Forms.ListView
     Private WithEvents btnCloseHandle As System.Windows.Forms.Button
