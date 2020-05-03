@@ -100,6 +100,10 @@
     </Compile>
     <Compile Include="SelectDateDialog.vb" />
     <Compile Include="ShortcutPropertiesDialog.vb" />
+    <Compile Include="WalkmanLib\CustomMsgBox.Designer.vb">
+      <DependentUpon>CustomMsgBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="WalkmanLib\CustomMsgBox.vb" />
     <Compile Include="WalkmanLib\WalkmanLibDotNet.vb" />
     <Compile Include="WalkmanLib\WalkmanLibRestartManager.vb" />
     <Compile Include="WalkmanLib\WalkmanLibSystemHandles.vb" />
@@ -138,6 +142,9 @@
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WalkmanLib\CustomMsgBox.resx">
+      <DependentUpon>CustomMsgBox.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
