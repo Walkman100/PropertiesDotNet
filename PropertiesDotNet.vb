@@ -948,27 +948,8 @@ Public Class PropertiesDotNet
         sfdSave.Title = "Choose where to create a Symlink to """ & lblName.Text & """:"
         
         If sfdSave.ShowDialog() = DialogResult.OK Then
-            Try
-                If Exists(lblFullPath.Text) Then
-                    WalkmanLib.CreateSymLink(sfdSave.FileName, lblFullPath.Text, SymbolicLinkType.File)
-                Else
-                    WalkmanLib.CreateSymLink(sfdSave.FileName, lblFullPath.Text, SymbolicLinkType.Directory)
-                End If
-            Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-              "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-                If Exists(lblFullPath.Text) Then
-                    WalkmanLib.RunAsAdmin("cmd", "/c mklink """ & sfdSave.FileName & """ """ & lblFullPath.Text & """ & pause")
-                Else
-                    WalkmanLib.RunAsAdmin("cmd", "/c mklink /d """ & sfdSave.FileName & """ """ & lblFullPath.Text & """ & pause")
-                End If
-            Catch ex As Exception
-                ErrorParser(ex)
-            End Try
-            
-            If MsgBox("Show properties for created Symlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                lblLocation.Text = sfdSave.FileName
-                CheckData(True)
-            End If
+            Operations.CreateSymlink(lblFullPath.Text, sfdSave.FileName)
+            CheckData(True)
         End If
     End Sub
     Sub btnHardlink_Click() Handles btnHardlink.Click
@@ -1087,27 +1068,8 @@ Public Class PropertiesDotNet
                 End If
             End If
             
-            Try
-                If Exists(lblFullPath.Text) Then
-                    WalkmanLib.CreateSymLink(newName, lblFullPath.Text, SymbolicLinkType.File)
-                Else
-                    WalkmanLib.CreateSymLink(newName, lblFullPath.Text, SymbolicLinkType.Directory)
-                End If
-            Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-              "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-                If Exists(lblFullPath.Text) Then
-                    WalkmanLib.RunAsAdmin("cmd", "/c mklink """ & newName & """ """ & lblFullPath.Text & """ & pause")
-                Else
-                    WalkmanLib.RunAsAdmin("cmd", "/c mklink /d """ & newName & """ """ & lblFullPath.Text & """ & pause")
-                End If
-            Catch ex As Exception
-                ErrorParser(ex)
-            End Try
-            
-            If MsgBox("Show properties for created Symlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                lblLocation.Text = newName
-                CheckData(True)
-            End If
+            Operations.CreateSymlink(lblFullPath.Text, newName)
+            CheckData(True)
         End If
     End Sub
     Sub btnHardlink_MouseUp(sender As Object, e As MouseEventArgs) Handles btnHardlink.MouseUp

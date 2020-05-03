@@ -199,4 +199,33 @@
             PropertiesDotNet.ErrorParser(ex)
         End Try
     End Sub
+    
+    Shared Sub CreateSymlink(sourcePath As String, targetPath As String)
+        Try
+            Dim pathInfo = IsFileOrDirectory(sourcePath)
+            If pathInfo.HasFlag(PathEnum.IsFile) Then
+                WalkmanLib.CreateSymLink(targetPath, sourcePath, SymbolicLinkType.File)
+            ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
+                WalkmanLib.CreateSymLink(targetPath, sourcePath, SymbolicLinkType.Directory)
+            End If
+            
+            If MsgBox("Show properties for created Symlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                PropertiesDotNet.lblLocation.Text = targetPath
+            End If
+        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
+          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
+            Dim pathInfo = IsFileOrDirectory(sourcePath)
+            If pathInfo.HasFlag(PathEnum.IsFile) Then
+                WalkmanLib.RunAsAdmin("cmd", "/c mklink """ & targetPath & """ """ & sourcePath & """ & pause")
+            ElseIf pathInfo.HasFlag(PathEnum.IsDirectory)
+                WalkmanLib.RunAsAdmin("cmd", "/c mklink /d """ & targetPath & """ """ & sourcePath & """ & pause")
+            End If
+            
+            If MsgBox("Show properties for created Symlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+                PropertiesDotNet.lblLocation.Text = targetPath
+            End If
+        Catch ex As Exception
+            PropertiesDotNet.ErrorParser(ex)
+        End Try
+    End Sub
 End Class
