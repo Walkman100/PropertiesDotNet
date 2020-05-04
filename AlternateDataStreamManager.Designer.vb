@@ -54,7 +54,6 @@ Partial Class AlternateDataStreamManager
         Me.lstStreams.Location = New System.Drawing.Point(12, 12)
         Me.lstStreams.Name = "lstStreams"
         Me.lstStreams.Size = New System.Drawing.Size(419, 197)
-        Me.lstStreams.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lstStreams.TabIndex = 0
         Me.lstStreams.UseCompatibleStateImageBehavior = false
         Me.lstStreams.View = System.Windows.Forms.View.Details

@@ -95,7 +95,6 @@
         Me.lstHandles.Location = New System.Drawing.Point(12, 12)
         Me.lstHandles.Name = "lstHandles"
         Me.lstHandles.Size = New System.Drawing.Size(804, 223)
-        Me.lstHandles.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lstHandles.TabIndex = 8
         Me.lstHandles.UseCompatibleStateImageBehavior = false
         Me.lstHandles.View = System.Windows.Forms.View.Details
