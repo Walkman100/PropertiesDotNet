@@ -80,19 +80,21 @@ Public Partial Class AlternateDataStreamManager
     End Sub
         
     Sub btnView_Click(sender As Object, e As EventArgs) Handles btnView.Click
-        Dim frmShowStream As New Form()
-        frmShowStream.Width = 600
-        frmShowStream.Height = 525
-        frmShowStream.StartPosition = FormStartPosition.CenterParent
-        frmShowStream.WindowState = FormWindowState.Normal
-        frmShowStream.ShowIcon = False
-        frmShowStream.ShowInTaskbar = False
-        Dim txtShowStream As New TextBox()
-        txtShowStream.Multiline = True
-        txtShowStream.ReadOnly = True
-        txtShowStream.ScrollBars = ScrollBars.Vertical
+        Dim frmShowStream As New Form With {
+            .Width = 600,
+            .Height = 525,
+            .StartPosition = FormStartPosition.CenterParent,
+            .WindowState = FormWindowState.Normal,
+            .ShowIcon = False,
+            .ShowInTaskbar = False
+        }
+        Dim txtShowStream As New TextBox With {
+            .Multiline = True,
+            .ReadOnly = True,
+            .ScrollBars = ScrollBars.Vertical,
+            .Dock = DockStyle.Fill
+        }
         frmShowStream.Controls.Add(txtShowStream)
-        txtShowStream.Dock = DockStyle.Fill
         
         For Each item As ListViewItem In lstStreams.SelectedItems
             frmShowStream.Text = PropertiesDotNet.lblLocation.Text & ":" & item.Text

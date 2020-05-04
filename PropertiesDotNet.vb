@@ -580,7 +580,7 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub btnWindowsProperties_Click() Handles btnWindowsProperties.Click
-        If WalkmanLib.ShowProperties(lblFullPath.Text) = False Then
+        If Not WalkmanLib.ShowProperties(lblFullPath.Text) Then
             MsgBox("Could not open properties window!", MsgBoxStyle.Exclamation)
         End If
     End Sub
@@ -1155,13 +1155,14 @@ Public Class PropertiesDotNet
     Function QueryCaseSensitiveFlag(path As String) As Boolean
         Dim fsUtilOutput As String = WalkmanLib.RunAndGetOutput("fsutil.exe", "file queryCaseSensitiveInfo """ & path & """")
         
-        If fsUtilOutput.EndsWith("enabled.") Then
-            Return True
-        ElseIf fsUtilOutput.EndsWith("disabled.")
-            Return False
-        Else
-            Throw New Exception(fsUtilOutput)
-        End If
+        Select Case True
+            Case fsUtilOutput.EndsWith("enabled.")
+                Return True
+            Case fsUtilOutput.EndsWith("disabled.")
+                Return False
+            Case Else
+                Throw New Exception(fsUtilOutput)
+        End Select
     End Function
     
     Function SetCaseSensitiveFlag(path As String, caseSensitive As Boolean, Optional runAsAdmin As Boolean = False) As String
@@ -1177,11 +1178,12 @@ Public Class PropertiesDotNet
     End Function
     
     Function OokiiInputBox(ByRef input As String, Optional windowTitle As String = Nothing, Optional header As String = Nothing, Optional content As String = Nothing) As DialogResult
-        Dim ooInput = New Ookii.Dialogs.InputDialog
-        ooInput.WindowTitle = windowTitle
-        ooInput.MainInstruction = header
-        ooInput.Content = content
-        ooInput.Input = input
+        Dim ooInput = New Ookii.Dialogs.InputDialog With {
+            .WindowTitle = windowTitle,
+            .MainInstruction = header,
+            .Content = content,
+            .Input = input
+        }
         
         Dim returnResult = ooInput.ShowDialog(Me)
         input = ooInput.Input
