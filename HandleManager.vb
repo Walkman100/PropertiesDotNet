@@ -1,4 +1,3 @@
-﻿Imports System.Threading.Tasks
 Imports PropertiesDotNet.WalkmanLib
 
 Public Partial Class HandleManager
@@ -7,7 +6,7 @@ Public Partial Class HandleManager
     End Sub
     
     Sub LoadHandles() Handles Me.Shown
-        Me.Text = "Processes using file: " & PropertiesDotNet.lblLocation.Text
+        Me.Text = "Processes using: " & PropertiesDotNet.lblLocation.Text
         
         If Not bwHandleScan.IsBusy Then
             btnScan_Click()
@@ -53,7 +52,7 @@ Public Partial Class HandleManager
         End If
         For Each item As ListViewItem In lstHandles.SelectedItems
             Try
-                Diagnostics.Process.GetProcessById(Integer.Parse(item.SubItems(0).Text)).Kill()
+                Process.GetProcessById(Integer.Parse(item.SubItems(0).Text)).Kill()
                 item.Selected = False
                 item.ForeColor = SystemColors.GrayText
             Catch ex As Exception
@@ -99,16 +98,15 @@ Public Partial Class HandleManager
         
         Dim filePath As String = DirectCast(e.Argument, String)
         filePath = New FileInfo(filePath).FullName
-        Dim taskList As New List(Of Task)
         
         bwHandleScan.ReportProgress(0, "Status: Getting Processes from Restart Manager...")
         
         Try
-            For Each process As Diagnostics.Process In RestartManager.GetLockingProcesses(filePath)
+            For Each process As Process In RestartManager.GetLockingProcesses(filePath)
                 Dim tmpListViewItem As New ListViewItem({process.Id, process.MainModule.FileName, "", ""})
                 lstHandles.Items.Add(tmpListViewItem)
             Next
-        Catch ex As System.Exception When TypeOf(ex.InnerException) Is System.ComponentModel.Win32Exception
+        Catch ex As Exception When TypeOf(ex.InnerException) Is ComponentModel.Win32Exception
             ' ignore exceptions on folders - restart manager doesn't allow getting folder locks
         End Try
         
@@ -116,6 +114,7 @@ Public Partial Class HandleManager
         lstHandles_ItemSelectionChanged()
         
         bwHandleScan.ReportProgress(0, "Status: Getting System Handles...")
+        Dim taskList As New List(Of Task)
         
         For Each systemHandle As SystemHandles.SYSTEM_HANDLE In SystemHandles.GetSystemHandles()
             taskList.Add(Task.Run(Sub()
@@ -165,6 +164,7 @@ Public Partial Class HandleManager
         lstHandles.Items.Add(tmpListViewItem)
         
         lstHandles.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
+        lstHandles.Refresh()
         lstHandles_ItemSelectionChanged()
     End Sub
 End Class
