@@ -284,4 +284,57 @@
             PropertiesDotNet.ErrorParser(ex)
         End Try
     End Sub
+    
+    Shared Sub SetAttribute(path As String, attribute As FileAttributes, addOrRemove As Boolean)
+        Try
+            Dim fileAttributes As FileAttributes
+            fileAttributes = GetAttributes(path)
+            If addOrRemove Then
+                fileAttributes = fileAttributes Or attribute
+            Else ' Or (C# |) adds an attribute, And Not (C# & ~) removes an attribute
+                fileAttributes = fileAttributes And Not attribute
+            End If
+            
+            SetAttributes(path, fileAttributes)
+        Catch ex As UnauthorizedAccessException When _
+                Not WalkmanLib.IsAdmin() AndAlso
+                Not attribute.HasFlag(FileAttributes.Compressed) AndAlso
+                Not attribute.HasFlag(FileAttributes.Encrypted) AndAlso
+                Not attribute.HasFlag(FileAttributes.Temporary) AndAlso
+                Not attribute.HasFlag(FileAttributes.ReparsePoint) AndAlso
+                Not attribute.HasFlag(FileAttributes.SparseFile)
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MsgBoxStyle.Exclamation, cMBTitle, ownerForm:=PropertiesDotNet)
+                Case cMBbRelaunch
+                    PropertiesDotNet.RestartAsAdmin()
+                Case cMBbRunSysTool
+                    SetAttributeAsAdmin(path, attribute, addOrRemove)
+                    Threading.Thread.Sleep(100)
+            End Select
+        Catch ex As Exception
+            PropertiesDotNet.ErrorParser(ex)
+        End Try
+    End Sub
+    
+    Private Shared Sub SetAttributeAsAdmin(path As String, attribute As FileAttributes, addOrRemove As Boolean)
+        Select Case attribute
+            Case FileAttributes.ReadOnly
+                WalkmanLib.RunAsAdmin("attrib", IIf(addOrRemove, "+", "-") & "r """ & path & """")
+            Case FileAttributes.Hidden
+                WalkmanLib.RunAsAdmin("attrib", IIf(addOrRemove, "+", "-") & "h """ & path & """")
+            Case FileAttributes.System
+                WalkmanLib.RunAsAdmin("attrib", IIf(addOrRemove, "+", "-") & "s """ & path & """")
+            Case FileAttributes.Archive
+                WalkmanLib.RunAsAdmin("attrib", IIf(addOrRemove, "+", "-") & "a """ & path & """")
+            Case FileAttributes.NotContentIndexed
+                WalkmanLib.RunAsAdmin("attrib", IIf(addOrRemove, "+", "-") & "i """ & path & """")
+            Case FileAttributes.Offline
+                WalkmanLib.RunAsAdmin("attrib", IIf(addOrRemove, "+", "-") & "o """ & path & """")
+            Case FileAttributes.NoScrubData
+                WalkmanLib.RunAsAdmin("attrib", IIf(addOrRemove, "+", "-") & "x """ & path & """")
+            Case FileAttributes.IntegrityStream
+                WalkmanLib.RunAsAdmin("attrib", IIf(addOrRemove, "+", "-") & "v """ & path & """")
+            Case Else
+                Throw New InvalidOperationException("Invalid Attribute specified: " & attribute.ToString())
+        End Select
+    End Sub
 End Class

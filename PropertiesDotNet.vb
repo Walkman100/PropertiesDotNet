@@ -653,72 +653,28 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub chkReadOnly_Click() Handles chkReadOnly.Click
-        Try
-            If chkReadOnly.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.ReadOnly) _
-            Else                        SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) And Not FileAttributes.ReadOnly)
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("attrib", IIf(chkReadOnly.Checked, "+", "-") & "r """ & lblFullPath.Text & """")
-            Threading.Thread.Sleep(100)
-        Catch ex As Exception
-            ErrorParser(ex)
-        End Try
+        ' checkbox.Checked value will be the value after changing, so it is exactly whether the attribute should be added
+        Operations.SetAttribute(lblFullPath.Text, FileAttributes.ReadOnly, chkReadOnly.Checked)
         CheckData
     End Sub
     
     Sub chkHidden_Click() Handles chkHidden.Click
-        Try
-            If chkHidden.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.Hidden) _
-            Else                      SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) And Not FileAttributes.Hidden)
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("attrib", IIf(chkHidden.Checked, "+", "-") & "h """ & lblFullPath.Text & """")
-            Threading.Thread.Sleep(100)
-        Catch ex As Exception
-            ErrorParser(ex)
-        End Try
+        Operations.SetAttribute(lblFullPath.Text, FileAttributes.Hidden, chkHidden.Checked)
         CheckData
     End Sub
     
     Sub chkSystem_Click() Handles chkSystem.Click
-        Try
-            If chkSystem.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.System) _
-            Else                      SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) And Not FileAttributes.System)
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("attrib", IIf(chkSystem.Checked, "+", "-") & "s """ & lblFullPath.Text & """")
-            Threading.Thread.Sleep(100)
-        Catch ex As Exception
-            ErrorParser(ex)
-        End Try
+        Operations.SetAttribute(lblFullPath.Text, FileAttributes.System, chkSystem.Checked)
         CheckData
     End Sub
     
     Sub chkArchive_Click() Handles chkArchive.Click
-        Try
-            If chkArchive.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.Archive) _
-            Else                       SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) And Not FileAttributes.Archive)
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("attrib", IIf(chkArchive.Checked, "+", "-") & "a """ & lblFullPath.Text & """")
-            Threading.Thread.Sleep(100)
-        Catch ex As Exception
-            ErrorParser(ex)
-        End Try
+        Operations.SetAttribute(lblFullPath.Text, FileAttributes.Archive, chkArchive.Checked)
         CheckData
     End Sub
     
     Sub chkNotIndexed_Click() Handles chkNotIndexed.Click
-        Try
-            If chkNotIndexed.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.NotContentIndexed) _
-            Else                          SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) And Not FileAttributes.NotContentIndexed)
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("attrib", IIf(chkNotIndexed.Checked, "+", "-") & "i """ & lblFullPath.Text & """")
-            Threading.Thread.Sleep(100)
-        Catch ex As Exception
-            ErrorParser(ex)
-        End Try
+        Operations.SetAttribute(lblFullPath.Text, FileAttributes.NotContentIndexed, chkNotIndexed.Checked)
         CheckData
     End Sub
     
@@ -777,22 +733,13 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub chkOffline_Click() Handles chkOffline.Click
-        Try
-            If chkOffline.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.Offline) _
-            Else                       SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) And Not FileAttributes.Offline)
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("attrib", IIf(chkOffline.Checked, "+", "-") & "o """ & lblFullPath.Text & """")
-            Threading.Thread.Sleep(100)
-        Catch ex As Exception
-            ErrorParser(ex)
-        End Try
+        Operations.SetAttribute(lblFullPath.Text, FileAttributes.Offline, chkOffline.Checked)
         CheckData
     End Sub
     
     Sub chkTemporary_Click() Handles chkTemporary.Click
         If Exists(lblFullPath.Text) Then
-            WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Temporary, chkTemporary.Checked, AddressOf ErrorParser)
+            Operations.SetAttribute(lblFullPath.Text, FileAttributes.Temporary, chkTemporary.Checked)
         Else ' working on a directory and setting case sensitive
             Dim output As String = SetCaseSensitiveFlag(lblFullPath.Text, chkTemporary.Checked)
             
@@ -813,40 +760,22 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub chkNoScrub_Click() Handles chkNoScrub.Click
-        Try
-            If chkNoScrub.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.NoScrubData) _
-            Else                       SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) And Not FileAttributes.NoScrubData)
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("attrib", IIf(chkNoScrub.Checked, "+", "-") & "x """ & lblFullPath.Text & """")
-            Threading.Thread.Sleep(100)
-        Catch ex As Exception
-            ErrorParser(ex)
-        End Try
+        Operations.SetAttribute(lblFullPath.Text, FileAttributes.NoScrubData, chkNoScrub.Checked)
         CheckData
     End Sub
     
     Sub chkIntegrity_Click() Handles chkIntegrity.Click
-        Try
-            If chkIntegrity.Checked Then SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) Or FileAttributes.IntegrityStream) _
-            Else                         SetAttributes(lblFullPath.Text, GetAttributes(lblFullPath.Text) And Not FileAttributes.IntegrityStream)
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("attrib", IIf(chkIntegrity.Checked, "+", "-") & "v """ & lblFullPath.Text & """")
-            Threading.Thread.Sleep(100)
-        Catch ex As Exception
-            ErrorParser(ex)
-        End Try
+        Operations.SetAttribute(lblFullPath.Text, FileAttributes.IntegrityStream, chkIntegrity.Checked)
         CheckData
     End Sub
     
     Sub chkReparse_Click() Handles chkReparse.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.ReparsePoint, chkReparse.Checked, AddressOf ErrorParser)
+        Operations.SetAttribute(lblFullPath.Text, FileAttributes.ReparsePoint, chkReparse.Checked)
         CheckData
     End Sub
     
     Sub chkSparse_Click() Handles chkSparse.Click
-        WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.SparseFile, chkSparse.Checked, AddressOf ErrorParser)
+        Operations.SetAttribute(lblFullPath.Text, FileAttributes.SparseFile, chkSparse.Checked)
         CheckData
     End Sub
     
