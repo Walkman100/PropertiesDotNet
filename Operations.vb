@@ -129,8 +129,7 @@
                     End Select
                 End If
                 
-                Dim fileProperties As New FileInfo(sourcePath)
-                fileProperties.MoveTo(targetPath)
+                File.Move(sourcePath, targetPath)
             End If
             
             PropertiesDotNet.lblLocation.Text = targetPath
@@ -166,8 +165,7 @@
                         Exit Sub
                     End If
                     
-                    Dim fileProperties As New FileInfo(sourcePath)
-                    fileProperties.CopyTo(targetPath, overwrite:=True)
+                    File.Copy(sourcePath, targetPath, overwrite:=True)
                 ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
                     BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", sourcePath, targetPath})
                     BackgroundProgress.ShowDialog()
@@ -204,8 +202,7 @@
                 End If
             Else
                 If pathInfo.HasFlag(PathEnum.IsFile) Then
-                    Dim fileProperties As New FileInfo(path)
-                    fileProperties.Delete()
+                    File.Delete(path)
                 ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
                     BackgroundProgress.bwFolderOperations.RunWorkerAsync({"delete", path})
                     BackgroundProgress.ShowDialog()

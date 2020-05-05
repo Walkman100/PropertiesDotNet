@@ -106,8 +106,11 @@ Public Partial Class HandleManager
                 Dim tmpListViewItem As New ListViewItem({process.Id, process.MainModule.FileName, "", ""})
                 lstHandles.Items.Add(tmpListViewItem)
             Next
-        Catch ex As Exception When TypeOf(ex.InnerException) Is ComponentModel.Win32Exception
+        Catch ex As Exception When TypeOf(ex.InnerException) Is System.ComponentModel.Win32Exception
             ' ignore exceptions on folders - restart manager doesn't allow getting folder locks
+        Catch ex As Exception
+            ' allow systemHandles code to run even if restartManager fails
+            PropertiesDotNet.ErrorParser(ex)
         End Try
         
         lstHandles.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
