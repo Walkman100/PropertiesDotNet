@@ -1153,6 +1153,10 @@ Public Class PropertiesDotNet
     End Sub
     
     Function QueryCaseSensitiveFlag(path As String) As Boolean
+        ' check if the path ends with \, if it does it needs to be escaped so it doesn't escape the double-quotes
+        If path.EndsWith(IO.Path.DirectorySeparatorChar) Then
+            path &= IO.Path.DirectorySeparatorChar
+        End If
         Dim fsUtilOutput As String = WalkmanLib.RunAndGetOutput("fsutil.exe", "file queryCaseSensitiveInfo """ & path & """")
         
         Select Case True
@@ -1167,6 +1171,9 @@ Public Class PropertiesDotNet
     
     Function SetCaseSensitiveFlag(path As String, caseSensitive As Boolean, Optional runAsAdmin As Boolean = False) As String
         Dim caseSensitiveFlag As String = IIf(caseSensitive, "enable", "disable")
+        If path.EndsWith(IO.Path.DirectorySeparatorChar) Then
+            path &= IO.Path.DirectorySeparatorChar
+        End If
         
         If runAsAdmin Then
             WalkmanLib.RunAsAdmin("fsutil.exe", "file setCaseSensitiveInfo """ & path & """ " & caseSensitiveFlag)

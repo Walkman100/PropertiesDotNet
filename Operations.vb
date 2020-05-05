@@ -75,7 +75,7 @@
     Shared Sub Rename(sourcePath As String, targetName As String)
         Dim fileProperties As New FileInfo(sourcePath)
         Try
-            fileProperties.MoveTo(targetName)
+            fileProperties.MoveTo(fileProperties.DirectoryName & Path.DirectorySeparatorChar & targetName)
             
             PropertiesDotNet.lblLocation.Text = fileProperties.FullName
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
