@@ -86,7 +86,7 @@
             If IsFileOrDirectory(fullTargetName).HasFlag(PathEnum.Exists) Then
                 Select Case MsgBox("Target Already Exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
                     Case MsgBoxResult.Yes
-                        File.Delete(fullTargetName)
+                        Delete(fullTargetName, False, Nothing)
                     Case MsgBoxResult.Cancel
                         Exit Sub
                 End Select
@@ -123,7 +123,7 @@
                 If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) Then
                     Select Case MsgBox("Target Already Exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
                         Case MsgBoxResult.Yes
-                            File.Delete(targetPath)
+                            Delete(targetPath, useShell, FileIO.RecycleOption.DeletePermanently)
                         Case MsgBoxResult.Cancel
                             Exit Sub
                     End Select
@@ -211,7 +211,6 @@
                     BackgroundProgress.ShowDialog()
                 End If
             End If
-            Application.Exit()
         Catch ex As OperationCanceledException ' ignore user cancellation
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
             Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MsgBoxStyle.Exclamation, cMBTitle, ownerForm:=PropertiesDotNet)
@@ -264,7 +263,7 @@
             If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) Then
                 Select Case MsgBox("Target Already Exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
                     Case MsgBoxResult.Yes
-                        File.Delete(targetPath)
+                        Delete(targetPath, False, Nothing)
                     Case MsgBoxResult.Cancel
                         Exit Sub
                 End Select
@@ -306,7 +305,7 @@
             If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) Then
                 Select Case MsgBox("Target Already Exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
                     Case MsgBoxResult.Yes
-                        File.Delete(targetPath)
+                        Delete(targetPath, False, Nothing)
                     Case MsgBoxResult.Cancel
                         Exit Sub
                 End Select

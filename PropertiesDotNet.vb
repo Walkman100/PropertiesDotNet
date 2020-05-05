@@ -737,9 +737,12 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub chkTemporary_Click() Handles chkTemporary.Click
-        If Exists(lblFullPath.Text) Then
+        Dim pathInfo = Operations.IsFileOrDirectory(lblFullPath.Text)
+        If pathInfo.HasFlag(Operations.PathEnum.IsFile) Then
             Operations.SetAttribute(lblFullPath.Text, FileAttributes.Temporary, chkTemporary.Checked)
-        Else ' working on a directory and setting case sensitive
+            
+        ElseIf pathInfo.HasFlag(Operations.PathEnum.IsDirectory)
+            ' working on a directory and setting case sensitive
             Dim output As String = SetCaseSensitiveFlag(lblFullPath.Text, chkTemporary.Checked)
             
             If output = "Error:  Access is denied." Then
@@ -1025,6 +1028,10 @@ Public Class PropertiesDotNet
         End If
         
         Operations.Delete(lblFullPath.Text, chkUseSystem.Checked, recycleOption)
+        If Operations.IsFileOrDirectory(lblFullPath.Text).HasFlag(Operations.PathEnum.NotFound) Then
+            Application.Exit()
+            End
+        End If
         CheckData(True)
     End Sub
     
