@@ -80,8 +80,19 @@
     
     Shared Sub Rename(sourcePath As String, targetName As String)
         Dim fileProperties As New FileInfo(sourcePath)
+        Dim fullTargetName = fileProperties.DirectoryName & Path.DirectorySeparatorChar & targetName
+        
         Try
-            fileProperties.MoveTo(fileProperties.DirectoryName & Path.DirectorySeparatorChar & targetName)
+            If IsFileOrDirectory(fullTargetName).HasFlag(PathEnum.Exists) Then
+                Select Case MsgBox("Target Already Exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
+                    Case MsgBoxResult.Yes
+                        File.Delete(fullTargetName)
+                    Case MsgBoxResult.Cancel
+                        Exit Sub
+                End Select
+            End If
+            
+            fileProperties.MoveTo(fullTargetName)
             
             PropertiesDotNet.lblLocation.Text = fileProperties.FullName
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
@@ -91,7 +102,7 @@
                 Case cMBbRunSysTool
                     WalkmanLib.RunAsAdmin("cmd", "/c ren """ & sourcePath & """ """ & targetName & """ && pause")
                     If MsgBox("Read new location?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                        PropertiesDotNet.lblLocation.Text = fileProperties.DirectoryName & "\" & targetName
+                        PropertiesDotNet.lblLocation.Text = fullTargetName
                     End If
             End Select
         Catch ex As Exception
@@ -109,6 +120,15 @@
                     My.Computer.FileSystem.MoveDirectory(sourcePath, targetPath, FileIO.UIOption.AllDialogs)
                 End If
             Else
+                If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) Then
+                    Select Case MsgBox("Target Already Exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
+                        Case MsgBoxResult.Yes
+                            File.Delete(targetPath)
+                        Case MsgBoxResult.Cancel
+                            Exit Sub
+                    End Select
+                End If
+                
                 Dim fileProperties As New FileInfo(sourcePath)
                 fileProperties.MoveTo(targetPath)
             End If
@@ -141,8 +161,13 @@
                 End If
             Else
                 If pathInfo.HasFlag(PathEnum.IsFile) Then
+                    If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso _
+                            MsgBox("Target Already Exists! Are you sure you want to overwrite it?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
+                        Exit Sub
+                    End If
+                    
                     Dim fileProperties As New FileInfo(sourcePath)
-                    fileProperties.CopyTo(targetPath)
+                    fileProperties.CopyTo(targetPath, overwrite:=True)
                 ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
                     BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", sourcePath, targetPath})
                     BackgroundProgress.ShowDialog()
@@ -202,6 +227,11 @@
     
     Shared Sub CreateShortcut(sourcePath As String, targetPath As String)
         Try
+            If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso _
+                    MsgBox("Target Already Exists! Are you sure you want to overwrite the shortcut's Target Path?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
+                Exit Sub
+            End If
+            
             Dim newShortcutPath As String = WalkmanLib.CreateShortcut(targetPath, sourcePath)
             
             If MsgBox("Show properties for created Shortcut?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
@@ -231,6 +261,15 @@
     
     Shared Sub CreateSymlink(sourcePath As String, targetPath As String)
         Try
+            If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) Then
+                Select Case MsgBox("Target Already Exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
+                    Case MsgBoxResult.Yes
+                        File.Delete(targetPath)
+                    Case MsgBoxResult.Cancel
+                        Exit Sub
+                End Select
+            End If
+            
             Dim pathInfo = IsFileOrDirectory(sourcePath)
             If pathInfo.HasFlag(PathEnum.IsFile) Then
                 WalkmanLib.CreateSymLink(targetPath, sourcePath, SymbolicLinkType.File)
@@ -264,6 +303,15 @@
     
     Shared Sub CreateHardlink(sourcePath As String, targetPath As String)
         Try
+            If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) Then
+                Select Case MsgBox("Target Already Exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
+                    Case MsgBoxResult.Yes
+                        File.Delete(targetPath)
+                    Case MsgBoxResult.Cancel
+                        Exit Sub
+                End Select
+            End If
+            
             WalkmanLib.CreateHardLink(targetPath, sourcePath)
             
             If MsgBox("Show properties for created Hardlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
