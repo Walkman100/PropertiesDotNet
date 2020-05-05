@@ -285,7 +285,7 @@
         End Try
     End Sub
     
-    Shared Sub SetAttribute(path As String, attribute As FileAttributes, addOrRemove As Boolean)
+    Shared Function SetAttribute(path As String, attribute As FileAttributes, addOrRemove As Boolean) As Boolean
         Try
             Dim fileAttributes As FileAttributes
             fileAttributes = GetAttributes(path)
@@ -296,6 +296,7 @@
             End If
             
             SetAttributes(path, fileAttributes)
+            Return True
         Catch ex As UnauthorizedAccessException When _
                 Not WalkmanLib.IsAdmin() AndAlso
                 Not attribute.HasFlag(FileAttributes.Compressed) AndAlso
@@ -313,7 +314,8 @@
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try
-    End Sub
+        Return False
+    End Function
     
     Private Shared Sub SetAttributeAsAdmin(path As String, attribute As FileAttributes, addOrRemove As Boolean)
         Select Case attribute

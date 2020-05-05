@@ -679,11 +679,11 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub chkCompressed_Click() Handles chkCompressed.Click
-        If WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Compressed, chkCompressed.Checked, AddressOf ErrorParser) Then
+        If Operations.SetAttribute(lblFullPath.Text, FileAttributes.Compressed, chkCompressed.Checked) Then
+            Dim oneGB = 1000000000 '1 GB
             If chkCompressed.Checked Then
                 If Not GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
-                    Dim oneGB = 1000000000 '1 GB
-                    If byteSize < oneGB Or (byteSize >= oneGB AndAlso MsgBox("Are you sure you want to compress this large file (>1GB)? This will take a while and can't be interrupted", _
+                    If byteSize < oneGB Or (byteSize >= oneGB AndAlso MsgBox("Are you sure you want to compress this large file (>1GB)? This will take a while and can't be interrupted",
                             MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Compressing Large File") = MsgBoxResult.Yes) Then
                         CompressReport.bwCompress.RunWorkerAsync({True, lblFullPath.Text})
                         CompressReport.ShowDialog
@@ -691,8 +691,7 @@ Public Class PropertiesDotNet
                 End If
             Else
                 If GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
-                    Dim oneGB = 1000000000
-                    If byteSize < oneGB Or (byteSize >= oneGB AndAlso MsgBox("Are you sure you want to decompress this large file (>1GB)? This will take a while and can't be interrupted", _
+                    If byteSize < oneGB Or (byteSize >= oneGB AndAlso MsgBox("Are you sure you want to decompress this large file (>1GB)? This will take a while and can't be interrupted",
                             MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Decompressing Large File") = MsgBoxResult.Yes) Then
                         CompressReport.bwCompress.RunWorkerAsync({False, lblFullPath.Text})
                         CompressReport.ShowDialog
@@ -704,7 +703,7 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub chkEncrypted_Click() Handles chkEncrypted.Click
-        If WalkmanLib.ChangeAttribute(lblFullPath.Text, FileAttributes.Encrypted, chkEncrypted.Checked, AddressOf ErrorParser) Then
+        If Operations.SetAttribute(lblFullPath.Text, FileAttributes.Encrypted, chkEncrypted.Checked) Then
             If chkEncrypted.Checked Then
                 If Not GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted) Then
                     Dim FileProperties As New FileInfo(lblFullPath.Text)
