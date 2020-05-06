@@ -1028,7 +1028,7 @@ Public Class PropertiesDotNet
         End If
         
         Operations.Delete(lblFullPath.Text, chkUseSystem.Checked, recycleOption)
-        If Operations.IsFileOrDirectory(lblFullPath.Text).HasFlag(Operations.PathEnum.NotFound) Then
+        If Operations.IsFileOrDirectory(lblFullPath.Text) = Operations.PathEnum.NotFound Then
             Application.Exit()
             End
         End If

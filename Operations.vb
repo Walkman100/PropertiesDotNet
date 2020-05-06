@@ -78,6 +78,17 @@
     Private Const cMBbCancel As String = "Cancel"
     Private Const cMBTitle As String = "Access denied!"
     
+    Private Shared Function Win32FromHResult(HResult As Integer) As Integer
+        'getting Win32 error from HResult:
+        ' https://docs.microsoft.com/en-us/dotnet/standard/io/handling-io-errors#handling-ioexception
+        ' https://devblogs.microsoft.com/oldnewthing/20061103-07/?p=29133
+        ' https://stackoverflow.com/a/426467/2999220
+        Return (HResult And &H0000FFFF)
+    End Function
+    
+    '32 (0x20) = ERROR_SHARING_VIOLATION: The process cannot access the file because it is being used by another process.
+    Private Const shareViolation As Integer = &H20
+    
     Shared Sub Rename(sourcePath As String, targetName As String)
         Dim fileProperties As New FileInfo(sourcePath)
         Dim fullTargetName = fileProperties.DirectoryName & Path.DirectorySeparatorChar & targetName
@@ -105,6 +116,10 @@
                         PropertiesDotNet.lblLocation.Text = fullTargetName
                     End If
             End Select
+        Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
+            If MsgBox("File in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+                HandleManager.ShowDialog()
+            End If
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try
@@ -144,6 +159,10 @@
                         PropertiesDotNet.lblLocation.Text = targetPath
                     End If
             End Select
+        Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
+            If MsgBox("File in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+                HandleManager.ShowDialog()
+            End If
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try
@@ -186,6 +205,10 @@
                         PropertiesDotNet.lblLocation.Text = targetPath
                     End If
             End Select
+        Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
+            If MsgBox("File in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+                HandleManager.ShowDialog()
+            End If
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try
@@ -216,6 +239,10 @@
                 Case cMBbRunSysTool
                     WalkmanLib.RunAsAdmin("cmd", "/c del """ & path & """ & pause")
             End Select
+        Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
+            If MsgBox("File in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+                HandleManager.ShowDialog()
+            End If
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try
