@@ -29,7 +29,6 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <OutputPath>bin\Debug\</OutputPath>
-    <StartArguments>"D:\Media\Disk Images\Untested\HasErrors_WALL_E.ISO"</StartArguments>
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">

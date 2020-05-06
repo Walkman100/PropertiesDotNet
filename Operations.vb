@@ -95,7 +95,7 @@
         
         Try
             If IsFileOrDirectory(fullTargetName).HasFlag(PathEnum.Exists) Then
-                Select Case MsgBox("Target Already Exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
+                Select Case MsgBox("Target """ & fullTargetName & """ already exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
                     Case MsgBoxResult.Yes
                         Delete(fullTargetName, False, Nothing)
                     Case MsgBoxResult.Cancel
@@ -117,7 +117,7 @@
                     End If
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
-            If MsgBox("File in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            If MsgBox("File """ & sourcePath & """ is in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                 HandleManager.ShowDialog()
             End If
         Catch ex As Exception
@@ -136,7 +136,7 @@
                 End If
             Else
                 If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) Then
-                    Select Case MsgBox("Target Already Exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
+                    Select Case MsgBox("Target """ & targetPath & """ already exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
                         Case MsgBoxResult.Yes
                             Delete(targetPath, useShell, FileIO.RecycleOption.DeletePermanently)
                         Case MsgBoxResult.Cancel
@@ -160,7 +160,7 @@
                     End If
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
-            If MsgBox("File in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            If MsgBox("File """ & sourcePath & """ is in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                 HandleManager.ShowDialog()
             End If
         Catch ex As Exception
@@ -180,7 +180,7 @@
             Else
                 If pathInfo.HasFlag(PathEnum.IsFile) Then
                     If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso _
-                            MsgBox("Target Already Exists! Are you sure you want to overwrite it?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
+                            MsgBox("Target """ & targetPath & """ already exists! Are you sure you want to overwrite it?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
                         Exit Sub
                     End If
                     
@@ -206,7 +206,7 @@
                     End If
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
-            If MsgBox("File in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            If MsgBox("File """ & targetPath & """ is in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                 HandleManager.ShowDialog()
             End If
         Catch ex As Exception
@@ -240,7 +240,7 @@
                     WalkmanLib.RunAsAdmin("cmd", "/c del """ & path & """ & pause")
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
-            If MsgBox("File in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            If MsgBox("File """ & path & """ is in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                 HandleManager.ShowDialog()
             End If
         Catch ex As Exception
@@ -251,7 +251,7 @@
     Shared Sub CreateShortcut(sourcePath As String, targetPath As String)
         Try
             If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso _
-                    MsgBox("Target Already Exists! Are you sure you want to overwrite the shortcut's Target Path?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
+                    MsgBox("Target """ & targetPath & """ already exists! Are you sure you want to overwrite the shortcut's Target Path?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
                 Exit Sub
             End If
             
@@ -285,7 +285,7 @@
     Shared Sub CreateSymlink(sourcePath As String, targetPath As String)
         Try
             If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) Then
-                Select Case MsgBox("Target Already Exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
+                Select Case MsgBox("Target """ & targetPath & """ already exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
                     Case MsgBoxResult.Yes
                         Delete(targetPath, False, Nothing)
                     Case MsgBoxResult.Cancel
@@ -327,7 +327,7 @@
     Shared Sub CreateHardlink(sourcePath As String, targetPath As String)
         Try
             If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) Then
-                Select Case MsgBox("Target Already Exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
+                Select Case MsgBox("Target """ & targetPath & """ already exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
                     Case MsgBoxResult.Yes
                         Delete(targetPath, False, Nothing)
                     Case MsgBoxResult.Cancel
