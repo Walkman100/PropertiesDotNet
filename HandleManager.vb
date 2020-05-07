@@ -65,7 +65,10 @@ Public Partial Class HandleManager
         For Each item As ListViewItem In lstHandles.SelectedItems
             If Not String.IsNullOrWhiteSpace(item.SubItems(0).Text) AndAlso Not String.IsNullOrWhiteSpace(item.SubItems(2).Text) Then
                 Try
-                    SystemHandles.CloseSystemHandle(UInteger.Parse(item.SubItems(0).Text), UShort.Parse(item.SubItems(2).Text))
+                    Dim handleID As UShort = UShort.Parse(item.SubItems(2).Text.Substring(2), Globalization.NumberStyles.AllowHexSpecifier)
+                    
+                    SystemHandles.CloseSystemHandle(UInteger.Parse(item.SubItems(0).Text), handleID)
+                    
                     item.Selected = False
                     item.ForeColor = SystemColors.GrayText
                 Catch ex As Exception
@@ -163,7 +166,7 @@ Public Partial Class HandleManager
         Catch ex As InvalidOperationException : processPath = ""
         End Try
         
-        Dim tmpListViewItem As New ListViewItem({handleInfo.ProcessID, processPath, handleInfo.HandleID, handleInfo.Name})
+        Dim tmpListViewItem As New ListViewItem({handleInfo.ProcessID, processPath, "0x" & handleInfo.HandleID.ToString("x"), handleInfo.Name})
         lstHandles.Items.Add(tmpListViewItem)
         
         lstHandles.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
