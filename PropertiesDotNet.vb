@@ -27,7 +27,7 @@ Public Class PropertiesDotNet
         If lblLocation.Text = "Checking..." Then
             If ofdBrowse.ShowDialog() = DialogResult.OK Then
                 If ofdBrowse.FileName.EndsWith("Don't select a file to select folder") Then
-                    lblLocation.Text = ofdBrowse.FileName.Remove(ofdBrowse.FileName.LastIndexOf(Path.DirectorySeparatorChar))
+                    lblLocation.Text = Path.GetDirectoryName(ofdBrowse.FileName)
                 Else
                     lblLocation.Text = ofdBrowse.FileName
                 End If
@@ -390,25 +390,19 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub btnLaunchAdmin_Click() Handles btnLaunchAdmin.Click
-        If lblOpenWith.Text = Environment.GetEnvironmentVariable("ProgramFiles") & "\Windows Photo Viewer\PhotoViewer.dll" Then
-            ' rundll32 "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen FilePath
-            WalkmanLib.RunAsAdmin("rundll32", """" & Environment.GetEnvironmentVariable("ProgramFiles") & "\Windows Photo Viewer\PhotoViewer.dll"", " & _
-              "ImageView_Fullscreen " & lblFullPath.Text)
-            
-        ElseIf lblOpenWith.Text = Environment.GetEnvironmentVariable("ProgramFiles(x86)") & "\Windows Photo Viewer\PhotoViewer.dll" Then
-            WalkmanLib.RunAsAdmin("rundll32", """" & Environment.GetEnvironmentVariable("ProgramFiles(x86)") & "\Windows Photo Viewer\PhotoViewer.dll"", " & _
-              "ImageView_Fullscreen " & lblFullPath.Text)
-            
-        ElseIf lblOpenWith.Text = Environment.GetEnvironmentVariable("ProgramW6432") & "\Windows Photo Viewer\PhotoViewer.dll" Then
-            WalkmanLib.RunAsAdmin("rundll32", """" & Environment.GetEnvironmentVariable("ProgramW6432") & "\Windows Photo Viewer\PhotoViewer.dll"", " & _
-              "ImageView_Fullscreen " & lblFullPath.Text)
-            
-        Else
-            If lblOpenWith.Text = "Filetype not associated!" Then
-                WalkmanLib.RunAsAdmin(lblFullPath.Text)
-            Else
-                WalkmanLib.RunAsAdmin(lblOpenWith.Text, """" & lblFullPath.Text & """")
+        For Each envVar As String In {"ProgramFiles", "ProgramFiles(x86)", "ProgramW6432"}
+            Dim PhotoViewerPath As String = path.Combine(Environment.GetEnvironmentVariable(envVar), "Windows Photo Viewer", "PhotoViewer.dll")
+            If lblOpenWith.Text = PhotoViewerPath Then
+                ' rundll32 "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen FilePath
+                WalkmanLib.RunAsAdmin("rundll32", """" & PhotoViewerPath & """, ImageView_Fullscreen " & lblFullPath.Text)
+                Exit Sub
             End If
+        Next
+        
+        If lblOpenWith.Text = "Filetype not associated!" Then
+            WalkmanLib.RunAsAdmin(lblFullPath.Text)
+        Else
+            WalkmanLib.RunAsAdmin(lblOpenWith.Text, """" & lblFullPath.Text & """")
         End If
     End Sub
     
