@@ -8,7 +8,7 @@ Public Class PropertiesDotNet
             If lblLocation.Text = "Checking..." Then
                 lblLocation.Text = s
             Else
-                Process.Start(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", """" & s & """")
+                Process.Start(Path.Combine(Application.StartupPath, Process.GetCurrentProcess.ProcessName & ".exe"), """" & s & """")
             End If
         Next
         If lblLocation.Text.EndsWith("""") Then
@@ -443,9 +443,9 @@ Public Class PropertiesDotNet
     Sub btnOpenWith_MouseUp(sender As Object, e As MouseEventArgs) Handles btnOpenWith.MouseUp
         If e.Button = MouseButtons.Right Then
             Try
-                Process.Start(Application.StartupPath & "\ProgramLauncher", """" & lblFullPath.Text & """")
+                Process.Start(Path.Combine(Application.StartupPath, "ProgramLauncher"), """" & lblFullPath.Text & """")
             Catch ex As Exception
-                MsgBox("""" & Application.StartupPath & "\ProgramLauncher"" executable not found!", MsgBoxStyle.Exclamation)
+                MsgBox("""" & Path.Combine(Application.StartupPath, "ProgramLauncher") &""" executable not found!", MsgBoxStyle.Exclamation)
             End Try
         End If
     End Sub
@@ -592,9 +592,9 @@ Public Class PropertiesDotNet
             Hashes.Activate
         ElseIf btnHashes.Text = "DirectoryIma&ge..."
             Try
-                Process.Start(Application.StartupPath & "\DirectoryImage", """" & lblFullPath.Text & """")
+                Process.Start(Path.Combine(Application.StartupPath & "DirectoryImage"), """" & lblFullPath.Text & """")
             Catch ex As Exception
-                MsgBox("""" & Application.StartupPath & "\DirectoryImage"" executable not found!", MsgBoxStyle.Exclamation)
+                MsgBox("""" & Path.Combine(Application.StartupPath & "DirectoryImage") & """ executable not found!", MsgBoxStyle.Exclamation)
             End Try
         End If
     End Sub
@@ -922,7 +922,7 @@ Public Class PropertiesDotNet
     End Sub
     Sub btnShortcut_MouseUp(sender As Object, e As MouseEventArgs) Handles btnShortcut.MouseUp
         If e.Button = MouseButtons.Right AndAlso lblExtension.Text.ToLower() <> ".lnk" Then
-            Dim newName As String = lblDirectory.Text & Path.DirectorySeparatorChar & "Shortcut to " & lblName.Text & ".lnk"
+            Dim newName As String = Path.Combine(lblDirectory.Text, "Shortcut to " & lblName.Text & ".lnk")
             
             If Operations.GetInput(newName, "Create Shortcut", "Create shortcut to """ & lblName.Text & """:") <> DialogResult.OK Then
                 Exit Sub
@@ -1017,7 +1017,7 @@ Public Class PropertiesDotNet
     End Sub
     
     Shared Sub RestartAsAdmin()
-        WalkmanLib.RunAsAdmin(Application.StartupPath & "\" & Process.GetCurrentProcess.ProcessName & ".exe", """" & PropertiesDotNet.lblFullPath.Text & """")
+        WalkmanLib.RunAsAdmin(Path.Combine(Application.StartupPath, Process.GetCurrentProcess.ProcessName & ".exe"), """" & PropertiesDotNet.lblFullPath.Text & """")
         Application.Exit()
     End Sub
     
