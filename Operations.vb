@@ -416,4 +416,50 @@
                 Throw New InvalidOperationException("Invalid Attribute specified: " & attribute.ToString())
         End Select
     End Sub
+    
+    Shared Function GetInput(ByRef input As String, Optional windowTitle As String = Nothing, Optional header As String = Nothing, Optional content As String = Nothing) As DialogResult
+        If OokiiDialogsLoaded() Then
+            Return OokiiInputBox(input, windowTitle, header, content)
+        Else
+            Dim inputBoxPrompt As String = header
+            If content IsNot Nothing Then
+                inputBoxPrompt &= vbNewLine & content
+            End If
+            
+            input = InputBox(inputBoxPrompt, windowTitle, input)
+            If String.IsNullOrEmpty(input) Then
+                Return DialogResult.Cancel
+            Else
+                Return DialogResult.OK
+            End If
+        End If
+    End Function
+    
+    Private Shared Function OokiiInputBox(ByRef input As String, Optional windowTitle As String = Nothing, Optional header As String = Nothing, Optional content As String = Nothing) As DialogResult
+        Dim ooInput = New Ookii.Dialogs.InputDialog With {
+            .Input = input,
+            .WindowTitle = windowTitle,
+            .MainInstruction = header,
+            .Content = content
+        }
+        
+        Dim returnResult = ooInput.ShowDialog(PropertiesDotNet)
+        input = ooInput.Input
+        Return returnResult
+    End Function
+    
+    Private Shared Function OokiiDialogsLoaded() As Boolean
+        Try
+            OokiiDialogsLoadedDelegate()
+            Return True
+        Catch ex As FileNotFoundException When ex.FileName.StartsWith("PropertiesDotNet-Ookii.Dialogs")
+            Return False
+        Catch ex As Exception
+            MsgBox("Unexpected error loading PropertiesDotNet-Ookii.Dialogs.dll!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
+            Return False
+        End Try
+    End Function
+    Private Shared Sub OokiiDialogsLoadedDelegate() ' because calling a not found class will fail the caller of the method not directly in the method
+        Dim test = Ookii.Dialogs.TaskDialogIcon.Information
+    End Sub
 End Class

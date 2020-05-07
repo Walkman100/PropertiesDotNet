@@ -179,15 +179,9 @@ Public Partial Class AlternateDataStreamManager
             Else
                 targetStreamName = adsSource.Name
             End If
-            If PropertiesDotNet.OokiiDialogsLoaded() Then
-                If PropertiesDotNet.OokiiInputBox(targetStreamName, "Copy Stream", "Enter name to copy stream """ & adsSource.Name & """ to:") <> DialogResult.OK Then
-                    Continue For                  ' newName above is ByRef, so OokiiInputBox() updates it
-                End If
-            Else
-                targetStreamName = InputBox("Enter name to copy stream """ & adsSource.Name & """ to:", "Copy Stream", targetStreamName)
-                If targetStreamName = "" Then
-                    Continue For
-                End If
+            
+            If Operations.GetInput(targetStreamName, "Copy Stream", "Enter name to copy stream """ & adsSource.Name & """ to:") <> DialogResult.OK Then
+                Continue For
             End If
             
             Try
@@ -241,15 +235,8 @@ Public Partial Class AlternateDataStreamManager
     Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
         Dim streamInfo As String = ""
         
-        If PropertiesDotNet.OokiiDialogsLoaded() Then
-            If PropertiesDotNet.OokiiInputBox(streamInfo, "Create Stream", "Type a name for the stream:") <> DialogResult.OK Then
-                Exit Sub                      ' streamInfo above is ByRef, so OokiiInputBox() updates it
-            End If
-        Else
-            streamInfo = InputBox("Type a name for the stream:", "Create Stream")
-            If streamInfo = "" Then
-                Exit Sub
-            End If
+        If Operations.GetInput(streamInfo, "Create Stream", "Type a name for the stream:") <> DialogResult.OK Then
+            Exit Sub
         End If
         
         Dim ads As AlternateDataStreamInfo
@@ -263,16 +250,9 @@ Public Partial Class AlternateDataStreamManager
             Exit Sub
         End Try
         
-        If PropertiesDotNet.OokiiDialogsLoaded() Then
-            streamInfo = ""
-            If PropertiesDotNet.OokiiInputBox(streamInfo, "Create Stream", "Enter stream contents:") <> DialogResult.OK Then
-                Exit Sub                      ' streamInfo above is ByRef, so OokiiInputBox() updates it
-            End If
-        Else
-            streamInfo = InputBox("Enter stream contents:", "Create Stream")
-            If streamInfo = "" Then
-                Exit Sub
-            End If
+        streamInfo = ""
+        If Operations.GetInput(streamInfo, "Create Stream", "Enter stream contents:") <> DialogResult.OK Then
+            Exit Sub
         End If
         
         Try

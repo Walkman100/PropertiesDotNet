@@ -601,18 +601,10 @@ Public Class PropertiesDotNet
     
     Sub btnDriveVolumeLabel_Click() Handles btnDriveVolumeLabel.Click
         Dim DriveProperties As New DriveInfo(lblLocation.Text)
-        Dim newName As String
+        Dim newName As String = DriveProperties.VolumeLabel
         
-        If OokiiDialogsLoaded() Then
-            newName = DriveProperties.VolumeLabel
-            If OokiiInputBox(newName, "New volume name (Max 32 chars)", "Rename to:") <> DialogResult.OK Then
-                Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
-            End If
-        Else
-            newName = InputBox("Rename to:", "New volume name (Max 32 chars)", DriveProperties.VolumeLabel)
-            If newName = "" Then
-                Exit Sub
-            End If
+        If Operations.GetInput(newName, "New volume name (Max 32 chars)", "Rename to:") <> DialogResult.OK Then
+            Exit Sub
         End If
         
         Try
@@ -895,18 +887,10 @@ Public Class PropertiesDotNet
     
     ' InputDialog buttons (as opposed to SaveFileDialogs)
     Sub btnRename_Click() Handles btnRename.Click
-        Dim newName As String
+        Dim newName As String = lblName.Text
         
-        If OokiiDialogsLoaded() Then
-            newName = lblName.Text
-            If OokiiInputBox(newName, "New name", "Rename """ & lblName.Text & """ to:") <> DialogResult.OK Then
-                Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
-            End If
-        Else
-            newName = InputBox("Rename """ & lblName.Text & """ to:", "New name", lblName.Text)
-            If newName = "" Then
-                Exit Sub
-            End If
+        If Operations.GetInput(newName, "New name", "Rename """ & lblName.Text & """ to:") <> DialogResult.OK Then
+            Exit Sub         ' newName is ByRef
         End If
         
         Operations.Rename(lblFullPath.Text, newName)
@@ -914,18 +898,10 @@ Public Class PropertiesDotNet
     End Sub
     Sub btnMove_MouseUp(sender As Object, e As MouseEventArgs) Handles btnMove.MouseUp
         If e.Button = MouseButtons.Right Then
-            Dim newName As String
+            Dim newName As String = lblFullPath.Text
             
-            If OokiiDialogsLoaded() Then
-                newName = lblFullPath.Text
-                If OokiiInputBox(newName, "Move file/folder", "Move """ & lblName.Text & """ to:") <> DialogResult.OK Then
-                    Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
-                End If
-            Else
-                newName = InputBox("Move """ & lblName.Text & """ to:", "Move file/folder", lblFullPath.Text)
-                If newName = "" Then
-                    Exit Sub
-                End If
+            If Operations.GetInput(newName, "Move file/folder", "Move """ & lblName.Text & """ to:") <> DialogResult.OK Then
+                Exit Sub
             End If
             
             Operations.Move(lblFullPath.Text, newName, chkUseSystem.Checked)
@@ -934,18 +910,10 @@ Public Class PropertiesDotNet
     End Sub
     Sub btnCopy_MouseUp(sender As Object, e As MouseEventArgs) Handles btnCopy.MouseUp
         If e.Button = MouseButtons.Right Then
-            Dim newName As String
+            Dim newName As String = lblFullPath.Text
             
-            If OokiiDialogsLoaded() Then
-                newName = lblFullPath.Text
-                If OokiiInputBox(newName, "Copy file/folder", "Copy """ & lblName.Text & """ to:") <> DialogResult.OK Then
-                    Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
-                End If
-            Else
-                newName = InputBox("Copy """ & lblName.Text & """ to:", "Copy file/folder", lblFullPath.Text)
-                If newName = "" Then
-                    Exit Sub
-                End If
+            If Operations.GetInput(newName, "Copy file/folder", "Copy """ & lblName.Text & """ to:") <> DialogResult.OK Then
+                Exit Sub
             End If
             
             Operations.Copy(lblFullPath.Text, newName, chkUseSystem.Checked)
@@ -956,15 +924,8 @@ Public Class PropertiesDotNet
         If e.Button = MouseButtons.Right AndAlso lblExtension.Text.ToLower() <> ".lnk" Then
             Dim newName As String = lblDirectory.Text & Path.DirectorySeparatorChar & "Shortcut to " & lblName.Text & ".lnk"
             
-            If OokiiDialogsLoaded() Then
-                If OokiiInputBox(newName, "Create Shortcut", "Create shortcut to """ & lblName.Text & """:") <> DialogResult.OK Then
-                    Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
-                End If
-            Else
-                newName = InputBox("Create shortcut to """ & lblName.Text & """:", "Create Shortcut", newName)
-                If newName = "" Then
-                    Exit Sub
-                End If
+            If Operations.GetInput(newName, "Create Shortcut", "Create shortcut to """ & lblName.Text & """:") <> DialogResult.OK Then
+                Exit Sub
             End If
             
             Operations.CreateShortcut(lblFullPath.Text, newName)
@@ -973,18 +934,10 @@ Public Class PropertiesDotNet
     End Sub
     Sub btnSymlink_MouseUp(sender As Object, e As MouseEventArgs) Handles btnSymlink.MouseUp
         If e.Button = MouseButtons.Right Then
-            Dim newName As String
+            Dim newName As String = lblFullPath.Text
             
-            If OokiiDialogsLoaded() Then
-                newName = lblFullPath.Text
-                If OokiiInputBox(newName, "Create Symlink", "Create symlink to """ & lblName.Text & """:") <> DialogResult.OK Then
-                    Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
-                End If
-            Else
-                newName = InputBox("Create symlink to """ & lblName.Text & """:", "Create Symlink", lblFullPath.Text)
-                If newName = "" Then
-                    Exit Sub
-                End If
+            If Operations.GetInput(newName, "Create Symlink", "Create symlink to """ & lblName.Text & """:") <> DialogResult.OK Then
+                Exit Sub
             End If
             
             Operations.CreateSymlink(lblFullPath.Text, newName)
@@ -993,18 +946,10 @@ Public Class PropertiesDotNet
     End Sub
     Sub btnHardlink_MouseUp(sender As Object, e As MouseEventArgs) Handles btnHardlink.MouseUp
         If e.Button = MouseButtons.Right Then
-            Dim newName As String
+            Dim newName As String = lblFullPath.Text
             
-            If OokiiDialogsLoaded() Then
-                newName = lblFullPath.Text
-                If OokiiInputBox(newName, "Create Hardlink", "Create hardlink to """ & lblName.Text & """:") <> DialogResult.OK Then
-                    Exit Sub   ' newName above is ByRef, so OokiiInputBox() updates it
-                End If
-            Else
-                newName = InputBox("Create hardlink to """ & lblName.Text & """:", "Create Hardlink", lblFullPath.Text)
-                If newName = "" Then
-                    Exit Sub
-                End If
+            If Operations.GetInput(newName, "Create Hardlink", "Create hardlink to """ & lblName.Text & """:") <> DialogResult.OK Then
+                Exit Sub
             End If
             
             Operations.CreateHardlink(lblFullPath.Text, newName)
@@ -1118,31 +1063,4 @@ Public Class PropertiesDotNet
             Return WalkmanLib.RunAndGetOutput("fsutil.exe", "file setCaseSensitiveInfo """ & path & """ " & caseSensitiveFlag)
         End If
     End Function
-    
-    Function OokiiInputBox(ByRef input As String, Optional windowTitle As String = Nothing, Optional header As String = Nothing, Optional content As String = Nothing) As DialogResult
-        Dim ooInput = New Ookii.Dialogs.InputDialog With {
-            .WindowTitle = windowTitle,
-            .MainInstruction = header,
-            .Content = content,
-            .Input = input
-        }
-        
-        Dim returnResult = ooInput.ShowDialog(Me)
-        input = ooInput.Input
-        Return returnResult
-    End Function
-    Function OokiiDialogsLoaded() As Boolean
-        Try
-            OokiiDialogsLoadedDelegate()
-            Return True
-        Catch ex As FileNotFoundException When ex.FileName.StartsWith("PropertiesDotNet-Ookii.Dialogs")
-            Return False
-        Catch ex As Exception
-            MsgBox("Unexpected error loading PropertiesDotNet-Ookii.Dialogs.dll!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
-            Return False
-        End Try
-    End Function
-    Sub OokiiDialogsLoadedDelegate() ' because calling a not found class will fail the caller of the method not directly in the method
-        Dim test = Ookii.Dialogs.TaskDialogIcon.Information
-    End Sub
 End Class
