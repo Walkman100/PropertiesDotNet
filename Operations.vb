@@ -94,7 +94,7 @@
         Dim fullTargetName = fileProperties.DirectoryName & Path.DirectorySeparatorChar & targetName
         
         Try
-            If IsFileOrDirectory(fullTargetName).HasFlag(PathEnum.Exists) Then
+            If IsFileOrDirectory(fullTargetName).HasFlag(PathEnum.Exists) AndAlso sourcePath <> fullTargetName Then
                 Select Case MsgBox("Target """ & fullTargetName & """ already exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
                     Case MsgBoxResult.Yes
                         Delete(fullTargetName, False, Nothing)
@@ -135,7 +135,7 @@
                     My.Computer.FileSystem.MoveDirectory(sourcePath, targetPath, FileIO.UIOption.AllDialogs)
                 End If
             Else
-                If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) Then
+                If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
                     Select Case MsgBox("Target """ & targetPath & """ already exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
                         Case MsgBoxResult.Yes
                             Delete(targetPath, useShell, FileIO.RecycleOption.DeletePermanently)
@@ -179,7 +179,7 @@
                 End If
             Else
                 If pathInfo.HasFlag(PathEnum.IsFile) Then
-                    If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso _
+                    If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath AndAlso _
                             MsgBox("Target """ & targetPath & """ already exists! Are you sure you want to overwrite it?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
                         Exit Sub
                     End If
@@ -252,7 +252,7 @@
     
     Shared Sub CreateShortcut(sourcePath As String, targetPath As String)
         Try
-            If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso _
+            If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath AndAlso _
                     MsgBox("Target """ & targetPath & """ already exists! Are you sure you want to overwrite the shortcut's Target Path?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
                 Exit Sub
             End If
@@ -286,7 +286,7 @@
     
     Shared Sub CreateSymlink(sourcePath As String, targetPath As String)
         Try
-            If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) Then
+            If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
                 Select Case MsgBox("Target """ & targetPath & """ already exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
                     Case MsgBoxResult.Yes
                         Delete(targetPath, False, Nothing)
@@ -328,7 +328,7 @@
     
     Shared Sub CreateHardlink(sourcePath As String, targetPath As String)
         Try
-            If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) Then
+            If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
                 Select Case MsgBox("Target """ & targetPath & """ already exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
                     Case MsgBoxResult.Yes
                         Delete(targetPath, False, Nothing)
