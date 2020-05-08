@@ -586,9 +586,9 @@ Public Class PropertiesDotNet
             Hashes.Activate
         ElseIf btnHashes.Text = "DirectoryIma&ge..."
             Try
-                Process.Start(Path.Combine(Application.StartupPath & "DirectoryImage"), """" & lblFullPath.Text & """")
+                Process.Start(Path.Combine(Application.StartupPath, "DirectoryImage"), """" & lblFullPath.Text & """")
             Catch ex As Exception
-                MsgBox("""" & Path.Combine(Application.StartupPath & "DirectoryImage") & """ executable not found!", MsgBoxStyle.Exclamation)
+                MsgBox("""" & Path.Combine(Application.StartupPath, "DirectoryImage") & """ executable not found!", MsgBoxStyle.Exclamation)
             End Try
         End If
     End Sub
