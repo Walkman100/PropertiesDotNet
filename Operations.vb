@@ -73,10 +73,10 @@
     End Sub
     
     ' cMBb = CustomMsgBoxBtn
-    Private Const cMBbRelaunch As String = "Relaunch as Admin"
-    Private Const cMBbRunSysTool As String = "Run System Tool as Admin"
-    Private Const cMBbCancel As String = "Cancel"
-    Private Const cMBTitle As String = "Access denied!"
+    Public Const cMBbRelaunch As String = "Relaunch as Admin"
+    Public Const cMBbRunSysTool As String = "Run System Tool as Admin"
+    Public Const cMBbCancel As String = "Cancel"
+    Public Const cMBTitle As String = "Access denied!"
     
     Private Shared Function Win32FromHResult(HResult As Integer) As Integer
         'getting Win32 error from HResult:

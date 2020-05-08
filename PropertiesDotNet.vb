@@ -731,12 +731,13 @@ Public Class PropertiesDotNet
             ' working on a directory and setting case sensitive
             Dim output As String = SetCaseSensitiveFlag(lblFullPath.Text, chkTemporary.Checked)
             
-            If output = "Error:  Access is denied." Then
-                If MsgBox("Access denied! Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
-                    SetCaseSensitiveFlag(lblFullPath.Text, chkTemporary.Checked, True)
-                Else
-                    ErrorParser(New UnauthorizedAccessException(output))
-                End If
+            If output = "Error:  Access is denied." AndAlso Not WalkmanLib.IsAdmin() Then
+                Select Case WalkmanLib.CustomMsgBox(output, Operations.cMBbRelaunch, Operations.cMBbRunSysTool, Operations.cMBbCancel, MsgBoxStyle.Exclamation, Operations.cMBTitle, ownerForm:=Me)
+                    Case Operations.cMBbRelaunch
+                        RestartAsAdmin()
+                    Case Operations.cMBbRunSysTool
+                        SetCaseSensitiveFlag(lblFullPath.Text, chkTemporary.Checked, True)
+                End Select
             ElseIf output = "Error:  The directory is not empty." And chkTemporary.Checked = False Then
                 MsgBox("Error! The directory contains items that cannot be kept in a case-insensitive directory. Either move or rename these items first.", MsgBoxStyle.Exclamation)
             Else
