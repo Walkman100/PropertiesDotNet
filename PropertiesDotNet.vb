@@ -594,19 +594,23 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub btnDriveVolumeLabel_Click() Handles btnDriveVolumeLabel.Click
-        Dim DriveProperties As New DriveInfo(lblLocation.Text)
-        Dim newName As String = DriveProperties.VolumeLabel
+        Dim driveProperties As New DriveInfo(lblLocation.Text)
+        Dim newName As String = driveProperties.VolumeLabel
         
         If Operations.GetInput(newName, "New volume name (Max 32 chars)", "Rename to:") <> DialogResult.OK Then
             Exit Sub
         End If
         
         Try
-            DriveProperties.VolumeLabel = newName
-        Catch ex As UnauthorizedAccessException When MsgBox("Access denied! Try launching a system tool as admin?",
-          MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("label.exe", DriveProperties.Name.Remove(2) & " " & newName)
-            Threading.Thread.Sleep(500)
+            driveProperties.VolumeLabel = newName
+        Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, Operations.cMBbRelaunch, Operations.cMBbRunSysTool, Operations.cMBbCancel, MsgBoxStyle.Exclamation, Operations.cMBTitle, ownerForm:=Me)
+                Case Operations.cMBbRelaunch
+                    RestartAsAdmin()
+                Case Operations.cMBbRunSysTool
+                    WalkmanLib.RunAsAdmin("label.exe", driveProperties.Name.Remove(2) & " " & newName)
+                    Threading.Thread.Sleep(500)
+            End Select
         Catch ex As Exception
             ErrorParser(ex)
         End Try
