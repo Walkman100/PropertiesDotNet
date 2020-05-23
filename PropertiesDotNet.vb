@@ -14,13 +14,6 @@ Public Class PropertiesDotNet
         If lblLocation.Text.EndsWith("""") Then
             lblLocation.Text = lblLocation.Text.Remove(lblLocation.Text.Length - 1) & "\"
         End If
-        ' In order to center a form to it's parent, it needs to be .ShowDialog() or have the owner set if using .Show()
-        Hashes.Owner = Me
-        HandleManager.Owner = Me
-        ShortcutPropertiesDialog.Owner = Me
-        ' as they are destroyed and re-created every time, Owners set when shown:
-        '  ImageViewer
-        '  AlternateDataStreamManager
         If WalkmanLib.IsAdmin() Then btnRelaunchAsAdmin.Visible = False
         timerDelayedBrowse.Start
     End Sub
@@ -352,8 +345,7 @@ Public Class PropertiesDotNet
         ImageViewer.Close()
         ImageViewer.fileImage.Image = Nothing
         ImageViewer.Text = lblName.Text
-        ImageViewer.Owner = Me
-        ImageViewer.Show()
+        ImageViewer.Show(Me)
         ImageViewer.fileImage.Image = imgFile.Image
     End Sub
     
@@ -585,7 +577,7 @@ Public Class PropertiesDotNet
     
     Sub btnHashes_Click() Handles btnHashes.Click
         If btnHashes.Text = "Compute &Hashes" Then
-            Hashes.Show()
+            Hashes.Show(Me)
             Hashes.Text = "Generate Hashes: " & lblName.Text
             Hashes.Activate()
         ElseIf btnHashes.Text = "DirectoryIma&ge..."
@@ -637,14 +629,12 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub btnADS_Click() Handles btnADS.Click
-        AlternateDataStreamManager.Owner = Me
-        AlternateDataStreamManager.Show()
+        AlternateDataStreamManager.Show(Me)
         AlternateDataStreamManager.Activate()
     End Sub
     
     Sub btnHandles_Click() Handles btnHandles.Click
-        ' HandleManager.Owner is set above in Load, as it is hidden instead of destroyed and recreated
-        HandleManager.Show()
+        HandleManager.Show(Me)
         HandleManager.Activate()
     End Sub
     
@@ -682,7 +672,7 @@ Public Class PropertiesDotNet
                     If byteSize < oneGB Or (byteSize >= oneGB AndAlso MsgBox("Are you sure you want to compress this large file (>1GB)? This will take a while and can't be interrupted",
                             MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Compressing Large File") = MsgBoxResult.Yes) Then
                         CompressReport.bwCompress.RunWorkerAsync({True, lblFullPath.Text})
-                        CompressReport.ShowDialog
+                        CompressReport.ShowDialog()
                     End If
                 End If
             Else
@@ -690,7 +680,7 @@ Public Class PropertiesDotNet
                     If byteSize < oneGB Or (byteSize >= oneGB AndAlso MsgBox("Are you sure you want to decompress this large file (>1GB)? This will take a while and can't be interrupted",
                             MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Decompressing Large File") = MsgBoxResult.Yes) Then
                         CompressReport.bwCompress.RunWorkerAsync({False, lblFullPath.Text})
-                        CompressReport.ShowDialog
+                        CompressReport.ShowDialog()
                     End If
                 End If
             End If
@@ -857,7 +847,7 @@ Public Class PropertiesDotNet
                 ShortcutPropertiesDialog.chkRunAs.Enabled = False
             End Try
             
-            ShortcutPropertiesDialog.Show()
+            ShortcutPropertiesDialog.Show(Me)
             ShortcutPropertiesDialog.Activate()
         Else
             sfdSave.InitialDirectory = lblDirectory.Text

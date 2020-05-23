@@ -118,7 +118,7 @@
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MsgBox("File """ & sourcePath & """ is in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                HandleManager.Show
+                HandleManager.Show(PropertiesDotNet)
                 HandleManager.Activate()
             End If
         Catch ex As Exception
@@ -162,7 +162,7 @@
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MsgBox("File """ & sourcePath & """ is in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                HandleManager.Show
+                HandleManager.Show(PropertiesDotNet)
                 HandleManager.Activate()
             End If
         Catch ex As Exception
@@ -209,7 +209,7 @@
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MsgBox("A file is in use! Open Handle Manager on """ & sourcePath & """?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                HandleManager.Show
+                HandleManager.Show(PropertiesDotNet)
                 HandleManager.Activate()
             Else
                 PropertiesDotNet.ErrorParser(ex)
@@ -246,7 +246,7 @@
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MsgBox("File """ & path & """ is in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                HandleManager.Show
+                HandleManager.Show(PropertiesDotNet)
                 HandleManager.Activate()
             End If
         Catch ex As Exception
@@ -390,7 +390,7 @@
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MsgBox("File """ & path & """ is in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                HandleManager.Show
+                HandleManager.Show(PropertiesDotNet)
                 HandleManager.Activate()
             End If
         Catch ex As Exception
