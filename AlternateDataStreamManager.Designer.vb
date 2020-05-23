@@ -171,7 +171,6 @@ Partial Class AlternateDataStreamManager
         Me.Controls.Add(Me.lstStreams)
         Me.Name = "AlternateDataStreamManager"
         Me.ShowIcon = false
-        Me.ShowInTaskbar = false
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Data Stream Manager"
         Me.ResumeLayout(false)

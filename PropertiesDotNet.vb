@@ -15,8 +15,12 @@ Public Class PropertiesDotNet
             lblLocation.Text = lblLocation.Text.Remove(lblLocation.Text.Length - 1) & "\"
         End If
         ' In order to center a form to it's parent, it needs to be .ShowDialog() or have the owner set if using .Show()
-        ' ImageViewer.Owner is set when it is shown, as it is destroyed and re-created every time
         Hashes.Owner = Me
+        HandleManager.Owner = Me
+        ShortcutPropertiesDialog.Owner = Me
+        ' as they are destroyed and re-created every time, Owners set when shown:
+        '  ImageViewer
+        '  AlternateDataStreamManager
         If WalkmanLib.IsAdmin() Then btnRelaunchAsAdmin.Visible = False
         timerDelayedBrowse.Start
     End Sub
@@ -345,11 +349,11 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub imgFile_Click() Handles imgFile.Click
-        ImageViewer.Close
+        ImageViewer.Close()
         ImageViewer.fileImage.Image = Nothing
         ImageViewer.Text = lblName.Text
         ImageViewer.Owner = Me
-        ImageViewer.Show
+        ImageViewer.Show()
         ImageViewer.fileImage.Image = imgFile.Image
     End Sub
     
@@ -548,7 +552,7 @@ Public Class PropertiesDotNet
     End Sub
     
     ' ----------------------- date/time manipulation -----------------------
-    Sub lblCreationTime_Click(sender As Object, e As EventArgs) Handles lblCreationTime.Click
+    Sub lblCreationTime_Click() Handles lblCreationTime.Click
         SelectDateDialog.Text = "Choose a date to set Creation time to:"
         Operations.SetSelectDateDialogValue(lblFullPath.Text, chkUTC.Checked, Operations.TimeChangeEnum.Creation)
         If SelectDateDialog.ShowDialog() = DialogResult.OK Then
@@ -556,7 +560,7 @@ Public Class PropertiesDotNet
         End If
         CheckData
     End Sub
-    Sub lblLastAccessTime_Click(sender As Object, e As EventArgs) Handles lblLastAccessTime.Click
+    Sub lblLastAccessTime_Click() Handles lblLastAccessTime.Click
         SelectDateDialog.Text = "Choose a date to set Last access time to:"
         Operations.SetSelectDateDialogValue(lblFullPath.Text, chkUTC.Checked, Operations.TimeChangeEnum.LastAccess)
         If SelectDateDialog.ShowDialog() = DialogResult.OK Then
@@ -564,7 +568,7 @@ Public Class PropertiesDotNet
         End If
         CheckData
     End Sub
-    Sub lblLastWriteTime_Click(sender As Object, e As EventArgs) Handles lblLastWriteTime.Click
+    Sub lblLastWriteTime_Click() Handles lblLastWriteTime.Click
         SelectDateDialog.Text = "Choose a date to set Last write time to:"
         Operations.SetSelectDateDialogValue(lblFullPath.Text, chkUTC.Checked, Operations.TimeChangeEnum.LastWrite)
         If SelectDateDialog.ShowDialog() = DialogResult.OK Then
@@ -581,9 +585,9 @@ Public Class PropertiesDotNet
     
     Sub btnHashes_Click() Handles btnHashes.Click
         If btnHashes.Text = "Compute &Hashes" Then
-            Hashes.Show
+            Hashes.Show()
             Hashes.Text = "Generate Hashes: " & lblName.Text
-            Hashes.Activate
+            Hashes.Activate()
         ElseIf btnHashes.Text = "DirectoryIma&ge..."
             Try
                 Process.Start(Path.Combine(Application.StartupPath, "DirectoryImage"), """" & lblFullPath.Text & """")
@@ -633,13 +637,15 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub btnADS_Click() Handles btnADS.Click
-        AlternateDataStreamManager.ShowDialog()
-        CheckData()
+        AlternateDataStreamManager.Owner = Me
+        AlternateDataStreamManager.Show()
+        AlternateDataStreamManager.Activate()
     End Sub
     
     Sub btnHandles_Click() Handles btnHandles.Click
-        HandleManager.ShowDialog()
-        CheckData()
+        ' HandleManager.Owner is set above in Load, as it is hidden instead of destroyed and recreated
+        HandleManager.Show()
+        HandleManager.Activate()
     End Sub
     
     Sub chkReadOnly_Click() Handles chkReadOnly.Click
@@ -851,7 +857,8 @@ Public Class PropertiesDotNet
                 ShortcutPropertiesDialog.chkRunAs.Enabled = False
             End Try
             
-            ShortcutPropertiesDialog.ShowDialog()
+            ShortcutPropertiesDialog.Show()
+            ShortcutPropertiesDialog.Activate()
         Else
             sfdSave.InitialDirectory = lblDirectory.Text
             sfdSave.FileName = "Shortcut to " & lblName.Text & ".lnk"

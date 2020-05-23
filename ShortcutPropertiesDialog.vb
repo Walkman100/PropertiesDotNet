@@ -271,7 +271,6 @@ Public Class ShortcutPropertiesDialog
         Me.Controls.Add(Me.btnCancel)
         Me.Icon = Global.PropertiesDotNet.Resources.document_properties_shortcut
         Me.Name = "ShortcutPropertiesDialog"
-        Me.ShowInTaskbar = false
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Shortcut Properties"
         CType(Me.pbxStatus,System.ComponentModel.ISupportInitialize).EndInit
@@ -307,11 +306,17 @@ Public Class ShortcutPropertiesDialog
     Friend txtTarget As System.Windows.Forms.TextBox
     Private WithEvents btnTarget As System.Windows.Forms.Button
     Private WithEvents btnSave As System.Windows.Forms.Button
-    Private btnCancel As System.Windows.Forms.Button
+    Private WithEvents btnCancel As System.Windows.Forms.Button
     
     Public Sub New()
         Me.InitializeComponent()
         cbxWindow.SelectedIndex = 0
+    End Sub
+    
+    Sub ShortcutPropertiesDialog_VisibleChanged() Handles Me.VisibleChanged
+        If Me.Visible Then
+            Me.CenterToParent()
+        End If
     End Sub
     
     Sub PerformResize()
@@ -449,6 +454,10 @@ Public Class ShortcutPropertiesDialog
         
         WalkmanLib.SetShortcutRunAsAdmin(PropertiesDotNet.lblLocation.Text, chkRunAs.Checked)
         
-        Me.DialogResult = DialogResult.OK
+        Me.Hide
+    End Sub
+    
+    Sub btnCancel_Click() Handles btnCancel.Click
+        Me.Hide
     End Sub
 End Class

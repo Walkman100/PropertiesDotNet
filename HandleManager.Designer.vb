@@ -149,7 +149,6 @@
         Me.Controls.Add(Me.lstHandles)
         Me.Name = "HandleManager"
         Me.ShowIcon = false
-        Me.ShowInTaskbar = false
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Processes using file: Checking..."
         Me.ResumeLayout(false)
@@ -164,6 +163,6 @@
     Private WithEvents lstHandles As System.Windows.Forms.ListView
     Private WithEvents btnCloseHandle As System.Windows.Forms.Button
     Private WithEvents btnKillProcess As System.Windows.Forms.Button
-    Private btnClose As System.Windows.Forms.Button
+    Private WithEvents btnClose As System.Windows.Forms.Button
     Private WithEvents btnScan As System.Windows.Forms.Button
 End Class

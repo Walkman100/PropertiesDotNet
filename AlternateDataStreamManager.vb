@@ -28,6 +28,16 @@ Public Partial Class AlternateDataStreamManager
         lstStreams_SelectedIndexChanged()
     End Sub
     
+    Sub ADS_VisibleChanged() Handles Me.VisibleChanged
+        If Me.Visible Then
+            Me.CenterToParent()
+        End If
+    End Sub
+    
+    Sub ADSFormClosed() Handles Me.FormClosed
+        PropertiesDotNet.CheckData()
+    End Sub
+    
     Sub lstStreams_SelectedIndexChanged() Handles lstStreams.SelectedIndexChanged
         If lstStreams.SelectedItems.Count = 0 Then
             btnOpen.Enabled = False
@@ -79,7 +89,7 @@ Public Partial Class AlternateDataStreamManager
         End If
     End Sub
         
-    Sub btnView_Click(sender As Object, e As EventArgs) Handles btnView.Click
+    Sub btnView_Click() Handles btnView.Click
         Dim frmShowStream As New Form With {
             .Width = 600,
             .Height = 525,
@@ -106,7 +116,7 @@ Public Partial Class AlternateDataStreamManager
         Next
     End Sub
     
-    Sub btnExecute_Click(sender As Object, e As EventArgs) Handles btnExecute.Click
+    Sub btnExecute_Click() Handles btnExecute.Click
         For Each item As ListViewItem In lstStreams.SelectedItems
             Try
                 Dim info As New ProcessStartInfo
@@ -126,7 +136,7 @@ Public Partial Class AlternateDataStreamManager
         Next
     End Sub
     
-    Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
+    Sub btnDelete_Click() Handles btnDelete.Click
         For Each item As ListViewItem In lstStreams.SelectedItems
             Try
                 DeleteAlternateDataStream(PropertiesDotNet.lblLocation.Text, item.Text)
@@ -142,7 +152,7 @@ Public Partial Class AlternateDataStreamManager
         LoadStreams()
     End Sub
     
-    Sub btnCopy_Click(sender As Object, e As EventArgs) Handles btnCopy.Click
+    Sub btnCopy_Click() Handles btnCopy.Click
         Dim result As MsgBoxResult
         Dim targetFile As String
         Dim targetStreamName As String
@@ -232,7 +242,7 @@ Public Partial Class AlternateDataStreamManager
         LoadStreams()
     End Sub
     
-    Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
+    Sub btnAdd_Click() Handles btnAdd.Click
         Dim streamInfo As String = ""
         
         If Operations.GetInput(streamInfo, "Create Stream", "Type a name for the stream:") <> DialogResult.OK Then
@@ -268,5 +278,9 @@ Public Partial Class AlternateDataStreamManager
         End Try
         
         LoadStreams()
+    End Sub
+    
+    Sub btnClose_Click() Handles btnClose.Click
+        Me.Close
     End Sub
 End Class

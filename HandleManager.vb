@@ -13,6 +13,12 @@ Public Partial Class HandleManager
         End If
     End Sub
     
+    Sub HandleManager_VisibleChanged() Handles Me.VisibleChanged
+        If Me.Visible Then
+            Me.CenterToParent()
+        End If
+    End Sub
+    
     Private Sub lstHandles_ItemSelectionChanged() Handles lstHandles.ItemSelectionChanged
         If lstHandles.SelectedItems.Count = 0 Then
             btnKillProcess.Enabled = False
@@ -76,6 +82,10 @@ Public Partial Class HandleManager
                 End Try
             End If
         Next
+    End Sub
+    
+    Sub btnClose_Click() Handles btnClose.Click
+        Me.Hide
     End Sub
     
     Sub bwHandleScan_ProgressChanged(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs) Handles bwHandleScan.ProgressChanged

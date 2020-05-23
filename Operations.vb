@@ -118,7 +118,8 @@
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MsgBox("File """ & sourcePath & """ is in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                HandleManager.ShowDialog()
+                HandleManager.Show
+                HandleManager.Activate()
             End If
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
@@ -161,7 +162,8 @@
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MsgBox("File """ & sourcePath & """ is in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                HandleManager.ShowDialog()
+                HandleManager.Show
+                HandleManager.Activate()
             End If
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
@@ -207,7 +209,8 @@
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MsgBox("A file is in use! Open Handle Manager on """ & sourcePath & """?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                HandleManager.ShowDialog()
+                HandleManager.Show
+                HandleManager.Activate()
             Else
                 PropertiesDotNet.ErrorParser(ex)
             End If
@@ -243,7 +246,8 @@
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MsgBox("File """ & path & """ is in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                HandleManager.ShowDialog()
+                HandleManager.Show
+                HandleManager.Activate()
             End If
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
@@ -386,7 +390,8 @@
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MsgBox("File """ & path & """ is in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                HandleManager.ShowDialog()
+                HandleManager.Show
+                HandleManager.Activate()
             End If
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)

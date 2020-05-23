@@ -314,7 +314,7 @@ Public Class Hashes
         btnSHA512.Text = "Queue"
     End Sub
     
-    Sub Hashes_VisibleChanged(sender As Object, e As EventArgs)
+    Sub Hashes_VisibleChanged()
         If Me.Visible Then
             Me.CenterToParent()
         End If
