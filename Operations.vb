@@ -60,11 +60,11 @@
                     SetCreationTime     (path, time)
                 Case TimeChangeEnum.LastAccess And useUTC
                     SetLastAccessTimeUtc(path, time)
-                Case TimeChangeEnum.Creation
+                Case TimeChangeEnum.LastAccess
                     SetLastAccessTime   (path, time)
                 Case TimeChangeEnum.LastWrite And useUTC
                     SetLastWriteTimeUtc (path, time)
-                Case TimeChangeEnum.Creation
+                Case TimeChangeEnum.LastWrite
                     SetLastWriteTime    (path, time)
             End Select
         Catch ex As Exception
