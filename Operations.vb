@@ -243,6 +243,7 @@
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
                     WalkmanLib.RunAsAdmin("cmd", "/c del """ & path & """ & pause")
+                    Threading.Thread.Sleep(500)
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MsgBox("File """ & path & """ is in use! Open Handle Manager?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
