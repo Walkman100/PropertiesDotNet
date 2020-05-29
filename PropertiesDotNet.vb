@@ -885,71 +885,60 @@ Public Class PropertiesDotNet
     Sub btnRename_Click() Handles btnRename.Click
         Dim newName As String = lblName.Text
         
-        If Operations.GetInput(newName, "New name", "Rename """ & lblName.Text & """ to:") <> DialogResult.OK Then
-            Exit Sub         ' newName is ByRef
+        If Operations.GetInput(newName, "New name", "Rename """ & lblName.Text & """ to:") = DialogResult.OK Then
+                             ' newName is ByRef
+            Operations.Rename(lblFullPath.Text, newName)
+            CheckData(True)
         End If
-        
-        Operations.Rename(lblFullPath.Text, newName)
-        CheckData(True)
     End Sub
     Sub btnMove_MouseUp(sender As Object, e As MouseEventArgs) Handles btnMove.MouseUp
         If e.Button = MouseButtons.Right Then
             Dim newName As String = lblFullPath.Text
             
-            If Operations.GetInput(newName, "Move file/folder", "Move """ & lblName.Text & """ to:") <> DialogResult.OK Then
-                Exit Sub
+            If Operations.GetInput(newName, "Move file/folder", "Move """ & lblName.Text & """ to:") = DialogResult.OK Then
+                Operations.Move(lblFullPath.Text, newName, chkUseSystem.Checked)
+                CheckData(True)
             End If
-            
-            Operations.Move(lblFullPath.Text, newName, chkUseSystem.Checked)
-            CheckData(True)
         End If
     End Sub
     Sub btnCopy_MouseUp(sender As Object, e As MouseEventArgs) Handles btnCopy.MouseUp
         If e.Button = MouseButtons.Right Then
             Dim newName As String = lblFullPath.Text
             
-            If Operations.GetInput(newName, "Copy file/folder", "Copy """ & lblName.Text & """ to:") <> DialogResult.OK Then
-                Exit Sub
+            If Operations.GetInput(newName, "Copy file/folder", "Copy """ & lblName.Text & """ to:") = DialogResult.OK Then
+                Operations.Copy(lblFullPath.Text, newName, chkUseSystem.Checked)
+                CheckData(True)
             End If
-            
-            Operations.Copy(lblFullPath.Text, newName, chkUseSystem.Checked)
-            CheckData(True)
         End If
     End Sub
     Sub btnShortcut_MouseUp(sender As Object, e As MouseEventArgs) Handles btnShortcut.MouseUp
         If e.Button = MouseButtons.Right AndAlso lblExtension.Text.ToLower() <> ".lnk" Then
             Dim newName As String = Path.Combine(lblDirectory.Text, "Shortcut to " & lblName.Text & ".lnk")
             
-            If Operations.GetInput(newName, "Create Shortcut", "Create shortcut to """ & lblName.Text & """:") <> DialogResult.OK Then
-                Exit Sub
+            If Operations.GetInput(newName, "Create Shortcut", "Create shortcut to """ & lblName.Text & """:") = DialogResult.OK Then
+                Operations.CreateShortcut(lblFullPath.Text, newName)
+                CheckData(True)
             End If
-            
-            Operations.CreateShortcut(lblFullPath.Text, newName)
-            CheckData(True)
         End If
     End Sub
     Sub btnSymlink_MouseUp(sender As Object, e As MouseEventArgs) Handles btnSymlink.MouseUp
         If e.Button = MouseButtons.Right Then
             Dim newName As String = lblFullPath.Text
             
-            If Operations.GetInput(newName, "Create Symlink", "Create symlink to """ & lblName.Text & """:") <> DialogResult.OK Then
-                Exit Sub
+            If Operations.GetInput(newName, "Create Symlink", "Create symlink to """ & lblName.Text & """:") = DialogResult.OK Then
+                Operations.CreateSymlink(lblFullPath.Text, newName)
+                CheckData(True)
             End If
-            
-            Operations.CreateSymlink(lblFullPath.Text, newName)
-            CheckData(True)
         End If
     End Sub
     Sub btnHardlink_MouseUp(sender As Object, e As MouseEventArgs) Handles btnHardlink.MouseUp
         If e.Button = MouseButtons.Right Then
             Dim newName As String = lblFullPath.Text
             
-            If Operations.GetInput(newName, "Create Hardlink", "Create hardlink to """ & lblName.Text & """:") <> DialogResult.OK Then
-                Exit Sub
+            If Operations.GetInput(newName, "Create Hardlink", "Create hardlink to """ & lblName.Text & """:") = DialogResult.OK Then
+                Operations.CreateHardlink(lblFullPath.Text, newName)
+                CheckData(True)
             End If
-            
-            Operations.CreateHardlink(lblFullPath.Text, newName)
-            CheckData(True)
         End If
     End Sub
     
