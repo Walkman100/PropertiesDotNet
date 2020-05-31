@@ -17,7 +17,8 @@ Public Class ImageViewer
         CType(Me.fileImage,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         'fileImage
-        Me.fileImage.Dock = System.Windows.Forms.DockStyle.Top
+        Me.fileImage.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        Me.fileImage.Location = New System.Drawing.Point(0, 0)
         Me.fileImage.Name = "fileImage"
         Me.fileImage.Size = New System.Drawing.Size(284, 240)
         Me.fileImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -63,10 +64,6 @@ Public Class ImageViewer
         If Me.Visible Then
             Me.CenterToParent()
         End If
-    End Sub
-    
-    Sub ImageViewer_Resize() Handles Me.Resize
-        fileImage.Size = New System.Drawing.Size(fileImage.Width, (Me.Height - 60))
     End Sub
     
     Sub btnSave_Click()
