@@ -797,12 +797,12 @@ Public Class PropertiesDotNet
             
             Try: ShortcutPropertiesDialog.lblTargetSize.Text = shortcutInfo.TargetPath
             Catch: MsgBox("Error getting shortcut target!", MsgBoxStyle.Exclamation)
-                ShortcutPropertiesDialog.txtTarget.Text = ""
+                ShortcutPropertiesDialog.lblTargetSize.Text = ""
             End Try
             
             Try: ShortcutPropertiesDialog.lblStartInSize.Text = shortcutInfo.WorkingDirectory
             Catch: MsgBox("Error getting shortcut working directory!", MsgBoxStyle.Exclamation)
-                ShortcutPropertiesDialog.txtStartIn.Text = ""
+                ShortcutPropertiesDialog.lblStartInSize.Text = ""
             End Try
             
             ShortcutPropertiesDialog.PerformResize()
