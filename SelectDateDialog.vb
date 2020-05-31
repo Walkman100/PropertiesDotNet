@@ -61,13 +61,12 @@ Public Class SelectDateDialog
         Me.MinimizeBox = false
         Me.Name = "SelectDateDialog"
         Me.ShowIcon = false
-        Me.ShowInTaskbar = false
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Choose a date:"
         Me.ResumeLayout(false)
     End Sub
-    Private btnSave As System.Windows.Forms.Button
-    Private btnCancel As System.Windows.Forms.Button
+    Private WithEvents btnSave As System.Windows.Forms.Button
+    Private WithEvents btnCancel As System.Windows.Forms.Button
     Private WithEvents monthCalendar As System.Windows.Forms.MonthCalendar
     Public WithEvents dateTimePicker As System.Windows.Forms.DateTimePicker
     
@@ -75,12 +74,38 @@ Public Class SelectDateDialog
         Me.InitializeComponent()
     End Sub
     
-    Sub dateTimePicker_ValueChanged(sender As Object, e As EventArgs) Handles dateTimePicker.ValueChanged
+    Sub SelectDateDialog_VisibleChanged() Handles Me.VisibleChanged
+        If Me.Visible Then
+            Me.CenterToParent()
+        End If
+    End Sub
+    
+    Sub dateTimePicker_ValueChanged() Handles dateTimePicker.ValueChanged
         monthCalendar.SelectionStart = dateTimePicker.Value
         monthCalendar.SelectionEnd = dateTimePicker.Value
     End Sub
     
-    Sub monthCalendar_DateSelected(sender As Object, e As DateRangeEventArgs) Handles monthCalendar.DateSelected
+    Sub monthCalendar_DateSelected() Handles monthCalendar.DateSelected
         dateTimePicker.Value = monthCalendar.SelectionStart
     End Sub
+    
+    Sub CloseSelectDateDialog() Handles btnCancel.Click
+        Me.Close
+        Me.DestroyHandle()
+        Me.Dispose()
+    End Sub
+    
+    Sub btnSave_Click() Handles btnSave.Click
+        If Not IsNothing(_saveAction) Then
+            _saveAction.Invoke()
+        End If
+        CloseSelectDateDialog()
+    End Sub
+    
+    Private _saveAction As Action
+    Public WriteOnly Property SaveAction As Action
+        Set(value As Action)
+            _saveAction = value
+        End Set
+    End Property
 End Class

@@ -545,28 +545,43 @@ Public Class PropertiesDotNet
     
     ' ----------------------- date/time manipulation -----------------------
     Sub lblCreationTime_Click() Handles lblCreationTime.Click
-        SelectDateDialog.Text = "Choose a date to set Creation time to:"
         Operations.SetSelectDateDialogValue(lblFullPath.Text, chkUTC.Checked, Operations.TimeChangeEnum.Creation)
-        If SelectDateDialog.ShowDialog() = DialogResult.OK Then
-            Operations.SetTime(lblFullPath.Text, chkUTC.Checked, Operations.TimeChangeEnum.Creation, SelectDateDialog.dateTimePicker.Value)
-        End If
-        CheckData
+        Dim tmpSelectDateDialog As New SelectDateDialog With {
+            .Text = "Choose a date to set Creation time to:"
+        }
+        tmpSelectDateDialog.dateTimePicker.Value = SelectDateDialog.dateTimePicker.Value
+        tmpSelectDateDialog.SaveAction = Sub()
+                                             Operations.SetTime(lblFullPath.Text, chkUTC.Checked, Operations.TimeChangeEnum.Creation, tmpSelectDateDialog.dateTimePicker.Value)
+                                             CheckData
+                                         End Sub
+        tmpSelectDateDialog.Show(Me)
+        tmpSelectDateDialog.Activate()
     End Sub
     Sub lblLastAccessTime_Click() Handles lblLastAccessTime.Click
-        SelectDateDialog.Text = "Choose a date to set Last access time to:"
         Operations.SetSelectDateDialogValue(lblFullPath.Text, chkUTC.Checked, Operations.TimeChangeEnum.LastAccess)
-        If SelectDateDialog.ShowDialog() = DialogResult.OK Then
-            Operations.SetTime(lblFullPath.Text, chkUTC.Checked, Operations.TimeChangeEnum.LastAccess, SelectDateDialog.dateTimePicker.Value)
-        End If
-        CheckData
+        Dim tmpSelectDateDialog As New SelectDateDialog With {
+            .Text = "Choose a date to set Last access time to:"
+        }
+        tmpSelectDateDialog.dateTimePicker.Value = SelectDateDialog.dateTimePicker.Value
+        tmpSelectDateDialog.SaveAction = Sub()
+                                             Operations.SetTime(lblFullPath.Text, chkUTC.Checked, Operations.TimeChangeEnum.LastAccess, SelectDateDialog.dateTimePicker.Value)
+                                             CheckData
+                                         End Sub
+        tmpSelectDateDialog.Show(Me)
+        tmpSelectDateDialog.Activate()
     End Sub
     Sub lblLastWriteTime_Click() Handles lblLastWriteTime.Click
-        SelectDateDialog.Text = "Choose a date to set Last write time to:"
         Operations.SetSelectDateDialogValue(lblFullPath.Text, chkUTC.Checked, Operations.TimeChangeEnum.LastWrite)
-        If SelectDateDialog.ShowDialog() = DialogResult.OK Then
-            Operations.SetTime(lblFullPath.Text, chkUTC.Checked, Operations.TimeChangeEnum.LastWrite, SelectDateDialog.dateTimePicker.Value)
-        End If
-        CheckData
+        Dim tmpSelectDateDialog As New SelectDateDialog With {
+            .Text = "Choose a date to set Last write time to:"
+        }
+        tmpSelectDateDialog.dateTimePicker.Value = SelectDateDialog.dateTimePicker.Value
+        tmpSelectDateDialog.SaveAction = Sub()
+                                             Operations.SetTime(lblFullPath.Text, chkUTC.Checked, Operations.TimeChangeEnum.LastWrite, SelectDateDialog.dateTimePicker.Value)
+                                             CheckData
+                                         End Sub
+        tmpSelectDateDialog.Show(Me)
+        tmpSelectDateDialog.Activate()
     End Sub
     
     Sub btnWindowsProperties_Click() Handles btnWindowsProperties.Click
