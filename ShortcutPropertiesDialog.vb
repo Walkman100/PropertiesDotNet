@@ -426,27 +426,33 @@ Public Class ShortcutPropertiesDialog
                 """A"" .. ""Z"", ""0"" .. ""9"", ""NUMPAD0"" .. ""NUMPAD9"", ""Back"", ""Tab"", ""Clear"", ""Return"", ""Escape"", ""Space"", and ""Prior"".",
                 MsgBoxStyle.Critical, "Error saving Shortcut properties")
             Exit Sub
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            Using writer As StreamWriter = New StreamWriter(File.Open(Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs", FileMode.Create))
-                writer.WriteLine("Set lnk = WScript.CreateObject(""WScript.Shell"").CreateShortcut(""" & PropertiesDotNet.lblLocation.Text & """)")
-                writer.WriteLine("lnk.TargetPath = """ & txtTarget.Text & """")
-                writer.WriteLine("lnk.Arguments = """ & txtArguments.Text & """")
-                writer.WriteLine("lnk.WorkingDirectory = """ & txtStartIn.Text & """")
-                writer.WriteLine("lnk.IconLocation = """ & txtIconPath.Text & """")
-                writer.WriteLine("lnk.Description = """ & txtComment.Text & """")
-                writer.WriteLine("lnk.HotKey = """ & txtShortcutKey.Text & """")
-                If windowStyle = Windows.Forms.FormWindowState.Normal Then
-                    writer.WriteLine("lnk.WindowStyle = 1")
-                ElseIf windowStyle = Windows.Forms.FormWindowState.Minimized Then
-                    writer.WriteLine("lnk.WindowStyle = 7")
-                ElseIf windowStyle = Windows.Forms.FormWindowState.Maximized Then
-                    writer.WriteLine("lnk.WindowStyle = 3")
-                End If
-                writer.WriteLine("lnk.Save")
-            End Using
-            
-            WalkmanLib.RunAsAdmin("wscript", Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs")
+        Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, Operations.cMBbRelaunch, Operations.cMBbRunSysTool, Operations.cMBbCancel, MsgBoxStyle.Exclamation, Operations.cMBTitle, ownerForm:=PropertiesDotNet)
+                Case Operations.cMBbRelaunch
+                    PropertiesDotNet.RestartAsAdmin()
+                Case Operations.cMBbRunSysTool
+                    Dim scriptPath As String = Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs"
+                    Using writer As StreamWriter = New StreamWriter(File.Open(scriptPath, FileMode.Create))
+                        writer.WriteLine("Set lnk = WScript.CreateObject(""WScript.Shell"").CreateShortcut(""" & PropertiesDotNet.lblLocation.Text & """)")
+                        writer.WriteLine("lnk.TargetPath = """ & txtTarget.Text & """")
+                        writer.WriteLine("lnk.Arguments = """ & txtArguments.Text & """")
+                        writer.WriteLine("lnk.WorkingDirectory = """ & txtStartIn.Text & """")
+                        writer.WriteLine("lnk.IconLocation = """ & txtIconPath.Text & """")
+                        writer.WriteLine("lnk.Description = """ & txtComment.Text & """")
+                        writer.WriteLine("lnk.HotKey = """ & txtShortcutKey.Text & """")
+                        If windowStyle = Windows.Forms.FormWindowState.Normal Then
+                            writer.WriteLine("lnk.WindowStyle = 1")
+                        ElseIf windowStyle = Windows.Forms.FormWindowState.Minimized Then
+                            writer.WriteLine("lnk.WindowStyle = 7")
+                        ElseIf windowStyle = Windows.Forms.FormWindowState.Maximized Then
+                            writer.WriteLine("lnk.WindowStyle = 3")
+                        End If
+                        writer.WriteLine("lnk.Save")
+                    End Using
+                    
+                    WalkmanLib.RunAsAdmin("wscript", scriptPath)
+                    Threading.Thread.Sleep(500)
+            End Select
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
             Exit Sub
