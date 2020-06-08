@@ -1,4 +1,4 @@
-﻿Public Class Operations
+Public Class Operations
     <Flags>
     Enum PathEnum
         NotFound = 0
@@ -425,7 +425,16 @@
     
     Shared Function GetInput(ByRef input As String, Optional windowTitle As String = Nothing, Optional header As String = Nothing, Optional content As String = Nothing) As DialogResult
         If OokiiDialogsLoaded() Then
-            Return OokiiInputBox(input, windowTitle, header, content)
+            Dim ooInput = New Ookii.Dialogs.InputDialog With {
+                .Input = input,
+                .WindowTitle = windowTitle,
+                .MainInstruction = header,
+                .Content = content
+            }
+            
+            Dim returnResult = ooInput.ShowDialog(PropertiesDotNet)
+            input = ooInput.Input
+            Return returnResult
         Else
             Dim inputBoxPrompt As String = header
             If content IsNot Nothing Then
@@ -439,19 +448,6 @@
                 Return DialogResult.OK
             End If
         End If
-    End Function
-    
-    Private Shared Function OokiiInputBox(ByRef input As String, Optional windowTitle As String = Nothing, Optional header As String = Nothing, Optional content As String = Nothing) As DialogResult
-        Dim ooInput = New Ookii.Dialogs.InputDialog With {
-            .Input = input,
-            .WindowTitle = windowTitle,
-            .MainInstruction = header,
-            .Content = content
-        }
-        
-        Dim returnResult = ooInput.ShowDialog(PropertiesDotNet)
-        input = ooInput.Input
-        Return returnResult
     End Function
     
     Private Shared Function OokiiDialogsLoaded() As Boolean
