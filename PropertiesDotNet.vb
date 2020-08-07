@@ -564,8 +564,8 @@ Public Class PropertiesDotNet
         }
         tmpSelectDateDialog.dateTimePicker.Value = SelectDateDialog.dateTimePicker.Value
         tmpSelectDateDialog.SaveAction = Sub()
-                                             Operations.SetTime(lblFullPath.Text, chkUTC.Checked, Operations.TimeChangeEnum.LastAccess, SelectDateDialog.dateTimePicker.Value)
-                                             CheckData
+                                             Operations.SetTime(lblFullPath.Text, chkUTC.Checked, Operations.TimeChangeEnum.LastAccess, tmpSelectDateDialog.dateTimePicker.Value)
+                                             CheckData()
                                          End Sub
         tmpSelectDateDialog.Show(Me)
         tmpSelectDateDialog.Activate()
@@ -577,8 +577,8 @@ Public Class PropertiesDotNet
         }
         tmpSelectDateDialog.dateTimePicker.Value = SelectDateDialog.dateTimePicker.Value
         tmpSelectDateDialog.SaveAction = Sub()
-                                             Operations.SetTime(lblFullPath.Text, chkUTC.Checked, Operations.TimeChangeEnum.LastWrite, SelectDateDialog.dateTimePicker.Value)
-                                             CheckData
+                                             Operations.SetTime(lblFullPath.Text, chkUTC.Checked, Operations.TimeChangeEnum.LastWrite, tmpSelectDateDialog.dateTimePicker.Value)
+                                             CheckData()
                                          End Sub
         tmpSelectDateDialog.Show(Me)
         tmpSelectDateDialog.Activate()
