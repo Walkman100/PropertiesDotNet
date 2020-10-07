@@ -218,8 +218,8 @@ Public Class Operations
             PropertiesDotNet.ErrorParser(ex)
         End Try
     End Sub
-    
-    Shared Sub Delete(path As String, useShell As String, Optional recycleOption As FileIO.RecycleOption = Nothing)
+
+    Shared Sub Delete(path As String, useShell As Boolean, Optional recycleOption As FileIO.RecycleOption = Nothing)
         Try
             Dim pathInfo = IsFileOrDirectory(path)
             If useShell Then
@@ -254,7 +254,7 @@ Public Class Operations
             PropertiesDotNet.ErrorParser(ex)
         End Try
     End Sub
-    
+
     Shared Sub CreateShortcut(sourcePath As String, targetPath As String)
         Try
             If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath AndAlso _
