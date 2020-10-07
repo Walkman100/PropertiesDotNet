@@ -615,7 +615,7 @@ Public Class PropertiesDotNet
         Try
             driveProperties.VolumeLabel = newName
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
-            Select Case WalkmanLib.CustomMsgBox(ex.Message, Operations.cMBbRelaunch, Operations.cMBbRunSysTool, Operations.cMBbCancel, MsgBoxStyle.Exclamation, Operations.cMBTitle, ownerForm:=Me)
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, Operations.cMBTitle, Operations.cMBbRelaunch, Operations.cMBbRunSysTool, Operations.cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=Me)
                 Case Operations.cMBbRelaunch
                     RestartAsAdmin()
                 Case Operations.cMBbRunSysTool
@@ -747,7 +747,7 @@ Public Class PropertiesDotNet
             Dim output As String = SetCaseSensitiveFlag(lblFullPath.Text, chkTemporary.Checked)
             
             If output = "Error:  Access is denied." AndAlso Not WalkmanLib.IsAdmin() Then
-                Select Case WalkmanLib.CustomMsgBox(output, Operations.cMBbRelaunch, Operations.cMBbRunSysTool, Operations.cMBbCancel, MsgBoxStyle.Exclamation, Operations.cMBTitle, ownerForm:=Me)
+                Select Case WalkmanLib.CustomMsgBox(output, Operations.cMBTitle, Operations.cMBbRelaunch, Operations.cMBbRunSysTool, Operations.cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=Me)
                     Case Operations.cMBbRelaunch
                         RestartAsAdmin()
                     Case Operations.cMBbRunSysTool

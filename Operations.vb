@@ -107,7 +107,7 @@ Public Class Operations
             
             PropertiesDotNet.lblLocation.Text = fileProperties.FullName
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
-            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MsgBoxStyle.Exclamation, cMBTitle, ownerForm:=PropertiesDotNet)
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBTitle, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
                 Case cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
@@ -151,7 +151,7 @@ Public Class Operations
             PropertiesDotNet.lblLocation.Text = targetPath
         Catch ex As OperationCanceledException ' ignore user cancellation
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
-            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MsgBoxStyle.Exclamation, cMBTitle, ownerForm:=PropertiesDotNet)
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBTitle, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
                 Case cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
@@ -198,7 +198,7 @@ Public Class Operations
             End If
         Catch ex As OperationCanceledException ' ignore user cancellation
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
-            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MsgBoxStyle.Exclamation, cMBTitle, ownerForm:=PropertiesDotNet)
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBTitle, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
                 Case cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
@@ -238,7 +238,7 @@ Public Class Operations
             End If
         Catch ex As OperationCanceledException ' ignore user cancellation
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
-            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MsgBoxStyle.Exclamation, cMBTitle, ownerForm:=PropertiesDotNet)
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBTitle, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
                 Case cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
@@ -268,7 +268,7 @@ Public Class Operations
                 PropertiesDotNet.lblLocation.Text = newShortcutPath
             End If
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
-            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MsgBoxStyle.Exclamation, cMBTitle, ownerForm:=PropertiesDotNet)
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBTitle, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
                 Case cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
@@ -311,7 +311,7 @@ Public Class Operations
                 PropertiesDotNet.lblLocation.Text = targetPath
             End If
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
-            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MsgBoxStyle.Exclamation, cMBTitle, ownerForm:=PropertiesDotNet)
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBTitle, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
                 Case cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
@@ -348,7 +348,7 @@ Public Class Operations
                 PropertiesDotNet.lblLocation.Text = targetPath
             End If
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
-            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MsgBoxStyle.Exclamation, cMBTitle, ownerForm:=PropertiesDotNet)
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBTitle, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
                 Case cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
@@ -382,7 +382,7 @@ Public Class Operations
                 Not attribute.HasFlag(FileAttributes.Temporary) AndAlso
                 Not attribute.HasFlag(FileAttributes.ReparsePoint) AndAlso
                 Not attribute.HasFlag(FileAttributes.SparseFile)
-            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MsgBoxStyle.Exclamation, cMBTitle, ownerForm:=PropertiesDotNet)
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBTitle, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
                 Case cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
