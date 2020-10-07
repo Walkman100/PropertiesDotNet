@@ -1,29 +1,4 @@
 Public Class Operations
-    <Flags>
-    Enum PathEnum
-        NotFound = 0
-        Exists = 1
-        IsDirectory = 2
-        IsFile = 4
-        IsDrive = 8
-    End Enum
-    Shared Function IsFileOrDirectory(path As String) As PathEnum
-        Dim rtn As PathEnum
-        If File.Exists(path) Then
-            rtn = PathEnum.Exists Or PathEnum.IsFile
-        ElseIf Directory.Exists(path)
-            rtn = PathEnum.Exists Or PathEnum.IsDirectory
-        End If
-        
-        ' path can be a Directory and a Drive, or just a Drive...
-        ' will have IsDirectory if the drive can be accessed
-        If New DriveInfo(path).Name = New FileInfo(path).FullName Then
-            rtn = rtn Or PathEnum.Exists Or PathEnum.IsDrive
-        End If
-        
-        Return rtn
-    End Function
-    
     Enum TimeChangeEnum
         Creation = 1   ' have to give them values,
         LastAccess = 2 '  so the "Case ... And ..."
@@ -94,7 +69,7 @@ Public Class Operations
         Dim fullTargetName = fileProperties.DirectoryName & Path.DirectorySeparatorChar & targetName
         
         Try
-            If IsFileOrDirectory(fullTargetName).HasFlag(PathEnum.Exists) AndAlso sourcePath <> fullTargetName Then
+            If WalkmanLib.IsFileOrDirectory(fullTargetName).HasFlag(PathEnum.Exists) AndAlso sourcePath <> fullTargetName Then
                 Select Case MsgBox("Target """ & fullTargetName & """ already exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
                     Case MsgBoxResult.Yes
                         Delete(fullTargetName, False, Nothing)
@@ -129,14 +104,14 @@ Public Class Operations
     Shared Sub Move(sourcePath As String, targetPath As String, useShell As Boolean)
         Try
             If useShell Then
-                Dim pathInfo = IsFileOrDirectory(sourcePath)
+                Dim pathInfo = WalkmanLib.IsFileOrDirectory(sourcePath)
                 If pathInfo.HasFlag(PathEnum.IsFile) Then
                     My.Computer.FileSystem.MoveFile(sourcePath, targetPath, FileIO.UIOption.AllDialogs)
                 ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
                     My.Computer.FileSystem.MoveDirectory(sourcePath, targetPath, FileIO.UIOption.AllDialogs)
                 End If
             Else
-                If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
+                If WalkmanLib.IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
                     Select Case MsgBox("Target """ & targetPath & """ already exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
                         Case MsgBoxResult.Yes
                             Delete(targetPath, useShell, FileIO.RecycleOption.DeletePermanently)
@@ -172,7 +147,7 @@ Public Class Operations
     
     Shared Sub Copy(sourcePath As String, targetPath As String, useShell As Boolean)
         Try
-            Dim pathInfo = IsFileOrDirectory(sourcePath)
+            Dim pathInfo = WalkmanLib.IsFileOrDirectory(sourcePath)
             If useShell Then
                 If pathInfo.HasFlag(PathEnum.IsFile) Then
                     My.Computer.FileSystem.CopyFile(sourcePath, targetPath, FileIO.UIOption.AllDialogs)
@@ -181,7 +156,7 @@ Public Class Operations
                 End If
             Else
                 If pathInfo.HasFlag(PathEnum.IsFile) Then
-                    If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath AndAlso _
+                    If WalkmanLib.IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath AndAlso
                             MsgBox("Target """ & targetPath & """ already exists! Are you sure you want to overwrite it?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
                         Exit Sub
                     End If
@@ -221,7 +196,7 @@ Public Class Operations
 
     Shared Sub Delete(path As String, useShell As Boolean, Optional recycleOption As FileIO.RecycleOption = Nothing)
         Try
-            Dim pathInfo = IsFileOrDirectory(path)
+            Dim pathInfo = WalkmanLib.IsFileOrDirectory(path)
             If useShell Then
                 If pathInfo.HasFlag(PathEnum.IsFile) Then
                     My.Computer.FileSystem.DeleteFile(path, FileIO.UIOption.AllDialogs, recycleOption)
@@ -257,7 +232,7 @@ Public Class Operations
 
     Shared Sub CreateShortcut(sourcePath As String, targetPath As String)
         Try
-            If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath AndAlso _
+            If WalkmanLib.IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath AndAlso
                     MsgBox("Target """ & targetPath & """ already exists! Are you sure you want to overwrite the shortcut's Target Path?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.No Then
                 Exit Sub
             End If
@@ -291,7 +266,7 @@ Public Class Operations
     
     Shared Sub CreateSymlink(sourcePath As String, targetPath As String)
         Try
-            If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
+            If WalkmanLib.IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
                 Select Case MsgBox("Target """ & targetPath & """ already exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
                     Case MsgBoxResult.Yes
                         Delete(targetPath, False, Nothing)
@@ -300,7 +275,7 @@ Public Class Operations
                 End Select
             End If
             
-            Dim pathInfo = IsFileOrDirectory(sourcePath)
+            Dim pathInfo = WalkmanLib.IsFileOrDirectory(sourcePath)
             If pathInfo.HasFlag(PathEnum.IsFile) Then
                 WalkmanLib.CreateSymLink(targetPath, sourcePath, SymbolicLinkType.File)
             ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
@@ -315,7 +290,7 @@ Public Class Operations
                 Case cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
-                    Dim pathInfo = IsFileOrDirectory(sourcePath)
+                    Dim pathInfo = WalkmanLib.IsFileOrDirectory(sourcePath)
                     If pathInfo.HasFlag(PathEnum.IsFile) Then
                         WalkmanLib.RunAsAdmin("cmd", "/c mklink """ & targetPath & """ """ & sourcePath & """ & pause")
                     ElseIf pathInfo.HasFlag(PathEnum.IsDirectory)
@@ -333,7 +308,7 @@ Public Class Operations
     
     Shared Sub CreateHardlink(sourcePath As String, targetPath As String)
         Try
-            If IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
+            If WalkmanLib.IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
                 Select Case MsgBox("Target """ & targetPath & """ already exists! Remove first?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel)
                     Case MsgBoxResult.Yes
                         Delete(targetPath, False, Nothing)

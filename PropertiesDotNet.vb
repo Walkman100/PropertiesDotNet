@@ -738,11 +738,11 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub chkTemporary_Click() Handles chkTemporary.Click
-        Dim pathInfo = Operations.IsFileOrDirectory(lblFullPath.Text)
-        If pathInfo.HasFlag(Operations.PathEnum.IsFile) Then
+        Dim pathInfo = WalkmanLib.IsFileOrDirectory(lblFullPath.Text)
+        If pathInfo.HasFlag(PathEnum.IsFile) Then
             Operations.SetAttribute(lblFullPath.Text, FileAttributes.Temporary, chkTemporary.Checked)
             
-        ElseIf pathInfo.HasFlag(Operations.PathEnum.IsDirectory)
+        ElseIf pathInfo.HasFlag(PathEnum.IsDirectory)
             ' working on a directory and setting case sensitive
             Dim output As String = SetCaseSensitiveFlag(lblFullPath.Text, chkTemporary.Checked)
             
@@ -973,7 +973,7 @@ Public Class PropertiesDotNet
         End If
         
         Operations.Delete(lblFullPath.Text, chkUseSystem.Checked, recycleOption)
-        If Operations.IsFileOrDirectory(lblFullPath.Text) = Operations.PathEnum.NotFound Then
+        If WalkmanLib.IsFileOrDirectory(lblFullPath.Text) = PathEnum.NotFound Then
             Application.Exit()
             End
         End If
