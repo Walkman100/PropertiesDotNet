@@ -81,6 +81,9 @@ SubSection "Context menu entry"
     WriteRegStr HKCR "IE.AssocFile.URL\shell\${ProgramName}" "" "P&roperties..."
     WriteRegStr HKCR "IE.AssocFile.URL\shell\${ProgramName}" "Icon" "$INSTDIR\${ProgramName}.exe"
       WriteRegStr HKCR "IE.AssocFile.URL\shell\${ProgramName}\command" "" "$\"$INSTDIR\${ProgramName}.exe$\" $\"%1$\""
+    WriteRegStr HKCR "InternetShortcut\shell\${ProgramName}" "" "P&roperties..."
+    WriteRegStr HKCR "InternetShortcut\shell\${ProgramName}" "Icon" "$INSTDIR\${ProgramName}.exe"
+      WriteRegStr HKCR "InternetShortcut\shell\${ProgramName}\command" "" "$\"$INSTDIR\${ProgramName}.exe$\" $\"%1$\""
   SectionEnd
   Section "Add to context menu for .lnk files"
     WriteRegStr HKCR "lnkfile\shell\${ProgramName}Shortcut" "" "Shortcut Properties..."
@@ -172,6 +175,7 @@ Section "Uninstall"
   
   DeleteRegKey HKCR "*\shell\${ProgramName}"         ; Remove files  context menu item
   DeleteRegKey HKCR "IE.AssocFile.URL\shell\${ProgramName}"
+  DeleteRegKey HKCR "InternetShortcut\shell\${ProgramName}"
   DeleteRegKey HKCR "lnkfile\shell\${ProgramName}Shortcut"
   DeleteRegKey HKCR "Directory\shell\${ProgramName}" ; Remove old folder context menu item
   DeleteRegKey HKCR "Folder\shell\${ProgramName}"    ; Remove current folder context menu item

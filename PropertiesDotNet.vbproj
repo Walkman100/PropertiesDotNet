@@ -55,7 +55,9 @@
     <Compile Include="AlternateDataStreamManager.Designer.vb">
       <DependentUpon>AlternateDataStreamManager.vb</DependentUpon>
     </Compile>
-    <Compile Include="AlternateDataStreamManager.vb" />
+    <Compile Include="AlternateDataStreamManager.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="BackgroundProgress.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -65,7 +67,9 @@
     <Compile Include="HandleManager.Designer.vb">
       <DependentUpon>HandleManager.vb</DependentUpon>
     </Compile>
-    <Compile Include="HandleManager.vb" />
+    <Compile Include="HandleManager.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Hashes.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -97,12 +101,18 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
     </Compile>
-    <Compile Include="SelectDateDialog.vb" />
-    <Compile Include="ShortcutPropertiesDialog.vb" />
+    <Compile Include="SelectDateDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShortcutPropertiesDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="WalkmanLib\CustomMsgBox.Designer.vb">
       <DependentUpon>CustomMsgBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="WalkmanLib\CustomMsgBox.vb" />
+    <Compile Include="WalkmanLib\CustomMsgBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="WalkmanLib\WalkmanLibDotNet.vb" />
     <Compile Include="WalkmanLib\WalkmanLibRestartManager.vb" />
     <Compile Include="WalkmanLib\WalkmanLibSystemHandles.vb" />
