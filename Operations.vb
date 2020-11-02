@@ -276,11 +276,7 @@ Public Class Operations
             End If
             
             Dim pathInfo = WalkmanLib.IsFileOrDirectory(sourcePath)
-            If pathInfo.HasFlag(PathEnum.IsFile) Then
-                WalkmanLib.CreateSymLink(targetPath, sourcePath, SymbolicLinkType.File)
-            ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
-                WalkmanLib.CreateSymLink(targetPath, sourcePath, SymbolicLinkType.Directory)
-            End If
+            WalkmanLib.CreateSymLink(targetPath, sourcePath, pathInfo.HasFlag(PathEnum.IsDirectory))
             
             If MsgBox("Show properties for created Symlink?", MsgBoxStyle.YesNo + MsgBoxStyle.Question) = MsgBoxResult.Yes Then
                 PropertiesDotNet.lblLocation.Text = targetPath
