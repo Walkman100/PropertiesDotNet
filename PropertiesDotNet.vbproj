@@ -117,7 +117,7 @@
     <Compile Include="WalkmanLib\WalkmanLibRestartManager.vb" />
     <Compile Include="WalkmanLib\WalkmanLibSystemHandles.vb" />
     <Compile Include="WalkmanLib\WalkmanLibWin32.vb" />
-    <Compile Include="Windows7ProgressBar.vb" />
+    <Compile Include="WalkmanLib\Windows7ProgressBar.vb" />
   </ItemGroup>
   <ItemGroup>
     <None Include="My Project\App.config" />
