@@ -96,7 +96,7 @@ Public Class SelectDateDialog
     End Sub
     
     Sub btnSave_Click() Handles btnSave.Click
-        If Not IsNothing(_saveAction) Then
+        If _saveAction IsNot Nothing Then
             _saveAction.Invoke()
         End If
         CloseSelectDateDialog()
