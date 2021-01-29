@@ -988,32 +988,34 @@ Public Class PropertiesDotNet
     
     Sub bwCalcSize_DoWork() Handles bwCalcSize.DoWork
         Try
-            Dim DirectoryProperties As New DirectoryInfo(lblFullPath.Text)
+            Dim directoryProperties As New DirectoryInfo(lblFullPath.Text)
             
             lblOpenWith.Text = "Checking..."
             lblSize.Text = "Getting file list... (May take a while)"
-            Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
+            Dim subFiles = directoryProperties.GetFiles("*", SearchOption.AllDirectories)
             
-            lblOpenWith.Text = SubFiles.Count.ToString("N0")
+            lblOpenWith.Text = subFiles.Count.ToString("N0")
             byteSize = 0
             Dim countInterval As ULong = 0
-            For Each SubFile As FileInfo In SubFiles
-                byteSize += SubFile.Length
-                countInterval += 1
-                If countInterval Mod 100 = 0 Then
-                    lblSize.Text = byteSize
-                End If
-            Next
+            
+            'For Each subFile As FileInfo In subFiles
+            '    byteSize += subFile.Length
+            '    countInterval += 1
+            '    If countInterval Mod 100 = 0 Then
+            '        lblSize.Text = byteSize
+            '    End If
+            'Next
+            byteSize = subFiles.Sum(Function(subFile As FileInfo) subFile.Length)
             
             lblSize.Text = byteSize
-            lblOpenWith.Text = SubFiles.Count.ToString("N0")
-            AutoDetectSize
+            lblOpenWith.Text = subFiles.Count.ToString("N0")
+            AutoDetectSize()
         Catch ex As Exception
             lblSize.Text = "Error: " & ex.Message
             lblOpenWith.Text = "?"
             ErrorParser(ex)
         End Try
-        ApplySizeFormatting
+        ApplySizeFormatting()
     End Sub
     
     Sub RestartAsAdmin()
