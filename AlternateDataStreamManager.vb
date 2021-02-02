@@ -194,6 +194,9 @@ Public Partial Class AlternateDataStreamManager
                 Continue For
             End If
             
+            Dim sourceStream As FileStream = Nothing
+            Dim targetStream As FileStream = Nothing
+            
             Try
                 If Not File.Exists(targetFile) And Not Directory.Exists(targetFile) Then
                     File.Create(targetFile).Close()
@@ -201,12 +204,8 @@ Public Partial Class AlternateDataStreamManager
                 
                 ' Copying FROM AlternateDataStream TO file
                 If targetStreamName = ":$DATA" Then
-                    Using sourceStream As FileStream = adsSource.OpenRead()
-                        Using targetStream As FileStream = Open(targetFile, FileMode.Truncate)
-                            sourceStream.CopyTo(targetStream)
-                        End Using
-                    End Using
-                    
+                    sourceStream = adsSource.OpenRead()
+                    targetStream = Open(targetFile, FileMode.Truncate)
                 Else
                     Try
                         adsTarget = GetAlternateDataStream(targetFile, targetStreamName, FileMode.CreateNew)
@@ -220,21 +219,26 @@ Public Partial Class AlternateDataStreamManager
                     
                     ' Copying FROM file TO AlternateDataStream
                     If adsSource.Name = ":$DATA" Then
-                        Using sourceStream As FileStream = OpenRead(adsSource.FilePath)
-                            Using targetStream As FileStream = adsTarget.OpenWrite()
-                                sourceStream.CopyTo(targetStream)
-                            End Using
-                        End Using
-                        
+                        sourceStream = OpenRead(adsSource.FilePath)
+                        targetStream = adsTarget.OpenWrite()
                     Else ' Copying FROM AlternateDataStream TO AlternateDataStream
-                        Using sourceStream As FileStream = adsSource.OpenRead()
-                            Using targetStream As FileStream = adsTarget.OpenWrite()
-                                sourceStream.CopyTo(targetStream)
-                            End Using
-                        End Using
+                        sourceStream = adsSource.OpenRead()
+                        targetStream = adsTarget.OpenWrite()
                     End If
                 End If
+                
+                WalkmanLib.StreamCopy(sourceStream, targetStream, "Copying """ & adsSource.FullPath & """ to """ & targetFile & ":" & targetStreamName & """...",
+                                      onComplete:=Sub(s, e)
+                                                      If e.Error IsNot Nothing Then
+                                                          PropertiesDotNet.ErrorParser(e.Error)
+                                                      End If
+                                                      LoadStreams()
+                                                  End Sub)
             Catch ex As Exception
+                If sourceStream IsNot Nothing Then sourceStream.Dispose()
+                If targetStream IsNot Nothing Then targetStream.Dispose()
+                sourceStream = Nothing
+                targetStream = Nothing
                 PropertiesDotNet.ErrorParser(ex)
             End Try
         Next
