@@ -7,7 +7,7 @@ Public Class Operations
     
     Shared Sub SetSelectDateDialogValue(path As String, useUTC As Boolean, type As TimeChangeEnum)
         Try
-            Select type
+            Select Case type
                 Case TimeChangeEnum.Creation And useUTC
                     SelectDateDialog.dateTimePicker.Value = GetCreationTimeUtc(path)
                 Case TimeChangeEnum.Creation

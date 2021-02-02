@@ -960,12 +960,13 @@ Public Class PropertiesDotNet
     Sub btnDelete_Click() Handles btnDelete.Click
         Dim recycleOption As FileIO.RecycleOption
         If chkUseSystem.Checked Then
-            Select Case MsgBox("Send """ & lblName.Text & """ to Recycle Bin? (No to delete permanently)", MsgBoxStyle.Question + MsgBoxStyle.YesNoCancel)
-                Case MsgBoxResult.Yes
+            Select Case WalkmanLib.CustomMsgBox("Delete """ & lblName.Text & """?", Application.ProductName,
+                                                "Send to Recycle Bin", "Delete Permanently", "Cancel", MessageBoxIcon.Question, WinVersionStyle.Win10, Me)
+                Case "Send to Recycle Bin"
                     recycleOption = FileIO.RecycleOption.SendToRecycleBin
-                Case MsgBoxResult.No
+                Case "Delete Permanently"
                     recycleOption = FileIO.RecycleOption.DeletePermanently
-                Case MsgBoxResult.Cancel
+                Case "Cancel"
                     Exit Sub
             End Select
         ElseIf MsgBox("Are you sure you want to delete """ & lblName.Text & """?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) <> MsgBoxResult.Yes Then
