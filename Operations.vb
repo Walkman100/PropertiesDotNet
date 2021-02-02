@@ -161,14 +161,35 @@ Public Class Operations
                         Exit Sub
                     End If
                     
-                    File.Copy(sourcePath, targetPath, overwrite:=True)
+                    Dim sourceStream As FileStream = Nothing
+                    Dim targetStream As FileStream = Nothing
+                    Try
+                        sourceStream = File.OpenRead(sourcePath)
+                        targetStream = File.OpenWrite(targetPath)
+                        
+                        WalkmanLib.StreamCopy(sourceStream, targetStream, "Copying """ & sourcePath & """ to """ & targetPath & """...",
+                                              "File Copy", Sub(s, e)
+                                                               If e.Error IsNot Nothing Then
+                                                                   PropertiesDotNet.ErrorParser(e.Error)
+                                                               ElseIf MessageBox("Read new location?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                                                                   PropertiesDotNet.lblLocation.Text = targetPath
+                                                                   PropertiesDotNet.CheckData(True)
+                                                               End If
+                                                           End Sub)
+                    Catch
+                        If sourceStream IsNot Nothing Then sourceStream.Dispose()
+                        If targetStream IsNot Nothing Then targetStream.Dispose()
+                        Throw
+                    End Try
                 ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
                     BackgroundProgress.bwFolderOperations.RunWorkerAsync({"copy", sourcePath, targetPath})
                     BackgroundProgress.ShowDialog()
                 End If
             End If
             
-            If MessageBox("Read new location?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+            '       if we do file StreamCopy then don't show message
+            If Not (useShell = False AndAlso pathInfo.HasFlag(PathEnum.IsFile)) AndAlso
+                    MessageBox("Read new location?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 PropertiesDotNet.lblLocation.Text = targetPath
             End If
         Catch ex As OperationCanceledException ' ignore user cancellation

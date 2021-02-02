@@ -115,6 +115,7 @@
     </Compile>
     <Compile Include="WalkmanLib\WalkmanLibDotNet.vb" />
     <Compile Include="WalkmanLib\WalkmanLibRestartManager.vb" />
+    <Compile Include="WalkmanLib\WalkmanLibStreamCopy.vb" />
     <Compile Include="WalkmanLib\WalkmanLibSystemHandles.vb" />
     <Compile Include="WalkmanLib\WalkmanLibWin32.vb" />
     <Compile Include="WalkmanLib\Windows7ProgressBar.vb" />
