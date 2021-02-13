@@ -684,16 +684,18 @@ Public Class PropertiesDotNet
             Dim oneGB = 1000000000 '1 GB
             If chkCompressed.Checked Then
                 If Not GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
-                    If byteSize < oneGB Or (byteSize >= oneGB AndAlso MsgBox("Are you sure you want to compress this large file (>1GB)? This will take a while and can't be interrupted",
-                            MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Compressing Large File") = MsgBoxResult.Yes) Then
+                    If WalkmanLib.IsFileOrDirectory(lblFullPath.Text).HasFlag(PathEnum.IsDirectory) OrElse byteSize < oneGB OrElse
+                            MsgBox("Are you sure you want to compress this large file (>1GB)? This will take a while and can't be interrupted",
+                            MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Compressing Large File") = MsgBoxResult.Yes Then
                         CompressReport.bwCompress.RunWorkerAsync({True, lblFullPath.Text})
                         CompressReport.ShowDialog()
                     End If
                 End If
             Else
                 If GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
-                    If byteSize < oneGB Or (byteSize >= oneGB AndAlso MsgBox("Are you sure you want to decompress this large file (>1GB)? This will take a while and can't be interrupted",
-                            MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Decompressing Large File") = MsgBoxResult.Yes) Then
+                    If WalkmanLib.IsFileOrDirectory(lblFullPath.Text).HasFlag(PathEnum.IsDirectory) OrElse byteSize < oneGB OrElse
+                            MsgBox("Are you sure you want to decompress this large file (>1GB)? This will take a while and can't be interrupted",
+                            MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Decompressing Large File") = MsgBoxResult.Yes Then
                         CompressReport.bwCompress.RunWorkerAsync({False, lblFullPath.Text})
                         CompressReport.ShowDialog()
                     End If

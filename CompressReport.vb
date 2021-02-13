@@ -64,6 +64,17 @@ Public Class CompressReport
             ' Credits to http://www.thescarms.com/dotnet/NTFSCompress.aspx
             ' Converted to VB.Net with SharpDevelop (which I believe uses MSBuild anyway to convert)
             If e.Argument(0) Then Me.Text = "Compressing..." Else Me.Text = "Decompressing..."
+
+            If WalkmanLib.IsFileOrDirectory(e.Argument(1)).HasFlag(PathEnum.IsDirectory) Then
+                lblStatus.Text = "Running function..."
+                WalkmanLib.SetCompression(e.Argument(1), e.Argument(0))
+
+                lblStatus.Text = "Done!"
+                Sleep(100)
+                Me.Close()
+                Return
+            End If
+
             lblStatus.Text = "[1/5] Opening File stream..."
             Dim FilePropertiesStream As FileStream = File.Open(e.Argument(1), FileMode.Open, FileAccess.ReadWrite, FileShare.None)
             
