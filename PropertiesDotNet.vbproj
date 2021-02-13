@@ -12,6 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <LangVersion>11</LangVersion>
     <ApplicationIcon>My Project\document-properties.ico</ApplicationIcon>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>Full</DebugType>

@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("A properties window made in VB.Net")> 
 <Assembly: AssemblyCompany("WalkmanOSS")> 
 <Assembly: AssemblyProduct("PropertiesDotNet")> 
-<Assembly: AssemblyCopyright("FOSS from Walkman 2015-20")> 
+<Assembly: AssemblyCopyright("FOSS from Walkman 2015-21")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
