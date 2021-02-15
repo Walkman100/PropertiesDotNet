@@ -1033,7 +1033,7 @@ Public Class PropertiesDotNet
                 RestartAsAdmin()
             End If
         Else
-            WalkmanLib.ErrorDialog(ex, messagePumpForm:=Me)
+            WalkmanLib.ErrorDialog(ex)
         End If
     End Sub
     
