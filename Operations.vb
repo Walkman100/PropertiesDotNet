@@ -355,6 +355,38 @@ Public Class Operations
         End Try
     End Sub
     
+    Shared Sub CreateJunction(sourcePath As String, targetPath As String)
+        Try
+            If WalkmanLib.IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
+                Select Case MessageBox("Target """ & targetPath & """ already exists! Remove first?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation)
+                    Case DialogResult.Yes
+                        Delete(targetPath)
+                    Case DialogResult.Cancel
+                        Exit Sub
+                End Select
+            End If
+
+            WalkmanLib.CreateJunction(targetPath, sourcePath, True)
+
+            If MessageBox("Show properties for created Junction?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                PropertiesDotNet.lblLocation.Text = targetPath
+            End If
+        Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBTitle, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
+                Case cMBbRelaunch
+                    PropertiesDotNet.RestartAsAdmin()
+                Case cMBbRunSysTool
+                    WalkmanLib.RunAsAdmin("cmd", "/c mklink /j """ & targetPath & """ """ & sourcePath & """ & pause")
+
+                    If MessageBox("Show properties for created Junction?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                        PropertiesDotNet.lblLocation.Text = targetPath
+                    End If
+            End Select
+        Catch ex As Exception
+            PropertiesDotNet.ErrorParser(ex)
+        End Try
+    End Sub
+    
     Shared Function SetAttribute(path As String, attribute As FileAttributes, addOrRemove As Boolean) As Boolean
         Try
             Dim fileAttributes As FileAttributes
