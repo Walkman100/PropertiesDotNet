@@ -225,8 +225,11 @@ Public Class Operations
                     My.Computer.FileSystem.DeleteDirectory(path, FileIO.UIOption.AllDialogs, recycleOption)
                 End If
             Else
+                Dim pathAttrs As FileAttributes = File.GetAttributes(path)
                 If pathInfo.HasFlag(PathEnum.IsFile) Then
                     File.Delete(path)
+                ElseIf pathAttrs.HasFlag(FileAttributes.ReparsePoint) Then
+                    Directory.Delete(path)
                 ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
                     BackgroundProgress.bwFolderOperations.RunWorkerAsync({"delete", path})
                     BackgroundProgress.ShowDialog()

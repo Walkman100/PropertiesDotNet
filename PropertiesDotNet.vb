@@ -212,6 +212,7 @@ Public Class PropertiesDotNet
                 btnShortcut.Text = "Create &Shortcut..."
                 btnShortcut.Image = Resources.mouse_right_click_8x
             End If
+            btnHardlink.Text = "Create Hardlin&k..."
         ElseIf Directory.Exists(lblFullPath.Text)
             If bwCalcSize.IsBusy = False Then
                 If recalculateFolderSize = True Then
@@ -245,8 +246,10 @@ Public Class PropertiesDotNet
             lblOpenWithLbl.Text = "Number of files:"
             btnHashes.Image = Resources.Shell32__326_
             btnHashes.Text = "DirectoryIma&ge..."
+            
             btnShortcut.Text = "Create &Shortcut..."
             btnShortcut.Image = Resources.mouse_right_click_8x
+            btnHardlink.Text = "Create Junction..."
         End If
         
         If chkUTC.Checked Then
@@ -387,7 +390,7 @@ Public Class PropertiesDotNet
     
     Sub btnLaunchAdmin_Click() Handles btnLaunchAdmin.Click
         For Each envVar As String In {"ProgramFiles", "ProgramFiles(x86)", "ProgramW6432"}
-            Dim PhotoViewerPath As String = path.Combine(Environment.GetEnvironmentVariable(envVar), "Windows Photo Viewer", "PhotoViewer.dll")
+            Dim PhotoViewerPath As String = Path.Combine(Environment.GetEnvironmentVariable(envVar), "Windows Photo Viewer", "PhotoViewer.dll")
             If lblOpenWith.Text = PhotoViewerPath Then
                 ' rundll32 "%ProgramFiles%\Windows Photo Viewer\PhotoViewer.dll", ImageView_Fullscreen FilePath
                 WalkmanLib.RunAsAdmin("rundll32", """" & PhotoViewerPath & """, ImageView_Fullscreen " & lblFullPath.Text)
@@ -890,11 +893,21 @@ Public Class PropertiesDotNet
     Sub btnHardlink_Click() Handles btnHardlink.Click
         sfdSave.InitialDirectory = lblDirectory.Text
         sfdSave.FileName = lblName.Text
-        sfdSave.Title = "Choose where to create a Hardlink to """ & lblName.Text & """:"
         
-        If sfdSave.ShowDialog() = DialogResult.OK Then
-            Operations.CreateHardlink(lblFullPath.Text, sfdSave.FileName)
-            CheckData(True)
+        If File.Exists(lblFullPath.Text) Then
+            sfdSave.Title = "Choose where to create a Hardlink to """ & lblName.Text & """:"
+            
+            If sfdSave.ShowDialog() = DialogResult.OK Then
+                Operations.CreateHardlink(lblFullPath.Text, sfdSave.FileName)
+                CheckData(True)
+            End If
+        Else
+            sfdSave.Title = "Choose where to create a Junction to """ & lblName.Text & """:"
+            
+            If sfdSave.ShowDialog() = DialogResult.OK Then
+                Operations.CreateJunction(lblFullPath.Text, sfdSave.FileName)
+                CheckData(True)
+            End If
         End If
     End Sub
     
@@ -952,9 +965,16 @@ Public Class PropertiesDotNet
         If e.Button = MouseButtons.Right Then
             Dim newName As String = lblFullPath.Text
             
-            If Operations.GetInput(newName, "Create Hardlink", "Create hardlink to """ & lblName.Text & """:") = DialogResult.OK Then
-                Operations.CreateHardlink(lblFullPath.Text, newName)
-                CheckData(True)
+            If File.Exists(lblFullPath.Text) Then
+                If Operations.GetInput(newName, "Create Hardlink", "Create hardlink to """ & lblName.Text & """:") = DialogResult.OK Then
+                    Operations.CreateHardlink(lblFullPath.Text, newName)
+                    CheckData(True)
+                End If
+            Else
+                If Operations.GetInput(newName, "Create Junction", "Create junction to """ & lblName.Text & """:") = DialogResult.OK Then
+                    Operations.CreateJunction(lblFullPath.Text, newName)
+                    CheckData(True)
+                End If
             End If
         End If
     End Sub
