@@ -72,7 +72,7 @@ Public Class Operations
             If WalkmanLib.IsFileOrDirectory(fullTargetName).HasFlag(PathEnum.Exists) AndAlso sourcePath <> fullTargetName Then
                 Select Case MessageBox("Target """ & fullTargetName & """ already exists! Remove first?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation)
                     Case DialogResult.Yes
-                        Delete(fullTargetName, False, Nothing)
+                        Delete(fullTargetName)
                     Case DialogResult.Cancel
                         Exit Sub
                 End Select
@@ -114,7 +114,7 @@ Public Class Operations
                 If WalkmanLib.IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
                     Select Case MessageBox("Target """ & targetPath & """ already exists! Remove first?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation)
                         Case DialogResult.Yes
-                            Delete(targetPath, useShell, FileIO.RecycleOption.DeletePermanently)
+                            Delete(targetPath)
                         Case DialogResult.Cancel
                             Exit Sub
                     End Select
@@ -215,7 +215,7 @@ Public Class Operations
         End Try
     End Sub
 
-    Shared Sub Delete(path As String, useShell As Boolean, Optional recycleOption As FileIO.RecycleOption = Nothing)
+    Shared Sub Delete(path As String, Optional useShell As Boolean = False, Optional recycleOption As FileIO.RecycleOption = FileIO.RecycleOption.DeletePermanently)
         Try
             Dim pathInfo = WalkmanLib.IsFileOrDirectory(path)
             If useShell Then
@@ -290,7 +290,7 @@ Public Class Operations
             If WalkmanLib.IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
                 Select Case MessageBox("Target """ & targetPath & """ already exists! Remove first?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation)
                     Case DialogResult.Yes
-                        Delete(targetPath, False, Nothing)
+                        Delete(targetPath)
                     Case DialogResult.Cancel
                         Exit Sub
                 End Select
@@ -328,7 +328,7 @@ Public Class Operations
             If WalkmanLib.IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
                 Select Case MessageBox("Target """ & targetPath & """ already exists! Remove first?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation)
                     Case DialogResult.Yes
-                        Delete(targetPath, False, Nothing)
+                        Delete(targetPath)
                     Case DialogResult.Cancel
                         Exit Sub
                 End Select
