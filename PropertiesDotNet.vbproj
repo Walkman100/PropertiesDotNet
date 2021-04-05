@@ -65,12 +65,6 @@
     <Compile Include="CompressReport.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HandleManager.Designer.vb">
-      <DependentUpon>HandleManager.vb</DependentUpon>
-    </Compile>
-    <Compile Include="HandleManager.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Hashes.vb">
       <SubType>Form</SubType>
     </Compile>

@@ -93,8 +93,7 @@ Public Class Operations
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MessageBox("File """ & sourcePath & """ is in use! Open Handle Manager?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
-                HandleManager.Show(PropertiesDotNet)
-                HandleManager.Activate()
+                HandleManager(sourcePath)
             End If
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
@@ -137,8 +136,7 @@ Public Class Operations
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MessageBox("File """ & sourcePath & """ is in use! Open Handle Manager?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
-                HandleManager.Show(PropertiesDotNet)
-                HandleManager.Activate()
+                HandleManager(sourcePath)
             End If
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
@@ -204,9 +202,8 @@ Public Class Operations
                     End If
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
-            If MessageBox("A file is in use! Open Handle Manager on """ & sourcePath & """?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
-                HandleManager.Show(PropertiesDotNet)
-                HandleManager.Activate()
+            If MessageBox("A file is in use! Open Handle Manager on """ & targetPath & """?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
+                HandleManager(targetPath)
             Else
                 PropertiesDotNet.ErrorParser(ex)
             End If
@@ -246,8 +243,7 @@ Public Class Operations
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MessageBox("File """ & path & """ is in use! Open Handle Manager?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
-                HandleManager.Show(PropertiesDotNet)
-                HandleManager.Activate()
+                HandleManager(path)
             End If
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
@@ -418,8 +414,7 @@ Public Class Operations
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MessageBox("File """ & path & """ is in use! Open Handle Manager?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
-                HandleManager.Show(PropertiesDotNet)
-                HandleManager.Activate()
+                HandleManager(path)
             End If
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
@@ -448,6 +443,19 @@ Public Class Operations
             Case Else
                 Throw New InvalidOperationException("Invalid Attribute specified: " & attribute.ToString())
         End Select
+    End Sub
+    
+    Public Shared Sub HandleManager(filePath As String)
+        Dim walkmanUtilsPath As String = WalkmanLib.GetWalkmanUtilsPath()
+        Dim handleManagerPath As String = Path.Combine(walkmanUtilsPath, "HandleManager.exe")
+        
+        If Not Exists(handleManagerPath) Then
+            MessageBox("Could not find HandleManager in WalkmanUtils install!" & Environment.NewLine & Environment.NewLine &
+                       "Looking for: " & handleManagerPath, MessageBoxButtons.OK, MessageBoxIcon.Exclamation, "Launching HandleManager")
+            Exit Sub
+        End If
+
+        Process.Start(handleManagerPath, """" & filePath & """")
     End Sub
     
     Shared Function MessageBox(text As String, Optional buttons As MessageBoxButtons = 0,

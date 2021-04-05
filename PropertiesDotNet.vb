@@ -652,8 +652,7 @@ Public Class PropertiesDotNet
     End Sub
     
     Sub btnHandles_Click() Handles btnHandles.Click
-        HandleManager.Show(Me)
-        HandleManager.Activate()
+        Operations.HandleManager(lblFullPath.Text)
     End Sub
     
     Sub chkReadOnly_Click() Handles chkReadOnly.Click
