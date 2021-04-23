@@ -4,7 +4,7 @@ Public Class Operations
         LastAccess = 2 '  so the "Case ... And ..."
         LastWrite = 3  '  below works.
     End Enum
-    
+
     Shared Sub SetSelectDateDialogValue(path As String, useUTC As Boolean, type As TimeChangeEnum)
         Try
             Select Case type
@@ -25,7 +25,7 @@ Public Class Operations
             PropertiesDotNet.ErrorParser(ex)
         End Try
     End Sub
-    
+
     Shared Sub SetTime(path As String, useUTC As Boolean, type As TimeChangeEnum, time As Date)
         Try
             Select Case type
@@ -46,13 +46,13 @@ Public Class Operations
             PropertiesDotNet.ErrorParser(ex)
         End Try
     End Sub
-    
+
     ' cMBb = CustomMsgBoxBtn
     Public Const cMBbRelaunch As String = "Relaunch as Admin"
     Public Const cMBbRunSysTool As String = "Run System Tool as Admin"
     Public Const cMBbCancel As String = "Cancel"
     Public Const cMBTitle As String = "Access denied!"
-    
+
     Private Shared Function Win32FromHResult(HResult As Integer) As Integer
         'getting Win32 error from HResult:
         ' https://docs.microsoft.com/en-us/dotnet/standard/io/handling-io-errors#handling-ioexception
@@ -60,14 +60,14 @@ Public Class Operations
         ' https://stackoverflow.com/a/426467/2999220
         Return (HResult And &H0000FFFF)
     End Function
-    
+
     '32 (0x20) = ERROR_SHARING_VIOLATION: The process cannot access the file because it is being used by another process.
     Private Const shareViolation As Integer = &H20
-    
+
     Shared Sub Rename(sourcePath As String, targetName As String)
         Dim fileProperties As New FileInfo(sourcePath)
         Dim fullTargetName = fileProperties.DirectoryName & Path.DirectorySeparatorChar & targetName
-        
+
         Try
             If WalkmanLib.IsFileOrDirectory(fullTargetName).HasFlag(PathEnum.Exists) AndAlso sourcePath <> fullTargetName Then
                 Select Case MessageBox("Target """ & fullTargetName & """ already exists! Remove first?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation)
@@ -77,9 +77,9 @@ Public Class Operations
                         Exit Sub
                 End Select
             End If
-            
+
             fileProperties.MoveTo(fullTargetName)
-            
+
             PropertiesDotNet.lblLocation.Text = fileProperties.FullName
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
             Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBTitle, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
@@ -99,7 +99,7 @@ Public Class Operations
             PropertiesDotNet.ErrorParser(ex)
         End Try
     End Sub
-    
+
     Shared Sub Move(sourcePath As String, targetPath As String, useShell As Boolean)
         Try
             If useShell Then
@@ -118,10 +118,10 @@ Public Class Operations
                             Exit Sub
                     End Select
                 End If
-                
+
                 File.Move(sourcePath, targetPath)
             End If
-            
+
             PropertiesDotNet.lblLocation.Text = targetPath
         Catch ex As OperationCanceledException ' ignore user cancellation
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
@@ -142,7 +142,7 @@ Public Class Operations
             PropertiesDotNet.ErrorParser(ex)
         End Try
     End Sub
-    
+
     Shared Sub Copy(sourcePath As String, targetPath As String, useShell As Boolean)
         Try
             Dim pathInfo = WalkmanLib.IsFileOrDirectory(sourcePath)
@@ -158,13 +158,13 @@ Public Class Operations
                             MessageBox("Target """ & targetPath & """ already exists! Are you sure you want to overwrite it?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.No Then
                         Exit Sub
                     End If
-                    
+
                     Dim sourceStream As FileStream = Nothing
                     Dim targetStream As FileStream = Nothing
                     Try
                         sourceStream = File.OpenRead(sourcePath)
                         targetStream = File.OpenWrite(targetPath)
-                        
+
                         WalkmanLib.StreamCopy(sourceStream, targetStream, "Copying """ & sourcePath & """ to """ & targetPath & """...",
                                               "File Copy", Sub(s, e)
                                                                If e.Error IsNot Nothing Then
@@ -184,7 +184,7 @@ Public Class Operations
                     BackgroundProgress.ShowDialog()
                 End If
             End If
-            
+
             '       if we do file StreamCopy then don't show message
             If Not (useShell = False AndAlso pathInfo.HasFlag(PathEnum.IsFile)) AndAlso
                     MessageBox("Read new location?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
@@ -256,9 +256,9 @@ Public Class Operations
                     MessageBox("Target """ & targetPath & """ already exists! Are you sure you want to overwrite the shortcut's Target Path?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.No Then
                 Exit Sub
             End If
-            
+
             Dim newShortcutPath As String = WalkmanLib.CreateShortcut(targetPath, sourcePath)
-            
+
             If MessageBox("Show properties for created Shortcut?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 PropertiesDotNet.lblLocation.Text = newShortcutPath
             End If
@@ -273,7 +273,7 @@ Public Class Operations
                         writer.WriteLine("lnk.TargetPath = """ & sourcePath & """")
                         writer.WriteLine("lnk.Save")
                     End Using
-                    
+
                     WalkmanLib.RunAsAdmin("wscript", scriptPath)
                     If MessageBox("Show properties for created Shortcut?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         PropertiesDotNet.lblLocation.Text = targetPath
@@ -283,7 +283,7 @@ Public Class Operations
             PropertiesDotNet.ErrorParser(ex)
         End Try
     End Sub
-    
+
     Shared Sub CreateSymlink(sourcePath As String, targetPath As String)
         Try
             If WalkmanLib.IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
@@ -294,10 +294,10 @@ Public Class Operations
                         Exit Sub
                 End Select
             End If
-            
+
             Dim pathInfo = WalkmanLib.IsFileOrDirectory(sourcePath)
             WalkmanLib.CreateSymLink(targetPath, sourcePath, pathInfo.HasFlag(PathEnum.IsDirectory))
-            
+
             If MessageBox("Show properties for created Symlink?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 PropertiesDotNet.lblLocation.Text = targetPath
             End If
@@ -309,10 +309,10 @@ Public Class Operations
                     Dim pathInfo = WalkmanLib.IsFileOrDirectory(sourcePath)
                     If pathInfo.HasFlag(PathEnum.IsFile) Then
                         WalkmanLib.RunAsAdmin("cmd", "/c mklink """ & targetPath & """ """ & sourcePath & """ & pause")
-                    ElseIf pathInfo.HasFlag(PathEnum.IsDirectory)
+                    ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
                         WalkmanLib.RunAsAdmin("cmd", "/c mklink /d """ & targetPath & """ """ & sourcePath & """ & pause")
                     End If
-                    
+
                     If MessageBox("Show properties for created Symlink?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         PropertiesDotNet.lblLocation.Text = targetPath
                     End If
@@ -321,7 +321,7 @@ Public Class Operations
             PropertiesDotNet.ErrorParser(ex)
         End Try
     End Sub
-    
+
     Shared Sub CreateHardlink(sourcePath As String, targetPath As String)
         Try
             If WalkmanLib.IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
@@ -332,9 +332,9 @@ Public Class Operations
                         Exit Sub
                 End Select
             End If
-            
+
             WalkmanLib.CreateHardLink(targetPath, sourcePath)
-            
+
             If MessageBox("Show properties for created Hardlink?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 PropertiesDotNet.lblLocation.Text = targetPath
             End If
@@ -344,7 +344,7 @@ Public Class Operations
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
                     WalkmanLib.RunAsAdmin("cmd", "/c mklink /h """ & targetPath & """ """ & sourcePath & """ & pause")
-                    
+
                     If MessageBox("Show properties for created Hardlink?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         PropertiesDotNet.lblLocation.Text = targetPath
                     End If
@@ -353,7 +353,7 @@ Public Class Operations
             PropertiesDotNet.ErrorParser(ex)
         End Try
     End Sub
-    
+
     Shared Sub CreateJunction(sourcePath As String, targetPath As String)
         Try
             If WalkmanLib.IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
@@ -385,7 +385,7 @@ Public Class Operations
             PropertiesDotNet.ErrorParser(ex)
         End Try
     End Sub
-    
+
     Shared Function SetAttribute(path As String, attribute As FileAttributes, addOrRemove As Boolean) As Boolean
         Try
             Dim fileAttributes As FileAttributes
@@ -395,7 +395,7 @@ Public Class Operations
             Else ' Or (C# |) adds an attribute, And Not (C# & ~) removes an attribute
                 fileAttributes = fileAttributes And Not attribute
             End If
-            
+
             SetAttributes(path, fileAttributes)
             Return True
         Catch ex As UnauthorizedAccessException When _
@@ -421,7 +421,7 @@ Public Class Operations
         End Try
         Return False
     End Function
-    
+
     Private Shared Sub SetAttributeAsAdmin(path As String, attribute As FileAttributes, addOrRemove As Boolean)
         Select Case attribute
             Case FileAttributes.ReadOnly
@@ -444,11 +444,11 @@ Public Class Operations
                 Throw New InvalidOperationException("Invalid Attribute specified: " & attribute.ToString())
         End Select
     End Sub
-    
+
     Public Shared Sub HandleManager(filePath As String)
         Dim walkmanUtilsPath As String = WalkmanLib.GetWalkmanUtilsPath()
         Dim handleManagerPath As String = Path.Combine(walkmanUtilsPath, "HandleManager.exe")
-        
+
         If Not Exists(handleManagerPath) Then
             MessageBox("Could not find HandleManager in WalkmanUtils install!" & Environment.NewLine & Environment.NewLine &
                        "Looking for: " & handleManagerPath, MessageBoxButtons.OK, MessageBoxIcon.Exclamation, "Launching HandleManager")
@@ -457,7 +457,7 @@ Public Class Operations
 
         Process.Start(handleManagerPath, """" & filePath & """")
     End Sub
-    
+
     Shared Function MessageBox(text As String, Optional buttons As MessageBoxButtons = 0,
                                Optional icon As MessageBoxIcon = 0, Optional title As String = Nothing,
                                Optional defaultButton As MessageBoxDefaultButton = 0,
@@ -465,10 +465,10 @@ Public Class Operations
         If title Is Nothing Then
             title = Application.ProductName
         End If
-        
+
         Return Windows.Forms.MessageBox.Show(text, title, buttons, icon, defaultButton, options)
     End Function
-    
+
     Shared Function GetInput(ByRef input As String, Optional windowTitle As String = Nothing, Optional header As String = Nothing, Optional content As String = Nothing) As DialogResult
         If OokiiDialogsLoaded() Then
             Return OokiiInputBox(input, windowTitle, header, content)
@@ -477,7 +477,7 @@ Public Class Operations
             If content IsNot Nothing Then
                 inputBoxPrompt &= vbNewLine & content
             End If
-            
+
             input = InputBox(inputBoxPrompt, windowTitle, input)
             If String.IsNullOrEmpty(input) Then
                 Return DialogResult.Cancel
@@ -486,7 +486,7 @@ Public Class Operations
             End If
         End If
     End Function
-    
+
     Private Shared Function OokiiInputBox(ByRef input As String, Optional windowTitle As String = Nothing, Optional header As String = Nothing, Optional content As String = Nothing) As DialogResult
         Dim ooInput = New Ookii.Dialogs.InputDialog With {
             .Input = input,
@@ -494,12 +494,12 @@ Public Class Operations
             .MainInstruction = header,
             .Content = content
         }
-        
+
         Dim returnResult = ooInput.ShowDialog(PropertiesDotNet)
         input = ooInput.Input
         Return returnResult
     End Function
-    
+
     Private Shared Function OokiiDialogsLoaded() As Boolean
         Try
             OokiiDialogsLoadedDelegate()

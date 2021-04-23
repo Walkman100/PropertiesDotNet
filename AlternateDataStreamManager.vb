@@ -1,20 +1,20 @@
 Imports PropertiesDotNet.Trinet.Core.IO.Ntfs
 
-Public Partial Class AlternateDataStreamManager
+Partial Public Class AlternateDataStreamManager
     Public Sub New()
         Me.InitializeComponent()
     End Sub
-    
+
     Sub LoadStreams() Handles Me.Shown
         lstStreams.Items.Clear()
-        
+
         Dim file As FileInfo = New FileInfo(PropertiesDotNet.lblLocation.Text)
-        
+
         If file.Exists Then
             Dim tmpListViewItem As New ListViewItem(New String() {":$DATA", file.Length, "Main Stream", "(see base file attributes)"})
             lstStreams.Items.Add(tmpListViewItem)
         End If
-        
+
         Try
             For Each s As AlternateDataStreamInfo In ListAlternateDataStreams(file.FullName)
                 Dim tmpListViewItem As New ListViewItem(New String() {s.Name, s.Size.ToString(), s.StreamType.ToString, s.Attributes.ToString})
@@ -23,21 +23,21 @@ Public Partial Class AlternateDataStreamManager
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try
-        
+
         lstStreams.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
         lstStreams_SelectedIndexChanged()
     End Sub
-    
+
     Sub ADS_VisibleChanged() Handles Me.VisibleChanged
         If Me.Visible Then
             Me.CenterToParent()
         End If
     End Sub
-    
+
     Sub ADSFormClosed() Handles Me.FormClosed
         PropertiesDotNet.CheckData()
     End Sub
-    
+
     Sub lstStreams_SelectedIndexChanged() Handles lstStreams.SelectedIndexChanged
         If lstStreams.SelectedItems.Count = 0 Then
             btnOpen.Enabled = False
@@ -51,7 +51,7 @@ Public Partial Class AlternateDataStreamManager
             btnExecute.Enabled = True
             btnDelete.Enabled = True
             btnCopy.Enabled = True
-            
+
             ' stream :$DATA is the base file, we don't want to open that within the program and the file is deletable in the main window
             For Each item As ListViewItem In lstStreams.SelectedItems
                 If item.Text = ":$DATA" Then
@@ -62,7 +62,7 @@ Public Partial Class AlternateDataStreamManager
             Next
         End If
     End Sub
-    
+
     Sub lstStreams_ColumnClick(sender As Object, e As ColumnClickEventArgs) Handles lstStreams.ColumnClick
         If e.Column = 0 Then
             lstStreams.Sorting = IIf(lstStreams.Sorting = SortOrder.Ascending, SortOrder.Descending, SortOrder.Ascending)
@@ -70,13 +70,13 @@ Public Partial Class AlternateDataStreamManager
             'lstStreams.Sort(e.Column)
         End If
     End Sub
-    
+
     Sub btnOpen_Click() Handles btnOpen.Click, lstStreams.ItemActivate
         For Each item As ListViewItem In lstStreams.SelectedItems
             Process.Start("notepad.exe", PropertiesDotNet.lblLocation.Text & ":" & item.Text)
         Next
     End Sub
-    
+
     Sub btnOpen_MouseClick(sender As Object, e As MouseEventArgs) Handles btnOpen.MouseUp
         If e.Button = MouseButtons.Right Then
             Try
@@ -88,7 +88,7 @@ Public Partial Class AlternateDataStreamManager
             End Try
         End If
     End Sub
-        
+
     Sub btnView_Click() Handles btnView.Click
         Dim frmShowStream As New Form With {
             .Width = 600,
@@ -105,7 +105,7 @@ Public Partial Class AlternateDataStreamManager
             .Dock = DockStyle.Fill
         }
         frmShowStream.Controls.Add(txtShowStream)
-        
+
         For Each item As ListViewItem In lstStreams.SelectedItems
             frmShowStream.Text = PropertiesDotNet.lblLocation.Text & ":" & item.Text
             Using stream As StreamReader = GetAlternateDataStream(PropertiesDotNet.lblLocation.Text, item.Text).OpenText
@@ -115,7 +115,7 @@ Public Partial Class AlternateDataStreamManager
             frmShowStream.ShowDialog()
         Next
     End Sub
-    
+
     Sub btnExecute_Click() Handles btnExecute.Click
         For Each item As ListViewItem In lstStreams.SelectedItems
             Try
@@ -135,7 +135,7 @@ Public Partial Class AlternateDataStreamManager
             End Try
         Next
     End Sub
-    
+
     Sub btnDelete_Click() Handles btnDelete.Click
         For Each item As ListViewItem In lstStreams.SelectedItems
             Try
@@ -148,25 +148,25 @@ Public Partial Class AlternateDataStreamManager
                 PropertiesDotNet.ErrorParser(ex)
             End Try
         Next
-        
+
         LoadStreams()
     End Sub
-    
+
     Sub btnCopy_Click() Handles btnCopy.Click
         Dim result As MsgBoxResult
         Dim targetFile As String
         Dim targetStreamName As String
         Dim adsSource As AlternateDataStreamInfo
         Dim adsTarget As AlternateDataStreamInfo
-        
+
         For Each item As ListViewItem In lstStreams.SelectedItems
-            
+
             ' get target file from user input
             targetFile = PropertiesDotNet.lblLocation.Text
             result = MsgBox("Copy stream """ & item.Text & """ to same file?", MsgBoxStyle.YesNoCancel, "Copy Stream Target")
             If result = MsgBoxResult.Cancel Then
                 Continue For
-            ElseIf result = MsgBoxResult.No
+            ElseIf result = MsgBoxResult.No Then
                 sfdSelectCopyTarget.InitialDirectory = PropertiesDotNet.lblDirectory.Text
                 sfdSelectCopyTarget.FileName = "Don't select a file to select folder"
                 sfdSelectCopyTarget.Title = "Select file to copy stream """ & item.Text & """ to:"
@@ -180,28 +180,28 @@ Public Partial Class AlternateDataStreamManager
                     Continue For
                 End If
             End If
-            
+
             adsSource = New AlternateDataStreamInfo(PropertiesDotNet.lblLocation.Text, item.Text, Nothing, True)
-            
+
             ' get target stream from user input
             If adsSource.Name = ":$DATA" Then
                 targetStreamName = ""
             Else
                 targetStreamName = adsSource.Name
             End If
-            
+
             If Operations.GetInput(targetStreamName, "Copy Stream", "Enter name to copy stream """ & adsSource.Name & """ to:") <> DialogResult.OK Then
                 Continue For
             End If
-            
+
             Dim sourceStream As FileStream = Nothing
             Dim targetStream As FileStream = Nothing
-            
+
             Try
                 If Not File.Exists(targetFile) And Not Directory.Exists(targetFile) Then
                     File.Create(targetFile).Close()
                 End If
-                
+
                 ' Copying FROM AlternateDataStream TO file
                 If targetStreamName = ":$DATA" Then
                     sourceStream = adsSource.OpenRead()
@@ -216,7 +216,7 @@ Public Partial Class AlternateDataStreamManager
                         MsgBox("Stream name """ & targetStreamName & """ contains invalid characters!", MsgBoxStyle.Critical, "Error Creating Stream")
                         Continue For
                     End Try
-                    
+
                     ' Copying FROM file TO AlternateDataStream
                     If adsSource.Name = ":$DATA" Then
                         sourceStream = OpenRead(adsSource.FilePath)
@@ -226,7 +226,7 @@ Public Partial Class AlternateDataStreamManager
                         targetStream = adsTarget.OpenWrite()
                     End If
                 End If
-                
+
                 WalkmanLib.StreamCopy(sourceStream, targetStream, "Copying """ & adsSource.FullPath & """ to """ & targetFile & ":" & targetStreamName & """...",
                                       onComplete:=Sub(s, e)
                                                       If e.Error IsNot Nothing Then
@@ -242,17 +242,17 @@ Public Partial Class AlternateDataStreamManager
                 PropertiesDotNet.ErrorParser(ex)
             End Try
         Next
-        
+
         LoadStreams()
     End Sub
-    
+
     Sub btnAdd_Click() Handles btnAdd.Click
         Dim streamInfo As String = ""
-        
+
         If Operations.GetInput(streamInfo, "Create Stream", "Type a name for the stream:") <> DialogResult.OK Then
             Exit Sub
         End If
-        
+
         Dim ads As AlternateDataStreamInfo
         Try
             ads = GetAlternateDataStream(PropertiesDotNet.lblLocation.Text, streamInfo, FileMode.CreateNew)
@@ -263,12 +263,12 @@ Public Partial Class AlternateDataStreamManager
             MsgBox("Stream name """ & streamInfo & """ contains invalid characters!", MsgBoxStyle.Critical, "Error Creating Stream")
             Exit Sub
         End Try
-        
+
         streamInfo = ""
         If Operations.GetInput(streamInfo, "Create Stream", "Enter stream contents:") <> DialogResult.OK Then
             Exit Sub
         End If
-        
+
         Try
             Using stream As StreamWriter = New StreamWriter(ads.OpenWrite())
                 stream.Write(streamInfo)
@@ -280,11 +280,11 @@ Public Partial Class AlternateDataStreamManager
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try
-        
+
         LoadStreams()
     End Sub
-    
+
     Sub btnClose_Click() Handles btnClose.Click
-        Me.Close
+        Me.Close()
     End Sub
 End Class

@@ -14,7 +14,7 @@ Public Class SelectDateDialog
         Me.monthCalendar = New System.Windows.Forms.MonthCalendar()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.btnSave = New System.Windows.Forms.Button()
-        Me.SuspendLayout
+        Me.SuspendLayout()
         'dateTimePicker
         Me.dateTimePicker.CustomFormat = "dddd, dd MMMM yyyy, HH:mm:ss"
         Me.dateTimePicker.Dock = System.Windows.Forms.DockStyle.Fill
@@ -24,7 +24,7 @@ Public Class SelectDateDialog
         Me.dateTimePicker.Size = New System.Drawing.Size(263, 20)
         Me.dateTimePicker.TabIndex = 0
         'monthCalendar
-        Me.monthCalendar.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.monthCalendar.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.monthCalendar.Location = New System.Drawing.Point(18, 32)
         Me.monthCalendar.MaxSelectionCount = 1
         Me.monthCalendar.Name = "monthCalendar"
@@ -37,7 +37,7 @@ Public Class SelectDateDialog
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 2
         Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.UseVisualStyleBackColor = true
+        Me.btnCancel.UseVisualStyleBackColor = True
         'btnSave
         Me.btnSave.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -46,10 +46,10 @@ Public Class SelectDateDialog
         Me.btnSave.Size = New System.Drawing.Size(75, 23)
         Me.btnSave.TabIndex = 3
         Me.btnSave.Text = "Save"
-        Me.btnSave.UseVisualStyleBackColor = true
+        Me.btnSave.UseVisualStyleBackColor = True
         'SelectDateDialog
         Me.AcceptButton = Me.btnSave
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(263, 241)
@@ -57,51 +57,51 @@ Public Class SelectDateDialog
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.monthCalendar)
         Me.Controls.Add(Me.dateTimePicker)
-        Me.MaximizeBox = false
-        Me.MinimizeBox = false
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "SelectDateDialog"
-        Me.ShowIcon = false
+        Me.ShowIcon = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Choose a date:"
-        Me.ResumeLayout(false)
+        Me.ResumeLayout(False)
     End Sub
     Private WithEvents btnSave As System.Windows.Forms.Button
     Private WithEvents btnCancel As System.Windows.Forms.Button
     Private WithEvents monthCalendar As System.Windows.Forms.MonthCalendar
     Public WithEvents dateTimePicker As System.Windows.Forms.DateTimePicker
-    
+
     Public Sub New()
         Me.InitializeComponent()
     End Sub
-    
+
     Sub SelectDateDialog_VisibleChanged() Handles Me.VisibleChanged
         If Me.Visible Then
             Me.CenterToParent()
         End If
     End Sub
-    
+
     Sub dateTimePicker_ValueChanged() Handles dateTimePicker.ValueChanged
         monthCalendar.SelectionStart = dateTimePicker.Value
         monthCalendar.SelectionEnd = dateTimePicker.Value
     End Sub
-    
+
     Sub monthCalendar_DateSelected() Handles monthCalendar.DateSelected
         dateTimePicker.Value = monthCalendar.SelectionStart
     End Sub
-    
+
     Sub CloseSelectDateDialog() Handles btnCancel.Click
-        Me.Close
+        Me.Close()
         Me.DestroyHandle()
         Me.Dispose()
     End Sub
-    
+
     Sub btnSave_Click() Handles btnSave.Click
         If _saveAction IsNot Nothing Then
             _saveAction.Invoke()
         End If
         CloseSelectDateDialog()
     End Sub
-    
+
     Private _saveAction As Action
     Public WriteOnly Property SaveAction As Action
         Set(value As Action)
