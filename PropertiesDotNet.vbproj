@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{62ABA6FA-CA98-4B1A-AB57-428A1ADA5849}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>PropertiesDotNet.My.MyApplication</StartupObject>
-    <RootNamespace>PropertiesDotNet</RootNamespace>
+    <StartupObject>My.MyApplication</StartupObject>
+    <RootNamespace></RootNamespace>
     <AssemblyName>PropertiesDotNet</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>

@@ -3,7 +3,7 @@ Imports System.Diagnostics
 Imports System.IO
 Imports System.Windows.Forms
 Imports Microsoft.VisualBasic
-Imports PropertiesDotNet.Trinet.Core.IO.Ntfs
+Imports Trinet.Core.IO.Ntfs
 
 Partial Public Class AlternateDataStreamManager
     Public Sub New()

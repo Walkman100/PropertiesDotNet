@@ -26,7 +26,7 @@ Namespace My
         End Sub
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()> _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.PropertiesDotNet.PropertiesDotNet
+            Me.MainForm = My.Forms.PropertiesDotNet
         End Sub
     End Class
 End Namespace

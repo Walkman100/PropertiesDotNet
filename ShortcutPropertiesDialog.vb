@@ -274,7 +274,7 @@ Public Class ShortcutPropertiesDialog
         Me.Controls.Add(Me.btnTarget)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.btnCancel)
-        Me.Icon = Global.PropertiesDotNet.Resources.document_properties_shortcut
+        Me.Icon = Global.Resources.document_properties_shortcut
         Me.Name = "ShortcutPropertiesDialog"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Shortcut Properties"
