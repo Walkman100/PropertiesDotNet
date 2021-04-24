@@ -1,3 +1,8 @@
+Imports System
+Imports System.IO
+Imports System.Windows.Forms
+Imports Microsoft.VisualBasic
+
 Public Class ShortcutPropertiesDialog
     Inherits System.Windows.Forms.Form
     Private components As System.ComponentModel.IContainer

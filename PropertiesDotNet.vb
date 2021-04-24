@@ -1,3 +1,11 @@
+Imports System
+Imports System.Diagnostics
+Imports System.Drawing
+Imports System.IO
+Imports System.Linq
+Imports System.Windows.Forms
+Imports Microsoft.VisualBasic
+
 Public Class PropertiesDotNet
     Dim byteSize As ULong = 0
     Dim compressedSizeOrError As String = " "
@@ -33,7 +41,7 @@ Public Class PropertiesDotNet
                 End ' make sure nothing else can be processed
             End If
         End If
-        If Not Exists(lblLocation.Text) And Not Directory.Exists(lblLocation.Text) Then
+        If Not File.Exists(lblLocation.Text) And Not Directory.Exists(lblLocation.Text) Then
             Try
                 If Not New DriveInfo(lblLocation.Text).Name = New FileInfo(lblLocation.Text).FullName Then
                     Throw New Exception
@@ -61,7 +69,7 @@ Public Class PropertiesDotNet
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
             Dim newFilePath As String = e.Data.GetData(DataFormats.FileDrop)(0)
 
-            If Not Exists(newFilePath) And Not Directory.Exists(newFilePath) Then
+            If Not File.Exists(newFilePath) And Not Directory.Exists(newFilePath) Then
                 Try
                     If Not New DriveInfo(newFilePath).Name = New FileInfo(newFilePath).FullName Then
                         Throw New Exception
@@ -169,7 +177,7 @@ Public Class PropertiesDotNet
             Me.Height = 586
         End Try
 
-        If Exists(lblFullPath.Text) Then
+        If File.Exists(lblFullPath.Text) Then
             byteSize = FileProperties.Length
             lblSize.Text = byteSize ' clear any folder errors
             AutoDetectSize()
@@ -199,7 +207,7 @@ Public Class PropertiesDotNet
 
             chkTemporary.Enabled = True
             chkTemporary.Text = "&Temporary"
-            chkTemporary.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Temporary)
+            chkTemporary.Checked = File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Temporary)
 
             lblOpenWithLbl.Text = "Opens with:"
             btnHashes.Image = Resources.hashx16
@@ -254,31 +262,31 @@ Public Class PropertiesDotNet
         End If
 
         If chkUTC.Checked Then
-            lblCreationTime.Text = GetCreationTimeUtc(lblFullPath.Text)
-            lblLastAccessTime.Text = GetLastAccessTimeUtc(lblFullPath.Text)
-            lblLastWriteTime.Text = GetLastWriteTimeUtc(lblFullPath.Text)
+            lblCreationTime.Text = File.GetCreationTimeUtc(lblFullPath.Text)
+            lblLastAccessTime.Text = File.GetLastAccessTimeUtc(lblFullPath.Text)
+            lblLastWriteTime.Text = File.GetLastWriteTimeUtc(lblFullPath.Text)
         Else
-            lblCreationTime.Text = GetCreationTime(lblFullPath.Text)
-            lblLastAccessTime.Text = GetLastAccessTime(lblFullPath.Text)
-            lblLastWriteTime.Text = GetLastWriteTime(lblFullPath.Text)
+            lblCreationTime.Text = File.GetCreationTime(lblFullPath.Text)
+            lblLastAccessTime.Text = File.GetLastAccessTime(lblFullPath.Text)
+            lblLastWriteTime.Text = File.GetLastWriteTime(lblFullPath.Text)
         End If
 
         ' ======================= Attributes section =======================
         '  (except some checkbox properties are set above depending if on folder or file)
 
-        chkReadOnly.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.ReadOnly)
-        chkHidden.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Hidden)
-        chkSystem.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.System)
-        chkArchive.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Archive)
-        chkNotIndexed.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.NotContentIndexed)
-        chkCompressed.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed)
-        chkEncrypted.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted)
-        chkOffline.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Offline)
+        chkReadOnly.Checked = File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.ReadOnly)
+        chkHidden.Checked = File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Hidden)
+        chkSystem.Checked = File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.System)
+        chkArchive.Checked = File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Archive)
+        chkNotIndexed.Checked = File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.NotContentIndexed)
+        chkCompressed.Checked = File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed)
+        chkEncrypted.Checked = File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted)
+        chkOffline.Checked = File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Offline)
         ' chkTemporary moved to If Exists section above as it is the case sensitive checkbox for directories
-        chkNoScrub.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.NoScrubData)
-        chkIntegrity.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.IntegrityStream)
-        chkReparse.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.ReparsePoint)
-        chkSparse.Checked = GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.SparseFile)
+        chkNoScrub.Checked = File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.NoScrubData)
+        chkIntegrity.Checked = File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.IntegrityStream)
+        chkReparse.Checked = File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.ReparsePoint)
+        chkSparse.Checked = File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.SparseFile)
 
         If chkReparse.Checked Then
             Try
@@ -305,7 +313,7 @@ Public Class PropertiesDotNet
         If IsNothing(e.Error) Then
             ShowImageBox()
         Else
-            If Exists(lblFullPath.Text) Then
+            If File.Exists(lblFullPath.Text) Then
                 Try
                     imgFile.Image = Icon.ExtractAssociatedIcon(lblFullPath.Text).ToBitmap
                     ShowImageBox()
@@ -687,7 +695,7 @@ Public Class PropertiesDotNet
         If Operations.SetAttribute(lblFullPath.Text, FileAttributes.Compressed, chkCompressed.Checked) Then
             Dim oneGB = 1000000000 '1 GB
             If chkCompressed.Checked Then
-                If Not GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
+                If Not File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
                     If WalkmanLib.IsFileOrDirectory(lblFullPath.Text).HasFlag(PathEnum.IsDirectory) OrElse byteSize < oneGB OrElse
                             MsgBox("Are you sure you want to compress this large file (>1GB)? This will take a while and can't be interrupted",
                             MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Compressing Large File") = MsgBoxResult.Yes Then
@@ -696,7 +704,7 @@ Public Class PropertiesDotNet
                     End If
                 End If
             Else
-                If GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
+                If File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
                     If WalkmanLib.IsFileOrDirectory(lblFullPath.Text).HasFlag(PathEnum.IsDirectory) OrElse byteSize < oneGB OrElse
                             MsgBox("Are you sure you want to decompress this large file (>1GB)? This will take a while and can't be interrupted",
                             MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Decompressing Large File") = MsgBoxResult.Yes Then
@@ -712,7 +720,7 @@ Public Class PropertiesDotNet
     Sub chkEncrypted_Click() Handles chkEncrypted.Click
         If Operations.SetAttribute(lblFullPath.Text, FileAttributes.Encrypted, chkEncrypted.Checked) Then
             If chkEncrypted.Checked Then
-                If Not GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted) Then
+                If Not File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted) Then
                     Dim FileProperties As New FileInfo(lblFullPath.Text)
                     Try
                         FileProperties.Encrypt()
@@ -723,7 +731,7 @@ Public Class PropertiesDotNet
                     End Try
                 End If
             Else
-                If GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted) Then
+                If File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Encrypted) Then
                     Dim FileProperties As New FileInfo(lblFullPath.Text)
                     Try
                         FileProperties.Decrypt()

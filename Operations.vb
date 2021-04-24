@@ -1,3 +1,9 @@
+Imports System
+Imports System.Diagnostics
+Imports System.IO
+Imports System.Windows.Forms
+Imports Microsoft.VisualBasic
+
 Public Class Operations
     Enum TimeChangeEnum
         Creation = 1   ' have to give them values,
@@ -9,17 +15,17 @@ Public Class Operations
         Try
             Select Case type
                 Case TimeChangeEnum.Creation And useUTC
-                    SelectDateDialog.dateTimePicker.Value = GetCreationTimeUtc(path)
+                    SelectDateDialog.dateTimePicker.Value = File.GetCreationTimeUtc(path)
                 Case TimeChangeEnum.Creation
-                    SelectDateDialog.dateTimePicker.Value = GetCreationTime(path)
+                    SelectDateDialog.dateTimePicker.Value = File.GetCreationTime(path)
                 Case TimeChangeEnum.LastAccess And useUTC
-                    SelectDateDialog.dateTimePicker.Value = GetLastAccessTimeUtc(path)
+                    SelectDateDialog.dateTimePicker.Value = File.GetLastAccessTimeUtc(path)
                 Case TimeChangeEnum.LastAccess
-                    SelectDateDialog.dateTimePicker.Value = GetLastAccessTime(path)
+                    SelectDateDialog.dateTimePicker.Value = File.GetLastAccessTime(path)
                 Case TimeChangeEnum.LastWrite And useUTC
-                    SelectDateDialog.dateTimePicker.Value = GetLastWriteTimeUtc(path)
+                    SelectDateDialog.dateTimePicker.Value = File.GetLastWriteTimeUtc(path)
                 Case TimeChangeEnum.LastWrite
-                    SelectDateDialog.dateTimePicker.Value = GetLastWriteTime(path)
+                    SelectDateDialog.dateTimePicker.Value = File.GetLastWriteTime(path)
             End Select
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
@@ -30,17 +36,17 @@ Public Class Operations
         Try
             Select Case type
                 Case TimeChangeEnum.Creation And useUTC
-                    SetCreationTimeUtc  (path, time)
+                    File.SetCreationTimeUtc  (path, time)
                 Case TimeChangeEnum.Creation
-                    SetCreationTime     (path, time)
+                    File.SetCreationTime     (path, time)
                 Case TimeChangeEnum.LastAccess And useUTC
-                    SetLastAccessTimeUtc(path, time)
+                    File.SetLastAccessTimeUtc(path, time)
                 Case TimeChangeEnum.LastAccess
-                    SetLastAccessTime   (path, time)
+                    File.SetLastAccessTime   (path, time)
                 Case TimeChangeEnum.LastWrite And useUTC
-                    SetLastWriteTimeUtc (path, time)
+                    File.SetLastWriteTimeUtc (path, time)
                 Case TimeChangeEnum.LastWrite
-                    SetLastWriteTime    (path, time)
+                    File.SetLastWriteTime    (path, time)
             End Select
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
@@ -389,14 +395,14 @@ Public Class Operations
     Shared Function SetAttribute(path As String, attribute As FileAttributes, addOrRemove As Boolean) As Boolean
         Try
             Dim fileAttributes As FileAttributes
-            fileAttributes = GetAttributes(path)
+            fileAttributes = File.GetAttributes(path)
             If addOrRemove Then
                 fileAttributes = fileAttributes Or attribute
             Else ' Or (C# |) adds an attribute, And Not (C# & ~) removes an attribute
                 fileAttributes = fileAttributes And Not attribute
             End If
 
-            SetAttributes(path, fileAttributes)
+            File.SetAttributes(path, fileAttributes)
             Return True
         Catch ex As UnauthorizedAccessException When _
                 Not WalkmanLib.IsAdmin() AndAlso
@@ -449,7 +455,7 @@ Public Class Operations
         Dim walkmanUtilsPath As String = WalkmanLib.GetWalkmanUtilsPath()
         Dim handleManagerPath As String = Path.Combine(walkmanUtilsPath, "HandleManager.exe")
 
-        If Not Exists(handleManagerPath) Then
+        If Not File.Exists(handleManagerPath) Then
             MessageBox("Could not find HandleManager in WalkmanUtils install!" & Environment.NewLine & Environment.NewLine &
                        "Looking for: " & handleManagerPath, MessageBoxButtons.OK, MessageBoxIcon.Exclamation, "Launching HandleManager")
             Exit Sub

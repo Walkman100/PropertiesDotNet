@@ -1,3 +1,8 @@
+Imports System
+Imports System.IO
+Imports System.Runtime.InteropServices
+Imports Microsoft.VisualBasic
+
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Public Class CompressReport
     Inherits System.Windows.Forms.Form
@@ -70,7 +75,7 @@ Public Class CompressReport
                 WalkmanLib.SetCompression(e.Argument(1), e.Argument(0))
 
                 lblStatus.Text = "Done!"
-                Sleep(100)
+                Threading.Thread.Sleep(100)
                 Me.Close()
                 Return
             End If
@@ -97,16 +102,16 @@ Public Class CompressReport
             FilePropertiesStream.Close()
 
             If e.Argument(0) Then lblStatus.Text = "[5/5] Compression Done!" Else lblStatus.Text = "[5/5] Decompression Done!"
-            Sleep(100)
+            Threading.Thread.Sleep(100)
             Me.Close()
 
         Catch ex As UnauthorizedAccessException
             lblStatus.Text = "Failed! Access denied!"
-            Sleep(4000)
+            Threading.Thread.Sleep(4000)
             Me.Close()
         Catch ex As IOException
             lblStatus.Text = "Failed! File in use!"
-            Sleep(2000)
+            Threading.Thread.Sleep(2000)
             Me.Close()
         Catch ex As Exception
             MsgBox(ex.ToString, MsgBoxStyle.Exclamation)

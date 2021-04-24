@@ -124,22 +124,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Import Include="Microsoft.VisualBasic" />
-    <Import Include="System" />
-    <Import Include="System.Collections" />
-    <Import Include="System.Collections.Generic" />
-    <Import Include="System.Diagnostics" />
-    <Import Include="System.Drawing" />
-    <Import Include="System.IO" />
-    <Import Include="System.IO.File" />
-    <Import Include="System.Linq" />
-    <Import Include="System.Runtime.InteropServices" />
-    <Import Include="System.Security.Principal" />
-    <Import Include="System.Threading.Tasks" />
-    <Import Include="System.Threading.Thread" />
-    <Import Include="System.Windows.Forms" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="NTFS-Streams" />
     <Folder Include="WalkmanLib" />
   </ItemGroup>

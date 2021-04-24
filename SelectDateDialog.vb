@@ -1,3 +1,5 @@
+Imports System
+
 Public Class SelectDateDialog
     Inherits System.Windows.Forms.Form
     Private components As System.ComponentModel.IContainer

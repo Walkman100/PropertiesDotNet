@@ -1,5 +1,9 @@
+Imports System
+Imports System.IO
 Imports System.Security
 Imports System.Security.Cryptography
+Imports System.Windows.Forms
+Imports Microsoft.VisualBasic
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Public Class Hashes

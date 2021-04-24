@@ -1,3 +1,6 @@
+Imports System
+Imports System.Windows.Forms
+
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Public Class ImageViewer
     Inherits System.Windows.Forms.Form

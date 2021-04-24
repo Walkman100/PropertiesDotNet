@@ -1,3 +1,7 @@
+Imports System
+Imports System.IO
+Imports Microsoft.VisualBasic
+
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Public Class BackgroundProgress
     Inherits System.Windows.Forms.Form
@@ -131,7 +135,7 @@ Public Class BackgroundProgress
                 End If
 
                 SetStatus("Deleting folder """ & DirectoryProperties.Name & """...", 99)
-                Sleep(100)
+                Threading.Thread.Sleep(100)
                 DirectoryProperties.Delete()
                 Me.Close()
                 Me.Dispose()
@@ -199,7 +203,7 @@ Public Class BackgroundProgress
                     i += 1
                 Next
 
-                Sleep(100)
+                Threading.Thread.Sleep(100)
                 Me.Close()
                 Me.Dispose()
             End If

@@ -1,3 +1,8 @@
+Imports System
+Imports System.Diagnostics
+Imports System.IO
+Imports System.Windows.Forms
+Imports Microsoft.VisualBasic
 Imports PropertiesDotNet.Trinet.Core.IO.Ntfs
 
 Partial Public Class AlternateDataStreamManager
@@ -205,7 +210,7 @@ Partial Public Class AlternateDataStreamManager
                 ' Copying FROM AlternateDataStream TO file
                 If targetStreamName = ":$DATA" Then
                     sourceStream = adsSource.OpenRead()
-                    targetStream = Open(targetFile, FileMode.Truncate)
+                    targetStream = File.Open(targetFile, FileMode.Truncate)
                 Else
                     Try
                         adsTarget = GetAlternateDataStream(targetFile, targetStreamName, FileMode.CreateNew)
@@ -219,7 +224,7 @@ Partial Public Class AlternateDataStreamManager
 
                     ' Copying FROM file TO AlternateDataStream
                     If adsSource.Name = ":$DATA" Then
-                        sourceStream = OpenRead(adsSource.FilePath)
+                        sourceStream = File.OpenRead(adsSource.FilePath)
                         targetStream = adsTarget.OpenWrite()
                     Else ' Copying FROM AlternateDataStream TO AlternateDataStream
                         sourceStream = adsSource.OpenRead()
