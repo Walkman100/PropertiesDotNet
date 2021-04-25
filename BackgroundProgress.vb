@@ -69,9 +69,12 @@ Public Class BackgroundProgress
     ''' delete, deletePath
     ''' copy, copyFromPath, copyToPath
     Sub bwFolderOperations_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bwFolderOperations.DoWork
-        Dim DirectoryProperties As New DirectoryInfo(e.Argument(1))
+        Dim command As String = DirectCast(e.Argument, String())(0)
+        Dim sourcePath As String = DirectCast(e.Argument, String())(1)
+
+        Dim DirectoryProperties As New DirectoryInfo(sourcePath)
         Try
-            If e.Argument(0) = "delete" Then
+            If command = "delete" Then
                 'Get file list (2%)
                 'Delete files (95% total)
                 'Get folder list (1%)
@@ -79,12 +82,12 @@ Public Class BackgroundProgress
                 'Delete final folder (1%)
 
                 Me.Text = "Deleting """ & DirectoryProperties.Name & """..."
-                SetStatus("Getting file list... (May take a while)", 0.01)
+                SetStatus("Getting file list... (May take a while)", 0)
                 Dim SubFiles = DirectoryProperties.GetFiles("*", SearchOption.AllDirectories)
 
                 i = 0
                 For Each SubFile As FileInfo In SubFiles
-                    SetStatus("Deleting file """ & SubFile.Name & """...", ((i / SubFiles.Length) * 95) + 2)
+                    SetStatus("Deleting file """ & SubFile.Name & """...", CType(((i / SubFiles.Length) * 95) + 2, Integer))
                     Try
                         SubFile.Delete()
                     Catch ex As Exception
@@ -115,7 +118,7 @@ Public Class BackgroundProgress
 
                 i = 0
                 For Each SubFolder As DirectoryInfo In SubFolders
-                    SetStatus("Deleting folder """ & SubFolder.Name & """...", ((i / SubFolders.Length) * 1) + 98)
+                    SetStatus("Deleting folder """ & SubFolder.Name & """...", CType(((i / SubFolders.Length) * 1) + 98, Integer))
                     Try
                         SubFolder.Delete()
                     Catch
@@ -138,24 +141,26 @@ Public Class BackgroundProgress
                 DirectoryProperties.Delete()
                 Me.Close()
                 Me.Dispose()
-            ElseIf e.Argument(0) = "copy" Then
+            ElseIf command = "copy" Then
                 'Create root dir (1%)
                 'Get folder list (1%)
                 'Create folders (1%)
                 'Get file list (2%)
                 'Copy files (95%)
 
-                Me.Text = "Copying """ & DirectoryProperties.Name & """ to """ & e.Argument(2) & """..."
-                Directory.CreateDirectory(e.Argument(2))
+                Dim targetPath As String = DirectCast(e.Argument, String())(2)
+
+                Me.Text = "Copying """ & DirectoryProperties.Name & """ to """ & targetPath & """..."
+                Directory.CreateDirectory(targetPath)
 
                 SetStatus("Getting folder list...", 1)
                 Dim SubFolders = DirectoryProperties.GetDirectories("*", SearchOption.AllDirectories)
 
                 i = 0
                 For Each SubFolder As DirectoryInfo In SubFolders
-                    SetStatus("Creating folder """ & SubFolder.Name & """...", ((i / SubFolders.Length) * 1) + 1)
+                    SetStatus("Creating folder """ & SubFolder.Name & """...", CType(((i / SubFolders.Length) * 1) + 1, Integer))
                     Try
-                        Directory.CreateDirectory(e.Argument(2) & SubFolder.FullName.Substring(DirectoryProperties.FullName.Length))
+                        Directory.CreateDirectory(targetPath & SubFolder.FullName.Substring(DirectoryProperties.FullName.Length))
                     Catch
                         WasError = True
                     End Try
@@ -165,7 +170,7 @@ Public Class BackgroundProgress
                 If WasError Then
                     For Each SubFolder As DirectoryInfo In SubFolders
                         Try
-                            Directory.CreateDirectory(e.Argument(2) & SubFolder.FullName.Substring(DirectoryProperties.FullName.Length))
+                            Directory.CreateDirectory(targetPath & SubFolder.FullName.Substring(DirectoryProperties.FullName.Length))
                         Catch
                         End Try
                     Next
@@ -176,11 +181,11 @@ Public Class BackgroundProgress
 
                 i = 0
                 For Each SubFile As FileInfo In SubFiles
-                    SetStatus("Copying file """ & SubFile.Name & """...", ((i / SubFiles.Length) * 95) + 5)
+                    SetStatus("Copying file """ & SubFile.Name & """...", CType(((i / SubFiles.Length) * 95) + 5, Integer))
                     Try
-                        SubFile.CopyTo(e.Argument(2) & SubFile.FullName.Substring(DirectoryProperties.FullName.Length))
+                        SubFile.CopyTo(targetPath & SubFile.FullName.Substring(DirectoryProperties.FullName.Length))
                     Catch ex As Exception
-                        Select Case Operations.MessageBox("There was an error copying """ & SubFile.FullName & """ to """ & e.Argument(2) &
+                        Select Case Operations.MessageBox("There was an error copying """ & SubFile.FullName & """ to """ & targetPath &
                                                           SubFile.FullName.Substring(DirectoryProperties.FullName.Length) & """!" &
                                                           Environment.NewLine & Environment.NewLine & ex.Message,
                                                           Windows.Forms.MessageBoxButtons.AbortRetryIgnore, Windows.Forms.MessageBoxIcon.Exclamation, "Error!")
@@ -188,7 +193,7 @@ Public Class BackgroundProgress
                                 Exit For
                             Case Windows.Forms.DialogResult.Retry
                                 Try
-                                    SubFile.CopyTo(e.Argument(2) & SubFile.FullName.Substring(DirectoryProperties.FullName.Length))
+                                    SubFile.CopyTo(targetPath & SubFile.FullName.Substring(DirectoryProperties.FullName.Length))
                                 Catch ex2 As Exception
                                     Select Case Operations.MessageBox("Error retrying copy for """ & SubFile.FullName & """:" & ex.Message,
                                                                       Windows.Forms.MessageBoxButtons.AbortRetryIgnore, Windows.Forms.MessageBoxIcon.Exclamation, "Error!")

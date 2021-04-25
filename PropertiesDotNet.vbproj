@@ -11,7 +11,7 @@
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <OptionInfer>On</OptionInfer>
-    <OptionStrict>Off</OptionStrict>
+    <OptionStrict>On</OptionStrict>
     <OptionCompare>Binary</OptionCompare>
     <ApplicationManifest>Properties\App.manifest</ApplicationManifest>
     <NoWin32Manifest>False</NoWin32Manifest>

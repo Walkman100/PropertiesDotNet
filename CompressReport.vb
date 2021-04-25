@@ -59,19 +59,22 @@ Public Class CompressReport
     '  Used for (De)Compressing files
     '   http://www.thescarms.com/dotnet/NTFSCompress.aspx
     <DllImport("Kernel32.dll")>
-    Public Shared Function DeviceIoControl(hDevice As IntPtr, dwIoControlCode As Integer, ByRef lpInBuffer As Short,
-    nInBufferSize As Integer, lpOutBuffer As IntPtr, nOutBufferSize As Integer, ByRef lpBytesReturned As Integer, lpOverlapped As IntPtr) As Integer
+    Public Shared Function DeviceIoControl(hDevice As IntPtr, dwIoControlCode As UInteger, ByRef lpInBuffer As UShort,
+    nInBufferSize As UInteger, lpOutBuffer As IntPtr, nOutBufferSize As UInteger, ByRef lpBytesReturned As UInteger, lpOverlapped As IntPtr) As Boolean
     End Function
 
     Sub bwCompress_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs)
         Try
+            Dim compress As Boolean = DirectCast(DirectCast(e.Argument, Object())(0), Boolean)
+            Dim filePath As String = DirectCast(DirectCast(e.Argument, Object())(1), String)
+
             ' Credits to http://www.thescarms.com/dotnet/NTFSCompress.aspx
             ' Converted to VB.Net with SharpDevelop (which I believe uses MSBuild anyway to convert)
-            If e.Argument(0) Then Me.Text = "Compressing..." Else Me.Text = "Decompressing..."
+            If compress Then Me.Text = "Compressing..." Else Me.Text = "Decompressing..."
 
-            If WalkmanLib.IsFileOrDirectory(e.Argument(1)).HasFlag(PathEnum.IsDirectory) Then
+            If WalkmanLib.IsFileOrDirectory(filePath).HasFlag(PathEnum.IsDirectory) Then
                 lblStatus.Text = "Running function..."
-                WalkmanLib.SetCompression(e.Argument(1), e.Argument(0))
+                WalkmanLib.SetCompression(filePath, compress)
 
                 lblStatus.Text = "Done!"
                 Threading.Thread.Sleep(100)
@@ -80,16 +83,16 @@ Public Class CompressReport
             End If
 
             lblStatus.Text = "[1/5] Opening File stream..."
-            Dim FilePropertiesStream As FileStream = File.Open(e.Argument(1), FileMode.Open, FileAccess.ReadWrite, FileShare.None)
+            Dim FilePropertiesStream As FileStream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None)
 
-            If e.Argument(0) Then
+            If compress Then
                 lblStatus.Text = "[2/5] Running compress function..."
-                DeviceIoControl(FilePropertiesStream.SafeFileHandle.DangerousGetHandle, &H9C040, 1, 2, 0, 0, 0, 0)
+                DeviceIoControl(FilePropertiesStream.SafeFileHandle.DangerousGetHandle, &H9C040, 1, 2, IntPtr.Zero, 0, 0, IntPtr.Zero)
             Else
                 ' https://msdn.microsoft.com/en-us/library/windows/desktop/aa364592(v=vs.85).aspx
                 ' COMPRESSION_FORMAT_NONE is equal to 0 (i assume)
                 lblStatus.Text = "[2/5] Running decompress function..."
-                DeviceIoControl(FilePropertiesStream.SafeFileHandle.DangerousGetHandle, &H9C040, 0, 2, 0, 0, 0, 0)
+                DeviceIoControl(FilePropertiesStream.SafeFileHandle.DangerousGetHandle, &H9C040, 0, 2, IntPtr.Zero, 0, 0, IntPtr.Zero)
             End If
 
             lblStatus.Text = "[3/5] Flushing buffer to disc..."
@@ -100,7 +103,7 @@ Public Class CompressReport
             FilePropertiesStream.Dispose()
             FilePropertiesStream.Close()
 
-            If e.Argument(0) Then lblStatus.Text = "[5/5] Compression Done!" Else lblStatus.Text = "[5/5] Decompression Done!"
+            If compress Then lblStatus.Text = "[5/5] Compression Done!" Else lblStatus.Text = "[5/5] Decompression Done!"
             Threading.Thread.Sleep(100)
             Me.Close()
 

@@ -15,7 +15,7 @@ Partial Public Class AlternateDataStreamManager
         Dim file As FileInfo = New FileInfo(PropertiesDotNet.lblLocation.Text)
 
         If file.Exists Then
-            Dim tmpListViewItem As New ListViewItem(New String() {":$DATA", file.Length, "Main Stream", "(see base file attributes)"})
+            Dim tmpListViewItem As New ListViewItem(New String() {":$DATA", file.Length.ToString(), "Main Stream", "(see base file attributes)"})
             lstStreams.Items.Add(tmpListViewItem)
         End If
 

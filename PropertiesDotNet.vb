@@ -66,7 +66,7 @@ Public Class PropertiesDotNet
 
     Sub PropertiesDotNet_DragDrop(sender As Object, e As DragEventArgs) Handles Me.DragDrop
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
-            Dim newFilePath As String = e.Data.GetData(DataFormats.FileDrop)(0)
+            Dim newFilePath As String = DirectCast(e.Data.GetData(DataFormats.FileDrop), String())(0)
 
             If Not File.Exists(newFilePath) And Not Directory.Exists(newFilePath) Then
                 Try
@@ -117,7 +117,7 @@ Public Class PropertiesDotNet
 
         ' get compressed size (or error) so it can be applied later
         Try
-            compressedSizeOrError = WalkmanLib.GetCompressedSize(lblFullPath.Text)
+            compressedSizeOrError = WalkmanLib.GetCompressedSize(lblFullPath.Text).ToString()
         Catch ex As Exception
             compressedSizeOrError = ex.Message
         End Try
@@ -126,7 +126,7 @@ Public Class PropertiesDotNet
         ' check drive properties and if on a drive show them
         Try
             Dim DriveProperties As New DriveInfo(lblLocation.Text)
-            lblDriveIsReady.Text = DriveProperties.IsReady
+            lblDriveIsReady.Text = DriveProperties.IsReady.ToString()
             Select Case DriveProperties.DriveType
                 Case DriveType.Unknown
                     lblDriveType.Text = "Unknown"
@@ -143,23 +143,23 @@ Public Class PropertiesDotNet
                 Case DriveType.Ram
                     lblDriveType.Text = "RAM"
                 Case Else
-                    lblDriveType.Text = DriveProperties.DriveType
+                    lblDriveType.Text = DriveProperties.DriveType.ToString()
             End Select
             If DriveProperties.IsReady Then
                 lblDriveVolumeLabel.Text = DriveProperties.VolumeLabel
                 lblDriveFormat.Text = DriveProperties.DriveFormat
 
                 ' driveSizes(*) is used to store values so size formatting can be applied
-                lblDriveTotalSize.Text = DriveProperties.TotalSize
-                driveSizes(0) = DriveProperties.TotalSize
+                lblDriveTotalSize.Text = DriveProperties.TotalSize.ToString()
+                driveSizes(0) = CType(DriveProperties.TotalSize, ULong)
 
-                lblDriveTotalFreeSpace.Text = DriveProperties.TotalFreeSpace
-                driveSizes(1) = DriveProperties.TotalFreeSpace
+                lblDriveTotalFreeSpace.Text = DriveProperties.TotalFreeSpace.ToString()
+                driveSizes(1) = CType(DriveProperties.TotalFreeSpace, ULong)
 
-                lblDriveTotalUsedSpace.Text = driveSizes(0) - driveSizes(1)
+                lblDriveTotalUsedSpace.Text = (driveSizes(0) - driveSizes(1)).ToString()
 
-                lblDriveAvailableFreeSpace.Text = DriveProperties.AvailableFreeSpace
-                driveSizes(2) = DriveProperties.AvailableFreeSpace
+                lblDriveAvailableFreeSpace.Text = DriveProperties.AvailableFreeSpace.ToString()
+                driveSizes(2) = CType(DriveProperties.AvailableFreeSpace, ULong)
             Else
                 lblDriveVolumeLabel.Text = "Not Ready"
                 lblDriveFormat.Text = "Not Ready"
@@ -177,8 +177,8 @@ Public Class PropertiesDotNet
         End Try
 
         If File.Exists(lblFullPath.Text) Then
-            byteSize = FileProperties.Length
-            lblSize.Text = byteSize ' clear any folder errors
+            byteSize = CType(FileProperties.Length, ULong)
+            lblSize.Text = byteSize.ToString() ' clear any folder errors
             AutoDetectSize()
             ApplySizeFormatting()
 
@@ -261,13 +261,13 @@ Public Class PropertiesDotNet
         End If
 
         If chkUTC.Checked Then
-            lblCreationTime.Text = File.GetCreationTimeUtc(lblFullPath.Text)
-            lblLastAccessTime.Text = File.GetLastAccessTimeUtc(lblFullPath.Text)
-            lblLastWriteTime.Text = File.GetLastWriteTimeUtc(lblFullPath.Text)
+            lblCreationTime.Text = File.GetCreationTimeUtc(lblFullPath.Text).ToString()
+            lblLastAccessTime.Text = File.GetLastAccessTimeUtc(lblFullPath.Text).ToString()
+            lblLastWriteTime.Text = File.GetLastWriteTimeUtc(lblFullPath.Text).ToString()
         Else
-            lblCreationTime.Text = File.GetCreationTime(lblFullPath.Text)
-            lblLastAccessTime.Text = File.GetLastAccessTime(lblFullPath.Text)
-            lblLastWriteTime.Text = File.GetLastWriteTime(lblFullPath.Text)
+            lblCreationTime.Text = File.GetCreationTime(lblFullPath.Text).ToString()
+            lblLastAccessTime.Text = File.GetLastAccessTime(lblFullPath.Text).ToString()
+            lblLastWriteTime.Text = File.GetLastWriteTime(lblFullPath.Text).ToString()
         End If
 
         ' ======================= Attributes section =======================
@@ -326,7 +326,7 @@ Public Class PropertiesDotNet
                     If resourceFile.Contains(",") Then
                         Dim resourceIndex = resourceFile.Substring(resourceFile.LastIndexOf(",") + 1)
                         resourceFile = resourceFile.Remove(resourceFile.LastIndexOf(","))
-                        imgFile.Image = WalkmanLib.ExtractIconByIndex(resourceFile, resourceIndex, imgFile.Width).ToBitmap()
+                        imgFile.Image = WalkmanLib.ExtractIconByIndex(resourceFile, Integer.Parse(resourceIndex), CType(imgFile.Width, UInteger)).ToBitmap()
                     Else
                         imgFile.Image = Icon.ExtractAssociatedIcon(resourceFile).ToBitmap()
                     End If
@@ -472,14 +472,15 @@ Public Class PropertiesDotNet
             lblSize.Text = FormatNumber(byteSize)
         End If
 
-        If Microsoft.VisualBasic.IsNumeric(compressedSizeOrError) Then
-            If compressedSizeOrError = 0 Then
+        Dim newInt As Integer
+        If Integer.TryParse(compressedSizeOrError, newInt) Then
+            If newInt = 0 Then
                 chkCompressed.Text = "Compr&essed"
-            ElseIf compressedSizeOrError = byteSize Then
+            ElseIf newInt = byteSize Then
                 chkCompressed.Text = "Compr&essed (Size on disk is either 0 or bigger than size)"
             Else
                 chkCompressed.Text = "Compr&essed (Size on disk: "
-                chkCompressed.Text &= FormatNumber(compressedSizeOrError) & ")"
+                chkCompressed.Text &= FormatNumber(newInt) & ")"
             End If
         Else
             chkCompressed.Text = "Compr&essed (GetSizeError: " & compressedSizeOrError & ")"
@@ -498,39 +499,39 @@ Public Class PropertiesDotNet
                 number = number
                 postString = " bytes"
             Case 1 'kB  (Decimal - 1000)
-                number = number / 1000
+                number /= 1000
                 postString = " kB"
             Case 2 'KiB (Binary - 1024)
-                number = number / 1024
+                number /= 1024
                 number = Decimal.Truncate(number * 1000) / 1000
                 postString = " KiB"
             Case 3 'MB (Decimal - 1000)
-                number = number / 1000 ^ 2
+                number /= CType(1000 ^ 2, Decimal)
                 postString = " MB"
             Case 4 'MiB (Binary - 1024)
-                number = number / 1024 ^ 2
-                number = Decimal.Truncate(number * 1000 ^ 2) / 1000 ^ 2
+                number /= CType(1024 ^ 2, Decimal)
+                number = CType(Decimal.Truncate(CType(number * 1000 ^ 2, Decimal)) / 1000 ^ 2, Decimal)
                 postString = " MiB"
             Case 5 'GB  (Decimal - 1000)
-                number = number / 1000 ^ 3
+                number /= CType(1000 ^ 3, Decimal)
                 postString = " GB"
             Case 6 'GiB (Binary - 1024)
-                number = number / 1024 ^ 3
-                number = Decimal.Truncate(number * 1000 ^ 3) / 1000 ^ 3
+                number /= CType(1024 ^ 3, Decimal)
+                number = CType(Decimal.Truncate(CType(number * 1000 ^ 3, Decimal)) / 1000 ^ 3, Decimal)
                 postString = " GiB"
             Case 7 'TB  (Decimal - 1000)
-                number = number / 1000 ^ 4
+                number /= CType(1000 ^ 4, Decimal)
                 postString = " TB"
             Case 8 'TiB (Binary - 1024)
-                number = number / 1024 ^ 4
-                number = Decimal.Truncate(number * 1000 ^ 4) / 1000 ^ 4
+                number /= CType(1024 ^ 4, Decimal)
+                number = CType(Decimal.Truncate(CType(number * 1000 ^ 4, Decimal)) / 1000 ^ 4, Decimal)
                 postString = " TiB"
             Case 9 'PB  (Decimal - 1000)
-                number = number / 1000 ^ 5
+                number /= CType(1000 ^ 5, Decimal)
                 postString = " PB"
             Case 10 'PiB (Binary - 1024)
-                number = number / 1024 ^ 5
-                number = Decimal.Truncate(number * 1000 ^ 5) / 1000 ^ 5
+                number /= CType(1024 ^ 5, Decimal)
+                number = CType(Decimal.Truncate(CType(number * 1000 ^ 5, Decimal)) / 1000 ^ 5, Decimal)
                 postString = " PiB"
             Case 11 '(Click to read more)
                 postString = " bytes"
@@ -698,7 +699,7 @@ Public Class PropertiesDotNet
                     If WalkmanLib.IsFileOrDirectory(lblFullPath.Text).HasFlag(PathEnum.IsDirectory) OrElse byteSize < oneGB OrElse
                             Operations.MessageBox("Are you sure you want to compress this large file (>1GB)? This will take a while and can't be interrupted",
                                                   MessageBoxButtons.YesNo, MessageBoxIcon.Question, "Compressing Large File") = DialogResult.Yes Then
-                        CompressReport.bwCompress.RunWorkerAsync({True, lblFullPath.Text})
+                        CompressReport.bwCompress.RunWorkerAsync(New Object() {True, lblFullPath.Text})
                         CompressReport.ShowDialog()
                     End If
                 End If
@@ -707,7 +708,7 @@ Public Class PropertiesDotNet
                     If WalkmanLib.IsFileOrDirectory(lblFullPath.Text).HasFlag(PathEnum.IsDirectory) OrElse byteSize < oneGB OrElse
                             Operations.MessageBox("Are you sure you want to decompress this large file (>1GB)? This will take a while and can't be interrupted",
                                                   MessageBoxButtons.YesNo, MessageBoxIcon.Question, "Decompressing Large File") = DialogResult.Yes Then
-                        CompressReport.bwCompress.RunWorkerAsync({False, lblFullPath.Text})
+                        CompressReport.bwCompress.RunWorkerAsync(New Object() {False, lblFullPath.Text})
                         CompressReport.ShowDialog()
                     End If
                 End If
@@ -1036,9 +1037,9 @@ Public Class PropertiesDotNet
             '        lblSize.Text = byteSize
             '    End If
             'Next
-            byteSize = subFiles.Sum(Function(subFile As FileInfo) subFile.Length)
+            byteSize = CType(subFiles.Sum(Function(subFile As FileInfo) subFile.Length), ULong)
 
-            lblSize.Text = byteSize
+            lblSize.Text = byteSize.ToString()
             lblOpenWith.Text = subFiles.Count.ToString("N0")
             AutoDetectSize()
         Catch ex As Exception

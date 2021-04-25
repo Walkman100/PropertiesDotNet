@@ -33,7 +33,6 @@ Public Class ImageViewer
         Me.btnSave.Size = New System.Drawing.Size(75, 23)
         Me.btnSave.Text = "&Save..."
         Me.btnSave.UseVisualStyleBackColor = True
-        AddHandler Me.btnSave.Click, AddressOf Me.btnSave_Click
         'btnClose
         Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnClose.Location = New System.Drawing.Point(-87, -35)
@@ -42,7 +41,6 @@ Public Class ImageViewer
         Me.btnClose.TabStop = False
         Me.btnClose.Text = "&Close"
         Me.btnClose.UseVisualStyleBackColor = True
-        AddHandler Me.btnClose.Click, AddressOf Me.btnClose_Click
         'ImageViewer
         Me.AcceptButton = Me.btnSave
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -59,8 +57,8 @@ Public Class ImageViewer
         CType(Me.fileImage, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
     End Sub
-    Private btnClose As System.Windows.Forms.Button
-    Private btnSave As System.Windows.Forms.Button
+    Private WithEvents btnClose As System.Windows.Forms.Button
+    Private WithEvents btnSave As System.Windows.Forms.Button
     Friend fileImage As System.Windows.Forms.PictureBox
 
     Sub ImageViewer_VisibleChanged(sender As Object, e As EventArgs)
@@ -69,7 +67,7 @@ Public Class ImageViewer
         End If
     End Sub
 
-    Sub btnSave_Click()
+    Sub btnSave_Click() Handles btnSave.Click
         Dim sfd As New SaveFileDialog With {
             .Title = "Save image",
             .FileName = PropertiesDotNet.imgFile.ImageLocation & ".png"
@@ -79,7 +77,7 @@ Public Class ImageViewer
         End If
     End Sub
 
-    Sub btnClose_Click()
+    Sub btnClose_Click() Handles btnClose.Click
         Me.Close()
     End Sub
 End Class

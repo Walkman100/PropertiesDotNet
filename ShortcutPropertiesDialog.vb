@@ -345,9 +345,7 @@ Public Class ShortcutPropertiesDialog
 
     Function TransformResourcePath(iconResource As String, Optional ByRef iconIndex As Integer = 0) As String
         If iconResource.Contains(",") Then
-            If Microsoft.VisualBasic.IsNumeric(iconResource.Substring(iconResource.LastIndexOf(",") + 1)) Then
-                iconIndex = iconResource.Substring(iconResource.LastIndexOf(",") + 1)
-
+            If Integer.TryParse(iconResource.Substring(iconResource.LastIndexOf(",") + 1), iconIndex) Then
                 iconResource = iconResource.Remove(iconResource.LastIndexOf(","))
             End If
         End If
@@ -381,7 +379,7 @@ Public Class ShortcutPropertiesDialog
         selectedFilePath = Environment.ExpandEnvironmentVariables(selectedFilePath)
 
         Try
-            Dim tmpIcon = WalkmanLib.ExtractIconByIndex(selectedFilePath, selectedIconIndex, pbxIcon.Width)
+            Dim tmpIcon = WalkmanLib.ExtractIconByIndex(selectedFilePath, selectedIconIndex, CType(pbxIcon.Width, UInteger))
             pbxIcon.Image = tmpIcon.ToBitmap
         Catch
             pbxIcon.Image = Nothing
