@@ -11,6 +11,7 @@ Public Class PropertiesDotNet
     Dim driveSizes(3) As ULong
 
     Sub PropertiesDotNet_Load() Handles Me.Load
+        Settings.Init()
         For Each s As String In My.Application.CommandLineArgs
             If lblLocation.Text = "Checking..." Then
                 lblLocation.Text = s

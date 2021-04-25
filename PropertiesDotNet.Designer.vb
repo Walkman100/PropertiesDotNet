@@ -113,6 +113,7 @@ Partial Class PropertiesDotNet
         Me.lblVersion = New System.Windows.Forms.Label()
         Me.ofdBrowse = New System.Windows.Forms.OpenFileDialog()
         Me.myToolTip = New System.Windows.Forms.ToolTip(Me.components)
+        Me.btnSettings = New System.Windows.Forms.Button()
         Me.grpProperties.SuspendLayout
         CType(Me.imgFile,System.ComponentModel.ISupportInitialize).BeginInit
         Me.grpAttributes.SuspendLayout
@@ -1134,6 +1135,16 @@ Partial Class PropertiesDotNet
         Me.ofdBrowse.Filter = "All Files|*.*"
         Me.ofdBrowse.Title = "Select a file or folder to view properties for:"
         '
+        'btnSettings
+        '
+        Me.btnSettings.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnSettings.Image = Global.My.Resources.Resources.settingsx16
+        Me.btnSettings.Location = New System.Drawing.Point(360, 2)
+        Me.btnSettings.Name = "btnSettings"
+        Me.btnSettings.Size = New System.Drawing.Size(23, 25)
+        Me.btnSettings.TabIndex = 4
+        Me.btnSettings.UseVisualStyleBackColor = True
+        '
         'PropertiesDotNet
         '
         Me.AcceptButton = Me.btnWindowsProperties
@@ -1142,6 +1153,7 @@ Partial Class PropertiesDotNet
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnClose
         Me.ClientSize = New System.Drawing.Size(416, 549)
+        Me.Controls.Add(Me.btnSettings)
         Me.Controls.Add(Me.btnRelaunchAsAdmin)
         Me.Controls.Add(Me.lblVersion)
         Me.Controls.Add(Me.grpFileLocation)
@@ -1251,4 +1263,5 @@ Partial Class PropertiesDotNet
     Private WithEvents chkSystem As System.Windows.Forms.CheckBox
     Private WithEvents chkHidden As System.Windows.Forms.CheckBox
     Friend lblLocation As System.Windows.Forms.Label
+    Friend WithEvents btnSettings As System.Windows.Forms.Button
 End Class

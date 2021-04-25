@@ -34,7 +34,13 @@ Public Class Settings
         If File.Exists(_settingsPath) Then
             LoadSettings()
         Else
-            'LoadInitialSettings()
+            ' set initial settings
+            chkUseSystemDefault.Checked = True
+            chkShowOpenWithWarning.Checked = True
+            chkEnableAutoResize.Checked = True
+            chkEnableUpdateCheck.Checked = True
+            cbxDriveInfo.SelectedIndex = 2 ' Show on Drives
+            cbxDefaultSize.SelectedIndex = 11 ' Auto (Decimal)
         End If
     End Sub
 
