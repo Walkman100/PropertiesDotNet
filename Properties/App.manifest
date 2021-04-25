@@ -19,8 +19,8 @@
         </security>
     </trustInfo>
     <application xmlns="urn:schemas-microsoft-com:asm.v3">
-        <windowsSettings xmlns:ws2="http://schemas.microsoft.com/SMI/2016/WindowsSettings">
-            <ws2:longPathAware>true</ws2:longPathAware>
+        <windowsSettings>
+            <longPathAware xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">true</longPathAware>
         </windowsSettings>
     </application>
     <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">

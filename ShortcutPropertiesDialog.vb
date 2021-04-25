@@ -274,7 +274,7 @@ Public Class ShortcutPropertiesDialog
         Me.Controls.Add(Me.btnTarget)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.btnCancel)
-        Me.Icon = Global.Resources.document_properties_shortcut
+        Me.Icon = Global.My.Resources.Resources.document_properties_shortcut
         Me.Name = "ShortcutPropertiesDialog"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Shortcut Properties"
@@ -401,10 +401,10 @@ Public Class ShortcutPropertiesDialog
 
         If isValidHotkey Then
             lblStatus.Text = "Valid Shortcut Key"
-            pbxStatus.Image = Resources.accept
+            pbxStatus.Image = My.Resources.accept
         Else
             lblStatus.Text = "Invalid Shortcut Key"
-            pbxStatus.Image = Resources.warning
+            pbxStatus.Image = My.Resources.warning
         End If
     End Sub
 

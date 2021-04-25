@@ -27,7 +27,7 @@ Public Class BackgroundProgress
         Me.lblStatus.Name = "lblStatus"
         Me.lblStatus.Size = New System.Drawing.Size(0, 13)
         'imgLoading
-        Me.imgLoading.Image = Resources.loading4
+        Me.imgLoading.Image = My.Resources.loading4
         Me.imgLoading.Location = New System.Drawing.Point(12, 12)
         Me.imgLoading.Name = "imgLoading"
         Me.imgLoading.Size = New System.Drawing.Size(16, 16)
@@ -50,7 +50,7 @@ Public Class BackgroundProgress
         Me.Controls.Add(Me.imgLoading)
         Me.Controls.Add(Me.lblStatus)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Icon = Resources.document_properties
+        Me.Icon = My.Resources.document_properties
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "BackgroundProgress"

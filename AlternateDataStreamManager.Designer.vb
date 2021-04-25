@@ -77,7 +77,7 @@ Partial Class AlternateDataStreamManager
         'btnOpen
         '
         Me.btnOpen.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnOpen.Image = Global.Resources.mouse_right_click_8x
+        Me.btnOpen.Image = Global.My.Resources.Resources.mouse_right_click_8x
         Me.btnOpen.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnOpen.Location = New System.Drawing.Point(437, 12)
         Me.btnOpen.Name = "btnOpen"

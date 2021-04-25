@@ -260,7 +260,7 @@ Public Class Hashes
         Me.Controls.Add(Me.btnAllCalculate)
         Me.Controls.Add(Me.grpSHA1)
         Me.Controls.Add(Me.grpMD5)
-        Me.Icon = Resources.hashx64
+        Me.Icon = My.Resources.hashx64
         Me.Name = "Hashes"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         'Me.Location = New System.Drawing.Size((My.Computer.Screen.WorkingArea.Width/2) - 257.5, (My.Computer.Screen.WorkingArea.Height/2) - 146.5)

@@ -81,7 +81,7 @@ Public Class PropertiesDotNet
             End If
 
             lblLocation.Text = newFilePath
-            imgFile.Image = Resources.loading4
+            imgFile.Image = My.Resources.loading4
             ShowImageBox()
             CheckData(True)
         End If
@@ -210,7 +210,7 @@ Public Class PropertiesDotNet
             chkTemporary.Checked = File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Temporary)
 
             lblOpenWithLbl.Text = "Opens with:"
-            btnHashes.Image = Resources.hashx16
+            btnHashes.Image = My.Resources.hashx16
             btnHashes.Text = "Compute &Hashes"
 
             If lblExtension.Text.ToLower() = ".lnk" Then
@@ -218,7 +218,7 @@ Public Class PropertiesDotNet
                 btnShortcut.Image = Nothing
             Else
                 btnShortcut.Text = "Create &Shortcut..."
-                btnShortcut.Image = Resources.mouse_right_click_8x
+                btnShortcut.Image = My.Resources.mouse_right_click_8x
             End If
             btnHardlink.Text = "Create Hardlin&k..."
         ElseIf Directory.Exists(lblFullPath.Text) Then
@@ -253,11 +253,11 @@ Public Class PropertiesDotNet
             End If
 
             lblOpenWithLbl.Text = "Number of files:"
-            btnHashes.Image = Resources.Shell32__326_
+            btnHashes.Image = My.Resources.Shell32__326_
             btnHashes.Text = "DirectoryIma&ge..."
 
             btnShortcut.Text = "Create &Shortcut..."
-            btnShortcut.Image = Resources.mouse_right_click_8x
+            btnShortcut.Image = My.Resources.mouse_right_click_8x
             btnHardlink.Text = "Create Junction..."
         End If
 
