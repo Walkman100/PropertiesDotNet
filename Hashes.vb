@@ -3,7 +3,6 @@ Imports System.IO
 Imports System.Security
 Imports System.Security.Cryptography
 Imports System.Windows.Forms
-Imports Microsoft.VisualBasic
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Public Class Hashes
@@ -429,52 +428,29 @@ Public Class Hashes
     ' Copying output
 
     Sub btnMD5Copy_Click()
-        Try
-            Clipboard.SetText(lblMD5.Text, TextDataFormat.UnicodeText)
-            MsgBox(lblMD5.Text & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
-        Catch ex As Exception
-            MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
-        End Try
+        WalkmanLib.SafeSetText(lblMD5.Text, "default")
     End Sub
 
     Sub btnSHA1Copy_Click()
-        Try
-            Clipboard.SetText(lblSHA1.Text, TextDataFormat.UnicodeText)
-            MsgBox(lblSHA1.Text & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
-        Catch ex As Exception
-            MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
-        End Try
+        WalkmanLib.SafeSetText(lblSHA1.Text, "default")
     End Sub
 
     Sub btnSHA256Copy_Click()
-        Try
-            Clipboard.SetText(lblSHA256.Text, TextDataFormat.UnicodeText)
-            MsgBox(lblSHA256.Text & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
-        Catch ex As Exception
-            MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
-        End Try
+        WalkmanLib.SafeSetText(lblSHA256.Text, "default")
     End Sub
 
     Sub btnSHA512Copy_Click()
-        Try
-            Clipboard.SetText(lblSHA512.Text, TextDataFormat.UnicodeText)
-            MsgBox(lblSHA512.Text & vbNewLine & "Succesfully copied!", MsgBoxStyle.Information, "Succesfully copied!")
-        Catch ex As Exception
-            MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
-        End Try
+        WalkmanLib.SafeSetText(lblSHA512.Text, "default")
     End Sub
 
     Sub btnAllCopy_Click()
         Dim ToCopy As String
-        ToCopy = "MD5: " & CheckGenerated(lblMD5.Text) & vbNewLine
-        ToCopy &= "SHA1: " & CheckGenerated(lblSHA1.Text) & vbNewLine
-        ToCopy &= "SHA256: " & CheckGenerated(lblSHA256.Text) & vbNewLine
+        ToCopy = "MD5: " & CheckGenerated(lblMD5.Text) & Environment.NewLine
+        ToCopy &= "SHA1: " & CheckGenerated(lblSHA1.Text) & Environment.NewLine
+        ToCopy &= "SHA256: " & CheckGenerated(lblSHA256.Text) & Environment.NewLine
         ToCopy &= "SHA512: " & CheckGenerated(lblSHA512.Text)
-        Try
-            Clipboard.SetText(ToCopy, TextDataFormat.UnicodeText)
-        Catch ex As Exception
-            MsgBox("Copy failed!" & vbNewLine & "Error: """ & ex.ToString & """", MsgBoxStyle.Critical, "Copy failed!")
-        End Try
+
+        WalkmanLib.SafeSetText(ToCopy)
     End Sub
     Function CheckGenerated(status As String) As String
         If status = "Click ""Calculate""" Then
@@ -564,7 +540,7 @@ Public Class Hashes
             bwCalcHashes.ReportProgress(100)
         Catch ex As OperationCanceledException
             HashGeneratorOutput("Closing streams...")
-            If Not IsNothing(FilePropertiesStream) Then
+            If Not FilePropertiesStream Is Nothing Then
                 FilePropertiesStream.Close()
             End If
             hashObject.Clear()
@@ -572,7 +548,7 @@ Public Class Hashes
             HashGeneratorOutput(ex.Message)
             bwCalcHashes.ReportProgress(0)
         Catch ex As Exception
-            MsgBox(ex.ToString, MsgBoxStyle.Exclamation)
+            Operations.MessageBox(ex.ToString, icon:=MessageBoxIcon.Exclamation)
             HashGeneratorOutput("Click ""Calculate""")
             bwCalcHashes.ReportProgress(0)
         End Try

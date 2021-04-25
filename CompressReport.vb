@@ -1,7 +1,6 @@
 Imports System
 Imports System.IO
 Imports System.Runtime.InteropServices
-Imports Microsoft.VisualBasic
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Public Class CompressReport
@@ -114,7 +113,7 @@ Public Class CompressReport
             Threading.Thread.Sleep(2000)
             Me.Close()
         Catch ex As Exception
-            MsgBox(ex.ToString, MsgBoxStyle.Exclamation)
+            Operations.MessageBox(ex.ToString, icon:=Windows.Forms.MessageBoxIcon.Exclamation)
             Me.Close()
         End Try
     End Sub

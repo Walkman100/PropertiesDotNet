@@ -2,7 +2,6 @@ Imports System
 Imports System.Diagnostics
 Imports System.IO
 Imports System.Windows.Forms
-Imports Microsoft.VisualBasic
 
 Public Class Operations
     Enum TimeChangeEnum
@@ -111,9 +110,9 @@ Public Class Operations
             If useShell Then
                 Dim pathInfo = WalkmanLib.IsFileOrDirectory(sourcePath)
                 If pathInfo.HasFlag(PathEnum.IsFile) Then
-                    My.Computer.FileSystem.MoveFile(sourcePath, targetPath, FileIO.UIOption.AllDialogs)
+                    My.Computer.FileSystem.MoveFile(sourcePath, targetPath, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs)
                 ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
-                    My.Computer.FileSystem.MoveDirectory(sourcePath, targetPath, FileIO.UIOption.AllDialogs)
+                    My.Computer.FileSystem.MoveDirectory(sourcePath, targetPath, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs)
                 End If
             Else
                 If WalkmanLib.IsFileOrDirectory(targetPath).HasFlag(PathEnum.Exists) AndAlso sourcePath <> targetPath Then
@@ -154,9 +153,9 @@ Public Class Operations
             Dim pathInfo = WalkmanLib.IsFileOrDirectory(sourcePath)
             If useShell Then
                 If pathInfo.HasFlag(PathEnum.IsFile) Then
-                    My.Computer.FileSystem.CopyFile(sourcePath, targetPath, FileIO.UIOption.AllDialogs)
+                    My.Computer.FileSystem.CopyFile(sourcePath, targetPath, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs)
                 ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
-                    My.Computer.FileSystem.CopyDirectory(sourcePath, targetPath, FileIO.UIOption.AllDialogs)
+                    My.Computer.FileSystem.CopyDirectory(sourcePath, targetPath, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs)
                 End If
             Else
                 If pathInfo.HasFlag(PathEnum.IsFile) Then
@@ -218,14 +217,15 @@ Public Class Operations
         End Try
     End Sub
 
-    Shared Sub Delete(path As String, Optional useShell As Boolean = False, Optional recycleOption As FileIO.RecycleOption = FileIO.RecycleOption.DeletePermanently)
+    Shared Sub Delete(path As String, Optional useShell As Boolean = False, Optional recycleOption As Microsoft.VisualBasic.FileIO.RecycleOption =
+                                                                                                      Microsoft.VisualBasic.FileIO.RecycleOption.DeletePermanently)
         Try
             Dim pathInfo = WalkmanLib.IsFileOrDirectory(path)
             If useShell Then
                 If pathInfo.HasFlag(PathEnum.IsFile) Then
-                    My.Computer.FileSystem.DeleteFile(path, FileIO.UIOption.AllDialogs, recycleOption)
+                    My.Computer.FileSystem.DeleteFile(path, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, recycleOption)
                 ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
-                    My.Computer.FileSystem.DeleteDirectory(path, FileIO.UIOption.AllDialogs, recycleOption)
+                    My.Computer.FileSystem.DeleteDirectory(path, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, recycleOption)
                 End If
             Else
                 Dim pathAttrs As FileAttributes = File.GetAttributes(path)
@@ -431,21 +431,21 @@ Public Class Operations
     Private Shared Sub SetAttributeAsAdmin(path As String, attribute As FileAttributes, addOrRemove As Boolean)
         Select Case attribute
             Case FileAttributes.ReadOnly
-                WalkmanLib.RunAsAdmin("attrib", IIf(addOrRemove, "+", "-") & "r """ & path & """")
+                WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "r """ & path & """")
             Case FileAttributes.Hidden
-                WalkmanLib.RunAsAdmin("attrib", IIf(addOrRemove, "+", "-") & "h """ & path & """")
+                WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "h """ & path & """")
             Case FileAttributes.System
-                WalkmanLib.RunAsAdmin("attrib", IIf(addOrRemove, "+", "-") & "s """ & path & """")
+                WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "s """ & path & """")
             Case FileAttributes.Archive
-                WalkmanLib.RunAsAdmin("attrib", IIf(addOrRemove, "+", "-") & "a """ & path & """")
+                WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "a """ & path & """")
             Case FileAttributes.NotContentIndexed
-                WalkmanLib.RunAsAdmin("attrib", IIf(addOrRemove, "+", "-") & "i """ & path & """")
+                WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "i """ & path & """")
             Case FileAttributes.Offline
-                WalkmanLib.RunAsAdmin("attrib", IIf(addOrRemove, "+", "-") & "o """ & path & """")
+                WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "o """ & path & """")
             Case FileAttributes.NoScrubData
-                WalkmanLib.RunAsAdmin("attrib", IIf(addOrRemove, "+", "-") & "x """ & path & """")
+                WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "x """ & path & """")
             Case FileAttributes.IntegrityStream
-                WalkmanLib.RunAsAdmin("attrib", IIf(addOrRemove, "+", "-") & "v """ & path & """")
+                WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "v """ & path & """")
             Case Else
                 Throw New InvalidOperationException("Invalid Attribute specified: " & attribute.ToString())
         End Select
@@ -481,10 +481,10 @@ Public Class Operations
         Else
             Dim inputBoxPrompt As String = header
             If content IsNot Nothing Then
-                inputBoxPrompt &= vbNewLine & content
+                inputBoxPrompt &= Environment.NewLine & content
             End If
 
-            input = InputBox(inputBoxPrompt, windowTitle, input)
+            input = Microsoft.VisualBasic.InputBox(inputBoxPrompt, windowTitle, input)
             If String.IsNullOrEmpty(input) Then
                 Return DialogResult.Cancel
             Else

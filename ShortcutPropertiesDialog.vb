@@ -1,7 +1,6 @@
 Imports System
 Imports System.IO
 Imports System.Windows.Forms
-Imports Microsoft.VisualBasic
 
 Public Class ShortcutPropertiesDialog
     Inherits System.Windows.Forms.Form
@@ -346,7 +345,7 @@ Public Class ShortcutPropertiesDialog
 
     Function TransformResourcePath(iconResource As String, Optional ByRef iconIndex As Integer = 0) As String
         If iconResource.Contains(",") Then
-            If IsNumeric(iconResource.Substring(iconResource.LastIndexOf(",") + 1)) Then
+            If Microsoft.VisualBasic.IsNumeric(iconResource.Substring(iconResource.LastIndexOf(",") + 1)) Then
                 iconIndex = iconResource.Substring(iconResource.LastIndexOf(",") + 1)
 
                 iconResource = iconResource.Remove(iconResource.LastIndexOf(","))
@@ -425,11 +424,11 @@ Public Class ShortcutPropertiesDialog
                     txtStartIn.Text, txtIconPath.Text, txtComment.Text, txtShortcutKey.Text, windowStyle)
         Catch ex As ArgumentException When ex.Message = "Value does not fall within the expected range."
             ' https://ss64.com/vb/shortcut.html
-            MsgBox("Incorrect Shortcut Key!" & vbNewLine & vbNewLine &
-                "HotKey mappings are only usable if the shortcut is on the Desktop or in the Start Menu." & vbNewLine & vbNewLine &
-                "Valid hot key-options:" & vbNewLine & vbNewLine & """ALT+"", ""CTRL+"", ""SHIFT+"", and ""EXT+""." & vbNewLine & vbNewLine &
+            Operations.MessageBox("Incorrect Shortcut Key!" & Environment.NewLine & Environment.NewLine &
+                "HotKey mappings are only usable if the shortcut is on the Desktop or in the Start Menu." & Environment.NewLine & Environment.NewLine &
+                "Valid hot key-options:" & Environment.NewLine & Environment.NewLine & """ALT+"", ""CTRL+"", ""SHIFT+"", and ""EXT+""." & Environment.NewLine & Environment.NewLine &
                 """A"" .. ""Z"", ""0"" .. ""9"", ""NUMPAD0"" .. ""NUMPAD9"", ""Back"", ""Tab"", ""Clear"", ""Return"", ""Escape"", ""Space"", and ""Prior"".",
-                MsgBoxStyle.Critical, "Error saving Shortcut properties")
+                MessageBoxButtons.OK, MessageBoxIcon.Error, "Error saving Shortcut properties")
             Exit Sub
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
             Select Case WalkmanLib.CustomMsgBox(ex.Message, Operations.cMBTitle, Operations.cMBbRelaunch, Operations.cMBbRunSysTool, Operations.cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)

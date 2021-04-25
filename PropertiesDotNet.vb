@@ -4,7 +4,6 @@ Imports System.Drawing
 Imports System.IO
 Imports System.Linq
 Imports System.Windows.Forms
-Imports Microsoft.VisualBasic
 
 Public Class PropertiesDotNet
     Dim byteSize As ULong = 0
@@ -47,7 +46,7 @@ Public Class PropertiesDotNet
                     Throw New Exception
                 End If
             Catch
-                MsgBox("File, directory or drive """ & lblLocation.Text & """ not found!", MsgBoxStyle.Critical)
+                Operations.MessageBox("File, directory or drive """ & lblLocation.Text & """ not found!", icon:=MessageBoxIcon.Error)
                 Application.Exit()
                 End
             End Try
@@ -75,7 +74,7 @@ Public Class PropertiesDotNet
                         Throw New Exception
                     End If
                 Catch
-                    MsgBox("File, directory or drive """ & newFilePath & """ not found!", MsgBoxStyle.Critical)
+                    Operations.MessageBox("File, directory or drive """ & newFilePath & """ not found!", icon:=MessageBoxIcon.Error)
                     Exit Sub
                 End Try
             End If
@@ -310,7 +309,7 @@ Public Class PropertiesDotNet
     ' ======================= imgFile management =======================
 
     Sub imgFile_LoadCompleted(sender As Object, e As System.ComponentModel.AsyncCompletedEventArgs) Handles imgFile.LoadCompleted
-        If IsNothing(e.Error) Then
+        If e.Error Is Nothing Then
             ShowImageBox()
         Else
             If File.Exists(lblFullPath.Text) Then
@@ -434,9 +433,9 @@ Public Class PropertiesDotNet
                 MsgBoxText &= " This could potentially make your PC unusable if you click ""Ok"" while the ""Always use the selected program"" checkbox is checked!"
             End If
 
-            If MsgBox(MsgBoxText, MsgBoxStyle.Critical + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then _
-              If MsgBox("You have been warned!", MsgBoxStyle.Exclamation + MsgBoxStyle.OkCancel) = MsgBoxResult.Ok Then _
-                WalkmanLib.OpenWith(lblFullPath.Text)
+            If Operations.MessageBox(MsgBoxText, MessageBoxButtons.YesNo, MessageBoxIcon.Error) = DialogResult.Yes Then _
+                If Operations.MessageBox("You have been warned!", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) = DialogResult.OK Then _
+                    WalkmanLib.OpenWith(lblFullPath.Text)
         Else
             WalkmanLib.OpenWith(lblFullPath.Text)
         End If
@@ -447,7 +446,7 @@ Public Class PropertiesDotNet
             Try
                 Process.Start(Path.Combine(Application.StartupPath, "ProgramLauncher"), """" & lblFullPath.Text & """")
             Catch ex As Exception
-                MsgBox("""" & Path.Combine(Application.StartupPath, "ProgramLauncher") & """ executable not found!", MsgBoxStyle.Exclamation)
+                Operations.MessageBox("""" & Path.Combine(Application.StartupPath, "ProgramLauncher") & """ executable not found!", icon:=MessageBoxIcon.Exclamation)
             End Try
         End If
     End Sub
@@ -473,7 +472,7 @@ Public Class PropertiesDotNet
             lblSize.Text = FormatNumber(byteSize)
         End If
 
-        If IsNumeric(compressedSizeOrError) Then
+        If Microsoft.VisualBasic.IsNumeric(compressedSizeOrError) Then
             If compressedSizeOrError = 0 Then
                 chkCompressed.Text = "Compr&essed"
             ElseIf compressedSizeOrError = byteSize Then
@@ -538,7 +537,7 @@ Public Class PropertiesDotNet
                 Try
                     Process.Start("https://en.wikipedia.org/wiki/Byte#Unit_symbol")
                 Catch ex As Exception
-                    If MsgBox("Unable to launch URL, copy to clipboard instead?", MsgBoxStyle.YesNo + MsgBoxStyle.Information) = MsgBoxResult.Yes Then _
+                    If Operations.MessageBox("Unable to launch URL, copy to clipboard instead?", MessageBoxButtons.YesNo, MessageBoxIcon.Information) = DialogResult.Yes Then _
                       WalkmanLib.SafeSetText("https://en.wikipedia.org/wiki/Byte#Unit_symbol")
                 End Try
                 ' otherwise every call to FormatNumber opens the URL...
@@ -598,7 +597,7 @@ Public Class PropertiesDotNet
 
     Sub btnWindowsProperties_Click() Handles btnWindowsProperties.Click
         If Not WalkmanLib.ShowProperties(lblFullPath.Text) Then
-            MsgBox("Could not open properties window!", MsgBoxStyle.Exclamation)
+            Operations.MessageBox("Could not open properties window!", icon:=MessageBoxIcon.Exclamation)
         End If
     End Sub
 
@@ -612,7 +611,7 @@ Public Class PropertiesDotNet
             Try
                 Process.Start(Path.Combine(Application.StartupPath, "DirectoryImage"), """" & lblFullPath.Text & """")
             Catch ex As Exception
-                MsgBox("""" & Path.Combine(Application.StartupPath, "DirectoryImage") & """ executable not found!", MsgBoxStyle.Exclamation)
+                Operations.MessageBox("""" & Path.Combine(Application.StartupPath, "DirectoryImage") & """ executable not found!", icon:=MessageBoxIcon.Exclamation)
             End Try
         End If
     End Sub
@@ -647,7 +646,7 @@ Public Class PropertiesDotNet
         Try
             Process.Start("https://docs.microsoft.com/en-us/dotnet/api/system.io.fileattributes?view=netframework-4.5#fields")
         Catch ex As Exception
-            If MsgBox("Unable to launch URL, copy to clipboard instead?", MsgBoxStyle.YesNo + MsgBoxStyle.Information) = MsgBoxResult.Yes Then _
+            If Operations.MessageBox("Unable to launch URL, copy to clipboard instead?", MessageBoxButtons.YesNo, MessageBoxIcon.Information) = DialogResult.Yes Then _
               WalkmanLib.SafeSetText("https://docs.microsoft.com/en-us/dotnet/api/system.io.fileattributes?view=netframework-4.5#fields")
         End Try
     End Sub
@@ -697,8 +696,8 @@ Public Class PropertiesDotNet
             If chkCompressed.Checked Then
                 If Not File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
                     If WalkmanLib.IsFileOrDirectory(lblFullPath.Text).HasFlag(PathEnum.IsDirectory) OrElse byteSize < oneGB OrElse
-                            MsgBox("Are you sure you want to compress this large file (>1GB)? This will take a while and can't be interrupted",
-                            MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Compressing Large File") = MsgBoxResult.Yes Then
+                            Operations.MessageBox("Are you sure you want to compress this large file (>1GB)? This will take a while and can't be interrupted",
+                                                  MessageBoxButtons.YesNo, MessageBoxIcon.Question, "Compressing Large File") = DialogResult.Yes Then
                         CompressReport.bwCompress.RunWorkerAsync({True, lblFullPath.Text})
                         CompressReport.ShowDialog()
                     End If
@@ -706,8 +705,8 @@ Public Class PropertiesDotNet
             Else
                 If File.GetAttributes(lblFullPath.Text).HasFlag(FileAttributes.Compressed) Then
                     If WalkmanLib.IsFileOrDirectory(lblFullPath.Text).HasFlag(PathEnum.IsDirectory) OrElse byteSize < oneGB OrElse
-                            MsgBox("Are you sure you want to decompress this large file (>1GB)? This will take a while and can't be interrupted",
-                            MsgBoxStyle.YesNo + MsgBoxStyle.Question, "Decompressing Large File") = MsgBoxResult.Yes Then
+                            Operations.MessageBox("Are you sure you want to decompress this large file (>1GB)? This will take a while and can't be interrupted",
+                                                  MessageBoxButtons.YesNo, MessageBoxIcon.Question, "Decompressing Large File") = DialogResult.Yes Then
                         CompressReport.bwCompress.RunWorkerAsync({False, lblFullPath.Text})
                         CompressReport.ShowDialog()
                     End If
@@ -725,7 +724,7 @@ Public Class PropertiesDotNet
                     Try
                         FileProperties.Encrypt()
                     Catch ex As IOException
-                        MsgBox("Could not encrypt!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
+                        Operations.MessageBox("Could not encrypt!" & Environment.NewLine & Environment.NewLine & ex.Message, icon:=MessageBoxIcon.Exclamation)
                     Catch ex As Exception
                         ErrorParser(ex)
                     End Try
@@ -736,7 +735,7 @@ Public Class PropertiesDotNet
                     Try
                         FileProperties.Decrypt()
                     Catch ex As IOException
-                        MsgBox("Could not decrypt!" & vbNewLine & vbNewLine & ex.Message, MsgBoxStyle.Exclamation)
+                        Operations.MessageBox("Could not decrypt!" & Environment.NewLine & Environment.NewLine & ex.Message, icon:=MessageBoxIcon.Exclamation)
                     Catch ex As Exception
                         ErrorParser(ex)
                     End Try
@@ -768,9 +767,9 @@ Public Class PropertiesDotNet
                         SetCaseSensitiveFlag(lblFullPath.Text, chkTemporary.Checked, True)
                 End Select
             ElseIf output = "Error:  The directory is not empty." And chkTemporary.Checked = False Then
-                MsgBox("Error! The directory contains items that cannot be kept in a case-insensitive directory. Either move or rename these items first.", MsgBoxStyle.Exclamation)
+                Operations.MessageBox("Error! The directory contains items that cannot be kept in a case-insensitive directory. Either move or rename these items first.", icon:=MessageBoxIcon.Exclamation)
             Else
-                MsgBox(output, MsgBoxStyle.Information)
+                Operations.MessageBox(output, icon:=MessageBoxIcon.Information)
             End If
         End If
 
@@ -825,12 +824,12 @@ Public Class PropertiesDotNet
             Dim shortcutInfo = WalkmanLib.GetShortcutInfo(lblFullPath.Text)
 
             Try : ShortcutPropertiesDialog.lblTargetSize.Text = shortcutInfo.TargetPath
-            Catch : MsgBox("Error getting shortcut target!", MsgBoxStyle.Exclamation)
+            Catch : Operations.MessageBox("Error getting shortcut target!", icon:=MessageBoxIcon.Exclamation)
                 ShortcutPropertiesDialog.lblTargetSize.Text = ""
             End Try
 
             Try : ShortcutPropertiesDialog.lblStartInSize.Text = shortcutInfo.WorkingDirectory
-            Catch : MsgBox("Error getting shortcut working directory!", MsgBoxStyle.Exclamation)
+            Catch : Operations.MessageBox("Error getting shortcut working directory!", icon:=MessageBoxIcon.Exclamation)
                 ShortcutPropertiesDialog.lblStartInSize.Text = ""
             End Try
 
@@ -839,22 +838,22 @@ Public Class PropertiesDotNet
             ShortcutPropertiesDialog.txtStartIn.Text = ShortcutPropertiesDialog.lblStartInSize.Text
 
             Try : ShortcutPropertiesDialog.txtArguments.Text = shortcutInfo.Arguments
-            Catch : MsgBox("Error getting shortcut arguments!", MsgBoxStyle.Exclamation)
+            Catch : Operations.MessageBox("Error getting shortcut arguments!", icon:=MessageBoxIcon.Exclamation)
                 ShortcutPropertiesDialog.txtArguments.Text = ""
             End Try
 
             Try : ShortcutPropertiesDialog.txtIconPath.Text = shortcutInfo.IconLocation
-            Catch : MsgBox("Error getting shortcut icon path!", MsgBoxStyle.Exclamation)
+            Catch : Operations.MessageBox("Error getting shortcut icon path!", icon:=MessageBoxIcon.Exclamation)
                 ShortcutPropertiesDialog.txtIconPath.Text = ""
             End Try
 
             Try : ShortcutPropertiesDialog.txtShortcutKey.Text = shortcutInfo.Hotkey
-            Catch : MsgBox("Error getting shortcut hotkey!", MsgBoxStyle.Exclamation)
+            Catch : Operations.MessageBox("Error getting shortcut hotkey!", icon:=MessageBoxIcon.Exclamation)
                 ShortcutPropertiesDialog.txtShortcutKey.Text = ""
             End Try
 
             Try : ShortcutPropertiesDialog.txtComment.Text = shortcutInfo.Description
-            Catch : MsgBox("Error getting shortcut comment!", MsgBoxStyle.Exclamation)
+            Catch : Operations.MessageBox("Error getting shortcut comment!", icon:=MessageBoxIcon.Exclamation)
                 ShortcutPropertiesDialog.txtComment.Text = ""
             End Try
 
@@ -989,18 +988,18 @@ Public Class PropertiesDotNet
     End Sub
 
     Sub btnDelete_Click() Handles btnDelete.Click
-        Dim recycleOption As FileIO.RecycleOption
+        Dim recycleOption As Microsoft.VisualBasic.FileIO.RecycleOption
         If chkUseSystem.Checked Then
             Select Case WalkmanLib.CustomMsgBox("Delete """ & lblName.Text & """?", Application.ProductName,
                                                 "Send to Recycle Bin", "Delete Permanently", "Cancel", MessageBoxIcon.Question, WinVersionStyle.Win10, Me)
                 Case "Send to Recycle Bin"
-                    recycleOption = FileIO.RecycleOption.SendToRecycleBin
+                    recycleOption = Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin
                 Case "Delete Permanently"
-                    recycleOption = FileIO.RecycleOption.DeletePermanently
+                    recycleOption = Microsoft.VisualBasic.FileIO.RecycleOption.DeletePermanently
                 Case "Cancel"
                     Exit Sub
             End Select
-        ElseIf MsgBox("Are you sure you want to delete """ & lblName.Text & """?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) <> MsgBoxResult.Yes Then
+        ElseIf Operations.MessageBox("Are you sure you want to delete """ & lblName.Text & """?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) <> DialogResult.Yes Then
             Exit Sub
         End If
 
@@ -1057,8 +1056,8 @@ Public Class PropertiesDotNet
 
     Sub ErrorParser(ex As Exception)
         If TypeOf ex Is UnauthorizedAccessException AndAlso Not WalkmanLib.IsAdmin() Then
-            If MsgBox(ex.Message & vbNewLine & vbNewLine & "Try launching PropertiesDotNet As Administrator?",
-              MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes Then
+            If Operations.MessageBox(ex.Message & Environment.NewLine & Environment.NewLine & "Try launching PropertiesDotNet As Administrator?",
+                                     MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, "Access denied!") = DialogResult.Yes Then
                 RestartAsAdmin()
             End If
         Else
@@ -1084,7 +1083,7 @@ Public Class PropertiesDotNet
     End Function
 
     Function SetCaseSensitiveFlag(path As String, caseSensitive As Boolean, Optional runAsAdmin As Boolean = False) As String
-        Dim caseSensitiveFlag As String = IIf(caseSensitive, "enable", "disable")
+        Dim caseSensitiveFlag As String = If(caseSensitive, "enable", "disable")
         If path.EndsWith(IO.Path.DirectorySeparatorChar) Then
             path &= IO.Path.DirectorySeparatorChar
         End If

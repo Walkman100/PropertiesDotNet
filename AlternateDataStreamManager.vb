@@ -2,7 +2,6 @@ Imports System
 Imports System.Diagnostics
 Imports System.IO
 Imports System.Windows.Forms
-Imports Microsoft.VisualBasic
 Imports Trinet.Core.IO.Ntfs
 
 Partial Public Class AlternateDataStreamManager
@@ -70,7 +69,7 @@ Partial Public Class AlternateDataStreamManager
 
     Sub lstStreams_ColumnClick(sender As Object, e As ColumnClickEventArgs) Handles lstStreams.ColumnClick
         If e.Column = 0 Then
-            lstStreams.Sorting = IIf(lstStreams.Sorting = SortOrder.Ascending, SortOrder.Descending, SortOrder.Ascending)
+            lstStreams.Sorting = If(lstStreams.Sorting = SortOrder.Ascending, SortOrder.Descending, SortOrder.Ascending)
         Else
             'lstStreams.Sort(e.Column)
         End If
@@ -89,7 +88,7 @@ Partial Public Class AlternateDataStreamManager
                     Process.Start(Application.StartupPath & "\ProgramLauncher", PropertiesDotNet.lblLocation.Text & ":" & item.Text)
                 Next
             Catch ex As Exception
-                MsgBox("""" & Application.StartupPath & "\ProgramLauncher"" executable not found!", MsgBoxStyle.Exclamation)
+                Operations.MessageBox("""" & Application.StartupPath & "\ProgramLauncher"" executable not found!", icon:=MessageBoxIcon.Exclamation)
             End Try
         End If
     End Sub
@@ -114,7 +113,7 @@ Partial Public Class AlternateDataStreamManager
         For Each item As ListViewItem In lstStreams.SelectedItems
             frmShowStream.Text = PropertiesDotNet.lblLocation.Text & ":" & item.Text
             Using stream As StreamReader = GetAlternateDataStream(PropertiesDotNet.lblLocation.Text, item.Text).OpenText
-                txtShowStream.Text = stream.ReadToEnd().Replace(vbNullChar, "")
+                txtShowStream.Text = stream.ReadToEnd().Replace(Microsoft.VisualBasic.ControlChars.NullChar, "")
             End Using
             txtShowStream.SelectionStart = txtShowStream.Text.Length
             frmShowStream.ShowDialog()
@@ -145,10 +144,15 @@ Partial Public Class AlternateDataStreamManager
         For Each item As ListViewItem In lstStreams.SelectedItems
             Try
                 DeleteAlternateDataStream(PropertiesDotNet.lblLocation.Text, item.Text)
-            Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-              "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-                WalkmanLib.RunAsAdmin("powershell", "-Command Remove-Item -Path '" & PropertiesDotNet.lblLocation.Text & "' -Stream '" & item.Text & "'; pause")
-                Threading.Thread.Sleep(500)
+            Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
+                Select Case WalkmanLib.CustomMsgBox(ex.Message, Operations.cMBTitle, Operations.cMBbRelaunch, Operations.cMBbRunSysTool,
+                                                    Operations.cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=Me)
+                    Case Operations.cMBbRelaunch
+                        PropertiesDotNet.RestartAsAdmin()
+                    Case Operations.cMBbRunSysTool
+                        WalkmanLib.RunAsAdmin("powershell", "-Command Remove-Item -Path '" & PropertiesDotNet.lblLocation.Text & "' -Stream '" & item.Text & "'; pause")
+                        Threading.Thread.Sleep(500)
+                End Select
             Catch ex As Exception
                 PropertiesDotNet.ErrorParser(ex)
             End Try
@@ -158,7 +162,7 @@ Partial Public Class AlternateDataStreamManager
     End Sub
 
     Sub btnCopy_Click() Handles btnCopy.Click
-        Dim result As MsgBoxResult
+        Dim result As DialogResult
         Dim targetFile As String
         Dim targetStreamName As String
         Dim adsSource As AlternateDataStreamInfo
@@ -168,10 +172,10 @@ Partial Public Class AlternateDataStreamManager
 
             ' get target file from user input
             targetFile = PropertiesDotNet.lblLocation.Text
-            result = MsgBox("Copy stream """ & item.Text & """ to same file?", MsgBoxStyle.YesNoCancel, "Copy Stream Target")
-            If result = MsgBoxResult.Cancel Then
+            result = Operations.MessageBox("Copy stream """ & item.Text & """ to same file?", MessageBoxButtons.YesNoCancel, title:="Copy Stream Target")
+            If result = DialogResult.Cancel Then
                 Continue For
-            ElseIf result = MsgBoxResult.No Then
+            ElseIf result = DialogResult.No Then
                 sfdSelectCopyTarget.InitialDirectory = PropertiesDotNet.lblDirectory.Text
                 sfdSelectCopyTarget.FileName = "Don't select a file to select folder"
                 sfdSelectCopyTarget.Title = "Select file to copy stream """ & item.Text & """ to:"
@@ -215,10 +219,12 @@ Partial Public Class AlternateDataStreamManager
                     Try
                         adsTarget = GetAlternateDataStream(targetFile, targetStreamName, FileMode.CreateNew)
                     Catch ex2 As IOException
-                        MsgBox("Stream """ & targetStreamName & """ already exists on file """ & targetFile & """!", MsgBoxStyle.Critical, "Error Creating Stream")
+                        Operations.MessageBox("Stream """ & targetStreamName & """ already exists on file """ & targetFile & """!",
+                                              MessageBoxButtons.OK, MessageBoxIcon.Error, "Error Creating Stream")
                         Continue For
                     Catch ex2 As ArgumentException
-                        MsgBox("Stream name """ & targetStreamName & """ contains invalid characters!", MsgBoxStyle.Critical, "Error Creating Stream")
+                        Operations.MessageBox("Stream name """ & targetStreamName & """ contains invalid characters!",
+                                              MessageBoxButtons.OK, MessageBoxIcon.Error, "Error Creating Stream")
                         Continue For
                     End Try
 
@@ -262,10 +268,12 @@ Partial Public Class AlternateDataStreamManager
         Try
             ads = GetAlternateDataStream(PropertiesDotNet.lblLocation.Text, streamInfo, FileMode.CreateNew)
         Catch ex As IOException
-            MsgBox("Stream """ & streamInfo & """ already exists on file """ & PropertiesDotNet.lblLocation.Text & """!", MsgBoxStyle.Critical, "Error Creating Stream")
+            Operations.MessageBox("Stream """ & streamInfo & """ already exists on file """ & PropertiesDotNet.lblLocation.Text & """!",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Error, "Error Creating Stream")
             Exit Sub
         Catch ex As ArgumentException
-            MsgBox("Stream name """ & streamInfo & """ contains invalid characters!", MsgBoxStyle.Critical, "Error Creating Stream")
+            Operations.MessageBox("Stream name """ & streamInfo & """ contains invalid characters!",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Error, "Error Creating Stream")
             Exit Sub
         End Try
 
@@ -278,10 +286,15 @@ Partial Public Class AlternateDataStreamManager
             Using stream As StreamWriter = New StreamWriter(ads.OpenWrite())
                 stream.Write(streamInfo)
             End Using
-        Catch ex As UnauthorizedAccessException When MsgBox(ex.Message & vbNewLine & vbNewLine &
-          "Try launching a system tool as admin?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, "Access denied!") = MsgBoxResult.Yes
-            WalkmanLib.RunAsAdmin("powershell", "-Command Set-Content -Path '" & ads.FilePath & "' -Stream '" & ads.Name & "' -Value '" & streamInfo & "'; pause")
-            Threading.Thread.Sleep(500)
+        Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, Operations.cMBTitle, Operations.cMBbRelaunch, Operations.cMBbRunSysTool,
+                                                Operations.cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=Me)
+                Case Operations.cMBbRelaunch
+                    PropertiesDotNet.RestartAsAdmin()
+                Case Operations.cMBbRunSysTool
+                    WalkmanLib.RunAsAdmin("powershell", "-Command Set-Content -Path '" & ads.FilePath & "' -Stream '" & ads.Name & "' -Value '" & streamInfo & "'; pause")
+                    Threading.Thread.Sleep(500)
+            End Select
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
         End Try

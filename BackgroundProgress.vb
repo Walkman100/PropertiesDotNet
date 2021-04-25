@@ -1,6 +1,5 @@
 Imports System
 Imports System.IO
-Imports Microsoft.VisualBasic
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Public Class BackgroundProgress
@@ -89,20 +88,20 @@ Public Class BackgroundProgress
                     Try
                         SubFile.Delete()
                     Catch ex As Exception
-                        Select Case MsgBox("There was an error deleting """ & SubFile.FullName & """!" & vbNewLine & vbNewLine & ex.Message,
-                                           MsgBoxStyle.AbortRetryIgnore + MsgBoxStyle.Exclamation, "Error!")
-                            Case MsgBoxResult.Abort
+                        Select Case Operations.MessageBox("There was an error deleting """ & SubFile.FullName & """!" & Environment.NewLine & Environment.NewLine & ex.Message,
+                                                          Windows.Forms.MessageBoxButtons.AbortRetryIgnore, Windows.Forms.MessageBoxIcon.Exclamation, "Error!")
+                            Case Windows.Forms.DialogResult.Abort
                                 Exit For
-                            Case MsgBoxResult.Retry
+                            Case Windows.Forms.DialogResult.Retry
                                 Try
                                     SubFile.Delete()
                                 Catch ex2 As Exception
-                                    Select Case MsgBox("Error retrying delete for """ & SubFile.FullName & """:" & ex.Message,
-                                                       MsgBoxStyle.AbortRetryIgnore + MsgBoxStyle.Exclamation, "Error!")
-                                        Case MsgBoxResult.Abort
+                                    Select Case Operations.MessageBox("Error retrying delete for """ & SubFile.FullName & """:" & ex.Message,
+                                                                      Windows.Forms.MessageBoxButtons.AbortRetryIgnore, Windows.Forms.MessageBoxIcon.Exclamation, "Error!")
+                                        Case Windows.Forms.DialogResult.Abort
                                             Exit For
-                                        Case MsgBoxResult.Retry
-                                            MsgBox("Already retried!", MsgBoxStyle.Exclamation)
+                                        Case Windows.Forms.DialogResult.Retry
+                                            Operations.MessageBox("Already retried!", icon:=Windows.Forms.MessageBoxIcon.Exclamation)
                                         Case Else
                                     End Select
                                 End Try
@@ -181,21 +180,22 @@ Public Class BackgroundProgress
                     Try
                         SubFile.CopyTo(e.Argument(2) & SubFile.FullName.Substring(DirectoryProperties.FullName.Length))
                     Catch ex As Exception
-                        Select Case MsgBox("There was an error copying """ & SubFile.FullName & """ to """ & e.Argument(2) &
-                                           SubFile.FullName.Substring(DirectoryProperties.FullName.Length) & """!" & vbNewLine & vbNewLine & ex.Message,
-                                           MsgBoxStyle.AbortRetryIgnore + MsgBoxStyle.Exclamation, "Error!")
-                            Case MsgBoxResult.Abort
+                        Select Case Operations.MessageBox("There was an error copying """ & SubFile.FullName & """ to """ & e.Argument(2) &
+                                                          SubFile.FullName.Substring(DirectoryProperties.FullName.Length) & """!" &
+                                                          Environment.NewLine & Environment.NewLine & ex.Message,
+                                                          Windows.Forms.MessageBoxButtons.AbortRetryIgnore, Windows.Forms.MessageBoxIcon.Exclamation, "Error!")
+                            Case Windows.Forms.DialogResult.Abort
                                 Exit For
-                            Case MsgBoxResult.Retry
+                            Case Windows.Forms.DialogResult.Retry
                                 Try
                                     SubFile.CopyTo(e.Argument(2) & SubFile.FullName.Substring(DirectoryProperties.FullName.Length))
                                 Catch ex2 As Exception
-                                    Select Case MsgBox("Error retrying copy for """ & SubFile.FullName & """:" & ex.Message,
-                                                       MsgBoxStyle.AbortRetryIgnore + MsgBoxStyle.Exclamation, "Error!")
-                                        Case MsgBoxResult.Abort
+                                    Select Case Operations.MessageBox("Error retrying copy for """ & SubFile.FullName & """:" & ex.Message,
+                                                                      Windows.Forms.MessageBoxButtons.AbortRetryIgnore, Windows.Forms.MessageBoxIcon.Exclamation, "Error!")
+                                        Case Windows.Forms.DialogResult.Abort
                                             Exit For
-                                        Case MsgBoxResult.Retry
-                                            MsgBox("Already retried!", MsgBoxStyle.Exclamation)
+                                        Case Windows.Forms.DialogResult.Retry
+                                            Operations.MessageBox("Already retried!", icon:=Windows.Forms.MessageBoxIcon.Exclamation)
                                     End Select
                                 End Try
                         End Select
@@ -208,8 +208,9 @@ Public Class BackgroundProgress
                 Me.Dispose()
             End If
         Catch ex As Exception
-            If MsgBox("Error: " & ex.Message & vbNewLine & vbNewLine & "View full stack trace?", MsgBoxStyle.Exclamation + MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then _
-                MsgBox(ex.ToString, MsgBoxStyle.Information)
+            If Operations.MessageBox("Error: " & ex.Message & Environment.NewLine & Environment.NewLine & "View full stack trace?",
+                                     Windows.Forms.MessageBoxButtons.YesNo, Windows.Forms.MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.Yes Then _
+                Operations.MessageBox(ex.ToString, icon:=Windows.Forms.MessageBoxIcon.Information)
             Me.Close()
         End Try
     End Sub
