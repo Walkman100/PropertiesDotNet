@@ -29,6 +29,8 @@ Public Class PropertiesDotNet
     Sub timerDelayedBrowse_Tick() Handles timerDelayedBrowse.Tick
         timerDelayedBrowse.Stop()
         lblVersion.Text = My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & "." & My.Application.Info.Version.Build
+        chkUseSystem.Checked = Settings.DefaultUseSystemState
+
         If lblLocation.Text = "Checking..." Then
             If ofdBrowse.ShowDialog() = DialogResult.OK Then
                 If ofdBrowse.FileName.EndsWith("Don't select a file to select folder") Then
@@ -109,8 +111,10 @@ Public Class PropertiesDotNet
         ' ======================= Properties section =======================
 
         lblFullPath.Text = FileProperties.FullName
-        If lblFullPath.Width > 256 Then Me.Width = lblFullPath.Width + 176 Else Me.Width = 432
-        If firstStart Then Me.CenterToScreen()
+        If Settings.AutoResize Then
+            If lblFullPath.Width > 256 Then Me.Width = lblFullPath.Width + 176 Else Me.Width = 432
+            If firstStart Then Me.CenterToScreen()
+        End If
         lblDirectory.Text = FileProperties.DirectoryName
         lblName.Text = FileProperties.Name
         lblExtension.Text = FileProperties.Extension
@@ -125,6 +129,7 @@ Public Class PropertiesDotNet
         chkCompressed.Text = "Compr&essed"
 
         ' check drive properties and if on a drive show them
+        Dim showDriveInfo As Boolean
         Try
             Dim DriveProperties As New DriveInfo(lblLocation.Text)
             lblDriveIsReady.Text = DriveProperties.IsReady.ToString()
@@ -169,13 +174,25 @@ Public Class PropertiesDotNet
                 lblDriveAvailableFreeSpace.Text = "Not Ready"
             End If
             If DriveProperties.Name = FileProperties.FullName Then
-                Me.Height = 714
+                showDriveInfo = True
             Else
-                Me.Height = 586
+                showDriveInfo = False
             End If
         Catch
-            Me.Height = 586
+            showDriveInfo = False
         End Try
+
+        If Settings.ShowDriveInfo = Settings.DriveInfoVisibility.AlwaysHidden Then
+            showDriveInfo = False
+        ElseIf Settings.ShowDriveInfo = Settings.DriveInfoVisibility.AlwaysVisible Then
+            showDriveInfo = True
+        End If
+
+        If showDriveInfo Then
+            Me.Height = 714
+        Else
+            Me.Height = 586
+        End If
 
         If File.Exists(lblFullPath.Text) Then
             byteSize = CType(FileProperties.Length, ULong)
@@ -385,6 +402,11 @@ Public Class PropertiesDotNet
 
     ' ======================= Properties section buttons =======================
 
+    Sub btnSettings_Click() Handles btnSettings.Click
+        Settings.Show(Me)
+        Settings.Activate()
+    End Sub
+
     Sub btnRelaunchAsAdmin_Click() Handles btnRelaunchAsAdmin.Click
         RestartAsAdmin()
     End Sub
@@ -423,7 +445,7 @@ Public Class PropertiesDotNet
                 Exit For
             End If
         Next
-        If isDangerousExtension Then
+        If isDangerousExtension AndAlso Settings.ShowOpenWithWarning Then
             Dim MsgBoxText As String = "Are you sure you want to open the ""Open With"" dialog for """ & lblExtension.Text & """ files?"
 
             If Environment.OSVersion.Version.Major > 6 OrElse (Environment.OSVersion.Version.Major = 6 AndAlso Environment.OSVersion.Version.Minor >= 2) Then
@@ -454,18 +476,27 @@ Public Class PropertiesDotNet
 
     ' cbxSize handling
     Sub AutoDetectSize()
-        If byteSize > 1000 ^ 5 Then
-            cbxSize.SelectedIndex = 9
-        ElseIf byteSize > 1000 ^ 4 Then
-            cbxSize.SelectedIndex = 7
-        ElseIf byteSize > 1000 ^ 3 Then
-            cbxSize.SelectedIndex = 5
-        ElseIf byteSize > 1000 ^ 2 Then
-            cbxSize.SelectedIndex = 3
-        ElseIf byteSize > 1000 Then
-            cbxSize.SelectedIndex = 1
+        ' this is called from the BackgroundWorker, so need to get settings value on the main thread
+        Dim defaultSizeSelection As Integer = DirectCast(Invoke(Function() Settings.DefaultSizeSelection), Integer)
+
+        If defaultSizeSelection <> 11 AndAlso defaultSizeSelection <> 12 Then
+            cbxSize.SelectedIndex = defaultSizeSelection
         Else
-            cbxSize.SelectedIndex = 0
+            Dim indexAdd As Integer = defaultSizeSelection - 11
+
+            If byteSize > 1000 ^ 5 Then
+                cbxSize.SelectedIndex = 9 + indexAdd
+            ElseIf byteSize > 1000 ^ 4 Then
+                cbxSize.SelectedIndex = 7 + indexAdd
+            ElseIf byteSize > 1000 ^ 3 Then
+                cbxSize.SelectedIndex = 5 + indexAdd
+            ElseIf byteSize > 1000 ^ 2 Then
+                cbxSize.SelectedIndex = 3 + indexAdd
+            ElseIf byteSize > 1000 Then
+                cbxSize.SelectedIndex = 1 + indexAdd
+            Else
+                cbxSize.SelectedIndex = 0
+            End If
         End If
     End Sub
     Sub ApplySizeFormatting() Handles cbxSize.SelectedIndexChanged
