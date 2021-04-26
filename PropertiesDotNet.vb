@@ -54,7 +54,33 @@ Public Class PropertiesDotNet
                 End
             End Try
         End If
+
+        If Settings.UpdateCheck Then
+            WalkmanLib.CheckIfUpdateAvailableInBackground("PropertiesDotNet", My.Application.Info.Version, AddressOf UpdateCheckComplete)
+        End If
+
         CheckData(True, True)
+    End Sub
+
+    Private Sub UpdateCheckComplete(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs)
+        If Settings.UpdateCheck Then
+            If e.Error Is Nothing Then
+                If DirectCast(e.Result, Boolean) Then
+                    Select Case WalkmanLib.CustomMsgBox("An update is available!", "Update Check", "Go to Download page", "Disable Update Check",
+                                                        "Ignore", MessageBoxIcon.Information, ownerForm:=Me)
+                        Case "Go to Download page"
+                            Process.Start("https://github.com/Walkman100/PropertiesDotNet/releases/latest")
+                        Case "Disable Update Check"
+                            Settings.chkEnableUpdateCheck.Checked = False
+                    End Select
+                End If
+            Else
+                If WalkmanLib.CustomMsgBox("Update check failed!" & Environment.NewLine & e.Error.Message, "Update Check", "OK",
+                                           "Disable Update Check", style:=MessageBoxIcon.Exclamation, ownerForm:=Me) = "Disable Update Check" Then
+                    Settings.chkEnableUpdateCheck.Checked = False
+                End If
+            End If
+        End If
     End Sub
 
     ' ======================= Dragging-and-dropping =======================
