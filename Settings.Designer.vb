@@ -84,9 +84,9 @@ Partial Class Settings
         Me.chkUseSystemDefault.AutoSize = True
         Me.chkUseSystemDefault.Location = New System.Drawing.Point(18, 12)
         Me.chkUseSystemDefault.Name = "chkUseSystemDefault"
-        Me.chkUseSystemDefault.Size = New System.Drawing.Size(144, 17)
+        Me.chkUseSystemDefault.Size = New System.Drawing.Size(208, 17)
         Me.chkUseSystemDefault.TabIndex = 0
-        Me.chkUseSystemDefault.Text = "Default UseSystem State"
+        Me.chkUseSystemDefault.Text = "Default ""Use Windows Explorer"" State"
         Me.chkUseSystemDefault.UseVisualStyleBackColor = True
         '
         'chkShowOpenWithWarning
@@ -184,6 +184,7 @@ Partial Class Settings
         Me.Controls.Add(Me.btnReload)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.btnClose)
+        Me.Icon = Global.My.Resources.Resources.settingsx64
         Me.Name = "Settings"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Settings"
