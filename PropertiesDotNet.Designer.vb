@@ -217,7 +217,7 @@ Partial Class PropertiesDotNet
         Me.grpProperties.Location = New System.Drawing.Point(2, 4)
         Me.grpProperties.Name = "grpProperties"
         Me.grpProperties.Size = New System.Drawing.Size(411, 233)
-        Me.grpProperties.TabIndex = 1
+        Me.grpProperties.TabIndex = 2
         Me.grpProperties.TabStop = false
         Me.grpProperties.Text = "Properties:"
         '
@@ -771,7 +771,7 @@ Partial Class PropertiesDotNet
         Me.btnRelaunchAsAdmin.Location = New System.Drawing.Point(384, 2)
         Me.btnRelaunchAsAdmin.Name = "btnRelaunchAsAdmin"
         Me.btnRelaunchAsAdmin.Size = New System.Drawing.Size(23, 25)
-        Me.btnRelaunchAsAdmin.TabIndex = 0
+        Me.btnRelaunchAsAdmin.TabIndex = 1
         Me.myToolTip.SetToolTip(Me.btnRelaunchAsAdmin, "Relaunch PropertiesDotNet as Administrator")
         Me.btnRelaunchAsAdmin.UseVisualStyleBackColor = true
         '
@@ -799,7 +799,7 @@ Partial Class PropertiesDotNet
         Me.grpAttributes.Location = New System.Drawing.Point(2, 243)
         Me.grpAttributes.Name = "grpAttributes"
         Me.grpAttributes.Size = New System.Drawing.Size(411, 221)
-        Me.grpAttributes.TabIndex = 2
+        Me.grpAttributes.TabIndex = 3
         Me.grpAttributes.TabStop = false
         Me.grpAttributes.Text = "Attributes:"
         '
@@ -983,7 +983,7 @@ Partial Class PropertiesDotNet
         Me.grpFileLocation.Location = New System.Drawing.Point(2, 470)
         Me.grpFileLocation.Name = "grpFileLocation"
         Me.grpFileLocation.Size = New System.Drawing.Size(411, 77)
-        Me.grpFileLocation.TabIndex = 3
+        Me.grpFileLocation.TabIndex = 4
         Me.grpFileLocation.TabStop = false
         Me.grpFileLocation.Text = "File location:"
         '
@@ -1123,7 +1123,7 @@ Partial Class PropertiesDotNet
         Me.lblVersion.Location = New System.Drawing.Point(382, 540)
         Me.lblVersion.Name = "lblVersion"
         Me.lblVersion.Size = New System.Drawing.Size(21, 9)
-        Me.lblVersion.TabIndex = 3
+        Me.lblVersion.TabIndex = 5
         Me.lblVersion.Text = "1.0.0"
         '
         'ofdBrowse
@@ -1142,7 +1142,8 @@ Partial Class PropertiesDotNet
         Me.btnSettings.Location = New System.Drawing.Point(360, 2)
         Me.btnSettings.Name = "btnSettings"
         Me.btnSettings.Size = New System.Drawing.Size(23, 25)
-        Me.btnSettings.TabIndex = 4
+        Me.btnSettings.TabIndex = 0
+        Me.myToolTip.SetToolTip(Me.btnSettings, "Open Settings Window")
         Me.btnSettings.UseVisualStyleBackColor = True
         '
         'PropertiesDotNet

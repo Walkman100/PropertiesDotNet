@@ -60,6 +60,7 @@ Public Class PropertiesDotNet
         End If
 
         CheckData(True, True)
+        btnClose.Select()
     End Sub
 
     Private Sub UpdateCheckComplete(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs)
