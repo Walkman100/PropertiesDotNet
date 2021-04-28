@@ -2,8 +2,8 @@
 ; get NSIS at http://nsis.sourceforge.net/Download
 
 !define ProgramName "PropertiesDotNet"
-!define ProgramVersion 1.11.0.0
-Icon "My Project\document-properties.ico"
+!define ProgramVersion 1.12.0.0
+Icon "Properties\document-properties.ico"
 
 Name "${ProgramName}"
 Caption "${ProgramName} Installer"
