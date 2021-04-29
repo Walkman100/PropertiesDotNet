@@ -20,7 +20,7 @@ Public Class ImageViewer
         CType(Me.fileImage, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         'fileImage
-        Me.fileImage.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        Me.fileImage.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.fileImage.Location = New System.Drawing.Point(0, 0)
         Me.fileImage.Name = "fileImage"
         Me.fileImage.Size = New System.Drawing.Size(284, 240)
@@ -53,7 +53,6 @@ Public Class ImageViewer
         Me.Name = "ImageViewer"
         Me.ShowIcon = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        AddHandler VisibleChanged, AddressOf Me.ImageViewer_VisibleChanged
         CType(Me.fileImage, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
     End Sub
@@ -61,7 +60,7 @@ Public Class ImageViewer
     Private WithEvents btnSave As System.Windows.Forms.Button
     Friend fileImage As System.Windows.Forms.PictureBox
 
-    Sub ImageViewer_VisibleChanged(sender As Object, e As EventArgs)
+    Sub ImageViewer_VisibleChanged(sender As Object, e As EventArgs) Handles MyBase.VisibleChanged
         If Me.Visible Then
             Me.CenterToParent()
         End If

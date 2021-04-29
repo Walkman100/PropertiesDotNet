@@ -175,19 +175,16 @@ Public Class Hashes
         Me.btnClose.Text = "Close"
         Me.btnClose.UseVisualStyleBackColor = True
         'pbCalculateProgress
-        Me.pbCalculateProgress.ContainerControl = Me
-        Me.pbCalculateProgress.ShowInTaskbar = True
         Me.pbCalculateProgress.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.pbCalculateProgress.ContainerControl = Me
         Me.pbCalculateProgress.Location = New System.Drawing.Point(9, 228)
         Me.pbCalculateProgress.Name = "pbCalculateProgress"
+        Me.pbCalculateProgress.ShowInTaskbar = True
         Me.pbCalculateProgress.Size = New System.Drawing.Size(498, 23)
         Me.pbCalculateProgress.TabIndex = 4
         'bwCalcHashes
         Me.bwCalcHashes.WorkerReportsProgress = True
         Me.bwCalcHashes.WorkerSupportsCancellation = True
-        AddHandler Me.bwCalcHashes.DoWork, AddressOf Me.bwCalcHashes_DoWork
-        AddHandler Me.bwCalcHashes.ProgressChanged, AddressOf Me.bwCalcHashes_ProgressChanged
-        AddHandler Me.bwCalcHashes.RunWorkerCompleted, AddressOf Me.bwCalcHashes_RunWorkerCompleted
         'grpSHA512
         Me.grpSHA512.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.grpSHA512.Controls.Add(Me.btnSHA512Copy)
@@ -267,7 +264,7 @@ Public Class Hashes
     Private lblSHA512 As System.Windows.Forms.TextBox
     Private WithEvents btnSHA512Copy As System.Windows.Forms.Button
     Private grpSHA512 As System.Windows.Forms.GroupBox
-    Private bwCalcHashes As System.ComponentModel.BackgroundWorker
+    Private WithEvents bwCalcHashes As System.ComponentModel.BackgroundWorker
     Private pbCalculateProgress As wyDay.Controls.Windows7ProgressBar
     Private WithEvents btnClose As System.Windows.Forms.Button
     Private WithEvents btnAllCalculate As System.Windows.Forms.Button
@@ -458,7 +455,7 @@ Public Class Hashes
     Dim bytesRead As Integer
     Dim totalBytesRead As Long = 0
 
-    Sub bwCalcHashes_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs)
+    Sub bwCalcHashes_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bwCalcHashes.DoWork
         Dim FilePropertiesStream As FileStream = Nothing
         Try
             ' Set up GUI
@@ -541,11 +538,11 @@ Public Class Hashes
         End Try
     End Sub
 
-    Sub bwCalcHashes_ProgressChanged(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs)
+    Sub bwCalcHashes_ProgressChanged(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs) Handles bwCalcHashes.ProgressChanged
         pbCalculateProgress.Value = e.ProgressPercentage
     End Sub
 
-    Sub bwCalcHashes_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs)
+    Sub bwCalcHashes_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCalcHashes.RunWorkerCompleted
         If hashQueue.Contains(" ") Then
             If hashQueue.StartsWith("MD5") Then
                 btnMD5.Text = "Queue"

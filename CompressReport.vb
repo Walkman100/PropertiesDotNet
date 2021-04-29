@@ -32,7 +32,6 @@ Public Class CompressReport
         Me.imgLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.imgLoading.TabStop = False
         'bwCompress
-        AddHandler Me.bwCompress.DoWork, AddressOf Me.bwCompress_DoWork
         'CompressReport
         Me.Name = "CompressReport"
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -51,7 +50,7 @@ Public Class CompressReport
         Me.ResumeLayout(False)
         Me.PerformLayout()
     End Sub
-    Friend bwCompress As System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwCompress As System.ComponentModel.BackgroundWorker
     Friend lblStatus As System.Windows.Forms.Label
     Private imgLoading As System.Windows.Forms.PictureBox
 
@@ -63,7 +62,7 @@ Public Class CompressReport
     nInBufferSize As UInteger, lpOutBuffer As IntPtr, nOutBufferSize As UInteger, ByRef lpBytesReturned As UInteger, lpOverlapped As IntPtr) As Boolean
     End Function
 
-    Sub bwCompress_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs)
+    Sub bwCompress_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bwCompress.DoWork
         Try
             Dim compress As Boolean = DirectCast(DirectCast(e.Argument, Object())(0), Boolean)
             Dim filePath As String = DirectCast(DirectCast(e.Argument, Object())(1), String)

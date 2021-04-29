@@ -26,10 +26,10 @@ Partial Class AlternateDataStreamManager
     ''' </summary>
     Private Sub InitializeComponent()
         Me.lstStreams = New System.Windows.Forms.ListView()
-        Me.colStreamsName = New System.Windows.Forms.ColumnHeader()
-        Me.colStreamsSize = New System.Windows.Forms.ColumnHeader()
-        Me.colStreamsType = New System.Windows.Forms.ColumnHeader()
-        Me.colStreamsAttributes = New System.Windows.Forms.ColumnHeader()
+        Me.colStreamsName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colStreamsSize = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colStreamsType = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colStreamsAttributes = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnOpen = New System.Windows.Forms.Button()
         Me.btnView = New System.Windows.Forms.Button()
         Me.btnCopy = New System.Windows.Forms.Button()
@@ -38,24 +38,24 @@ Partial Class AlternateDataStreamManager
         Me.btnClose = New System.Windows.Forms.Button()
         Me.sfdSelectCopyTarget = New System.Windows.Forms.SaveFileDialog()
         Me.btnExecute = New System.Windows.Forms.Button()
-        Me.SuspendLayout
+        Me.SuspendLayout()
         '
         'lstStreams
         '
-        Me.lstStreams.AllowColumnReorder = true
-        Me.lstStreams.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-                        Or System.Windows.Forms.AnchorStyles.Left)  _
-                        Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lstStreams.AllowColumnReorder = True
+        Me.lstStreams.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lstStreams.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colStreamsName, Me.colStreamsSize, Me.colStreamsType, Me.colStreamsAttributes})
-        Me.lstStreams.FullRowSelect = true
-        Me.lstStreams.GridLines = true
-        Me.lstStreams.HideSelection = false
-        Me.lstStreams.LabelWrap = false
+        Me.lstStreams.FullRowSelect = True
+        Me.lstStreams.GridLines = True
+        Me.lstStreams.HideSelection = False
+        Me.lstStreams.LabelWrap = False
         Me.lstStreams.Location = New System.Drawing.Point(12, 12)
         Me.lstStreams.Name = "lstStreams"
         Me.lstStreams.Size = New System.Drawing.Size(419, 197)
         Me.lstStreams.TabIndex = 0
-        Me.lstStreams.UseCompatibleStateImageBehavior = false
+        Me.lstStreams.UseCompatibleStateImageBehavior = False
         Me.lstStreams.View = System.Windows.Forms.View.Details
         '
         'colStreamsName
@@ -84,7 +84,7 @@ Partial Class AlternateDataStreamManager
         Me.btnOpen.Size = New System.Drawing.Size(100, 23)
         Me.btnOpen.TabIndex = 1
         Me.btnOpen.Text = "Open in Notepad"
-        Me.btnOpen.UseVisualStyleBackColor = true
+        Me.btnOpen.UseVisualStyleBackColor = True
         '
         'btnView
         '
@@ -94,7 +94,7 @@ Partial Class AlternateDataStreamManager
         Me.btnView.Size = New System.Drawing.Size(100, 23)
         Me.btnView.TabIndex = 2
         Me.btnView.Text = "View Contents"
-        Me.btnView.UseVisualStyleBackColor = true
+        Me.btnView.UseVisualStyleBackColor = True
         '
         'btnCopy
         '
@@ -104,7 +104,7 @@ Partial Class AlternateDataStreamManager
         Me.btnCopy.Size = New System.Drawing.Size(100, 23)
         Me.btnCopy.TabIndex = 5
         Me.btnCopy.Text = "Copy Stream"
-        Me.btnCopy.UseVisualStyleBackColor = true
+        Me.btnCopy.UseVisualStyleBackColor = True
         '
         'btnDelete
         '
@@ -114,7 +114,7 @@ Partial Class AlternateDataStreamManager
         Me.btnDelete.Size = New System.Drawing.Size(100, 23)
         Me.btnDelete.TabIndex = 4
         Me.btnDelete.Text = "Delete Stream"
-        Me.btnDelete.UseVisualStyleBackColor = true
+        Me.btnDelete.UseVisualStyleBackColor = True
         '
         'btnAdd
         '
@@ -124,7 +124,7 @@ Partial Class AlternateDataStreamManager
         Me.btnAdd.Size = New System.Drawing.Size(100, 23)
         Me.btnAdd.TabIndex = 6
         Me.btnAdd.Text = "Add New"
-        Me.btnAdd.UseVisualStyleBackColor = true
+        Me.btnAdd.UseVisualStyleBackColor = True
         '
         'btnClose
         '
@@ -135,14 +135,14 @@ Partial Class AlternateDataStreamManager
         Me.btnClose.Size = New System.Drawing.Size(100, 23)
         Me.btnClose.TabIndex = 7
         Me.btnClose.Text = "Close"
-        Me.btnClose.UseVisualStyleBackColor = true
+        Me.btnClose.UseVisualStyleBackColor = True
         '
         'sfdSelectCopyTarget
         '
-        Me.sfdSelectCopyTarget.AddExtension = false
-        Me.sfdSelectCopyTarget.DereferenceLinks = false
+        Me.sfdSelectCopyTarget.AddExtension = False
+        Me.sfdSelectCopyTarget.DereferenceLinks = False
         Me.sfdSelectCopyTarget.Filter = "All Files|*.*"
-        Me.sfdSelectCopyTarget.OverwritePrompt = false
+        Me.sfdSelectCopyTarget.OverwritePrompt = False
         '
         'btnExecute
         '
@@ -152,12 +152,12 @@ Partial Class AlternateDataStreamManager
         Me.btnExecute.Size = New System.Drawing.Size(100, 23)
         Me.btnExecute.TabIndex = 3
         Me.btnExecute.Text = "Execute"
-        Me.btnExecute.UseVisualStyleBackColor = true
+        Me.btnExecute.UseVisualStyleBackColor = True
         '
         'AlternateDataStreamManager
         '
         Me.AcceptButton = Me.btnOpen
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnClose
         Me.ClientSize = New System.Drawing.Size(549, 221)
@@ -170,10 +170,11 @@ Partial Class AlternateDataStreamManager
         Me.Controls.Add(Me.btnOpen)
         Me.Controls.Add(Me.lstStreams)
         Me.Name = "AlternateDataStreamManager"
-        Me.ShowIcon = false
+        Me.ShowIcon = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Data Stream Manager"
-        Me.ResumeLayout(false)
+        Me.ResumeLayout(False)
+
     End Sub
     Private sfdSelectCopyTarget As System.Windows.Forms.SaveFileDialog
     Private WithEvents btnCopy As System.Windows.Forms.Button
