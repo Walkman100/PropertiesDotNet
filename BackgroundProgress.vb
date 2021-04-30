@@ -213,9 +213,7 @@ Public Class BackgroundProgress
                 Me.Dispose()
             End If
         Catch ex As Exception
-            If Operations.MessageBox("Error: " & ex.Message & Environment.NewLine & Environment.NewLine & "View full stack trace?",
-                                     Windows.Forms.MessageBoxButtons.YesNo, Windows.Forms.MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.Yes Then _
-                Operations.MessageBox(ex.ToString, icon:=Windows.Forms.MessageBoxIcon.Information)
+            WalkmanLib.ErrorDialog(ex)
             Me.Close()
         End Try
     End Sub

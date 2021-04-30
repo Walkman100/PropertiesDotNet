@@ -115,7 +115,7 @@ Public Class CompressReport
             Threading.Thread.Sleep(2000)
             Me.Close()
         Catch ex As Exception
-            Operations.MessageBox(ex.ToString, icon:=Windows.Forms.MessageBoxIcon.Exclamation)
+            WalkmanLib.ErrorDialog(ex)
             Me.Close()
         End Try
     End Sub
