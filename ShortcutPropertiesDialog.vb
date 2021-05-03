@@ -273,7 +273,7 @@ Public Class ShortcutPropertiesDialog
         Me.Controls.Add(Me.btnTarget)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.btnCancel)
-        Me.Icon = Global.My.Resources.Resources.document_properties_shortcut
+        Me.Icon = My.Resources.document_properties_shortcut
         Me.Name = "ShortcutPropertiesDialog"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Shortcut Properties"
@@ -328,7 +328,8 @@ Public Class ShortcutPropertiesDialog
     End Sub
 
     Sub btnTarget_Click() Handles btnTarget.Click
-        ofdTarget.FileName = txtTarget.Text
+        ofdTarget.FileName = Path.GetFileName(txtTarget.Text)
+        ofdTarget.InitialDirectory = Path.GetDirectoryName(txtTarget.Text)
 
         If ofdTarget.ShowDialog() = DialogResult.OK Then
             txtTarget.Text = ofdTarget.FileName
@@ -357,7 +358,9 @@ Public Class ShortcutPropertiesDialog
     End Function
 
     Sub btnIconBrowse_Click() Handles btnIconBrowse.Click
-        ofdIcon.FileName = TransformResourcePath(txtIconPath.Text)
+        Dim filePath As String = TransformResourcePath(txtIconPath.Text)
+        ofdIcon.FileName = Path.GetFileName(filePath)
+        ofdIcon.InitialDirectory = Path.GetDirectoryName(filePath)
 
         If ofdIcon.ShowDialog() = DialogResult.OK Then
             txtIconPath.Text = ofdIcon.FileName
