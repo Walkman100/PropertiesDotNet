@@ -874,7 +874,7 @@ Partial Class PropertiesDotNet
         Me.chkTemporary.Size = New System.Drawing.Size(76, 17)
         Me.chkTemporary.TabIndex = 8
         Me.chkTemporary.Text = "&Temporary"
-        Me.myToolTip.SetToolTip(Me.chkTemporary, "If on a file, toggles the Temporary attribute. If on a folder, allows toggling" &
+        Me.myToolTip.SetToolTip(Me.chkTemporary, "If on a file, toggles the Temporary attribute. If on a folder, allows toggling " &
         "the Case Sensitive flag, which is meant for WSL but works with Win32 programs. Uses the ""fsutil"" command to c" &
         "hange Case Sensitivity")
         Me.chkTemporary.UseVisualStyleBackColor = True
@@ -1099,10 +1099,9 @@ Partial Class PropertiesDotNet
         Me.chkUseSystem.Size = New System.Drawing.Size(133, 17)
         Me.chkUseSystem.TabIndex = 4
         Me.chkUseSystem.Text = "Use Windows E&xplorer"
-        Me.myToolTip.SetToolTip(Me.chkUseSystem, "If checked, uses the Windows Shell methods to Move/Copy/Delete files. If unche" &
-        "cked, uses .Net's file management methods instead. Note that Copying and Deleting folders using .Net uses a cus" &
-        "tom process, and Copying and moving large files across volumes using .Net will freeze up the window while the o" &
-        "peration is in progress.")
+        Me.myToolTip.SetToolTip(Me.chkUseSystem, "If checked, uses the Windows Shell methods to Move/Copy/Delete files. If unchecke" &
+        "d, uses .Net's file management methods instead. Copying and Deleting folders & f" &
+        "iles using .Net uses a custom process.")
         Me.chkUseSystem.UseVisualStyleBackColor = True
         '
         'bwCalcSize
