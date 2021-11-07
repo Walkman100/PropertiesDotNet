@@ -34,6 +34,8 @@ Partial Class Settings
         Me.grpDefaultSize = New System.Windows.Forms.GroupBox()
         Me.cbxDefaultSize = New System.Windows.Forms.ComboBox()
         Me.chkEnableUpdateCheck = New System.Windows.Forms.CheckBox()
+        Me.cbxTheme = New System.Windows.Forms.ComboBox()
+        Me.lblTheme = New System.Windows.Forms.Label()
         Me.grpDriveInfo.SuspendLayout()
         Me.grpDefaultSize.SuspendLayout()
         Me.SuspendLayout()
@@ -42,7 +44,7 @@ Partial Class Settings
         '
         Me.btnClose.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnClose.Location = New System.Drawing.Point(12, 216)
+        Me.btnClose.Location = New System.Drawing.Point(12, 235)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(75, 23)
         Me.btnClose.TabIndex = 6
@@ -52,7 +54,7 @@ Partial Class Settings
         'btnSave
         '
         Me.btnSave.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.btnSave.Location = New System.Drawing.Point(93, 216)
+        Me.btnSave.Location = New System.Drawing.Point(93, 235)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(75, 23)
         Me.btnSave.TabIndex = 7
@@ -62,7 +64,7 @@ Partial Class Settings
         'btnReload
         '
         Me.btnReload.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.btnReload.Location = New System.Drawing.Point(174, 216)
+        Me.btnReload.Location = New System.Drawing.Point(174, 235)
         Me.btnReload.Name = "btnReload"
         Me.btnReload.Size = New System.Drawing.Size(92, 23)
         Me.btnReload.TabIndex = 8
@@ -72,7 +74,7 @@ Partial Class Settings
         'btnShowSettingsFile
         '
         Me.btnShowSettingsFile.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.btnShowSettingsFile.Location = New System.Drawing.Point(272, 216)
+        Me.btnShowSettingsFile.Location = New System.Drawing.Point(272, 235)
         Me.btnShowSettingsFile.Name = "btnShowSettingsFile"
         Me.btnShowSettingsFile.Size = New System.Drawing.Size(104, 23)
         Me.btnShowSettingsFile.TabIndex = 9
@@ -167,13 +169,35 @@ Partial Class Settings
         Me.chkEnableUpdateCheck.Text = "Enable Update Check"
         Me.chkEnableUpdateCheck.UseVisualStyleBackColor = True
         '
+        'cbxTheme
+        '
+        Me.cbxTheme.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cbxTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbxTheme.FormattingEnabled = True
+        Me.cbxTheme.Location = New System.Drawing.Point(61, 208)
+        Me.cbxTheme.Name = "cbxTheme"
+        Me.cbxTheme.Size = New System.Drawing.Size(315, 21)
+        Me.cbxTheme.TabIndex = 10
+        '
+        'lblTheme
+        '
+        Me.lblTheme.AutoSize = True
+        Me.lblTheme.Location = New System.Drawing.Point(12, 211)
+        Me.lblTheme.Name = "lblTheme"
+        Me.lblTheme.Size = New System.Drawing.Size(43, 13)
+        Me.lblTheme.TabIndex = 11
+        Me.lblTheme.Text = "Theme:"
+        '
         'Settings
         '
         Me.AcceptButton = Me.btnClose
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnClose
-        Me.ClientSize = New System.Drawing.Size(388, 251)
+        Me.ClientSize = New System.Drawing.Size(388, 270)
+        Me.Controls.Add(Me.lblTheme)
+        Me.Controls.Add(Me.cbxTheme)
         Me.Controls.Add(Me.chkEnableUpdateCheck)
         Me.Controls.Add(Me.grpDefaultSize)
         Me.Controls.Add(Me.grpDriveInfo)
@@ -206,4 +230,6 @@ Partial Class Settings
     Friend WithEvents grpDefaultSize As System.Windows.Forms.GroupBox
     Friend WithEvents cbxDefaultSize As System.Windows.Forms.ComboBox
     Friend WithEvents chkEnableUpdateCheck As System.Windows.Forms.CheckBox
+    Friend WithEvents cbxTheme As System.Windows.Forms.ComboBox
+    Friend WithEvents lblTheme As System.Windows.Forms.Label
 End Class

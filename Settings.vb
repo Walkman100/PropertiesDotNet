@@ -30,6 +30,8 @@ Public Class Settings
             _settingsPath = New FileInfo(configFileName).FullName
         End If
 
+        cbxTheme.Items.AddRange([Enum].GetNames(GetType(ThemeNames)))
+
         _Loaded = True
         If File.Exists(_settingsPath) Then
             LoadSettings()
@@ -41,6 +43,7 @@ Public Class Settings
             chkEnableUpdateCheck.Checked = True
             cbxDriveInfo.SelectedIndex = 2 ' Show on Drives
             cbxDefaultSize.SelectedIndex = 11 ' Auto (Decimal)
+            cbxTheme.SelectedIndex = 0
         End If
     End Sub
 
@@ -54,6 +57,14 @@ Public Class Settings
         AutoVisibility
     End Enum
 
+    Public Enum ThemeNames
+        [Default]
+        Inverted
+        SystemDark
+        Dark
+        Test
+    End Enum
+
 #Region "Properties"
     Public ReadOnly Property DefaultUseSystemState As Boolean
     Public ReadOnly Property ShowOpenWithWarning As Boolean
@@ -61,6 +72,7 @@ Public Class Settings
     Public ReadOnly Property UpdateCheck As Boolean
     Public ReadOnly Property ShowDriveInfo As DriveInfoVisibility
     Public ReadOnly Property DefaultSizeSelection As Integer
+    Public ReadOnly Property Theme As ThemeNames
 #End Region
 
 #Region "GUI Methods"
@@ -86,6 +98,10 @@ Public Class Settings
     End Sub
     Private Sub cbxDefaltSize_SelectedIndexChanged() Handles cbxDefaultSize.SelectedIndexChanged
         _DefaultSizeSelection = cbxDefaultSize.SelectedIndex
+        SaveSettings()
+    End Sub
+    Private Sub cbxTheme_SelectedIndexChanged() Handles cbxTheme.SelectedIndexChanged
+        _Theme = DirectCast(cbxTheme.SelectedIndex, ThemeNames)
         SaveSettings()
     End Sub
 
@@ -133,6 +149,11 @@ Public Class Settings
                                 Case "DefaultSizeSelection"
                                     reader.Read()
                                     Integer.TryParse(reader.Value, cbxDefaultSize.SelectedIndex)
+                                Case "Theme"
+                                    reader.Read()
+                                    Dim out As ThemeNames
+                                    [Enum].TryParse(reader.Value, out)
+                                    cbxTheme.SelectedIndex = out
                                 Case Else
                                     reader.Read() ' skip unknown values
                             End Select
@@ -161,6 +182,7 @@ Public Class Settings
             writer.WriteElementString("EnableUpdateCheck", UpdateCheck.ToString())
             writer.WriteElementString("ShowDriveInfo", ShowDriveInfo.ToString())
             writer.WriteElementString("DefaultSizeSelection", DefaultSizeSelection.ToString())
+            writer.WriteElementString("Theme", Theme.ToString())
             writer.WriteEndElement() ' Settings
 
             writer.WriteEndElement()
