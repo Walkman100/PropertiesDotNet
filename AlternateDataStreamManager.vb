@@ -1,6 +1,7 @@
 Imports System
 Imports System.Diagnostics
 Imports System.IO
+Imports System.Linq
 Imports System.Windows.Forms
 Imports Trinet.Core.IO.Ntfs
 
@@ -67,12 +68,39 @@ Partial Public Class AlternateDataStreamManager
         End If
     End Sub
 
+    Private lastSortColumn As Integer = 0
+    Private lastSortOrder As SortOrder = SortOrder.Ascending
     Sub lstStreams_ColumnClick(sender As Object, e As ColumnClickEventArgs) Handles lstStreams.ColumnClick
         If e.Column = 0 Then
             lstStreams.Sorting = If(lstStreams.Sorting = SortOrder.Ascending, SortOrder.Descending, SortOrder.Ascending)
         Else
-            'lstStreams.Sort(e.Column)
+            lstStreams.Sorting = SortOrder.None
+            Dim itemInfos As IOrderedEnumerable(Of ListViewItem)
+
+            lastSortOrder = If(lastSortColumn = e.Column AndAlso lastSortOrder = SortOrder.Ascending, SortOrder.Descending, SortOrder.Ascending)
+            If lastSortOrder = SortOrder.Ascending Then
+                itemInfos = lstStreams.Items.Cast(Of ListViewItem).OrderBy(Function(x) As Object
+                                                                               ' Size column
+                                                                               If e.Column = 1 Then Return Integer.Parse(x.SubItems(e.Column).Text)
+                                                                               Return x.SubItems(e.Column).Text
+                                                                           End Function)
+                itemInfos = itemInfos.ThenBy(Function(x) x.Text)
+            Else
+                itemInfos = lstStreams.Items.Cast(Of ListViewItem).OrderByDescending(Function(x) As Object
+                                                                                         If e.Column = 1 Then Return Integer.Parse(x.SubItems(e.Column).Text)
+                                                                                         Return x.SubItems(e.Column).Text
+                                                                                     End Function)
+                itemInfos = itemInfos.ThenByDescending(Function(x) x.Text)
+            End If
+
+            Dim itemArr As ListViewItem() = itemInfos.ToArray()
+
+            lstStreams.BeginUpdate()
+            lstStreams.Items.Clear()
+            lstStreams.Items.AddRange(itemArr)
+            lstStreams.EndUpdate()
         End If
+        lastSortColumn = e.Column
     End Sub
 
     Sub btnOpen_Click() Handles btnOpen.Click, lstStreams.ItemActivate
