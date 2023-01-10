@@ -1,5 +1,6 @@
 Imports System
 Imports System.IO
+Imports System.Linq
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Public Class BackgroundProgress
@@ -117,7 +118,7 @@ Public Class BackgroundProgress
                 Dim SubFolders = DirectoryProperties.GetDirectories("*", SearchOption.AllDirectories)
 
                 i = 0
-                For Each SubFolder As DirectoryInfo In SubFolders
+                For Each SubFolder As DirectoryInfo In SubFolders.Reverse() ' Reverse to delete deepest directories first
                     SetStatus("Deleting folder """ & SubFolder.Name & """...", CType(((i / SubFolders.Length) * 1) + 98, Integer))
                     Try
                         SubFolder.Delete()
@@ -128,7 +129,7 @@ Public Class BackgroundProgress
                 Next
 
                 If WasError Then
-                    For Each SubFolder As DirectoryInfo In SubFolders
+                    For Each SubFolder As DirectoryInfo In SubFolders.Reverse()
                         Try
                             SubFolder.Delete()
                         Catch
