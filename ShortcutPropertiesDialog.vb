@@ -421,7 +421,7 @@ Public Class ShortcutPropertiesDialog
         End Select
 
         Try
-            WalkmanLib.CreateShortcut(PropertiesDotNet.lblLocation.Text, txtTarget.Text, txtArguments.Text,
+            WalkmanLib.CreateShortcut(PropertiesDotNet.lblFullPath.Text, txtTarget.Text, txtArguments.Text,
                     txtStartIn.Text, txtIconPath.Text, txtComment.Text, txtShortcutKey.Text, windowStyle)
         Catch ex As ArgumentException When ex.Message = "Value does not fall within the expected range."
             ' https://ss64.com/vb/shortcut.html
@@ -438,7 +438,7 @@ Public Class ShortcutPropertiesDialog
                 Case Operations.cMBbRunSysTool
                     Dim scriptPath As String = Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs"
                     Using writer As StreamWriter = New StreamWriter(File.Open(scriptPath, FileMode.Create))
-                        writer.WriteLine("Set lnk = WScript.CreateObject(""WScript.Shell"").CreateShortcut(""" & PropertiesDotNet.lblLocation.Text & """)")
+                        writer.WriteLine("Set lnk = WScript.CreateObject(""WScript.Shell"").CreateShortcut(""" & PropertiesDotNet.lblFullPath.Text & """)")
                         writer.WriteLine("lnk.TargetPath = """ & txtTarget.Text & """")
                         writer.WriteLine("lnk.Arguments = """ & txtArguments.Text & """")
                         writer.WriteLine("lnk.WorkingDirectory = """ & txtStartIn.Text & """")
@@ -463,7 +463,7 @@ Public Class ShortcutPropertiesDialog
             Exit Sub
         End Try
 
-        WalkmanLib.SetShortcutRunAsAdmin(PropertiesDotNet.lblLocation.Text, chkRunAs.Checked)
+        WalkmanLib.SetShortcutRunAsAdmin(PropertiesDotNet.lblFullPath.Text, chkRunAs.Checked)
 
         Me.Hide()
     End Sub

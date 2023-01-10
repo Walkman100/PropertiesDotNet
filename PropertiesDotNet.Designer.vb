@@ -1250,7 +1250,7 @@ Partial Class PropertiesDotNet
     Private lblName As System.Windows.Forms.Label
     Private lblExtension As System.Windows.Forms.Label
     Friend lblDirectory As System.Windows.Forms.Label
-    Private lblFullPath As System.Windows.Forms.Label
+    Friend lblFullPath As System.Windows.Forms.Label
     Private lblCreationTimeLbl As System.Windows.Forms.Label
     Private WithEvents lblCreationTime As System.Windows.Forms.Label
     Private lblLastAccessTimeLbl As System.Windows.Forms.Label
@@ -1263,6 +1263,6 @@ Partial Class PropertiesDotNet
     Private lblPathLbl As System.Windows.Forms.Label
     Private WithEvents chkSystem As System.Windows.Forms.CheckBox
     Private WithEvents chkHidden As System.Windows.Forms.CheckBox
-    Friend lblLocation As System.Windows.Forms.Label
+    Private lblLocation As System.Windows.Forms.Label
     Friend WithEvents btnSettings As System.Windows.Forms.Button
 End Class

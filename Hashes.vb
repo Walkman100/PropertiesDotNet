@@ -314,7 +314,7 @@ Public Class Hashes
             Case "Calculate..."
                 hashQueue = "MD5"
                 SetAllToQueue()
-                bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
+                bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblFullPath.Text)
             Case "Cancel"
                 bwCalcHashes.CancelAsync()
             Case "Queue"
@@ -331,7 +331,7 @@ Public Class Hashes
             Case "Calculate..."
                 hashQueue = "SHA1"
                 SetAllToQueue()
-                bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
+                bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblFullPath.Text)
             Case "Cancel"
                 bwCalcHashes.CancelAsync()
             Case "Queue"
@@ -348,7 +348,7 @@ Public Class Hashes
             Case "Calculate..."
                 hashQueue = "SHA256"
                 SetAllToQueue()
-                bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
+                bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblFullPath.Text)
             Case "Cancel"
                 bwCalcHashes.CancelAsync()
             Case "Queue"
@@ -365,7 +365,7 @@ Public Class Hashes
             Case "Calculate..."
                 hashQueue = "SHA512"
                 SetAllToQueue()
-                bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
+                bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblFullPath.Text)
             Case "Cancel"
                 bwCalcHashes.CancelAsync()
             Case "Queue"
@@ -379,7 +379,7 @@ Public Class Hashes
 
     Sub btnAllCalculate_Click() Handles btnAllCalculate.Click
         hashQueue = "MD5 SHA1 SHA256 SHA512"
-        bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
+        bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblFullPath.Text)
         btnSHA1.Text = "Unqueue"
         btnSHA256.Text = "Unqueue"
         btnSHA512.Text = "Unqueue"
@@ -554,7 +554,7 @@ Public Class Hashes
                 btnSHA512.Text = "Queue"
             End If
             hashQueue = hashQueue.Substring(hashQueue.IndexOf(" ") + 1)
-            bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblLocation.Text)
+            bwCalcHashes.RunWorkerAsync(PropertiesDotNet.lblFullPath.Text)
         Else
             btnAllCalculate.Enabled = True
             btnAllCancel.Enabled = False

@@ -85,7 +85,7 @@ Public Class Operations
 
             fileProperties.MoveTo(fullTargetName)
 
-            PropertiesDotNet.lblLocation.Text = fileProperties.FullName
+            PropertiesDotNet.lblFullPath.Text = fileProperties.FullName
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
             Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBTitle, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
                 Case cMBbRelaunch
@@ -93,7 +93,7 @@ Public Class Operations
                 Case cMBbRunSysTool
                     WalkmanLib.RunAsAdmin("cmd", "/c ren """ & sourcePath & """ """ & targetName & """ && pause")
                     If MessageBox("Read new location?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                        PropertiesDotNet.lblLocation.Text = fullTargetName
+                        PropertiesDotNet.lblFullPath.Text = fullTargetName
                     End If
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
@@ -127,7 +127,7 @@ Public Class Operations
                 File.Move(sourcePath, targetPath)
             End If
 
-            PropertiesDotNet.lblLocation.Text = targetPath
+            PropertiesDotNet.lblFullPath.Text = targetPath
         Catch ex As OperationCanceledException ' ignore user cancellation
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
             Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBTitle, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
@@ -136,7 +136,7 @@ Public Class Operations
                 Case cMBbRunSysTool
                     WalkmanLib.RunAsAdmin("cmd", "/c move """ & sourcePath & """ """ & targetPath & """ & pause")
                     If MessageBox("Read new location?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                        PropertiesDotNet.lblLocation.Text = targetPath
+                        PropertiesDotNet.lblFullPath.Text = targetPath
                     End If
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
@@ -175,7 +175,7 @@ Public Class Operations
                                                                If e.Error IsNot Nothing Then
                                                                    PropertiesDotNet.ErrorParser(e.Error)
                                                                ElseIf MessageBox("Read new location?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                                                                   PropertiesDotNet.lblLocation.Text = targetPath
+                                                                   PropertiesDotNet.lblFullPath.Text = targetPath
                                                                    PropertiesDotNet.CheckData(True)
                                                                End If
                                                            End Sub)
@@ -193,7 +193,7 @@ Public Class Operations
             '       if we do file StreamCopy then don't show message
             If Not (useShell = False AndAlso pathInfo.HasFlag(PathEnum.IsFile)) AndAlso
                     MessageBox("Read new location?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                PropertiesDotNet.lblLocation.Text = targetPath
+                PropertiesDotNet.lblFullPath.Text = targetPath
             End If
         Catch ex As OperationCanceledException ' ignore user cancellation
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
@@ -203,7 +203,7 @@ Public Class Operations
                 Case cMBbRunSysTool
                     WalkmanLib.RunAsAdmin("xcopy", "/F /H /K """ & sourcePath & """ """ & targetPath & "*""")
                     If MessageBox("Read new location?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                        PropertiesDotNet.lblLocation.Text = targetPath
+                        PropertiesDotNet.lblFullPath.Text = targetPath
                     End If
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
@@ -266,7 +266,7 @@ Public Class Operations
             Dim newShortcutPath As String = WalkmanLib.CreateShortcut(targetPath, sourcePath)
 
             If MessageBox("Show properties for created Shortcut?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                PropertiesDotNet.lblLocation.Text = newShortcutPath
+                PropertiesDotNet.lblFullPath.Text = newShortcutPath
             End If
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
             Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBTitle, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
@@ -282,7 +282,7 @@ Public Class Operations
 
                     WalkmanLib.RunAsAdmin("wscript", scriptPath)
                     If MessageBox("Show properties for created Shortcut?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                        PropertiesDotNet.lblLocation.Text = targetPath
+                        PropertiesDotNet.lblFullPath.Text = targetPath
                     End If
             End Select
         Catch ex As Exception
@@ -305,7 +305,7 @@ Public Class Operations
             WalkmanLib.CreateSymLink(targetPath, sourcePath, pathInfo.HasFlag(PathEnum.IsDirectory))
 
             If MessageBox("Show properties for created Symlink?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                PropertiesDotNet.lblLocation.Text = targetPath
+                PropertiesDotNet.lblFullPath.Text = targetPath
             End If
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
             Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBTitle, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
@@ -320,7 +320,7 @@ Public Class Operations
                     End If
 
                     If MessageBox("Show properties for created Symlink?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                        PropertiesDotNet.lblLocation.Text = targetPath
+                        PropertiesDotNet.lblFullPath.Text = targetPath
                     End If
             End Select
         Catch ex As Exception
@@ -342,7 +342,7 @@ Public Class Operations
             WalkmanLib.CreateHardLink(targetPath, sourcePath)
 
             If MessageBox("Show properties for created Hardlink?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                PropertiesDotNet.lblLocation.Text = targetPath
+                PropertiesDotNet.lblFullPath.Text = targetPath
             End If
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
             Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBTitle, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
@@ -352,7 +352,7 @@ Public Class Operations
                     WalkmanLib.RunAsAdmin("cmd", "/c mklink /h """ & targetPath & """ """ & sourcePath & """ & pause")
 
                     If MessageBox("Show properties for created Hardlink?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                        PropertiesDotNet.lblLocation.Text = targetPath
+                        PropertiesDotNet.lblFullPath.Text = targetPath
                     End If
             End Select
         Catch ex As Exception
@@ -374,7 +374,7 @@ Public Class Operations
             WalkmanLib.CreateJunction(targetPath, sourcePath, True)
 
             If MessageBox("Show properties for created Junction?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                PropertiesDotNet.lblLocation.Text = targetPath
+                PropertiesDotNet.lblFullPath.Text = targetPath
             End If
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
             Select Case WalkmanLib.CustomMsgBox(ex.Message, cMBTitle, cMBbRelaunch, cMBbRunSysTool, cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
@@ -384,7 +384,7 @@ Public Class Operations
                     WalkmanLib.RunAsAdmin("cmd", "/c mklink /j """ & targetPath & """ """ & sourcePath & """ & pause")
 
                     If MessageBox("Show properties for created Junction?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                        PropertiesDotNet.lblLocation.Text = targetPath
+                        PropertiesDotNet.lblFullPath.Text = targetPath
                     End If
             End Select
         Catch ex As Exception

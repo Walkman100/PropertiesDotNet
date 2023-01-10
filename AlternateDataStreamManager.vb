@@ -12,7 +12,7 @@ Partial Public Class AlternateDataStreamManager
     Sub LoadStreams() Handles Me.Shown
         lstStreams.Items.Clear()
 
-        Dim file As FileInfo = New FileInfo(PropertiesDotNet.lblLocation.Text)
+        Dim file As FileInfo = New FileInfo(PropertiesDotNet.lblFullPath.Text)
 
         If file.Exists Then
             Dim tmpListViewItem As New ListViewItem(New String() {":$DATA", file.Length.ToString(), "Main Stream", "(see base file attributes)"})
@@ -77,7 +77,7 @@ Partial Public Class AlternateDataStreamManager
 
     Sub btnOpen_Click() Handles btnOpen.Click, lstStreams.ItemActivate
         For Each item As ListViewItem In lstStreams.SelectedItems
-            Process.Start("notepad.exe", PropertiesDotNet.lblLocation.Text & ":" & item.Text)
+            Process.Start("notepad.exe", PropertiesDotNet.lblFullPath.Text & ":" & item.Text)
         Next
     End Sub
 
@@ -85,7 +85,7 @@ Partial Public Class AlternateDataStreamManager
         If e.Button = MouseButtons.Right Then
             Try
                 For Each item As ListViewItem In lstStreams.SelectedItems
-                    Process.Start(Application.StartupPath & "\ProgramLauncher", PropertiesDotNet.lblLocation.Text & ":" & item.Text)
+                    Process.Start(Application.StartupPath & "\ProgramLauncher", PropertiesDotNet.lblFullPath.Text & ":" & item.Text)
                 Next
             Catch ex As Exception
                 Operations.MessageBox("""" & Application.StartupPath & "\ProgramLauncher"" executable not found!", icon:=MessageBoxIcon.Exclamation)
@@ -111,8 +111,8 @@ Partial Public Class AlternateDataStreamManager
         frmShowStream.Controls.Add(txtShowStream)
 
         For Each item As ListViewItem In lstStreams.SelectedItems
-            frmShowStream.Text = PropertiesDotNet.lblLocation.Text & ":" & item.Text
-            Using stream As StreamReader = GetAlternateDataStream(PropertiesDotNet.lblLocation.Text, item.Text).OpenText
+            frmShowStream.Text = PropertiesDotNet.lblFullPath.Text & ":" & item.Text
+            Using stream As StreamReader = GetAlternateDataStream(PropertiesDotNet.lblFullPath.Text, item.Text).OpenText
                 txtShowStream.Text = stream.ReadToEnd().Replace(Microsoft.VisualBasic.ControlChars.NullChar, "")
             End Using
             txtShowStream.SelectionStart = txtShowStream.Text.Length
@@ -125,9 +125,9 @@ Partial Public Class AlternateDataStreamManager
             Try
                 Dim info As New ProcessStartInfo
                 If item.Text = ":$DATA" Then
-                    info.FileName = PropertiesDotNet.lblLocation.Text
+                    info.FileName = PropertiesDotNet.lblFullPath.Text
                 Else
-                    info.FileName = PropertiesDotNet.lblLocation.Text & ":" & item.Text
+                    info.FileName = PropertiesDotNet.lblFullPath.Text & ":" & item.Text
                 End If
                 info.UseShellExecute = False
                 Process.Start(info)
@@ -143,14 +143,14 @@ Partial Public Class AlternateDataStreamManager
     Sub btnDelete_Click() Handles btnDelete.Click
         For Each item As ListViewItem In lstStreams.SelectedItems
             Try
-                DeleteAlternateDataStream(PropertiesDotNet.lblLocation.Text, item.Text)
+                DeleteAlternateDataStream(PropertiesDotNet.lblFullPath.Text, item.Text)
             Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
                 Select Case WalkmanLib.CustomMsgBox(ex.Message, Operations.cMBTitle, Operations.cMBbRelaunch, Operations.cMBbRunSysTool,
                                                     Operations.cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=Me)
                     Case Operations.cMBbRelaunch
                         PropertiesDotNet.RestartAsAdmin()
                     Case Operations.cMBbRunSysTool
-                        WalkmanLib.RunAsAdmin("powershell", "-Command Remove-Item -Path '" & PropertiesDotNet.lblLocation.Text & "' -Stream '" & item.Text & "'; pause")
+                        WalkmanLib.RunAsAdmin("powershell", "-Command Remove-Item -Path '" & PropertiesDotNet.lblFullPath.Text & "' -Stream '" & item.Text & "'; pause")
                         Threading.Thread.Sleep(500)
                 End Select
             Catch ex As Exception
@@ -171,7 +171,7 @@ Partial Public Class AlternateDataStreamManager
         For Each item As ListViewItem In lstStreams.SelectedItems
 
             ' get target file from user input
-            targetFile = PropertiesDotNet.lblLocation.Text
+            targetFile = PropertiesDotNet.lblFullPath.Text
             result = Operations.MessageBox("Copy stream """ & item.Text & """ to same file?", MessageBoxButtons.YesNoCancel, title:="Copy Stream Target")
             If result = DialogResult.Cancel Then
                 Continue For
@@ -190,7 +190,7 @@ Partial Public Class AlternateDataStreamManager
                 End If
             End If
 
-            adsSource = New AlternateDataStreamInfo(PropertiesDotNet.lblLocation.Text, item.Text, Nothing, True)
+            adsSource = New AlternateDataStreamInfo(PropertiesDotNet.lblFullPath.Text, item.Text, Nothing, True)
 
             ' get target stream from user input
             If adsSource.Name = ":$DATA" Then
@@ -266,9 +266,9 @@ Partial Public Class AlternateDataStreamManager
 
         Dim ads As AlternateDataStreamInfo
         Try
-            ads = GetAlternateDataStream(PropertiesDotNet.lblLocation.Text, streamInfo, FileMode.CreateNew)
+            ads = GetAlternateDataStream(PropertiesDotNet.lblFullPath.Text, streamInfo, FileMode.CreateNew)
         Catch ex As IOException
-            Operations.MessageBox("Stream """ & streamInfo & """ already exists on file """ & PropertiesDotNet.lblLocation.Text & """!",
+            Operations.MessageBox("Stream """ & streamInfo & """ already exists on file """ & PropertiesDotNet.lblFullPath.Text & """!",
                                   MessageBoxButtons.OK, MessageBoxIcon.Error, "Error Creating Stream")
             Exit Sub
         Catch ex As ArgumentException
