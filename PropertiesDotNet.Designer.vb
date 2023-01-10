@@ -768,10 +768,10 @@ Partial Class PropertiesDotNet
         '
         Me.btnRelaunchAsAdmin.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnRelaunchAsAdmin.Image = Global.My.Resources.Resources.admin
-        Me.btnRelaunchAsAdmin.Location = New System.Drawing.Point(384, 2)
+        Me.btnRelaunchAsAdmin.Location = New System.Drawing.Point(360, 2)
         Me.btnRelaunchAsAdmin.Name = "btnRelaunchAsAdmin"
         Me.btnRelaunchAsAdmin.Size = New System.Drawing.Size(23, 25)
-        Me.btnRelaunchAsAdmin.TabIndex = 1
+        Me.btnRelaunchAsAdmin.TabIndex = 0
         Me.myToolTip.SetToolTip(Me.btnRelaunchAsAdmin, "Relaunch PropertiesDotNet as Administrator")
         Me.btnRelaunchAsAdmin.UseVisualStyleBackColor = True
         '
@@ -1138,10 +1138,10 @@ Partial Class PropertiesDotNet
         '
         Me.btnSettings.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnSettings.Image = Global.My.Resources.Resources.settingsx16
-        Me.btnSettings.Location = New System.Drawing.Point(360, 2)
+        Me.btnSettings.Location = New System.Drawing.Point(384, 2)
         Me.btnSettings.Name = "btnSettings"
         Me.btnSettings.Size = New System.Drawing.Size(23, 25)
-        Me.btnSettings.TabIndex = 0
+        Me.btnSettings.TabIndex = 1
         Me.myToolTip.SetToolTip(Me.btnSettings, "Open Settings Window")
         Me.btnSettings.UseVisualStyleBackColor = True
         '
