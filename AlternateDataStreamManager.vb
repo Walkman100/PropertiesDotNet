@@ -108,7 +108,14 @@ Partial Public Class AlternateDataStreamManager
             .ScrollBars = ScrollBars.Vertical,
             .Dock = DockStyle.Fill
         }
+        Dim btnClose As New Button With {
+            .TabStop = False,
+            .Text = "&Close",
+            .Location = New Drawing.Point(-87, -35)
+        }
         frmShowStream.Controls.Add(txtShowStream)
+        frmShowStream.Controls.Add(btnClose)
+        frmShowStream.CancelButton = btnClose
 
         For Each item As ListViewItem In lstStreams.SelectedItems
             frmShowStream.Text = PropertiesDotNet.lblFullPath.Text & ":" & item.Text
