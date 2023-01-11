@@ -65,6 +65,31 @@ Public Class Settings
         Test
     End Enum
 
+    Public Function GetTheme() As WalkmanLib.Theme
+        Select Case Theme
+            Case ThemeNames.Default
+                Return WalkmanLib.Theme.Default
+            Case ThemeNames.Inverted
+                Return WalkmanLib.Theme.Inverted
+            Case ThemeNames.SystemDark
+                Return WalkmanLib.Theme.SystemDark
+            Case ThemeNames.Dark
+                Return WalkmanLib.Theme.Dark
+            Case ThemeNames.Test
+                Return WalkmanLib.Theme.Test
+            Case Else
+                Throw New ApplicationException("Invalid Theme Name: " & Theme.ToString())
+        End Select
+    End Function
+
+    Public Sub ApplyTheme()
+        Dim theme As WalkmanLib.Theme = GetTheme()
+
+        WalkmanLib.ApplyTheme(theme, Me, True)
+        If components IsNot Nothing Then WalkmanLib.ApplyTheme(theme, components.Components, True)
+        PropertiesDotNet.ApplyTheme(theme)
+    End Sub
+
 #Region "Properties"
     Public ReadOnly Property DefaultUseSystemState As Boolean
     Public ReadOnly Property ShowOpenWithWarning As Boolean
@@ -103,6 +128,7 @@ Public Class Settings
     Private Sub cbxTheme_SelectedIndexChanged() Handles cbxTheme.SelectedIndexChanged
         _Theme = DirectCast(cbxTheme.SelectedIndex, ThemeNames)
         SaveSettings()
+        ApplyTheme()
     End Sub
 
     Private Sub btnClose_Click() Handles btnClose.Click

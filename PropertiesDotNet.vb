@@ -84,6 +84,12 @@ Public Class PropertiesDotNet
         End If
     End Sub
 
+    Public Sub ApplyTheme(theme As WalkmanLib.Theme)
+        WalkmanLib.ApplyTheme(theme, Me, True)
+        WalkmanLib.ApplyTheme(theme, components.Components, True)
+        ToolStripManager.Renderer = New WalkmanLib.CustomPaint.ToolStripSystemRendererWithDisabled(theme.ToolStripItemDisabledText)
+    End Sub
+
     ' ======================= Dragging-and-dropping =======================
 
     Sub PropertiesDotNet_DragEnter(sender As Object, e As DragEventArgs) Handles Me.DragEnter
