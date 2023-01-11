@@ -284,6 +284,14 @@ Public Class Hashes
 
     ''' End Designer code
 
+    Sub New()
+        InitializeComponent()
+
+        Dim theme As WalkmanLib.Theme = Settings.GetTheme()
+        WalkmanLib.ApplyTheme(theme, Me, True)
+        If components IsNot Nothing Then WalkmanLib.ApplyTheme(theme, components.Components, True)
+    End Sub
+
     Dim hashQueue As String
 
     ''' <summary>Removes a hash type string from the queue. WARNING: cannot remove the first hash in queue - but that is currently being hashed anyway.</summary>

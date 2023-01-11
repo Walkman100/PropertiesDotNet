@@ -315,6 +315,10 @@ Public Class ShortcutPropertiesDialog
     Public Sub New()
         Me.InitializeComponent()
         cbxWindow.SelectedIndex = 0
+
+        Dim theme As WalkmanLib.Theme = Settings.GetTheme()
+        WalkmanLib.ApplyTheme(theme, Me, True)
+        If components IsNot Nothing Then WalkmanLib.ApplyTheme(theme, components.Components, True)
     End Sub
 
     Sub ShortcutPropertiesDialog_VisibleChanged() Handles Me.VisibleChanged

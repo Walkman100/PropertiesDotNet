@@ -74,6 +74,10 @@ Public Class SelectDateDialog
 
     Public Sub New()
         Me.InitializeComponent()
+
+        Dim theme As WalkmanLib.Theme = Settings.GetTheme()
+        WalkmanLib.ApplyTheme(theme, Me, True)
+        If components IsNot Nothing Then WalkmanLib.ApplyTheme(theme, components.Components, True)
     End Sub
 
     Sub SelectDateDialog_VisibleChanged() Handles Me.VisibleChanged

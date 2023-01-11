@@ -11,6 +11,8 @@ Partial Public Class AlternateDataStreamManager
     End Sub
 
     Sub LoadStreams() Handles Me.Shown
+        ApplyTheme(Settings.GetTheme())
+
         lstStreams.Items.Clear()
 
         Dim file As FileInfo = New FileInfo(PropertiesDotNet.lblFullPath.Text)
@@ -31,6 +33,17 @@ Partial Public Class AlternateDataStreamManager
 
         lstStreams.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
         lstStreams_SelectedIndexChanged()
+    End Sub
+
+    Sub ApplyTheme(theme As WalkmanLib.Theme)
+        ToolStripManager.Renderer = New WalkmanLib.CustomPaint.ToolStripSystemRendererWithDisabled(theme.ToolStripItemDisabledText)
+        lstStreams.Tag = theme.ListViewColumnColors
+        AddHandler lstStreams.DrawItem, AddressOf WalkmanLib.CustomPaint.ListView_DrawDefaultItem
+        AddHandler lstStreams.DrawSubItem, AddressOf WalkmanLib.CustomPaint.ListView_DrawDefaultSubItem
+        AddHandler lstStreams.DrawColumnHeader, AddressOf WalkmanLib.CustomPaint.ListView_DrawCustomColumnHeader
+
+        WalkmanLib.ApplyTheme(theme, Me, True)
+        If components IsNot Nothing Then WalkmanLib.ApplyTheme(theme, components.Components, True)
     End Sub
 
     Sub ADS_VisibleChanged() Handles Me.VisibleChanged
@@ -144,6 +157,8 @@ Partial Public Class AlternateDataStreamManager
         frmShowStream.Controls.Add(txtShowStream)
         frmShowStream.Controls.Add(btnClose)
         frmShowStream.CancelButton = btnClose
+
+        WalkmanLib.ApplyTheme(Settings.GetTheme(), frmShowStream)
 
         For Each item As ListViewItem In lstStreams.SelectedItems
             frmShowStream.Text = PropertiesDotNet.lblFullPath.Text & ":" & item.Text
