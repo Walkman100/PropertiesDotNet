@@ -127,6 +127,10 @@ Public Class PropertiesDotNet
     Sub chkUTC_CheckedChanged() Handles chkUTC.CheckedChanged
         CheckData()
     End Sub
+    Sub LoadNew(fullPath As String)
+        lblLocation.Text = fullPath
+        CheckData(True)
+    End Sub
     Sub CheckData(Optional recalculateFolderSize As Boolean = False, Optional firstStart As Boolean = False)
         ' init
         Dim FileProperties As FileInfo
@@ -872,7 +876,6 @@ Public Class PropertiesDotNet
 
         If sfdSave.ShowDialog() = DialogResult.OK Then
             Operations.Move(lblFullPath.Text, sfdSave.FileName, chkUseSystem.Checked)
-            CheckData(True)
         End If
     End Sub
     Sub btnCopy_Click() Handles btnCopy.Click
@@ -882,7 +885,6 @@ Public Class PropertiesDotNet
 
         If sfdSave.ShowDialog() = DialogResult.OK Then
             Operations.Copy(lblFullPath.Text, sfdSave.FileName, chkUseSystem.Checked)
-            CheckData(True)
         End If
     End Sub
     Sub btnShortcut_Click() Handles btnShortcut.Click
@@ -950,7 +952,6 @@ Public Class PropertiesDotNet
 
             If sfdSave.ShowDialog() = DialogResult.OK Then
                 Operations.CreateShortcut(lblFullPath.Text, sfdSave.FileName)
-                CheckData(True)
             End If
         End If
     End Sub
@@ -961,7 +962,6 @@ Public Class PropertiesDotNet
 
         If sfdSave.ShowDialog() = DialogResult.OK Then
             Operations.CreateSymlink(lblFullPath.Text, sfdSave.FileName)
-            CheckData(True)
         End If
     End Sub
     Sub btnHardlink_Click() Handles btnHardlink.Click
@@ -973,14 +973,12 @@ Public Class PropertiesDotNet
 
             If sfdSave.ShowDialog() = DialogResult.OK Then
                 Operations.CreateHardlink(lblFullPath.Text, sfdSave.FileName)
-                CheckData(True)
             End If
         Else
             sfdSave.Title = "Choose where to create a Junction to """ & lblName.Text & """:"
 
             If sfdSave.ShowDialog() = DialogResult.OK Then
                 Operations.CreateJunction(lblFullPath.Text, sfdSave.FileName)
-                CheckData(True)
             End If
         End If
     End Sub
@@ -992,7 +990,6 @@ Public Class PropertiesDotNet
         If Operations.GetInput(newName, "New name", "Rename """ & lblName.Text & """ to:") = DialogResult.OK Then
             '                  newName is ByRef
             Operations.Rename(lblFullPath.Text, newName)
-            CheckData(True)
         End If
     End Sub
     Sub btnMove_MouseUp(sender As Object, e As MouseEventArgs) Handles btnMove.MouseUp
@@ -1001,7 +998,6 @@ Public Class PropertiesDotNet
 
             If Operations.GetInput(newName, "Move file/folder", "Move """ & lblName.Text & """ to:") = DialogResult.OK Then
                 Operations.Move(lblFullPath.Text, newName, chkUseSystem.Checked)
-                CheckData(True)
             End If
         End If
     End Sub
@@ -1011,7 +1007,6 @@ Public Class PropertiesDotNet
 
             If Operations.GetInput(newName, "Copy file/folder", "Copy """ & lblName.Text & """ to:") = DialogResult.OK Then
                 Operations.Copy(lblFullPath.Text, newName, chkUseSystem.Checked)
-                CheckData(True)
             End If
         End If
     End Sub
@@ -1021,7 +1016,6 @@ Public Class PropertiesDotNet
 
             If Operations.GetInput(newName, "Create Shortcut", "Create shortcut to """ & lblName.Text & """:") = DialogResult.OK Then
                 Operations.CreateShortcut(lblFullPath.Text, newName)
-                CheckData(True)
             End If
         End If
     End Sub
@@ -1031,7 +1025,6 @@ Public Class PropertiesDotNet
 
             If Operations.GetInput(newName, "Create Symlink", "Create symlink to """ & lblName.Text & """:") = DialogResult.OK Then
                 Operations.CreateSymlink(lblFullPath.Text, newName)
-                CheckData(True)
             End If
         End If
     End Sub
@@ -1042,12 +1035,10 @@ Public Class PropertiesDotNet
             If File.Exists(lblFullPath.Text) Then
                 If Operations.GetInput(newName, "Create Hardlink", "Create hardlink to """ & lblName.Text & """:") = DialogResult.OK Then
                     Operations.CreateHardlink(lblFullPath.Text, newName)
-                    CheckData(True)
                 End If
             Else
                 If Operations.GetInput(newName, "Create Junction", "Create junction to """ & lblName.Text & """:") = DialogResult.OK Then
                     Operations.CreateJunction(lblFullPath.Text, newName)
-                    CheckData(True)
                 End If
             End If
         End If
