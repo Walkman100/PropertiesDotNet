@@ -6,13 +6,13 @@ Imports System.Windows.Forms
 Imports Trinet.Core.IO.Ntfs
 
 Partial Public Class AlternateDataStreamManager
-    Public Sub New()
-        Me.InitializeComponent()
+    Sub New()
+        InitializeComponent()
+
+        ApplyTheme(Settings.GetTheme())
     End Sub
 
     Sub LoadStreams() Handles Me.Shown
-        ApplyTheme(Settings.GetTheme())
-
         lstStreams.Items.Clear()
 
         Dim file As FileInfo = New FileInfo(PropertiesDotNet.lblFullPath.Text)

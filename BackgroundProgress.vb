@@ -65,6 +65,14 @@ Public Class BackgroundProgress
     Private lblStatus As System.Windows.Forms.Label
     Private imgLoading As System.Windows.Forms.PictureBox
 
+    Sub New()
+        InitializeComponent()
+
+        Dim theme As WalkmanLib.Theme = Settings.GetTheme()
+        WalkmanLib.ApplyTheme(theme, Me, True)
+        If components IsNot Nothing Then WalkmanLib.ApplyTheme(theme, components.Components, True)
+    End Sub
+
     Dim i As Integer
     Dim WasError As Boolean = False
     ''' delete, deletePath

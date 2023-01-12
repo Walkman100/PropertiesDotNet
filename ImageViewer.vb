@@ -60,6 +60,14 @@ Public Class ImageViewer
     Private WithEvents btnSave As System.Windows.Forms.Button
     Friend fileImage As System.Windows.Forms.PictureBox
 
+    Sub New()
+        InitializeComponent()
+
+        Dim theme As WalkmanLib.Theme = Settings.GetTheme()
+        WalkmanLib.ApplyTheme(theme, Me, True)
+        If components IsNot Nothing Then WalkmanLib.ApplyTheme(theme, components.Components, True)
+    End Sub
+
     Sub ImageViewer_VisibleChanged(sender As Object, e As EventArgs) Handles MyBase.VisibleChanged
         If Me.Visible Then
             Me.CenterToParent()

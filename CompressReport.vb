@@ -54,6 +54,14 @@ Public Class CompressReport
     Friend lblStatus As System.Windows.Forms.Label
     Private imgLoading As System.Windows.Forms.PictureBox
 
+    Sub New()
+        InitializeComponent()
+
+        Dim theme As WalkmanLib.Theme = Settings.GetTheme()
+        WalkmanLib.ApplyTheme(theme, Me, True)
+        If components IsNot Nothing Then WalkmanLib.ApplyTheme(theme, components.Components, True)
+    End Sub
+
     ' Imported Functions: DeviceIoControl:
     '  Used for (De)Compressing files
     '   http://www.thescarms.com/dotnet/NTFSCompress.aspx
