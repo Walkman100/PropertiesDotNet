@@ -100,6 +100,11 @@ SubSection "Context menu entry"
     WriteRegStr HKCR "lnkfile\shell\${ProgramName}Shortcut" "Icon" "$INSTDIR\${ProgramName}.exe"
       WriteRegStr HKCR "lnkfile\shell\${ProgramName}Shortcut\command" "" "$\"$INSTDIR\${ProgramName}.exe$\" $\"%1$\""
   SectionEnd
+  Section "Add to context menu for .appref-ms files"
+    WriteRegStr HKCR "Application.Reference\shell\${ProgramName}Shortcut" "" "Shortcut Properties..."
+    WriteRegStr HKCR "Application.Reference\shell\${ProgramName}Shortcut" "Icon" "$INSTDIR\${ProgramName}.exe"
+      WriteRegStr HKCR "Application.Reference\shell\${ProgramName}Shortcut\command" "" "$\"$INSTDIR\${ProgramName}.exe$\" $\"%1$\""
+  SectionEnd
   Section "Add to context menu for folders"
     DeleteRegKey HKCR "Directory\shell\${ProgramName}" ; Remove old context menu item, 'Folder' also covers drives
     WriteRegStr HKCR "Folder\shell\${ProgramName}" "" "P&roperties..."
@@ -187,6 +192,7 @@ Section "Uninstall"
   DeleteRegKey HKCR "IE.AssocFile.URL\shell\${ProgramName}"
   DeleteRegKey HKCR "InternetShortcut\shell\${ProgramName}"
   DeleteRegKey HKCR "lnkfile\shell\${ProgramName}Shortcut"
+  DeleteRegKey HKCR "Application.Reference\shell\${ProgramName}Shortcut"
   DeleteRegKey HKCR "Directory\shell\${ProgramName}" ; Remove old folder context menu item
   DeleteRegKey HKCR "Folder\shell\${ProgramName}"    ; Remove current folder context menu item
 SectionEnd
