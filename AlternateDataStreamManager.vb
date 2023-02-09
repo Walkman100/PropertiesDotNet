@@ -195,7 +195,7 @@ Partial Public Class AlternateDataStreamManager
             Try
                 DeleteAlternateDataStream(PropertiesDotNet.lblFullPath.Text, item.Text)
             Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
-                Select Case WalkmanLib.CustomMsgBox(ex.Message, Operations.cMBTitle, Operations.cMBbRelaunch, Operations.cMBbRunSysTool,
+                Select Case WalkmanLib.CustomMsgBox(ex.Message, Settings.GetTheme(), Operations.cMBTitle, Operations.cMBbRelaunch, Operations.cMBbRunSysTool,
                                                     Operations.cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=Me)
                     Case Operations.cMBbRelaunch
                         PropertiesDotNet.RestartAsAdmin()
@@ -337,7 +337,7 @@ Partial Public Class AlternateDataStreamManager
                 stream.Write(streamInfo)
             End Using
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
-            Select Case WalkmanLib.CustomMsgBox(ex.Message, Operations.cMBTitle, Operations.cMBbRelaunch, Operations.cMBbRunSysTool,
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, Settings.GetTheme(), Operations.cMBTitle, Operations.cMBbRelaunch, Operations.cMBbRunSysTool,
                                                 Operations.cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=Me)
                 Case Operations.cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()

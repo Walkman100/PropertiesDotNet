@@ -436,7 +436,7 @@ Public Class ShortcutPropertiesDialog
                 MessageBoxButtons.OK, MessageBoxIcon.Error, "Error saving Shortcut properties")
             Exit Sub
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
-            Select Case WalkmanLib.CustomMsgBox(ex.Message, Operations.cMBTitle, Operations.cMBbRelaunch, Operations.cMBbRunSysTool, Operations.cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, Settings.GetTheme(), Operations.cMBTitle, Operations.cMBbRelaunch, Operations.cMBbRunSysTool, Operations.cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet)
                 Case Operations.cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case Operations.cMBbRunSysTool

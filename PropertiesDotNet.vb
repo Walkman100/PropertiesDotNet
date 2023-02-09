@@ -67,7 +67,7 @@ Public Class PropertiesDotNet
         If Settings.UpdateCheck Then
             If e.Error Is Nothing Then
                 If DirectCast(e.Result, Boolean) Then
-                    Select Case WalkmanLib.CustomMsgBox("An update is available!", "Update Check", "Go to Download page", "Disable Update Check",
+                    Select Case WalkmanLib.CustomMsgBox("An update is available!", Settings.GetTheme(), "Update Check", "Go to Download page", "Disable Update Check",
                                                         "Ignore", MessageBoxIcon.Information, ownerForm:=Me)
                         Case "Go to Download page"
                             Process.Start("https://github.com/Walkman100/PropertiesDotNet/releases/latest")
@@ -76,7 +76,7 @@ Public Class PropertiesDotNet
                     End Select
                 End If
             Else
-                If WalkmanLib.CustomMsgBox("Update check failed!" & Environment.NewLine & e.Error.Message, "Update Check", "OK",
+                If WalkmanLib.CustomMsgBox("Update check failed!" & Environment.NewLine & e.Error.Message, Settings.GetTheme(), "Update Check", "OK",
                                            "Disable Update Check", style:=MessageBoxIcon.Exclamation, ownerForm:=Me) = "Disable Update Check" Then
                     Settings.chkEnableUpdateCheck.Checked = False
                 End If
@@ -697,7 +697,7 @@ Public Class PropertiesDotNet
         Try
             driveProperties.VolumeLabel = newName
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
-            Select Case WalkmanLib.CustomMsgBox(ex.Message, Operations.cMBTitle, Operations.cMBbRelaunch, Operations.cMBbRunSysTool, Operations.cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=Me)
+            Select Case WalkmanLib.CustomMsgBox(ex.Message, Settings.GetTheme(), Operations.cMBTitle, Operations.cMBbRelaunch, Operations.cMBbRunSysTool, Operations.cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=Me)
                 Case Operations.cMBbRelaunch
                     RestartAsAdmin()
                 Case Operations.cMBbRunSysTool
@@ -830,7 +830,7 @@ Public Class PropertiesDotNet
             Dim output As String = SetCaseSensitiveFlag(lblFullPath.Text, chkTemporary.Checked)
 
             If output = "Error:  Access is denied." AndAlso Not WalkmanLib.IsAdmin() Then
-                Select Case WalkmanLib.CustomMsgBox(output, Operations.cMBTitle, Operations.cMBbRelaunch, Operations.cMBbRunSysTool, Operations.cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=Me)
+                Select Case WalkmanLib.CustomMsgBox(output, Settings.GetTheme(), Operations.cMBTitle, Operations.cMBbRelaunch, Operations.cMBbRunSysTool, Operations.cMBbCancel, MessageBoxIcon.Exclamation, ownerForm:=Me)
                     Case Operations.cMBbRelaunch
                         RestartAsAdmin()
                     Case Operations.cMBbRunSysTool
@@ -1047,7 +1047,7 @@ Public Class PropertiesDotNet
     Sub btnDelete_Click() Handles btnDelete.Click
         Dim recycleOption As Microsoft.VisualBasic.FileIO.RecycleOption
         If chkUseSystem.Checked Then
-            Select Case WalkmanLib.CustomMsgBox("Delete """ & lblName.Text & """?", Application.ProductName,
+            Select Case WalkmanLib.CustomMsgBox("Delete """ & lblName.Text & """?", Settings.GetTheme(), Application.ProductName,
                                                 "Send to Recycle Bin", "Delete Permanently", "Cancel", MessageBoxIcon.Question, WinVersionStyle.Win10, Me)
                 Case "Send to Recycle Bin"
                     recycleOption = Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin
