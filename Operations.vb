@@ -464,14 +464,12 @@ Public Class Operations
     End Sub
 
     Shared Function MessageBox(text As String, Optional buttons As MessageBoxButtons = 0,
-                               Optional icon As MessageBoxIcon = 0, Optional title As String = Nothing,
-                               Optional defaultButton As MessageBoxDefaultButton = 0,
-                               Optional options As MessageBoxOptions = 0) As DialogResult
+                               Optional icon As MessageBoxIcon = 0, Optional title As String = Nothing) As DialogResult
         If title Is Nothing Then
             title = Application.ProductName
         End If
 
-        Return Windows.Forms.MessageBox.Show(text, title, buttons, icon, defaultButton, options)
+        Return WalkmanLib.CustomMsgBox(text, Settings.GetTheme(), title, buttons, icon, WinVersionStyle.Win10)
     End Function
 
     Shared Function GetInput(ByRef input As String, Optional windowTitle As String = Nothing, Optional header As String = Nothing, Optional content As String = Nothing) As DialogResult

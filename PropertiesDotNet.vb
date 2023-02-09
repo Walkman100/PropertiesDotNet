@@ -503,10 +503,11 @@ Public Class PropertiesDotNet
 
     Sub btnOpenWith_MouseUp(sender As Object, e As MouseEventArgs) Handles btnOpenWith.MouseUp
         If e.Button = MouseButtons.Right Then
+            Dim programLauncher As String = Path.Combine(Application.StartupPath, "ProgramLauncher.exe")
             Try
-                Process.Start(Path.Combine(Application.StartupPath, "ProgramLauncher"), """" & lblFullPath.Text & """")
+                Process.Start(programLauncher, """" & lblFullPath.Text & """")
             Catch ex As Exception
-                Operations.MessageBox("""" & Path.Combine(Application.StartupPath, "ProgramLauncher") & """ executable not found!", icon:=MessageBoxIcon.Exclamation)
+                Operations.MessageBox($"""{programLauncher}"" executable not found!", icon:=MessageBoxIcon.Exclamation)
             End Try
         End If
     End Sub
@@ -677,11 +678,12 @@ Public Class PropertiesDotNet
             Hashes.Text = "Generate Hashes: " & lblName.Text
             Hashes.Activate()
         ElseIf btnHashes.Text = "DirectoryIma&ge..." Then
+            Dim directoryImage As String = Path.Combine(Application.StartupPath, "DirectoryImage.exe")
 
             Try
-                Process.Start(Path.Combine(Application.StartupPath, "DirectoryImage"), """" & lblFullPath.Text & """")
+                Process.Start(directoryImage, """" & lblFullPath.Text & """")
             Catch ex As Exception
-                Operations.MessageBox("""" & Path.Combine(Application.StartupPath, "DirectoryImage") & """ executable not found!", icon:=MessageBoxIcon.Exclamation)
+                Operations.MessageBox($"""{directoryImage}"" executable not found!", icon:=MessageBoxIcon.Exclamation)
             End Try
         End If
     End Sub
