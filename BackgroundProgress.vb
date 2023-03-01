@@ -222,7 +222,7 @@ Public Class BackgroundProgress
                 Me.Dispose()
             End If
         Catch ex As Exception
-            WalkmanLib.ErrorDialog(ex)
+            Operations.ThemedErrorDialog(ex)
             Me.Close()
         End Try
     End Sub

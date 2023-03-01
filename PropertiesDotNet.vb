@@ -1120,7 +1120,7 @@ Public Class PropertiesDotNet
                 RestartAsAdmin()
             End If
         Else
-            WalkmanLib.ErrorDialog(ex)
+            Operations.ThemedErrorDialog(ex)
         End If
     End Sub
 

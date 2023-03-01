@@ -123,7 +123,7 @@ Public Class CompressReport
             Threading.Thread.Sleep(2000)
             Me.Close()
         Catch ex As Exception
-            WalkmanLib.ErrorDialog(ex)
+            Operations.ThemedErrorDialog(ex)
             Me.Close()
         End Try
     End Sub
