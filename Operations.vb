@@ -469,52 +469,14 @@ Public Class Operations
             title = Application.ProductName
         End If
 
+        ' if running on a separate thread then settings isn't loaded. doesn't matter, we can just load, as all settings are immediately saved
+        If Not Settings.Loaded Then Settings.Init()
+
         Return WalkmanLib.CustomMsgBox(text, Settings.GetTheme(), title, buttons, icon, WinVersionStyle.Win10)
     End Function
 
     Shared Function GetInput(ByRef input As String, Optional windowTitle As String = Nothing, Optional header As String = Nothing, Optional content As String = Nothing) As DialogResult
-        If OokiiDialogsLoaded() Then
-            Return OokiiInputBox(input, windowTitle, header, content)
-        Else
-            Dim inputBoxPrompt As String = header
-            If content IsNot Nothing Then
-                inputBoxPrompt &= Environment.NewLine & content
-            End If
-
-            input = Microsoft.VisualBasic.InputBox(inputBoxPrompt, windowTitle, input)
-            If String.IsNullOrEmpty(input) Then
-                Return DialogResult.Cancel
-            Else
-                Return DialogResult.OK
-            End If
-        End If
+        If Not Settings.Loaded Then Settings.Init()
+        Return WalkmanLib.InputDialog(input, Settings.GetTheme(), header, windowTitle, content, ownerForm:=PropertiesDotNet)
     End Function
-
-    Private Shared Function OokiiInputBox(ByRef input As String, Optional windowTitle As String = Nothing, Optional header As String = Nothing, Optional content As String = Nothing) As DialogResult
-        Dim ooInput = New Ookii.Dialogs.InputDialog With {
-            .Input = input,
-            .WindowTitle = windowTitle,
-            .MainInstruction = header,
-            .Content = content
-        }
-
-        Dim returnResult = ooInput.ShowDialog(PropertiesDotNet)
-        input = ooInput.Input
-        Return returnResult
-    End Function
-
-    Private Shared Function OokiiDialogsLoaded() As Boolean
-        Try
-            OokiiDialogsLoadedDelegate()
-            Return True
-        Catch ex As FileNotFoundException When ex.FileName.StartsWith("PropertiesDotNet-Ookii.Dialogs")
-            Return False
-        Catch ex As Exception
-            MessageBox("Unexpected error loading PropertiesDotNet-Ookii.Dialogs.dll!" & Environment.NewLine & Environment.NewLine & ex.Message, 0, MessageBoxIcon.Exclamation)
-            Return False
-        End Try
-    End Function
-    Private Shared Sub OokiiDialogsLoadedDelegate() ' because calling a not found class will fail the caller of the method not directly in the method
-        Dim test = Ookii.Dialogs.TaskDialogIcon.Information
-    End Sub
 End Class
