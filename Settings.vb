@@ -43,7 +43,9 @@ Public Class Settings
             chkEnableUpdateCheck.Checked = True
             cbxDriveInfo.SelectedIndex = 2 ' Show on Drives
             cbxDefaultSize.SelectedIndex = 11 ' Auto (Decimal)
-            cbxTheme.SelectedIndex = 0
+
+            Dim darkThemeEnabled As Boolean? = WalkmanLib.GetDarkThemeEnabled()
+            cbxTheme.SelectedIndex = If(darkThemeEnabled.HasValue AndAlso darkThemeEnabled.Value, ThemeNames.Dark, ThemeNames.Default)
         End If
     End Sub
 

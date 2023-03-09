@@ -1120,7 +1120,9 @@ Public Class PropertiesDotNet
                 RestartAsAdmin()
             End If
         Else
-            Operations.ThemedErrorDialog(ex)
+            ' if running on a separate thread then settings isn't loaded. doesn't matter, we can just load, as all settings are immediately saved
+            If Not Settings.Loaded Then Settings.Init()
+            WalkmanLib.ErrorDialog(ex, Settings.GetTheme())
         End If
     End Sub
 

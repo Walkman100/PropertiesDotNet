@@ -463,19 +463,6 @@ Public Class Operations
         Process.Start(handleManagerPath, """" & filePath & """")
     End Sub
 
-    ' WalkmanLib.ErrorDialog first part copied but with WalkmanLib.CustomMsgBox and theming
-    Public Shared Sub ThemedErrorDialog(ex As Exception, Optional errorMessage As String = "There was an error! Error message: ", Optional showMsgBox As Boolean = True)
-        If showMsgBox Then
-            ' if running on a separate thread then settings isn't loaded. doesn't matter, we can just load, as all settings are immediately saved
-            If Not Settings.Loaded Then Settings.Init()
-
-            If WalkmanLib.CustomMsgBox(errorMessage & ex.Message & Environment.NewLine & "Show full stacktrace? (For sending to developer/making bugreport)",
-                                       Settings.GetTheme(), "Error!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, ownerForm:=PropertiesDotNet) <> DialogResult.Yes Then Exit Sub
-        End If
-
-        WalkmanLib.ErrorDialog(ex, errorMessage, False)
-    End Sub
-
     Shared Function MessageBox(text As String, Optional buttons As MessageBoxButtons = 0,
                                Optional icon As MessageBoxIcon = 0, Optional title As String = Nothing) As DialogResult
         If title Is Nothing Then

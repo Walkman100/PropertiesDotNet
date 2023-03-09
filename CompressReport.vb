@@ -123,7 +123,9 @@ Public Class CompressReport
             Threading.Thread.Sleep(2000)
             Me.Close()
         Catch ex As Exception
-            Operations.ThemedErrorDialog(ex)
+            If Not Settings.Loaded Then Settings.Init()
+            WalkmanLib.ErrorDialog(ex, Settings.GetTheme())
+
             Me.Close()
         End Try
     End Sub
