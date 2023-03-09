@@ -1129,7 +1129,7 @@ Public Class PropertiesDotNet
         If path.EndsWith(IO.Path.DirectorySeparatorChar) Then
             path &= IO.Path.DirectorySeparatorChar
         End If
-        Dim fsUtilOutput As String = WalkmanLib.RunAndGetOutput("fsutil.exe", "file queryCaseSensitiveInfo """ & path & """")
+        Dim fsUtilOutput As String = WalkmanLib.RunAndGetOutput("fsutil.exe", "file queryCaseSensitiveInfo """ & path & """", mergeStdErr:=True)
 
         Select Case True
             Case fsUtilOutput.EndsWith("enabled.")
@@ -1152,7 +1152,7 @@ Public Class PropertiesDotNet
             Threading.Thread.Sleep(500)
             Return "See Admin output"
         Else
-            Return WalkmanLib.RunAndGetOutput("fsutil.exe", "file setCaseSensitiveInfo """ & path & """ " & caseSensitiveFlag)
+            Return WalkmanLib.RunAndGetOutput("fsutil.exe", "file setCaseSensitiveInfo """ & path & """ " & caseSensitiveFlag, mergeStdErr:=True)
         End If
     End Function
 End Class
