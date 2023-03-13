@@ -459,8 +459,9 @@ Public Class ShortcutPropertiesDialog
                         writer.WriteLine("lnk.Save")
                     End Using
 
-                    WalkmanLib.RunAsAdmin("wscript", scriptPath)
-                    Threading.Thread.Sleep(500)
+                    If WalkmanLib.RunAsAdmin("wscript", scriptPath) Then
+                        Threading.Thread.Sleep(500)
+                    End If
             End Select
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)

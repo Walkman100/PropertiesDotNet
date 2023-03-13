@@ -703,8 +703,9 @@ Public Class PropertiesDotNet
                 Case Operations.cMBbRelaunch
                     RestartAsAdmin()
                 Case Operations.cMBbRunSysTool
-                    WalkmanLib.RunAsAdmin("label.exe", driveProperties.Name.Remove(2) & " " & newName)
-                    Threading.Thread.Sleep(500)
+                    If WalkmanLib.RunAsAdmin("label.exe", driveProperties.Name.Remove(2) & " " & newName) Then
+                        Threading.Thread.Sleep(500)
+                    End If
             End Select
         Catch ex As Exception
             ErrorParser(ex)
@@ -1109,8 +1110,9 @@ Public Class PropertiesDotNet
     End Sub
 
     Sub RestartAsAdmin()
-        WalkmanLib.RunAsAdmin(Path.Combine(Application.StartupPath, Process.GetCurrentProcess.ProcessName & ".exe"), """" & lblFullPath.Text & """")
-        Application.Exit()
+        If WalkmanLib.RunAsAdmin(Path.Combine(Application.StartupPath, Process.GetCurrentProcess.ProcessName & ".exe"), """" & lblFullPath.Text & """") Then
+            Application.Exit()
+        End If
     End Sub
 
     Sub ErrorParser(ex As Exception)
@@ -1150,9 +1152,12 @@ Public Class PropertiesDotNet
         End If
 
         If runAsAdmin Then
-            WalkmanLib.RunAsAdmin("fsutil.exe", "file setCaseSensitiveInfo """ & path & """ " & caseSensitiveFlag)
-            Threading.Thread.Sleep(500)
-            Return "See Admin output"
+            If WalkmanLib.RunAsAdmin("fsutil.exe", "file setCaseSensitiveInfo """ & path & """ " & caseSensitiveFlag) Then
+                Threading.Thread.Sleep(500)
+                Return "See Admin output"
+            Else
+                Return "Admin Request Denied!"
+            End If
         Else
             Return WalkmanLib.RunAndGetOutput("fsutil.exe", "file setCaseSensitiveInfo """ & path & """ " & caseSensitiveFlag, mergeStdErr:=True)
         End If

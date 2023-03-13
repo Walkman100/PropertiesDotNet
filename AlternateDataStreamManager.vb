@@ -200,8 +200,9 @@ Partial Public Class AlternateDataStreamManager
                     Case Operations.cMBbRelaunch
                         PropertiesDotNet.RestartAsAdmin()
                     Case Operations.cMBbRunSysTool
-                        WalkmanLib.RunAsAdmin("powershell", "-Command Remove-Item -Path '" & PropertiesDotNet.lblFullPath.Text & "' -Stream '" & item.Text & "'; pause")
-                        Threading.Thread.Sleep(500)
+                        If WalkmanLib.RunAsAdmin("powershell", "-Command Remove-Item -Path '" & PropertiesDotNet.lblFullPath.Text & "' -Stream '" & item.Text & "'; pause") Then
+                            Threading.Thread.Sleep(500)
+                        End If
                 End Select
             Catch ex As Exception
                 PropertiesDotNet.ErrorParser(ex)
@@ -342,8 +343,9 @@ Partial Public Class AlternateDataStreamManager
                 Case Operations.cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case Operations.cMBbRunSysTool
-                    WalkmanLib.RunAsAdmin("powershell", "-Command Set-Content -Path '" & ads.FilePath & "' -Stream '" & ads.Name & "' -Value '" & streamInfo & "'; pause")
-                    Threading.Thread.Sleep(500)
+                    If WalkmanLib.RunAsAdmin("powershell", "-Command Set-Content -Path '" & ads.FilePath & "' -Stream '" & ads.Name & "' -Value '" & streamInfo & "'; pause") Then
+                        Threading.Thread.Sleep(500)
+                    End If
             End Select
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)

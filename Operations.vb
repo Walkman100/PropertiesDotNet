@@ -91,8 +91,8 @@ Public Class Operations
                 Case cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
-                    WalkmanLib.RunAsAdmin("cmd", "/c ren """ & sourcePath & """ """ & targetName & """ && pause")
-                    If MessageBox("Read new location?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                    If WalkmanLib.RunAsAdmin("cmd", "/c ren """ & sourcePath & """ """ & targetName & """ && pause") AndAlso
+                            MessageBox("Read new location?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         PropertiesDotNet.LoadNew(fullTargetName)
                     End If
             End Select
@@ -134,8 +134,8 @@ Public Class Operations
                 Case cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
-                    WalkmanLib.RunAsAdmin("cmd", "/c move """ & sourcePath & """ """ & targetPath & """ & pause")
-                    If MessageBox("Read new location?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                    If WalkmanLib.RunAsAdmin("cmd", "/c move """ & sourcePath & """ """ & targetPath & """ & pause") AndAlso
+                            MessageBox("Read new location?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         PropertiesDotNet.LoadNew(targetPath)
                     End If
             End Select
@@ -200,8 +200,8 @@ Public Class Operations
                 Case cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
-                    WalkmanLib.RunAsAdmin("xcopy", "/F /H /K """ & sourcePath & """ """ & targetPath & "*""")
-                    If MessageBox("Read new location?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                    If WalkmanLib.RunAsAdmin("xcopy", "/F /H /K """ & sourcePath & """ """ & targetPath & "*""") AndAlso
+                            MessageBox("Read new location?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         PropertiesDotNet.LoadNew(targetPath)
                     End If
             End Select
@@ -243,8 +243,9 @@ Public Class Operations
                 Case cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
-                    WalkmanLib.RunAsAdmin("cmd", "/c del """ & path & """ & pause")
-                    Threading.Thread.Sleep(500)
+                    If WalkmanLib.RunAsAdmin("cmd", "/c del """ & path & """ & pause") Then
+                        Threading.Thread.Sleep(500)
+                    End If
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MessageBox("File """ & path & """ is in use! Open Handle Manager?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
@@ -279,8 +280,8 @@ Public Class Operations
                         writer.WriteLine("lnk.Save")
                     End Using
 
-                    WalkmanLib.RunAsAdmin("wscript", scriptPath)
-                    If MessageBox("Show properties for created Shortcut?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                    If WalkmanLib.RunAsAdmin("wscript", scriptPath) AndAlso
+                            MessageBox("Show properties for created Shortcut?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         PropertiesDotNet.LoadNew(targetPath)
                     End If
             End Select
@@ -312,13 +313,10 @@ Public Class Operations
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
                     Dim pathInfo = WalkmanLib.IsFileOrDirectory(sourcePath)
-                    If pathInfo.HasFlag(PathEnum.IsFile) Then
-                        WalkmanLib.RunAsAdmin("cmd", "/c mklink """ & targetPath & """ """ & sourcePath & """ & pause")
-                    ElseIf pathInfo.HasFlag(PathEnum.IsDirectory) Then
-                        WalkmanLib.RunAsAdmin("cmd", "/c mklink /d """ & targetPath & """ """ & sourcePath & """ & pause")
-                    End If
+                    Dim arguments As String = "/c mklink " & If(pathInfo.HasFlag(PathEnum.IsFile), """", "/d """) & targetPath & """ """ & sourcePath & """ & pause"
 
-                    If MessageBox("Show properties for created Symlink?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                    If WalkmanLib.RunAsAdmin("cmd", arguments) AndAlso
+                            MessageBox("Show properties for created Symlink?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         PropertiesDotNet.LoadNew(targetPath)
                     End If
             End Select
@@ -348,9 +346,8 @@ Public Class Operations
                 Case cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
-                    WalkmanLib.RunAsAdmin("cmd", "/c mklink /h """ & targetPath & """ """ & sourcePath & """ & pause")
-
-                    If MessageBox("Show properties for created Hardlink?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                    If WalkmanLib.RunAsAdmin("cmd", "/c mklink /h """ & targetPath & """ """ & sourcePath & """ & pause") AndAlso
+                            MessageBox("Show properties for created Hardlink?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         PropertiesDotNet.LoadNew(targetPath)
                     End If
             End Select
@@ -380,9 +377,8 @@ Public Class Operations
                 Case cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
-                    WalkmanLib.RunAsAdmin("cmd", "/c mklink /j """ & targetPath & """ """ & sourcePath & """ & pause")
-
-                    If MessageBox("Show properties for created Junction?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                    If WalkmanLib.RunAsAdmin("cmd", "/c mklink /j """ & targetPath & """ """ & sourcePath & """ & pause") AndAlso
+                            MessageBox("Show properties for created Junction?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         PropertiesDotNet.LoadNew(targetPath)
                     End If
             End Select
@@ -414,8 +410,9 @@ Public Class Operations
                 Case cMBbRelaunch
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
-                    SetAttributeAsAdmin(path, attribute, addOrRemove)
-                    Threading.Thread.Sleep(100)
+                    If SetAttributeAsAdmin(path, attribute, addOrRemove) Then
+                        Threading.Thread.Sleep(100)
+                    End If
             End Select
         Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
             If MessageBox("File """ & path & """ is in use! Open Handle Manager?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
@@ -427,28 +424,28 @@ Public Class Operations
         Return False
     End Function
 
-    Private Shared Sub SetAttributeAsAdmin(path As String, attribute As FileAttributes, addOrRemove As Boolean)
+    Private Shared Function SetAttributeAsAdmin(path As String, attribute As FileAttributes, addOrRemove As Boolean) As Boolean
         Select Case attribute
             Case FileAttributes.ReadOnly
-                WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "r """ & path & """")
+                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "r """ & path & """")
             Case FileAttributes.Hidden
-                WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "h """ & path & """")
+                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "h """ & path & """")
             Case FileAttributes.System
-                WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "s """ & path & """")
+                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "s """ & path & """")
             Case FileAttributes.Archive
-                WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "a """ & path & """")
+                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "a """ & path & """")
             Case FileAttributes.NotContentIndexed
-                WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "i """ & path & """")
+                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "i """ & path & """")
             Case FileAttributes.Offline
-                WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "o """ & path & """")
+                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "o """ & path & """")
             Case FileAttributes.NoScrubData
-                WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "x """ & path & """")
+                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "x """ & path & """")
             Case FileAttributes.IntegrityStream
-                WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "v """ & path & """")
+                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "v """ & path & """")
             Case Else
                 Throw New InvalidOperationException("Invalid Attribute specified: " & attribute.ToString())
         End Select
-    End Sub
+    End Function
 
     Public Shared Sub HandleManager(filePath As String)
         Dim walkmanUtilsPath As String = WalkmanLib.GetWalkmanUtilsPath()
