@@ -274,7 +274,7 @@ Public Class Operations
                     PropertiesDotNet.RestartAsAdmin()
                 Case cMBbRunSysTool
                     Dim scriptPath As String = Environment.GetEnvironmentVariable("temp") & Path.DirectorySeparatorChar & "createShortcut.vbs"
-                    Using writer As StreamWriter = New StreamWriter(File.Open(scriptPath, FileMode.Create))
+                    Using writer As New StreamWriter(File.Open(scriptPath, FileMode.Create))
                         writer.WriteLine("Set lnk = WScript.CreateObject(""WScript.Shell"").CreateShortcut(""" & targetPath & """)")
                         writer.WriteLine("lnk.TargetPath = """ & sourcePath & """")
                         writer.WriteLine("lnk.Save")
@@ -469,7 +469,7 @@ Public Class Operations
         ' if running on a separate thread then settings isn't loaded. doesn't matter, we can just load, as all settings are immediately saved
         If Not Settings.Loaded Then Settings.Init()
 
-        Return WalkmanLib.CustomMsgBox(text, Settings.GetTheme(), title, buttons, icon, WinVersionStyle.Win10)
+        Return WalkmanLib.CustomMsgBox(text, Settings.GetTheme(), title, buttons, icon, WinVersionStyle.Win10, PropertiesDotNet)
     End Function
 
     Shared Function GetInput(ByRef input As String, Optional windowTitle As String = Nothing, Optional header As String = Nothing, Optional content As String = Nothing) As DialogResult
