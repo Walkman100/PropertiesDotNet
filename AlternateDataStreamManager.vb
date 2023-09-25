@@ -270,15 +270,16 @@ Partial Public Class AlternateDataStreamManager
                     Else ' here is FROM AlternateDataStream TO file
                         sourceStream = adsSource.OpenRead()
                     End If
-                    targetStream = File.Open(targetFile, FileMode.Truncate)
+                    targetStream = File.Open(targetFile, FileMode.Truncate, FileAccess.Write)
                 Else
-                    Try
-                        adsTarget = GetAlternateDataStream(targetFile, targetStreamName, FileMode.CreateNew)
-                    Catch ex2 As IOException
-                        Operations.MessageBox("Stream """ & targetStreamName & """ already exists on file """ & targetFile & """!",
-                                              MessageBoxButtons.OK, MessageBoxIcon.Error, "Error Creating Stream")
+                    If AlternateDataStreamExists(targetFile, targetStreamName) AndAlso
+                            Operations.MessageBox("Stream """ & targetStreamName & """ already exists on file """ & targetFile & """! Overwrite?",
+                                                  MessageBoxButtons.YesNo, MessageBoxIcon.Warning, "Target stream already exists") <> DialogResult.Yes Then
                         Continue For
-                    Catch ex2 As ArgumentException
+                    End If
+                    Try
+                        adsTarget = GetAlternateDataStream(targetFile, targetStreamName, FileMode.OpenOrCreate)
+                    Catch __ As ArgumentException
                         Operations.MessageBox("Stream name """ & targetStreamName & """ contains invalid characters!",
                                               MessageBoxButtons.OK, MessageBoxIcon.Error, "Error Creating Stream")
                         Continue For
@@ -287,9 +288,13 @@ Partial Public Class AlternateDataStreamManager
                     ' Copying FROM file TO AlternateDataStream
                     If adsSource.Name = ":$DATA" Then
                         sourceStream = File.OpenRead(adsSource.FilePath)
-                        targetStream = adsTarget.OpenWrite()
                     Else ' Copying FROM AlternateDataStream TO AlternateDataStream
                         sourceStream = adsSource.OpenRead()
+                    End If
+
+                    If AlternateDataStreamExists(targetFile, targetStreamName) Then
+                        targetStream = adsTarget.Open(FileMode.Truncate, FileAccess.Write)
+                    Else
                         targetStream = adsTarget.OpenWrite()
                     End If
                 End If

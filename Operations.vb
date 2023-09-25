@@ -168,7 +168,7 @@ Public Class Operations
                     Dim targetStream As FileStream = Nothing
                     Try
                         sourceStream = File.OpenRead(sourcePath)
-                        targetStream = File.OpenWrite(targetPath)
+                        targetStream = File.Open(targetPath, FileMode.Truncate, FileAccess.Write)
 
                         WalkmanLib.StreamCopy(sourceStream, targetStream, "Copying """ & sourcePath & """ to """ & targetPath & """...",
                                               "File Copy", Sub(s, e)
