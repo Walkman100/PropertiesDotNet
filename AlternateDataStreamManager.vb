@@ -264,7 +264,12 @@ Partial Public Class AlternateDataStreamManager
 
                 ' Copying FROM AlternateDataStream TO file
                 If targetStreamName = ":$DATA" Then
-                    sourceStream = adsSource.OpenRead()
+                    If adsSource.Name = ":$DATA" Then
+                        ' actually copying FROM file TO file
+                        sourceStream = File.OpenRead(adsSource.FilePath)
+                    Else ' here is FROM AlternateDataStream TO file
+                        sourceStream = adsSource.OpenRead()
+                    End If
                     targetStream = File.Open(targetFile, FileMode.Truncate)
                 Else
                     Try
@@ -334,7 +339,7 @@ Partial Public Class AlternateDataStreamManager
         End If
 
         Try
-            Using stream As StreamWriter = New StreamWriter(ads.OpenWrite())
+            Using stream As New StreamWriter(ads.OpenWrite())
                 stream.Write(streamInfo)
             End Using
         Catch ex As UnauthorizedAccessException When Not WalkmanLib.IsAdmin()
