@@ -270,7 +270,7 @@ Partial Public Class AlternateDataStreamManager
                     Else ' here is FROM AlternateDataStream TO file
                         sourceStream = adsSource.OpenRead()
                     End If
-                    targetStream = File.Open(targetFile, FileMode.Truncate, FileAccess.Write)
+                    targetStream = File.Open(targetFile, FileMode.Create, FileAccess.Write)
                 Else
                     If AlternateDataStreamExists(targetFile, targetStreamName) AndAlso
                             Operations.MessageBox("Stream """ & targetStreamName & """ already exists on file """ & targetFile & """! Overwrite?",
