@@ -1,6 +1,7 @@
 [submodule "WalkmanLib"]
 	path = WalkmanLib
-	url = https://github.com/Walkman100/WalkmanLib.git
+	url = https://github.com/Walkman100/WalkmanLib
+	branch = master
 [submodule "NTFS-Streams"]
 	path = NTFS-Streams
 	url = https://github.com/Walkman100/NTFS-Streams
