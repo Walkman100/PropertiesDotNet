@@ -427,21 +427,21 @@ Public Class Operations
     Private Shared Function SetAttributeAsAdmin(path As String, attribute As FileAttributes, addOrRemove As Boolean) As Boolean
         Select Case attribute
             Case FileAttributes.ReadOnly
-                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "r """ & path & """")
+                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "r """ & path & """ /l")
             Case FileAttributes.Hidden
-                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "h """ & path & """")
+                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "h """ & path & """ /l")
             Case FileAttributes.System
-                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "s """ & path & """")
+                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "s """ & path & """ /l")
             Case FileAttributes.Archive
-                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "a """ & path & """")
+                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "a """ & path & """ /l")
             Case FileAttributes.NotContentIndexed
-                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "i """ & path & """")
+                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "i """ & path & """ /l")
             Case FileAttributes.Offline
-                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "o """ & path & """")
+                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "o """ & path & """ /l")
             Case FileAttributes.NoScrubData
-                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "x """ & path & """")
+                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "x """ & path & """ /l")
             Case FileAttributes.IntegrityStream
-                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "v """ & path & """")
+                Return WalkmanLib.RunAsAdmin("attrib", If(addOrRemove, "+", "-") & "v """ & path & """ /l")
             Case Else
                 Throw New InvalidOperationException("Invalid Attribute specified: " & attribute.ToString())
         End Select
