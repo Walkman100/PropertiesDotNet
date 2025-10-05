@@ -542,15 +542,15 @@ Public Class PropertiesDotNet
             lblSize.Text = FormatNumber(byteSize)
         End If
 
-        Dim newInt As Integer
-        If Integer.TryParse(compressedSizeOrError, newInt) Then
-            If newInt = 0 Then
+        Dim newLong As ULong
+        If ULong.TryParse(compressedSizeOrError, newLong) Then
+            If newLong = 0 Then
                 chkCompressed.Text = "Compr&essed"
-            ElseIf newInt = byteSize Then
+            ElseIf newLong = byteSize Then
                 chkCompressed.Text = "Compr&essed (Size on disk is either 0 or bigger than size)"
             Else
                 chkCompressed.Text = "Compr&essed (Size on disk: "
-                chkCompressed.Text &= FormatNumber(newInt) & ")"
+                chkCompressed.Text &= FormatNumber(newLong) & ")"
             End If
         Else
             chkCompressed.Text = "Compr&essed (GetSizeError: " & compressedSizeOrError & ")"
