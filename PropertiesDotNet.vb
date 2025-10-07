@@ -1104,7 +1104,8 @@ Public Class PropertiesDotNet
         Catch ex As Exception
             lblSize.Text = "Error: " & ex.Message
             lblOpenWith.Text = "?"
-            ErrorParser(ex)
+
+            Me.Invoke(Sub() ErrorParser(ex))
         End Try
         ApplySizeFormatting()
     End Sub
