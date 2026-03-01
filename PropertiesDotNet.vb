@@ -85,6 +85,15 @@ Public Class PropertiesDotNet
     End Sub
 
     Public Sub ApplyTheme(theme As WalkmanLib.Theme)
+        Select Case theme
+            Case WalkmanLib.Theme.Default
+                WalkmanLib.SetPreferredAppMode(WalkmanLib.PreferredAppMode.Default)
+            Case WalkmanLib.Theme.Dark, WalkmanLib.Theme.Inverted
+                WalkmanLib.SetPreferredAppMode(WalkmanLib.PreferredAppMode.ForceDark)
+            Case Else
+                WalkmanLib.SetPreferredAppMode(WalkmanLib.PreferredAppMode.AllowDark)
+        End Select
+
         WalkmanLib.ApplyTheme(theme, Me, True)
         WalkmanLib.ApplyTheme(theme, components.Components, True)
         ToolStripManager.Renderer = New WalkmanLib.CustomPaint.ToolStripSystemRendererWithDisabled(theme.ToolStripItemDisabledText)

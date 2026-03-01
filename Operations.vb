@@ -66,9 +66,6 @@ Public Class Operations
         Return (HResult And &H0000FFFF)
     End Function
 
-    '32 (0x20) = ERROR_SHARING_VIOLATION: The process cannot access the file because it is being used by another process.
-    Private Const shareViolation As Integer = &H20
-
     Shared Sub Rename(sourcePath As String, targetName As String)
         Dim fileProperties As New FileInfo(sourcePath)
         Dim fullTargetName = fileProperties.DirectoryName & Path.DirectorySeparatorChar & targetName
@@ -96,7 +93,7 @@ Public Class Operations
                         PropertiesDotNet.LoadNew(fullTargetName)
                     End If
             End Select
-        Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
+        Catch ex As IOException When Win32FromHResult(ex.HResult) = WalkmanLib.NativeErrorCode.ERROR_SHARING_VIOLATION
             If MessageBox("File """ & sourcePath & """ is in use! Open Handle Manager?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
                 HandleManager(sourcePath)
             End If
@@ -139,7 +136,7 @@ Public Class Operations
                         PropertiesDotNet.LoadNew(targetPath)
                     End If
             End Select
-        Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
+        Catch ex As IOException When Win32FromHResult(ex.HResult) = WalkmanLib.NativeErrorCode.ERROR_SHARING_VIOLATION
             If MessageBox("File """ & sourcePath & """ is in use! Open Handle Manager?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
                 HandleManager(sourcePath)
             End If
@@ -205,7 +202,7 @@ Public Class Operations
                         PropertiesDotNet.LoadNew(targetPath)
                     End If
             End Select
-        Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
+        Catch ex As IOException When Win32FromHResult(ex.HResult) = WalkmanLib.NativeErrorCode.ERROR_SHARING_VIOLATION
             If MessageBox("A file is in use! Open Handle Manager on """ & targetPath & """?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
                 HandleManager(targetPath)
             Else
@@ -247,7 +244,7 @@ Public Class Operations
                         Threading.Thread.Sleep(500)
                     End If
             End Select
-        Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
+        Catch ex As IOException When Win32FromHResult(ex.HResult) = WalkmanLib.NativeErrorCode.ERROR_SHARING_VIOLATION
             If MessageBox("File """ & path & """ is in use! Open Handle Manager?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
                 HandleManager(path)
             End If
@@ -414,7 +411,7 @@ Public Class Operations
                         Threading.Thread.Sleep(100)
                     End If
             End Select
-        Catch ex As IOException When Win32FromHResult(ex.HResult) = shareViolation
+        Catch ex As IOException When Win32FromHResult(ex.HResult) = WalkmanLib.NativeErrorCode.ERROR_SHARING_VIOLATION
             If MessageBox("File """ & path & """ is in use! Open Handle Manager?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
                 HandleManager(path)
             End If
