@@ -65,12 +65,12 @@ Partial Class PropertiesDotNet
         Me.lblSize = New System.Windows.Forms.Label()
         Me.lblSizeLbl = New System.Windows.Forms.Label()
         Me.chkUTC = New System.Windows.Forms.CheckBox()
-        Me.lblLastWriteTime = New System.Windows.Forms.Label()
-        Me.lblLastWriteTimeLbl = New System.Windows.Forms.Label()
-        Me.lblLastAccessTime = New System.Windows.Forms.Label()
-        Me.lblLastAccessTimeLbl = New System.Windows.Forms.Label()
-        Me.lblCreationTime = New System.Windows.Forms.Label()
-        Me.lblCreationTimeLbl = New System.Windows.Forms.Label()
+        Me.lblModified = New System.Windows.Forms.Label()
+        Me.lblModifiedLbl = New System.Windows.Forms.Label()
+        Me.lblLastAccess = New System.Windows.Forms.Label()
+        Me.lblLastAccessLbl = New System.Windows.Forms.Label()
+        Me.lblCreated = New System.Windows.Forms.Label()
+        Me.lblCreatedLbl = New System.Windows.Forms.Label()
         Me.lblFullPath = New System.Windows.Forms.Label()
         Me.lblDirectory = New System.Windows.Forms.Label()
         Me.lblExtension = New System.Windows.Forms.Label()
@@ -197,12 +197,12 @@ Partial Class PropertiesDotNet
         Me.grpProperties.Controls.Add(Me.lblSize)
         Me.grpProperties.Controls.Add(Me.lblSizeLbl)
         Me.grpProperties.Controls.Add(Me.chkUTC)
-        Me.grpProperties.Controls.Add(Me.lblLastWriteTime)
-        Me.grpProperties.Controls.Add(Me.lblLastWriteTimeLbl)
-        Me.grpProperties.Controls.Add(Me.lblLastAccessTime)
-        Me.grpProperties.Controls.Add(Me.lblLastAccessTimeLbl)
-        Me.grpProperties.Controls.Add(Me.lblCreationTime)
-        Me.grpProperties.Controls.Add(Me.lblCreationTimeLbl)
+        Me.grpProperties.Controls.Add(Me.lblModified)
+        Me.grpProperties.Controls.Add(Me.lblModifiedLbl)
+        Me.grpProperties.Controls.Add(Me.lblLastAccess)
+        Me.grpProperties.Controls.Add(Me.lblLastAccessLbl)
+        Me.grpProperties.Controls.Add(Me.lblCreated)
+        Me.grpProperties.Controls.Add(Me.lblCreatedLbl)
         Me.grpProperties.Controls.Add(Me.lblFullPath)
         Me.grpProperties.Controls.Add(Me.lblDirectory)
         Me.grpProperties.Controls.Add(Me.lblExtension)
@@ -606,68 +606,68 @@ Partial Class PropertiesDotNet
         Me.myToolTip.SetToolTip(Me.chkUTC, "Toggles times between UTC and local time. Also refreshes most info")
         Me.chkUTC.UseVisualStyleBackColor = True
         '
-        'lblLastWriteTime
+        'lblModified
         '
-        Me.lblLastWriteTime.AutoSize = True
-        Me.lblLastWriteTime.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblLastWriteTime.Location = New System.Drawing.Point(101, 209)
-        Me.lblLastWriteTime.Name = "lblLastWriteTime"
-        Me.lblLastWriteTime.Size = New System.Drawing.Size(61, 13)
-        Me.lblLastWriteTime.TabIndex = 32
-        Me.lblLastWriteTime.Text = "Checking..."
-        Me.myToolTip.SetToolTip(Me.lblLastWriteTime, "Date and Time file was last written to. Click to choose time to set to")
-        Me.lblLastWriteTime.UseMnemonic = False
+        Me.lblModified.AutoSize = True
+        Me.lblModified.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblModified.Location = New System.Drawing.Point(101, 196)
+        Me.lblModified.Name = "lblModified"
+        Me.lblModified.Size = New System.Drawing.Size(61, 13)
+        Me.lblModified.TabIndex = 30
+        Me.lblModified.Text = "Checking..."
+        Me.myToolTip.SetToolTip(Me.lblModified, "Date and Time file was last written to. Click to choose time to set to")
+        Me.lblModified.UseMnemonic = False
         '
-        'lblLastWriteTimeLbl
+        'lblModifiedLbl
         '
-        Me.lblLastWriteTimeLbl.AutoSize = True
-        Me.lblLastWriteTimeLbl.Location = New System.Drawing.Point(6, 209)
-        Me.lblLastWriteTimeLbl.Name = "lblLastWriteTimeLbl"
-        Me.lblLastWriteTimeLbl.Size = New System.Drawing.Size(77, 13)
-        Me.lblLastWriteTimeLbl.TabIndex = 31
-        Me.lblLastWriteTimeLbl.Text = "Last write time:"
+        Me.lblModifiedLbl.AutoSize = True
+        Me.lblModifiedLbl.Location = New System.Drawing.Point(6, 196)
+        Me.lblModifiedLbl.Name = "lblModifiedLbl"
+        Me.lblModifiedLbl.Size = New System.Drawing.Size(50, 13)
+        Me.lblModifiedLbl.TabIndex = 29
+        Me.lblModifiedLbl.Text = "Modified:"
         '
-        'lblLastAccessTime
+        'lblLastAccess
         '
-        Me.lblLastAccessTime.AutoSize = True
-        Me.lblLastAccessTime.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblLastAccessTime.Location = New System.Drawing.Point(101, 196)
-        Me.lblLastAccessTime.Name = "lblLastAccessTime"
-        Me.lblLastAccessTime.Size = New System.Drawing.Size(61, 13)
-        Me.lblLastAccessTime.TabIndex = 30
-        Me.lblLastAccessTime.Text = "Checking..."
-        Me.myToolTip.SetToolTip(Me.lblLastAccessTime, "Date and Time file was last accessed. Click to choose time to set to")
-        Me.lblLastAccessTime.UseMnemonic = False
+        Me.lblLastAccess.AutoSize = True
+        Me.lblLastAccess.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblLastAccess.Location = New System.Drawing.Point(101, 209)
+        Me.lblLastAccess.Name = "lblLastAccess"
+        Me.lblLastAccess.Size = New System.Drawing.Size(61, 13)
+        Me.lblLastAccess.TabIndex = 32
+        Me.lblLastAccess.Text = "Checking..."
+        Me.myToolTip.SetToolTip(Me.lblLastAccess, "Date and Time file was last accessed. Click to choose time to set to")
+        Me.lblLastAccess.UseMnemonic = False
         '
-        'lblLastAccessTimeLbl
+        'lblLastAccessLbl
         '
-        Me.lblLastAccessTimeLbl.AutoSize = True
-        Me.lblLastAccessTimeLbl.Location = New System.Drawing.Point(6, 196)
-        Me.lblLastAccessTimeLbl.Name = "lblLastAccessTimeLbl"
-        Me.lblLastAccessTimeLbl.Size = New System.Drawing.Size(89, 13)
-        Me.lblLastAccessTimeLbl.TabIndex = 29
-        Me.lblLastAccessTimeLbl.Text = "Last access time:"
+        Me.lblLastAccessLbl.AutoSize = True
+        Me.lblLastAccessLbl.Location = New System.Drawing.Point(6, 209)
+        Me.lblLastAccessLbl.Name = "lblLastAccessLbl"
+        Me.lblLastAccessLbl.Size = New System.Drawing.Size(80, 13)
+        Me.lblLastAccessLbl.TabIndex = 31
+        Me.lblLastAccessLbl.Text = "Last Accessed:"
         '
-        'lblCreationTime
+        'lblCreated
         '
-        Me.lblCreationTime.AutoSize = True
-        Me.lblCreationTime.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblCreationTime.Location = New System.Drawing.Point(101, 183)
-        Me.lblCreationTime.Name = "lblCreationTime"
-        Me.lblCreationTime.Size = New System.Drawing.Size(61, 13)
-        Me.lblCreationTime.TabIndex = 28
-        Me.lblCreationTime.Text = "Checking..."
-        Me.myToolTip.SetToolTip(Me.lblCreationTime, "Date and Time of file creation. Click to choose time to set to")
-        Me.lblCreationTime.UseMnemonic = False
+        Me.lblCreated.AutoSize = True
+        Me.lblCreated.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblCreated.Location = New System.Drawing.Point(101, 183)
+        Me.lblCreated.Name = "lblCreated"
+        Me.lblCreated.Size = New System.Drawing.Size(61, 13)
+        Me.lblCreated.TabIndex = 28
+        Me.lblCreated.Text = "Checking..."
+        Me.myToolTip.SetToolTip(Me.lblCreated, "Date and Time of file creation. Click to choose time to set to")
+        Me.lblCreated.UseMnemonic = False
         '
-        'lblCreationTimeLbl
+        'lblCreatedLbl
         '
-        Me.lblCreationTimeLbl.AutoSize = True
-        Me.lblCreationTimeLbl.Location = New System.Drawing.Point(6, 183)
-        Me.lblCreationTimeLbl.Name = "lblCreationTimeLbl"
-        Me.lblCreationTimeLbl.Size = New System.Drawing.Size(71, 13)
-        Me.lblCreationTimeLbl.TabIndex = 27
-        Me.lblCreationTimeLbl.Text = "Creation time:"
+        Me.lblCreatedLbl.AutoSize = True
+        Me.lblCreatedLbl.Location = New System.Drawing.Point(6, 183)
+        Me.lblCreatedLbl.Name = "lblCreatedLbl"
+        Me.lblCreatedLbl.Size = New System.Drawing.Size(47, 13)
+        Me.lblCreatedLbl.TabIndex = 27
+        Me.lblCreatedLbl.Text = "Created:"
         '
         'lblFullPath
         '
@@ -1147,7 +1147,6 @@ Partial Class PropertiesDotNet
         '
         'PropertiesDotNet
         '
-        Me.AcceptButton = Me.btnWindowsProperties
         Me.AllowDrop = True
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -1245,17 +1244,17 @@ Partial Class PropertiesDotNet
     Private WithEvents chkSparse As System.Windows.Forms.CheckBox
     Private lblSizeLbl As System.Windows.Forms.Label
     Private lblSize As System.Windows.Forms.Label
-    Private WithEvents lblLastWriteTime As System.Windows.Forms.Label
+    Private WithEvents lblModified As System.Windows.Forms.Label
     Private WithEvents chkUTC As System.Windows.Forms.CheckBox
     Private lblName As System.Windows.Forms.Label
     Private lblExtension As System.Windows.Forms.Label
     Friend lblDirectory As System.Windows.Forms.Label
     Friend lblFullPath As System.Windows.Forms.Label
-    Private lblCreationTimeLbl As System.Windows.Forms.Label
-    Private WithEvents lblCreationTime As System.Windows.Forms.Label
-    Private lblLastAccessTimeLbl As System.Windows.Forms.Label
-    Private WithEvents lblLastAccessTime As System.Windows.Forms.Label
-    Private lblLastWriteTimeLbl As System.Windows.Forms.Label
+    Private lblCreatedLbl As System.Windows.Forms.Label
+    Private WithEvents lblCreated As System.Windows.Forms.Label
+    Private lblLastAccessLbl As System.Windows.Forms.Label
+    Private WithEvents lblLastAccess As System.Windows.Forms.Label
+    Private lblModifiedLbl As System.Windows.Forms.Label
     Private lblExtensionLbl As System.Windows.Forms.Label
     Private lblDirectoryLbl As System.Windows.Forms.Label
     Private lblFullPathLbl As System.Windows.Forms.Label

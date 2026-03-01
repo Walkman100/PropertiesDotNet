@@ -5,26 +5,26 @@ Imports System.Windows.Forms
 
 Public Class Operations
     Enum TimeChangeEnum
-        Creation = 1   ' have to give them values,
-        LastAccess = 2 '  so the "Case ... And ..."
-        LastWrite = 3  '  below works.
+        Created = 1      ' have to give them values,
+        Modified = 3     '  so the "Case ... And ..."
+        LastAccessed = 2 '  below works.
     End Enum
 
     Shared Sub SetSelectDateDialogValue(path As String, useUTC As Boolean, type As TimeChangeEnum)
         Try
             Select Case DirectCast(type, Integer)
-                Case TimeChangeEnum.Creation And CType(useUTC, Integer)
+                Case TimeChangeEnum.Created And CType(useUTC, Integer)
                     SelectDateDialog.dateTimePicker.Value = File.GetCreationTimeUtc(path)
-                Case TimeChangeEnum.Creation
+                Case TimeChangeEnum.Created
                     SelectDateDialog.dateTimePicker.Value = File.GetCreationTime(path)
-                Case TimeChangeEnum.LastAccess And CType(useUTC, Integer)
-                    SelectDateDialog.dateTimePicker.Value = File.GetLastAccessTimeUtc(path)
-                Case TimeChangeEnum.LastAccess
-                    SelectDateDialog.dateTimePicker.Value = File.GetLastAccessTime(path)
-                Case TimeChangeEnum.LastWrite And CType(useUTC, Integer)
+                Case TimeChangeEnum.Modified And CType(useUTC, Integer)
                     SelectDateDialog.dateTimePicker.Value = File.GetLastWriteTimeUtc(path)
-                Case TimeChangeEnum.LastWrite
+                Case TimeChangeEnum.Modified
                     SelectDateDialog.dateTimePicker.Value = File.GetLastWriteTime(path)
+                Case TimeChangeEnum.LastAccessed And CType(useUTC, Integer)
+                    SelectDateDialog.dateTimePicker.Value = File.GetLastAccessTimeUtc(path)
+                Case TimeChangeEnum.LastAccessed
+                    SelectDateDialog.dateTimePicker.Value = File.GetLastAccessTime(path)
             End Select
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
@@ -34,18 +34,18 @@ Public Class Operations
     Shared Sub SetTime(path As String, useUTC As Boolean, type As TimeChangeEnum, time As Date)
         Try
             Select Case DirectCast(type, Integer)
-                Case TimeChangeEnum.Creation And CType(useUTC, Integer)
-                    File.SetCreationTimeUtc  (path, time)
-                Case TimeChangeEnum.Creation
-                    File.SetCreationTime     (path, time)
-                Case TimeChangeEnum.LastAccess And CType(useUTC, Integer)
+                Case TimeChangeEnum.Created And CType(useUTC, Integer)
+                    File.SetCreationTimeUtc(path, time)
+                Case TimeChangeEnum.Created
+                    File.SetCreationTime(path, time)
+                Case TimeChangeEnum.Modified And CType(useUTC, Integer)
+                    File.SetLastWriteTimeUtc(path, time)
+                Case TimeChangeEnum.Modified
+                    File.SetLastWriteTime(path, time)
+                Case TimeChangeEnum.LastAccessed And CType(useUTC, Integer)
                     File.SetLastAccessTimeUtc(path, time)
-                Case TimeChangeEnum.LastAccess
-                    File.SetLastAccessTime   (path, time)
-                Case TimeChangeEnum.LastWrite And CType(useUTC, Integer)
-                    File.SetLastWriteTimeUtc (path, time)
-                Case TimeChangeEnum.LastWrite
-                    File.SetLastWriteTime    (path, time)
+                Case TimeChangeEnum.LastAccessed
+                    File.SetLastAccessTime(path, time)
             End Select
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
