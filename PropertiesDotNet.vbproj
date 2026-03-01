@@ -112,6 +112,7 @@
     <Compile Include="WalkmanLib\CustomMsgBox.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="WalkmanLib\NativeErrorCodes.vb" />
     <Compile Include="WalkmanLib\WalkmanLibDotNet.vb" />
     <Compile Include="WalkmanLib\WalkmanLibRestartManager.vb" />
     <Compile Include="WalkmanLib\WalkmanLibStreamCopy.vb" />
