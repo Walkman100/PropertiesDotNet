@@ -36,12 +36,8 @@ Partial Public Class AlternateDataStreamManager
     End Sub
 
     Sub ApplyTheme(theme As WalkmanLib.Theme)
-        ToolStripManager.Renderer = New WalkmanLib.CustomPaint.ToolStripSystemRendererWithDisabled(theme.ToolStripItemDisabledText)
-        lstStreams.Tag = theme.ListViewColumnColors
-        AddHandler lstStreams.DrawItem, AddressOf WalkmanLib.CustomPaint.ListView_DrawDefaultItem
-        AddHandler lstStreams.DrawSubItem, AddressOf WalkmanLib.CustomPaint.ListView_DrawDefaultSubItem
-        AddHandler lstStreams.DrawColumnHeader, AddressOf WalkmanLib.CustomPaint.ListView_DrawCustomColumnHeader
-
+        WalkmanLib.InitCustomRenderers(Me.Controls)
+        WalkmanLib.ApplyThemeRenderer(theme, Me.Controls)
         WalkmanLib.ApplyTheme(theme, Me, True)
         If components IsNot Nothing Then WalkmanLib.ApplyTheme(theme, components.Components, True)
     End Sub

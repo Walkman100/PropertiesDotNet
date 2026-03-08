@@ -90,6 +90,10 @@ Public Class Settings
         WalkmanLib.ApplyTheme(theme, Me, True)
         If components IsNot Nothing Then WalkmanLib.ApplyTheme(theme, components.Components, True)
         PropertiesDotNet.ApplyTheme(theme)
+
+        If Not Hashes Is Nothing AndAlso Hashes.Created Then WalkmanLib.ApplyTheme(theme, Hashes, True)
+        If Not ShortcutPropertiesDialog Is Nothing AndAlso ShortcutPropertiesDialog.Created Then WalkmanLib.ApplyTheme(theme, ShortcutPropertiesDialog, True)
+        If Not AlternateDataStreamManager Is Nothing AndAlso AlternateDataStreamManager.Created Then AlternateDataStreamManager.ApplyTheme(theme)
     End Sub
 
 #Region "Properties"
