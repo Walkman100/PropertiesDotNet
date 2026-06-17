@@ -141,9 +141,9 @@ Public Class PropertiesDotNet
             FileProperties = New FileInfo(lblLocation.Text)
         End If
         If WalkmanLib.IsAdmin() Then
-            Me.Text = "[Admin] Properties: " & FileProperties.Name
+            Me.Text = "[Admin] Properties: " & If(FileProperties.Name <> "", FileProperties.Name, FileProperties.FullName)
         Else
-            Me.Text = "Properties: " & FileProperties.Name
+            Me.Text = "Properties: " & If(FileProperties.Name <> "", FileProperties.Name, FileProperties.FullName)
         End If
 
         ' ======================= Properties section =======================
@@ -213,6 +213,7 @@ Public Class PropertiesDotNet
             End If
             If DriveProperties.Name = FileProperties.FullName Then
                 showDriveInfo = True
+                Me.Text &= $" ({DriveProperties.VolumeLabel})"
             Else
                 showDriveInfo = False
             End If

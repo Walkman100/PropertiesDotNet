@@ -499,7 +499,7 @@ Public Class Hashes
             bytesRead = FilePropertiesStream.Read(buffer, 0, buffer.Length)
             totalBytesRead = bytesRead
 
-            HashGeneratorOutput("Generating hash byte array...")
+            HashGeneratorOutput("Calculating file hash...")
             Dim lastProgressPercent As Integer = 0
             Dim currentProgressPercent As Integer
             Do While bytesRead <> 0
