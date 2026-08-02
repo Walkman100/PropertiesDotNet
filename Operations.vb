@@ -35,17 +35,17 @@ Public Class Operations
         Try
             Select Case DirectCast(type, Integer)
                 Case TimeChangeEnum.Created And CType(useUTC, Integer)
-                    File.SetCreationTimeUtc(path, time)
+                    WalkmanLib.SetSymlinkTimes(path, time, Nothing, Nothing)
                 Case TimeChangeEnum.Created
-                    File.SetCreationTime(path, time)
+                    WalkmanLib.SetSymlinkTimes(path, time.ToUniversalTime(), Nothing, Nothing)
                 Case TimeChangeEnum.Modified And CType(useUTC, Integer)
-                    File.SetLastWriteTimeUtc(path, time)
+                    WalkmanLib.SetSymlinkTimes(path, Nothing, Nothing, time)
                 Case TimeChangeEnum.Modified
-                    File.SetLastWriteTime(path, time)
+                    WalkmanLib.SetSymlinkTimes(path, Nothing, Nothing, time.ToUniversalTime())
                 Case TimeChangeEnum.LastAccessed And CType(useUTC, Integer)
-                    File.SetLastAccessTimeUtc(path, time)
+                    WalkmanLib.SetSymlinkTimes(path, Nothing, time, Nothing)
                 Case TimeChangeEnum.LastAccessed
-                    File.SetLastAccessTime(path, time)
+                    WalkmanLib.SetSymlinkTimes(path, Nothing, time.ToUniversalTime(), Nothing)
             End Select
         Catch ex As Exception
             PropertiesDotNet.ErrorParser(ex)
