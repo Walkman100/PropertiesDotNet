@@ -442,8 +442,8 @@ Public Class PropertiesDotNet
     ' ======================= Properties section buttons =======================
 
     Sub btnSettings_Click() Handles btnSettings.Click
-        Settings.Show(Me)
-        Settings.Activate()
+        WalkmanLib.ShowOrActivateForm(Settings, Me)
+        If Settings.WindowState = FormWindowState.Minimized Then WalkmanLib.RestoreWindow(Settings.Handle)
     End Sub
 
     Sub btnRelaunchAsAdmin_Click() Handles btnRelaunchAsAdmin.Click
@@ -676,9 +676,10 @@ Public Class PropertiesDotNet
 
     Sub btnHashes_Click() Handles btnHashes.Click
         If btnHashes.Text = "Compute &Hashes" Then
-            Hashes.Show(Me)
             Hashes.Text = "Generate Hashes: " & lblName.Text
-            Hashes.Activate()
+            WalkmanLib.ShowOrActivateForm(Hashes, Me)
+            If Hashes.WindowState = FormWindowState.Minimized Then WalkmanLib.RestoreWindow(Hashes.Handle)
+
         ElseIf btnHashes.Text = "DirectoryIma&ge..." Then
             Dim directoryImage As String = Path.Combine(Application.StartupPath, "DirectoryImage.exe")
 
@@ -731,8 +732,8 @@ Public Class PropertiesDotNet
     End Sub
 
     Sub btnADS_Click() Handles btnADS.Click
-        AlternateDataStreamManager.Show(Me)
-        AlternateDataStreamManager.Activate()
+        WalkmanLib.ShowOrActivateForm(AlternateDataStreamManager, Me)
+        If AlternateDataStreamManager.WindowState = FormWindowState.Minimized Then WalkmanLib.RestoreWindow(AlternateDataStreamManager.Handle)
     End Sub
 
     Sub btnHandles_Click() Handles btnHandles.Click
@@ -948,8 +949,8 @@ Public Class PropertiesDotNet
                 ShortcutPropertiesDialog.chkRunAs.Enabled = False
             End Try
 
-            ShortcutPropertiesDialog.Show(Me)
-            ShortcutPropertiesDialog.Activate()
+            WalkmanLib.ShowOrActivateForm(ShortcutPropertiesDialog, Me)
+            If ShortcutPropertiesDialog.WindowState = FormWindowState.Minimized Then WalkmanLib.RestoreWindow(ShortcutPropertiesDialog.Handle)
         Else
             sfdSave.InitialDirectory = lblDirectory.Text
             sfdSave.FileName = "Shortcut to " & lblName.Text & ".lnk"
