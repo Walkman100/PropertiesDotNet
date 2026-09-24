@@ -95,6 +95,19 @@ Public Class PropertiesDotNet
         If Me.Created AndAlso oldFlatStyle = FlatStyle.Standard Then
             WalkmanLib.FixComboBoxFlatBackground(theme, Me.Controls)
         End If
+
+        Dim standardButtons As Boolean = (theme.ButtonFlatStyle = FlatStyle.Standard)
+        btnTakeOwn.Size = New Size(If(standardButtons, 118, 120), btnTakeOwn.Size.Height)
+        btnLaunch.Location = New Point(If(standardButtons, 276, 275), btnLaunch.Location.Y)
+        btnLaunchAdmin.Height = If(standardButtons, 25, 23)
+        btnLaunchAdmin.Location = New Point(btnLaunchAdmin.Location.X, If(standardButtons, 71, 72))
+        btnStartAssocProg.Location = New Point(If(standardButtons, 276, 275), btnStartAssocProg.Location.Y)
+        btnStartAssocProgAdmin.Height = If(standardButtons, 25, 23)
+        btnStartAssocProgAdmin.Location = New Point(btnStartAssocProgAdmin.Location.X, If(standardButtons, 141, 142))
+        btnRelaunchAsAdmin.Location = New Point(btnRelaunchAsAdmin.Location.X, If(standardButtons, 2, 4))
+        btnRelaunchAsAdmin.Height = If(standardButtons, 25, 23)
+        btnSettings.Location = New Point(btnSettings.Location.X, If(standardButtons, 2, 4))
+        btnSettings.Height = If(standardButtons, 25, 23)
     End Sub
 
     ' ======================= Dragging-and-dropping =======================
@@ -512,11 +525,15 @@ Public Class PropertiesDotNet
     Sub btnOpenWith_MouseUp(sender As Object, e As MouseEventArgs) Handles btnOpenWith.MouseUp
         If e.Button = MouseButtons.Right Then
             Dim programLauncher As String = Path.Combine(Application.StartupPath, "ProgramLauncher.exe")
-            Try
-                Process.Start(programLauncher, """" & lblFullPath.Text & """")
-            Catch ex As Exception
-                Operations.MessageBox($"""{programLauncher}"" executable not found!", icon:=MessageBoxIcon.Exclamation)
-            End Try
+            If Not File.Exists(programLauncher) Then programLauncher = Path.Combine(WalkmanLib.GetWalkmanUtilsPath(), "..", "ProgramLauncher.exe")
+            If Not File.Exists(programLauncher) Then
+                Operations.MessageBox("Could not find ProgramLauncher!" & Environment.NewLine & Environment.NewLine &
+                                      "Looking for:" & Environment.NewLine & Path.Combine(Application.StartupPath, "ProgramLauncher.exe") &
+                                      Environment.NewLine & " OR" & Environment.NewLine & programLauncher,
+                                      MessageBoxButtons.OK, MessageBoxIcon.Exclamation, "Launching HandleManager")
+                Exit Sub
+            End If
+            Process.Start(programLauncher, """" & lblFullPath.Text & """")
         End If
     End Sub
 
