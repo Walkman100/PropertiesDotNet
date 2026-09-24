@@ -85,10 +85,16 @@ Public Class PropertiesDotNet
     End Sub
 
     Public Sub ApplyTheme(theme As WalkmanLib.Theme)
+        Dim oldFlatStyle As FlatStyle = cbxSize.FlatStyle
+
         WalkmanLib.SetPreferredAppMode(theme.SystemAppMode)
         WalkmanLib.ApplyThemeRenderer(theme, Me.Controls)
         WalkmanLib.ApplyTheme(theme, Me, True)
-        WalkmanLib.ApplyTheme(theme, components.Components, True)
+        WalkmanLib.ApplyTheme(theme, Me.components.Components, True)
+
+        If Me.Created AndAlso oldFlatStyle = FlatStyle.Standard Then
+            WalkmanLib.FixComboBoxFlatBackground(theme, Me.Controls)
+        End If
     End Sub
 
     ' ======================= Dragging-and-dropping =======================

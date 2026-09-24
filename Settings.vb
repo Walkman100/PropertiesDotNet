@@ -86,14 +86,22 @@ Public Class Settings
 
     Public Sub ApplyTheme()
         Dim theme As WalkmanLib.Theme = GetTheme()
+        Dim oldFlatStyle As FlatStyle = cbxDefaultSize.FlatStyle
 
         WalkmanLib.ApplyTheme(theme, Me, True)
         If components IsNot Nothing Then WalkmanLib.ApplyTheme(theme, components.Components, True)
         PropertiesDotNet.ApplyTheme(theme)
 
-        If Not Hashes Is Nothing AndAlso Hashes.Created Then WalkmanLib.ApplyTheme(theme, Hashes, True)
-        If Not ShortcutPropertiesDialog Is Nothing AndAlso ShortcutPropertiesDialog.Created Then WalkmanLib.ApplyTheme(theme, ShortcutPropertiesDialog, True)
-        If Not AlternateDataStreamManager Is Nothing AndAlso AlternateDataStreamManager.Created Then AlternateDataStreamManager.ApplyTheme(theme)
+        If Me.Created AndAlso oldFlatStyle = FlatStyle.Standard Then
+            WalkmanLib.FixComboBoxFlatBackground(theme, Me.Controls)
+        End If
+
+        If Hashes IsNot Nothing AndAlso Hashes.Created Then WalkmanLib.ApplyTheme(theme, Hashes, True)
+        If ShortcutPropertiesDialog IsNot Nothing AndAlso ShortcutPropertiesDialog.Created Then
+            WalkmanLib.ApplyTheme(theme, ShortcutPropertiesDialog, True)
+            If oldFlatStyle = FlatStyle.Standard Then WalkmanLib.FixComboBoxFlatBackground(theme, ShortcutPropertiesDialog.Controls)
+        End If
+        If AlternateDataStreamManager IsNot Nothing AndAlso AlternateDataStreamManager.Created Then AlternateDataStreamManager.ApplyTheme(theme)
     End Sub
 
 #Region "Properties"
