@@ -30,7 +30,9 @@ Public Class Settings
             _settingsPath = New FileInfo(configFileName).FullName
         End If
 
-        cbxTheme.Items.AddRange([Enum].GetNames(GetType(ThemeNames)))
+        cbxTheme.Items.AddRange(Linq.Enumerable.ToArray(Linq.Enumerable.Select(
+            [Enum].GetNames(GetType(WalkmanLib.ThemeName)), Function(s) s.Replace("_"c, " "c)
+        )))
 
         _Loaded = True
         If File.Exists(_settingsPath) Then
@@ -45,7 +47,7 @@ Public Class Settings
             cbxDefaultSize.SelectedIndex = 11 ' Auto (Decimal)
 
             Dim darkThemeEnabled As Boolean? = WalkmanLib.GetDarkThemeEnabled()
-            cbxTheme.SelectedIndex = If(darkThemeEnabled.HasValue AndAlso darkThemeEnabled.Value, ThemeNames.Dark, ThemeNames.Default)
+            cbxTheme.SelectedIndex = If(darkThemeEnabled.HasValue AndAlso darkThemeEnabled.Value, WalkmanLib.ThemeName.Dark, WalkmanLib.ThemeName.Default)
         End If
     End Sub
 
@@ -59,29 +61,8 @@ Public Class Settings
         AutoVisibility
     End Enum
 
-    Public Enum ThemeNames
-        [Default]
-        SystemDark
-        Dark
-        Inverted
-        Test
-    End Enum
-
     Public Function GetTheme() As WalkmanLib.Theme
-        Select Case Theme
-            Case ThemeNames.Default
-                Return WalkmanLib.Theme.Default
-            Case ThemeNames.Inverted
-                Return WalkmanLib.Theme.Inverted
-            Case ThemeNames.SystemDark
-                Return WalkmanLib.Theme.SystemDark
-            Case ThemeNames.Dark
-                Return WalkmanLib.Theme.Dark
-            Case ThemeNames.Test
-                Return WalkmanLib.Theme.Test
-            Case Else
-                Throw New ApplicationException("Invalid Theme Name: " & Theme.ToString())
-        End Select
+        Return WalkmanLib.GetTheme(Theme)
     End Function
 
     Public Sub ApplyTheme()
@@ -111,7 +92,7 @@ Public Class Settings
     Public ReadOnly Property UpdateCheck As Boolean
     Public ReadOnly Property ShowDriveInfo As DriveInfoVisibility
     Public ReadOnly Property DefaultSizeSelection As Integer
-    Public ReadOnly Property Theme As ThemeNames
+    Public ReadOnly Property Theme As WalkmanLib.ThemeName
 #End Region
 
 #Region "GUI Methods"
@@ -140,7 +121,7 @@ Public Class Settings
         SaveSettings()
     End Sub
     Private Sub cbxTheme_SelectedIndexChanged() Handles cbxTheme.SelectedIndexChanged
-        _Theme = DirectCast(cbxTheme.SelectedIndex, ThemeNames)
+        _Theme = DirectCast(cbxTheme.SelectedIndex, WalkmanLib.ThemeName)
         SaveSettings()
         ApplyTheme()
     End Sub
@@ -191,7 +172,7 @@ Public Class Settings
                                     Integer.TryParse(reader.Value, cbxDefaultSize.SelectedIndex)
                                 Case "Theme"
                                     reader.Read()
-                                    Dim out As ThemeNames
+                                    Dim out As WalkmanLib.ThemeName
                                     [Enum].TryParse(reader.Value, out)
                                     cbxTheme.SelectedIndex = out
                                 Case Else
