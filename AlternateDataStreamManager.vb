@@ -8,6 +8,7 @@ Imports Trinet.Core.IO.Ntfs
 Partial Public Class AlternateDataStreamManager
     Sub New()
         InitializeComponent()
+        lstStreams.SetDoubleBuffered(True)
 
         ApplyTheme(Settings.GetTheme())
     End Sub

@@ -61,9 +61,9 @@ Public Class Settings
 
     Public Enum ThemeNames
         [Default]
-        Inverted
         SystemDark
         Dark
+        Inverted
         Test
     End Enum
 

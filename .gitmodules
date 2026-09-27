@@ -1,7 +1,7 @@
 [submodule "WalkmanLib"]
 	path = WalkmanLib
 	url = https://github.com/Walkman100/WalkmanLib
-	branch = master
+	branch = vb-net
 [submodule "NTFS-Streams"]
 	path = NTFS-Streams
 	url = https://github.com/Walkman100/NTFS-Streams

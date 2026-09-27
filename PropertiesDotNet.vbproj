@@ -114,6 +114,7 @@
     </Compile>
     <Compile Include="WalkmanLib\NativeErrorCodes.vb" />
     <Compile Include="WalkmanLib\WalkmanLibDotNet.vb" />
+    <Compile Include="WalkmanLib\WalkmanLibExtensions.vb" />
     <Compile Include="WalkmanLib\WalkmanLibRestartManager.vb" />
     <Compile Include="WalkmanLib\WalkmanLibStreamCopy.vb" />
     <Compile Include="WalkmanLib\WalkmanLibSystemHandles.vb" />
